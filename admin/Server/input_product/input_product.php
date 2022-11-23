@@ -29,8 +29,9 @@
             // Xử lý thêm phiếu nhập
             $stmt = $conn->prepare($query_import_coupon);
             $input_product = $_POST['InputProduct'];
+            $date_init = date('Y-m-d H:i:s');
             $stmt->bindParam(':id',$input_product['id']);
-            $stmt->bindParam(':date_init', date('Y-m-d H:i:s'));
+            $stmt->bindParam(':date_init', $date_init);
             $stmt->bindParam(':id_staff', $input_product['id_staff']);
             $stmt->execute();
             // Xử lý thêm chi tiết

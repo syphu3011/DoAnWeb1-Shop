@@ -240,21 +240,21 @@ function checkValidNameU(f_name, l_name) {
 //             if (checkConstraintRegis(customer) == true) {
 //               data.customer.push(customer);
 //               localStorage.setItem("data", JSON.stringify(data));
-//               showacc(signup, 0, 1200);
-//               setTimeout(() => {
-//                 signup.style.display = "";
-//                 account.style.display = "";
-//                 document.getElementById("noti").style.display = "flex";
-//                 document.getElementById("noti-noti").innerHTML =
-//                   "Đăng ký thành công";
-//                 showacc(document.getElementById("noti-noti"), -500, 0);
-//                 document.getElementById("noti-noti").style.display = "flex";
-//                 setTimeout(() => {
-//                   document.getElementById("noti").style.display = "";
-//                   account.style.display = "flex";
-//                   showacc(signin, -500, 0);
-//                 }, 700);
-//               }, 450);
+// showacc(signup, 0, 1200);
+// setTimeout(() => {
+//   signup.style.display = "";
+//   account.style.display = "";
+//   document.getElementById("noti").style.display = "flex";
+//   document.getElementById("noti-noti").innerHTML =
+//     "Đăng ký thành công";
+//   showacc(document.getElementById("noti-noti"), -500, 0);
+//   document.getElementById("noti-noti").style.display = "flex";
+//   setTimeout(() => {
+//     document.getElementById("noti").style.display = "";
+//     account.style.display = "flex";
+//     showacc(signin, -500, 0);
+//   }, 700);
+// }, 450);
 //             } else {
 //               alert("Tài khoản đã tồn tại");
 //             }
