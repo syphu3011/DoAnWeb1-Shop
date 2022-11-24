@@ -108,6 +108,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
 // * REMOVE CUSTOMERS FROM DATABASE
 
+// ? http://localhost/doan/admin/Server/customer/customer.php?id=USR013
+
 if ($_SERVER['REQUEST_METHOD'] === "PUT") {
 
 	if (!isset($_REQUEST["id"])) {
