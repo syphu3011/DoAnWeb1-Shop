@@ -29,6 +29,18 @@ class ReqHandling {
 		}
 	}
 
+	public static function updateDbOnProperty($conn, $tableName, $propertySet, $valueSet, $propertyCondition, $conditionVal) {
+		try {
+			$query = "UPDATE " . $tableName . " SET " . $propertySet . " = '" . $valueSet . "'" 
+				. " WHERE $propertyCondition = " . "'" . $conditionVal . "'";
+			// echo $query . "</br>";
+			$query_statement = $conn->prepare($query);
+			$query_statement->execute();
+		} catch (Exception $e) {
+			echo "Please change key value in parameters." . "</br>";
+		}
+	}
+
 	// ? DELETE SECTION DEFAULT ON ID (DEFAULT)
 	public static function deleteRow($conn, $tableName, $id) {
 		try {
