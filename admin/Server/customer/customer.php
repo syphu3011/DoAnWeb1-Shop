@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === "GET"){
 			// * parenttable
 			'id_user',
 			// * foreign key on child
-			'id',
+			'id_user',
 			// * foreign key on parent
 			'*'), 
 		'customer', 'account'
@@ -34,7 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === "GET"){
 // * 1 or more parameters is all acceptable
 
 // * UPDATE parent table
-// ? http://localhost/doan/admin/Server/customer/customer.php?id=USR013&username=cicada&password=cicada3303&action=update&privilege=sales&status=active
+// ? http://localhost/doan/admin/Server/customer/customer.php?id_user=USR013&username=cicada&password=cicada3303&action=update&privilege=sales&status=active
+// * use both USR and KH in id, don't use id_user
+
 
 // * UPDATE child table
 // ? http://localhost/doan/admin/Server/customer/customer.php?action=update&name=cicada4&id=KH005
@@ -50,25 +52,19 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
 			// * fetch all table properties on account & customer table 
 
-			if (!isset($_REQUEST["id"])) {
-				echo "Specify id for updating.";
-				exit();
-			}
-
 			$headerArrAccount = Table::describe($conn, 'account');
 			$headerArrCustomer = Table::describe($conn, 'customer');
 			
 			// * if "id" value in POST request start with USR, update the parent table (account table)
-			if (preg_match('/^USR/', $_REQUEST["id"])) 
+			if (isset($_REQUEST["id_user"]) && preg_match('/^USR/', $_REQUEST["id_user"])) 
 				foreach($headerArrAccount as $key => $value) 
 					if (isset($_REQUEST[$value]))
-						ReqHandling::updateDb(
-							$conn, 'account', $_REQUEST["id"], 
-							$value, $_REQUEST[$value] 
-						);
+					ReqHandling::updateDbOnProperty(
+						$conn, 'account', $value, $_REQUEST[$value], 'id_user', $_REQUEST["id_user"]
+					);
 
 			// * if "id" value in POST request start with KH, update the child table (customer table)
-			if (preg_match('/^KH/', $_REQUEST["id"])) 
+			if (isset($_REQUEST["id"]) && preg_match('/^KH/', $_REQUEST["id"])) 
 				foreach($headerArrCustomer as $key => $value) 
 					if (isset($_REQUEST[$value]))
 						ReqHandling::updateDb(
@@ -89,11 +85,11 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 				exit();
 			}
 
-			$maxIdAccount = Table::getMaxId($conn, 'account', 'id');
+			$maxIdAccount = Table::getMaxId($conn, 'account', 'id_user');
 			$maxIdCustomer = Table::getMaxId($conn, 'customer', 'id');
 
 			// * add new account id on REQUEST superglobal array
-			$_REQUEST["id"] = "USR" . strval(sprintf("%03d", $maxIdAccount+1));
+			$_REQUEST["id_user"] = "USR" . strval(sprintf("%03d", $maxIdAccount+1));
 			// * update account table first (update parent table)
 			ReqHandling::createRow($conn, 'account');
 			
@@ -108,23 +104,20 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
 // * REMOVE CUSTOMERS FROM DATABASE
 
-// ? http://localhost/doan/admin/Server/customer/customer.php?id=USR013
+// ? http://localhost/doan/admin/Server/customer/customer.php?id_user=USR015
 
 if ($_SERVER['REQUEST_METHOD'] === "PUT") {
 
-	if (!isset($_REQUEST["id"])) {
-		echo "Please specify the id of ACCOUNT for deleting.";
+	if (!isset($_REQUEST["id_user"])) {
+		echo "Please specify the id_user of ACCOUNT for deleting.";
 		exit();
 	}
-	
-	echo "deleting";
-	$_REQUEST['id_user'] = $_REQUEST['id'];
 
 	// * delete from child table
 	ReqHandling::deleteRowWithProperty($conn, 'customer', 'id_user', $_REQUEST['id_user']);
 	
 	// * delete from parent table
-	ReqHandling::deleteRowWithProperty($conn, 'account', 'id', $_REQUEST['id']);
+	ReqHandling::deleteRowWithProperty($conn, 'account', 'id_user', $_REQUEST['id_user']);
 
 }
 
