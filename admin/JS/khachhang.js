@@ -1,10 +1,68 @@
-function writeToLocalStorage(arr){
+
+
+
+function renderTable(obj) {
+   let table = document.getElementById("myTable");
+   for(let i = table.rows.length - 1; i > 0; i--)
+      table.deleteRow(i);
+   
+   for (let i = 0; i < length0; i++) 
+      if (obj.customer[i].status.toLowerCase() === "đã khóa")
+         continue
+      else {
+         let row = table.insertRow(); 
+         let cell0 = row.insertCell(0);
+         let cell1 = row.insertCell(1);
+         let cell2 = row.insertCell(2);
+         let cell3 = row.insertCell(3);
+         let cell4 = row.insertCell(4);
+         let cell5 = row.insertCell(5);
+         let cell6 = row.insertCell(6);
+         cell0.innerHTML = obj[i].id
+         cell1.innerHTML = obj[i].name;
+         cell2.innerHTML = obj[i].username ;
+         cell3.innerHTML = obj[i].birth_day;
+         cell4.innerHTML = obj[i].number_phone;
+         cell5.innerHTML = obj[i].date_init
+         cell6.innerHTML = obj[i].status;
+      }
+}
+
+
+async function getData() {
+   try {
+      const response = await fetch('./Server/customer/customer.php');
+      const data = await response.json();
+      return data;
+   } catch (error) {
+      console.error(error);
+   }
+}
+
+let myData;
+
+// immediately-invoked asynchronous function expression (IAFE)
+(async function() {
+   myData = await getData();
+   console.log(myData);
+})();
+
+// Use myData variable in your code
+
+
+
+function writeToLocalStorage(arr) {
    let setlocal= JSON.stringify(arr)
    localStorage.setItem("data",setlocal)
    length0 = obj1.customer.length
 }
+
+
 let obj1 = JSON.parse(localStorage.getItem("data"))
-let arr=[]
+
+
+
+let arr = []
 let length0 = obj1.customer.length
 
 // Tìm kiếm
@@ -326,36 +384,7 @@ function TableFindLock(find){
 
 //Fill Bảng
 
-function renderTable(){
-   let table = document.getElementById("myTable");
-   for(let i = table.rows.length - 1; i > 0; i--){
-      table.deleteRow(i);
-   }
-   for(let i = 0; i < length0; i++)
-   {
-      if(obj1.customer[i].status.toLowerCase()=="đã khóa")
-      {
-         continue
-      }
-      else{
-      let row = table.insertRow(); 
-      let cell0 = row.insertCell(0);
-      let cell1 = row.insertCell(1);
-      let cell2 = row.insertCell(2);
-      let cell3 = row.insertCell(3);
-      let cell4 = row.insertCell(4);
-      let cell5 = row.insertCell(5);
-      let cell6 = row.insertCell(6);
-      cell0.innerHTML = obj1.customer[i].id
-      cell1.innerHTML = obj1.customer[i].name;
-      cell2.innerHTML = obj1.customer[i].username ;
-      cell3.innerHTML = obj1.customer[i].birth_day;
-      cell4.innerHTML = obj1.customer[i].number_phone;
-      cell5.innerHTML = obj1.customer[i].date_init
-      cell6.innerHTML = obj1.customer[i].status;
-      }
-   }
-}
+
 // Fill checkbox
 function renderLock_CheckBoxTable(){
    let table = document.getElementById("myTable");
@@ -483,3 +512,17 @@ function ClosePopupOpen(){
    document.getElementById('Confirm-Cancel-Open').style.display='none'
 }
 renderTable()
+
+
+
+
+
+// fetch('example.php', {
+//    method: 'POST',
+//    body: JSON.stringify({name: 'John', age: 30}),
+//    headers: {'Content-Type': 'application/json'}
+// })
+//    .then(response => response.text())
+//    .then(data => console.log(data))
+//    .catch(error => console.error(error));
+
