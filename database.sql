@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 22, 2023 at 05:14 PM
+-- Generation Time: Apr 11, 2023 at 01:40 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -30,7 +30,7 @@ use shop;
 --
 
 CREATE TABLE `account` (
-  `id` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `id_user` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `password` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `privilege` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE `account` (
 -- Dumping data for table `account`
 --
 
-INSERT INTO `account` (`id`, `username`, `password`, `privilege`, `session`, `status`) VALUES
+INSERT INTO `account` (`id_user`, `username`, `password`, `privilege`, `session`, `status`) VALUES
 ('USR001', 'admin2', '123123', 'admin', '', 'active'),
 ('USR002', 'admin1', '123123', 'admin', '', 'active'),
 ('USR003', 'syphu', '123123', 'customer', '', 'active'),
@@ -243,6 +243,18 @@ CREATE TABLE `event` (
   `type` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `actor` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `event`
+--
+
+INSERT INTO `event` (`timestamp`, `detail`, `severity`, `type`, `actor`) VALUES
+(1086300660, 'Add new account - USR007', 'harmless', 'add', 'admin2'),
+(1440535999, 'Add new account - USR005', 'harmless', 'add', 'admin2'),
+(1481419816, 'Add new account - USR002', 'harmless', 'add', 'admin2'),
+(1656308120, 'Add new account - USR003', 'harmless', 'add', 'admin2'),
+(1681119441, 'Add new account - USR007', 'harmless', 'add', 'admin2'),
+(1778994355, 'Add new account - USR004', 'harmless', 'add', 'admin2');
 
 -- --------------------------------------------------------
 
@@ -720,8 +732,8 @@ INSERT INTO `status_size` (`id`, `name`) VALUES
 -- Indexes for table `account`
 --
 ALTER TABLE `account`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`),
+  ADD PRIMARY KEY (`id_user`),
+  ADD UNIQUE KEY `id` (`id_user`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
@@ -961,7 +973,7 @@ ALTER TABLE `classify`
 --
 ALTER TABLE `customer`
   ADD CONSTRAINT `customer_ibfk_2` FOREIGN KEY (`gender`) REFERENCES `gender` (`id`),
-  ADD CONSTRAINT `customer_ibfk_3` FOREIGN KEY (`id_user`) REFERENCES `account` (`id`);
+  ADD CONSTRAINT `customer_ibfk_3` FOREIGN KEY (`id_user`) REFERENCES `account` (`id_user`);
 
 --
 -- Constraints for table `detail_import_coupon`
@@ -1055,7 +1067,7 @@ ALTER TABLE `size`
 --
 ALTER TABLE `staff`
   ADD CONSTRAINT `staff_ibfk_2` FOREIGN KEY (`gender`) REFERENCES `gender` (`id`),
-  ADD CONSTRAINT `staff_ibfk_3` FOREIGN KEY (`id_user`) REFERENCES `account` (`id`);
+  ADD CONSTRAINT `staff_ibfk_3` FOREIGN KEY (`id_user`) REFERENCES `account` (`id_user`);
 
 --
 -- Constraints for table `staff_position_list`
