@@ -1,0 +1,141 @@
+{
+    "data": {
+        "product": [{
+            "id": "",
+            "name":"",
+            "made_in":"",
+            "description":"",
+            "price":"",
+            "images":["",""],
+            "clasify":["",""],
+            "status":""
+        }],
+        "promote": [{
+            "id": "",
+            "name":"",
+            "image":"",
+            "content":"",
+            "discount_price":"",
+            "discount_percent":"",
+            "date_begin":"",
+            "date_end":"",
+            "products": [{
+                "id":"",
+                "name":"",
+                "price":""
+            }],
+            "status":""
+        }, 
+            {
+            "id": "",
+            "name":"",
+            "image":"",
+            "content":"",
+            "discount_price":"",
+            "discount_percent":"",
+            "date_begin":"",
+            "date_end":"",
+            "products": [{
+                "id":"",
+                "name":"",
+                "price":""
+            }],
+            "status":""
+        }],
+        "customer": [{
+            "id": "",
+            "name":"",
+            "data_init":"",
+            "username":"",
+            "password":"",
+            "sex":"",
+            "birth_day":"",
+            "number_phone":"",
+            "image":" ",
+            "address":" ",
+            "cart":[{
+                "idProd":"",
+                "idSize":"",
+                "amount":"",
+                "price":""
+            }],
+            "status":""
+        }]
+        ,
+        "staff": [{
+            "id": "",
+            "name":"",
+            "data_init":"",
+            "username":"",
+            "password":"",
+            "sex":"",
+            "birth_day":"",
+            "number_phone":[""],
+            "note":" ",
+            "address":" ",
+            "status":""
+        }],
+        "receipt": [{
+            "id":"",
+            "idStaff":"",
+            "idCustomer":"",
+            "date_init":"",
+            "date_confirm":"",
+            "list_prod":[{
+                "idSize":"",
+                "idProd":"",
+                "amount":"",
+                "price":""
+            }],
+            "status":""
+        }],
+        "input-product": [{
+            "id":"",
+            "date_input":"",
+            "detail":[{
+                "idProd":"",
+                "idSize":"",
+                "amount":"",
+                "price":""
+            }]
+        }],
+        "size":[{
+            "id":"",
+            "shoulderIndex":"",
+            "backIndex":"",
+            "bellyIndex":"",
+            "legLength":"",
+            "armLength":"",
+            "thighLength":"",
+            "calfIndex":"",
+            "buttIndex":""
+        }],
+        "position":[{
+            "id":"",
+            "name":""
+        }],
+        "prodInStock":[{
+            "idInput":"",
+            "idProd":"",
+            "idSize":"",
+            "amount":"",
+            "price":""
+        }],
+        "largeClassify":[{
+            "id":"",
+            "name":"",
+            "miniClassify":[{
+                "id":"",
+                "name":""
+            }]
+        }],
+        "miniClassify":[{
+            "id":"",
+            "idLarge":"",
+            "name":""
+        }],
+        "variable": [{
+
+        }]
+    }
+}

@@ -1,0 +1,146 @@
+*{
+   font-family: 'bungee', cursive;
+   box-sizing: border-box;
+}
+header {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+.title{
+   font-size: 35px;
+   /* margin: 0; */
+   margin-top: 10px;
+   /* height: 70px; */
+}
+.Header{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   /* margin-top: 10px; */
+   width: 100%;
+
+}
+.HeadButton{
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: center;
+   margin: 10px;
+   
+}
+#headkm{
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: center;
+   width: 100%;
+}
+/* .HeadButton button{
+   border-radius: 5px;
+   transition: color 0.15s, background-color 0.15s;
+   cursor: pointer;
+   margin: 0px 5px 0px 5px;
+} */
+.KhoaTaiKhoanButton{
+   width: 150px;
+}
+.KhoaTaiKhoanButton:hover{
+   color: white;
+   background-color: red;
+}
+.MoTaiKhoanButton:hover
+{
+   background-color: black;
+   color: white;
+}
+.HuyButton{
+   background-color: white;
+   color: black;
+   transition: color 0.15s, background-color 0.15s;
+}
+.HuyButton:hover{
+   background-color: black;
+   color: white;
+}
+.HeadButton button {
+   cursor: pointer;
+}
+#HeadButton1{
+   display: block;
+}
+#HeadButton2{
+   display: none;
+}
+#HeadButton3{
+   display: none;
+}
+
+.HeadButton0{
+   display: flex;
+   align-items: center;
+   /* height: 100px; */
+   margin-top: 10px;
+   margin-bottom: 10px;
+}
+/* .HeadButton0 button{
+   border-radius: 5px;
+   transition: color 0.15s, background-color 0.15s;
+   height: 50px;
+   cursor: pointer;
+   transition: color 0.15s, background-color 0.15s;
+   margin: 0px 5px 0px 5px;
+   background-color: white;
+   display: inline-block;
+}
+.HeadButton0 button:hover{
+   color: white;
+   background-color: black;
+}
+.HeadButton0 button label{
+   cursor: pointer;
+   position: absolute;
+} */
+
+#PhanCvNv{
+   display: none;
+}
+#PhanCvNv:checked ~ header #HeadButton11 #HeadButton21{
+   display: none;
+}
+#PhanCvNv:not(:checked) ~ header #HeadButton11 #HeadButton41{
+   display: none;
+}
+
+#HuyCvNv{
+   display: none;
+}
+#HuyCvNv:checked ~ header #HeadButton11 #HeadButton21{
+   display: none;
+}
+#HuyCvNv:not(:checked) ~ header #HeadButton11 #HeadButton51{
+   display: none;
+}
+#content {
+   position: fixed;
+   top: 71px;
+   bottom: 0px;
+   left: 0;
+   right: 0;
+   overflow-y: auto;
+}
+
+.KhuyenMaiIcon{
+   font-size: 30px;
+}
+.first-row{
+   background-color: rgb(231, 229, 229);
+   
+}
+.first-row th {
+   font-size: 14px;
+}
+.first-row td {
+   font-size: 14px;
+}
