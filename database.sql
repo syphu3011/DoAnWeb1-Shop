@@ -2,10 +2,10 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: localhost
--- Thời gian đã tạo: Th3 20, 2023 lúc 08:20 AM
--- Phiên bản máy phục vụ: 10.4.27-MariaDB
--- Phiên bản PHP: 8.2.0
+-- Host: 127.0.0.1
+-- Generation Time: Mar 22, 2023 at 05:14 PM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,15 +18,46 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `Shop`
+-- Database: `shop`
 --
-CREATE DATABASE IF NOT EXISTS `Shop` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `Shop`;
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `cart`
+-- Table structure for table `account`
+--
+
+CREATE TABLE `account` (
+  `id` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `password` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `privilege` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `session` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `status` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `account`
+--
+
+INSERT INTO `account` (`id`, `username`, `password`, `privilege`, `session`, `status`) VALUES
+('USR001', 'admin2', '123123', 'admin', '', 'active'),
+('USR002', 'admin1', '123123', 'admin', '', 'active'),
+('USR003', 'syphu', '123123', 'customer', '', 'active'),
+('USR004', 'khaphi', '123123', 'customer', '', 'active'),
+('USR005', 'minhthao', '123123', 'customer', '', 'active'),
+('USR006', 'congmenh', '123123', 'customer', '', 'active'),
+('USR007', 'manager1', '123123', 'manager', '', 'active'),
+('USR008', 'manager2', '123123', 'manager', '', 'active'),
+('USR009', 'phu', '123123', 'sales', '', 'active'),
+('USR010', 'phi', '123123', 'sales', '', 'active'),
+('USR011', 'thao', '123123', 'sales', '', 'active'),
+('USR012', 'menh', '123123', 'sales', '', 'active');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart`
 --
 
 CREATE TABLE `cart` (
@@ -39,7 +70,7 @@ CREATE TABLE `cart` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `cart`
+-- Dumping data for table `cart`
 --
 
 INSERT INTO `cart` (`id_customer`, `id_product`, `id_color`, `id_size`, `amount`, `price`) VALUES
@@ -52,7 +83,7 @@ INSERT INTO `cart` (`id_customer`, `id_product`, `id_color`, `id_size`, `amount`
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `classify`
+-- Table structure for table `classify`
 --
 
 CREATE TABLE `classify` (
@@ -64,7 +95,7 @@ CREATE TABLE `classify` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `classify`
+-- Dumping data for table `classify`
 --
 
 INSERT INTO `classify` (`id`, `name`, `image`, `id_big_classify`, `gender`) VALUES
@@ -78,7 +109,7 @@ INSERT INTO `classify` (`id`, `name`, `image`, `id_big_classify`, `gender`) VALU
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `color`
+-- Table structure for table `color`
 --
 
 CREATE TABLE `color` (
@@ -87,7 +118,7 @@ CREATE TABLE `color` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `color`
+-- Dumping data for table `color`
 --
 
 INSERT INTO `color` (`id`, `name`) VALUES
@@ -97,37 +128,34 @@ INSERT INTO `color` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `customer`
+-- Table structure for table `customer`
 --
 
 CREATE TABLE `customer` (
   `id` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `date_init` datetime NOT NULL,
-  `username_customer` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `password_customer` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `birthday` datetime DEFAULT NULL,
-  `numberphone` varchar(10) NOT NULL,
-  `image` varchar(1000) DEFAULT NULL,
+  `numberphone` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `image` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `address` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `gender` varchar(10) DEFAULT NULL,
-  `id_status` varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL
+  `id_user` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `customer`
+-- Dumping data for table `customer`
 --
 
-INSERT INTO `customer` (`id`, `name`, `date_init`, `username_customer`, `password_customer`, `birthday`, `numberphone`, `image`, `address`, `gender`, `id_status`) VALUES
-('KH001', 'Phú', '2023-02-11 00:00:00', 'syphu', '123123', '2002-11-30 00:00:00', '394142892', NULL, 'HCM', 'nam', 'TT04'),
-('KH002', 'Phi', '2023-02-12 00:00:00', 'khaphi', '123123', '2002-06-28 00:00:00', '394142894', NULL, 'HCM', 'nam', 'TT04'),
-('KH003', 'Mềnh', '2023-02-13 00:00:00', 'congmenh', '123123', '2002-02-18 00:00:00', '394142896', NULL, 'HCM', 'nam', 'TT04'),
-('KH004', 'Thao', '2023-02-14 00:00:00', 'minhthao', '123123', '2002-07-29 00:00:00', '394142898', NULL, 'HCM', 'nam', 'TT04');
+INSERT INTO `customer` (`id`, `name`, `birthday`, `numberphone`, `image`, `address`, `gender`, `id_user`) VALUES
+('KH001', 'Phú', '2002-11-30 00:00:00', '394142892', NULL, 'HCM', 'nam', 'USR003'),
+('KH002', 'Phi', '2002-06-28 00:00:00', '394142894', NULL, 'HCM', 'nam', 'USR004'),
+('KH003', 'Mềnh', '2002-02-18 00:00:00', '394142896', NULL, 'HCM', 'nam', 'USR006'),
+('KH004', 'Thao', '2002-07-29 00:00:00', '394142898', NULL, 'HCM', 'nam', 'USR005');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `detail_import_coupon`
+-- Table structure for table `detail_import_coupon`
 --
 
 CREATE TABLE `detail_import_coupon` (
@@ -140,7 +168,7 @@ CREATE TABLE `detail_import_coupon` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `detail_import_coupon`
+-- Dumping data for table `detail_import_coupon`
 --
 
 INSERT INTO `detail_import_coupon` (`id_import_coupon`, `id_product`, `id_color`, `id_size`, `amount`, `price_input`) VALUES
@@ -156,7 +184,7 @@ INSERT INTO `detail_import_coupon` (`id_import_coupon`, `id_product`, `id_color`
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `detail_promotion`
+-- Table structure for table `detail_promotion`
 --
 
 CREATE TABLE `detail_promotion` (
@@ -165,7 +193,7 @@ CREATE TABLE `detail_promotion` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `detail_promotion`
+-- Dumping data for table `detail_promotion`
 --
 
 INSERT INTO `detail_promotion` (`id_promotion`, `id_product`) VALUES
@@ -175,7 +203,7 @@ INSERT INTO `detail_promotion` (`id_promotion`, `id_product`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `detail_receipt`
+-- Table structure for table `detail_receipt`
 --
 
 CREATE TABLE `detail_receipt` (
@@ -189,7 +217,7 @@ CREATE TABLE `detail_receipt` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `detail_receipt`
+-- Dumping data for table `detail_receipt`
 --
 
 INSERT INTO `detail_receipt` (`id_receipt`, `id_size`, `id_color`, `id_product`, `id_import_coupon`, `amount`, `price`) VALUES
@@ -203,7 +231,21 @@ INSERT INTO `detail_receipt` (`id_receipt`, `id_size`, `id_color`, `id_product`,
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `gender`
+-- Table structure for table `event`
+--
+
+CREATE TABLE `event` (
+  `timestamp` int(50) NOT NULL,
+  `detail` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `severity` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `type` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `actor` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gender`
 --
 
 CREATE TABLE `gender` (
@@ -211,7 +253,7 @@ CREATE TABLE `gender` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `gender`
+-- Dumping data for table `gender`
 --
 
 INSERT INTO `gender` (`id`) VALUES
@@ -222,17 +264,17 @@ INSERT INTO `gender` (`id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `image_product`
+-- Table structure for table `image_product`
 --
 
 CREATE TABLE `image_product` (
   `id_product` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `link_image` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `name_image` varchar(50) DEFAULT NULL
+  `name_image` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `image_product`
+-- Dumping data for table `image_product`
 --
 
 INSERT INTO `image_product` (`id_product`, `link_image`, `name_image`) VALUES
@@ -250,7 +292,7 @@ INSERT INTO `image_product` (`id_product`, `link_image`, `name_image`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `import_coupon`
+-- Table structure for table `import_coupon`
 --
 
 CREATE TABLE `import_coupon` (
@@ -261,7 +303,7 @@ CREATE TABLE `import_coupon` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `import_coupon`
+-- Dumping data for table `import_coupon`
 --
 
 INSERT INTO `import_coupon` (`id`, `date_init`, `id_staff`, `note`) VALUES
@@ -271,7 +313,7 @@ INSERT INTO `import_coupon` (`id`, `date_init`, `id_staff`, `note`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `input_country`
+-- Table structure for table `input_country`
 --
 
 CREATE TABLE `input_country` (
@@ -280,7 +322,7 @@ CREATE TABLE `input_country` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `input_country`
+-- Dumping data for table `input_country`
 --
 
 INSERT INTO `input_country` (`id`, `name`) VALUES
@@ -292,7 +334,7 @@ INSERT INTO `input_country` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `parameters`
+-- Table structure for table `parameters`
 --
 
 CREATE TABLE `parameters` (
@@ -302,7 +344,7 @@ CREATE TABLE `parameters` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `parameters`
+-- Dumping data for table `parameters`
 --
 
 INSERT INTO `parameters` (`id`, `variable1`, `variable2`) VALUES
@@ -312,7 +354,33 @@ INSERT INTO `parameters` (`id`, `variable1`, `variable2`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `product`
+-- Table structure for table `privilege`
+--
+
+CREATE TABLE `privilege` (
+  `table_affect` varchar(30) NOT NULL,
+  `code` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `privilege`
+--
+
+INSERT INTO `privilege` (`table_affect`, `code`) VALUES
+('account_password', '--U---U---U-crud'),
+('account_username', '-RU--r---RU-crud'),
+('classify', '-r---r--crudcrud'),
+('coupon', '-R------crudcrud'),
+('customer', '-RUD-----RUDcrud'),
+('parameter', '-r---r--crudcrud'),
+('product', '-r---r--crudcrud'),
+('size', '-r---r--crudcrud'),
+('staff', '------------crud');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product`
 --
 
 CREATE TABLE `product` (
@@ -324,7 +392,7 @@ CREATE TABLE `product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `product`
+-- Dumping data for table `product`
 --
 
 INSERT INTO `product` (`id`, `name`, `madein`, `description`, `idstatus`) VALUES
@@ -341,7 +409,7 @@ INSERT INTO `product` (`id`, `name`, `madein`, `description`, `idstatus`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `product_in_stock`
+-- Table structure for table `product_in_stock`
 --
 
 CREATE TABLE `product_in_stock` (
@@ -354,7 +422,7 @@ CREATE TABLE `product_in_stock` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `product_in_stock`
+-- Dumping data for table `product_in_stock`
 --
 
 INSERT INTO `product_in_stock` (`id_import_coupon`, `id_product`, `id_size`, `id_color`, `amount`, `price_input`) VALUES
@@ -370,7 +438,7 @@ INSERT INTO `product_in_stock` (`id_import_coupon`, `id_product`, `id_size`, `id
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `product_list`
+-- Table structure for table `product_list`
 --
 
 CREATE TABLE `product_list` (
@@ -381,7 +449,7 @@ CREATE TABLE `product_list` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `product_list`
+-- Dumping data for table `product_list`
 --
 
 INSERT INTO `product_list` (`id_product`, `id_size`, `id_color`, `price`) VALUES
@@ -393,7 +461,7 @@ INSERT INTO `product_list` (`id_product`, `id_size`, `id_color`, `price`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `product_list_classify`
+-- Table structure for table `product_list_classify`
 --
 
 CREATE TABLE `product_list_classify` (
@@ -402,7 +470,7 @@ CREATE TABLE `product_list_classify` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `product_list_classify`
+-- Dumping data for table `product_list_classify`
 --
 
 INSERT INTO `product_list_classify` (`id_product`, `id_classify`) VALUES
@@ -421,13 +489,13 @@ INSERT INTO `product_list_classify` (`id_product`, `id_classify`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `promotion`
+-- Table structure for table `promotion`
 --
 
 CREATE TABLE `promotion` (
   `id` varchar(19) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `image` varchar(1000) DEFAULT NULL,
+  `image` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `content` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `discount_price` int(11) DEFAULT NULL,
   `discount_percent` decimal(3,2) DEFAULT NULL,
@@ -437,7 +505,7 @@ CREATE TABLE `promotion` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `promotion`
+-- Dumping data for table `promotion`
 --
 
 INSERT INTO `promotion` (`id`, `name`, `image`, `content`, `discount_price`, `discount_percent`, `begin_date`, `finish_date`, `id_status`) VALUES
@@ -448,7 +516,7 @@ INSERT INTO `promotion` (`id`, `name`, `image`, `content`, `discount_price`, `di
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `receipt`
+-- Table structure for table `receipt`
 --
 
 CREATE TABLE `receipt` (
@@ -462,7 +530,7 @@ CREATE TABLE `receipt` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `receipt`
+-- Dumping data for table `receipt`
 --
 
 INSERT INTO `receipt` (`id`, `date_init`, `date_confirm`, `note`, `id_staff`, `id_customer`, `id_status`) VALUES
@@ -473,7 +541,7 @@ INSERT INTO `receipt` (`id`, `date_init`, `date_confirm`, `note`, `id_staff`, `i
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `size`
+-- Table structure for table `size`
 --
 
 CREATE TABLE `size` (
@@ -489,7 +557,7 @@ CREATE TABLE `size` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `size`
+-- Dumping data for table `size`
 --
 
 INSERT INTO `size` (`id`, `breast`, `waist`, `butt`, `foot`, `hand`, `thigh`, `back`, `id_status`) VALUES
@@ -501,37 +569,34 @@ INSERT INTO `size` (`id`, `breast`, `waist`, `butt`, `foot`, `hand`, `thigh`, `b
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `staff`
+-- Table structure for table `staff`
 --
 
 CREATE TABLE `staff` (
   `id` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `date_init` datetime NOT NULL,
-  `username_staff` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `password_staff` varchar(32) NOT NULL,
   `birthday` datetime DEFAULT NULL,
   `gender` varchar(10) DEFAULT NULL,
-  `phone` varchar(10) NOT NULL,
+  `phone` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `address` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `id_status` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `note` varchar(1000) DEFAULT NULL
+  `note` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `id_user` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `staff`
+-- Dumping data for table `staff`
 --
 
-INSERT INTO `staff` (`id`, `name`, `date_init`, `username_staff`, `password_staff`, `birthday`, `gender`, `phone`, `address`, `id_status`, `note`) VALUES
-('NV001', 'Sỹ Phú', '2023-02-11 00:00:00', 'phu', '123123', '2002-11-30 00:00:00', 'nam', '828049515', 'HCM', 'TT05', NULL),
-('NV002', 'Khả Phi', '2023-02-11 00:00:00', 'phi', '123123', '2002-06-28 00:00:00', 'nam', '828049516', 'HCM', 'TT05', NULL),
-('NV003', 'Cỏng Mềnh', '2023-02-11 00:00:00', 'menh', '123123', '2002-02-18 00:00:00', 'nam', '828049517', 'Đồng Nai', 'TT06', NULL),
-('NV004', 'Minh Thao', '2023-02-11 00:00:00', 'thao', '123123', '2002-07-29 00:00:00', 'nam', '828049518', 'Long AN', 'TT05', NULL);
+INSERT INTO `staff` (`id`, `name`, `birthday`, `gender`, `phone`, `address`, `note`, `id_user`) VALUES
+('NV001', 'Sỹ Phú', '2002-11-30 00:00:00', 'nam', '828049515', 'HCM', NULL, 'USR009'),
+('NV002', 'Khả Phi', '2002-06-28 00:00:00', 'nam', '828049516', 'HCM', NULL, 'USR010'),
+('NV003', 'Cỏng Mềnh', '2002-02-18 00:00:00', 'nam', '828049517', 'Đồng Nai', NULL, 'USR012'),
+('NV004', 'Minh Thao', '2002-07-29 00:00:00', 'nam', '828049518', 'Long AN', NULL, 'USR011');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `staff_position`
+-- Table structure for table `staff_position`
 --
 
 CREATE TABLE `staff_position` (
@@ -540,7 +605,7 @@ CREATE TABLE `staff_position` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `staff_position`
+-- Dumping data for table `staff_position`
 --
 
 INSERT INTO `staff_position` (`id`, `name`) VALUES
@@ -550,7 +615,7 @@ INSERT INTO `staff_position` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `staff_position_list`
+-- Table structure for table `staff_position_list`
 --
 
 CREATE TABLE `staff_position_list` (
@@ -559,7 +624,7 @@ CREATE TABLE `staff_position_list` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `staff_position_list`
+-- Dumping data for table `staff_position_list`
 --
 
 INSERT INTO `staff_position_list` (`id_staff`, `id_position`) VALUES
@@ -571,26 +636,7 @@ INSERT INTO `staff_position_list` (`id_staff`, `id_position`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `status_customer`
---
-
-CREATE TABLE `status_customer` (
-  `id` varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `status_customer`
---
-
-INSERT INTO `status_customer` (`id`, `name`) VALUES
-('TT04', 'Hoạt động'),
-('TT03', 'Đã khóa');
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `status_product`
+-- Table structure for table `status_product`
 --
 
 CREATE TABLE `status_product` (
@@ -599,7 +645,7 @@ CREATE TABLE `status_product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `status_product`
+-- Dumping data for table `status_product`
 --
 
 INSERT INTO `status_product` (`id`, `name`) VALUES
@@ -609,7 +655,7 @@ INSERT INTO `status_product` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `status_promotion`
+-- Table structure for table `status_promotion`
 --
 
 CREATE TABLE `status_promotion` (
@@ -618,7 +664,7 @@ CREATE TABLE `status_promotion` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `status_promotion`
+-- Dumping data for table `status_promotion`
 --
 
 INSERT INTO `status_promotion` (`id`, `name`) VALUES
@@ -628,7 +674,7 @@ INSERT INTO `status_promotion` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `status_receipt`
+-- Table structure for table `status_receipt`
 --
 
 CREATE TABLE `status_receipt` (
@@ -637,7 +683,7 @@ CREATE TABLE `status_receipt` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `status_receipt`
+-- Dumping data for table `status_receipt`
 --
 
 INSERT INTO `status_receipt` (`id`, `name`) VALUES
@@ -648,7 +694,7 @@ INSERT INTO `status_receipt` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `status_size`
+-- Table structure for table `status_size`
 --
 
 CREATE TABLE `status_size` (
@@ -657,38 +703,27 @@ CREATE TABLE `status_size` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `status_size`
+-- Dumping data for table `status_size`
 --
 
 INSERT INTO `status_size` (`id`, `name`) VALUES
 ('TT12', 'Đang sử dụng'),
 ('TT13', 'Ngưng sử dụng');
 
--- --------------------------------------------------------
-
 --
--- Cấu trúc bảng cho bảng `status_staff`
---
-
-CREATE TABLE `status_staff` (
-  `id` varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `status_staff`
---
-
-INSERT INTO `status_staff` (`id`, `name`) VALUES
-('TT05', 'Còn làm việc'),
-('TT06', 'Nghỉ làm');
-
---
--- Chỉ mục cho các bảng đã đổ
+-- Indexes for dumped tables
 --
 
 --
--- Chỉ mục cho bảng `cart`
+-- Indexes for table `account`
+--
+ALTER TABLE `account`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`),
+  ADD UNIQUE KEY `username` (`username`);
+
+--
+-- Indexes for table `cart`
 --
 ALTER TABLE `cart`
   ADD PRIMARY KEY (`id_customer`,`id_product`,`id_size`,`id_color`),
@@ -697,7 +732,7 @@ ALTER TABLE `cart`
   ADD KEY `id_size` (`id_size`);
 
 --
--- Chỉ mục cho bảng `classify`
+-- Indexes for table `classify`
 --
 ALTER TABLE `classify`
   ADD PRIMARY KEY (`id`),
@@ -706,24 +741,23 @@ ALTER TABLE `classify`
   ADD KEY `classify_ibfk_2` (`gender`);
 
 --
--- Chỉ mục cho bảng `color`
+-- Indexes for table `color`
 --
 ALTER TABLE `color`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `NAME` (`name`);
 
 --
--- Chỉ mục cho bảng `customer`
+-- Indexes for table `customer`
 --
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username_customer` (`username_customer`),
   ADD UNIQUE KEY `numberphone` (`numberphone`),
-  ADD KEY `id_status` (`id_status`),
-  ADD KEY `customer_ibfk_2` (`gender`);
+  ADD KEY `customer_ibfk_2` (`gender`),
+  ADD KEY `customer_ibfk_3` (`id_user`);
 
 --
--- Chỉ mục cho bảng `detail_import_coupon`
+-- Indexes for table `detail_import_coupon`
 --
 ALTER TABLE `detail_import_coupon`
   ADD PRIMARY KEY (`id_import_coupon`,`id_product`,`id_size`,`id_color`),
@@ -732,14 +766,14 @@ ALTER TABLE `detail_import_coupon`
   ADD KEY `id_color` (`id_color`);
 
 --
--- Chỉ mục cho bảng `detail_promotion`
+-- Indexes for table `detail_promotion`
 --
 ALTER TABLE `detail_promotion`
   ADD PRIMARY KEY (`id_promotion`,`id_product`),
   ADD KEY `id_product` (`id_product`);
 
 --
--- Chỉ mục cho bảng `detail_receipt`
+-- Indexes for table `detail_receipt`
 --
 ALTER TABLE `detail_receipt`
   ADD PRIMARY KEY (`id_receipt`,`id_import_coupon`,`id_product`,`id_size`,`id_color`),
@@ -749,38 +783,52 @@ ALTER TABLE `detail_receipt`
   ADD KEY `id_color` (`id_color`);
 
 --
--- Chỉ mục cho bảng `gender`
+-- Indexes for table `event`
+--
+ALTER TABLE `event`
+  ADD PRIMARY KEY (`timestamp`),
+  ADD UNIQUE KEY `timestamp` (`timestamp`),
+  ADD KEY `event_ibfk_1` (`actor`);
+
+--
+-- Indexes for table `gender`
 --
 ALTER TABLE `gender`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `image_product`
+-- Indexes for table `image_product`
 --
 ALTER TABLE `image_product`
   ADD PRIMARY KEY (`id_product`,`link_image`);
 
 --
--- Chỉ mục cho bảng `import_coupon`
+-- Indexes for table `import_coupon`
 --
 ALTER TABLE `import_coupon`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_staff` (`id_staff`);
 
 --
--- Chỉ mục cho bảng `input_country`
+-- Indexes for table `input_country`
 --
 ALTER TABLE `input_country`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `parameters`
+-- Indexes for table `parameters`
 --
 ALTER TABLE `parameters`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `product`
+-- Indexes for table `privilege`
+--
+ALTER TABLE `privilege`
+  ADD UNIQUE KEY `table_affect` (`table_affect`);
+
+--
+-- Indexes for table `product`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`id`),
@@ -789,7 +837,7 @@ ALTER TABLE `product`
   ADD KEY `fk_madein` (`madein`);
 
 --
--- Chỉ mục cho bảng `product_in_stock`
+-- Indexes for table `product_in_stock`
 --
 ALTER TABLE `product_in_stock`
   ADD PRIMARY KEY (`id_import_coupon`,`id_product`,`id_size`,`id_color`),
@@ -798,7 +846,7 @@ ALTER TABLE `product_in_stock`
   ADD KEY `id_color` (`id_color`);
 
 --
--- Chỉ mục cho bảng `product_list`
+-- Indexes for table `product_list`
 --
 ALTER TABLE `product_list`
   ADD PRIMARY KEY (`id_product`,`id_size`,`id_color`),
@@ -806,23 +854,23 @@ ALTER TABLE `product_list`
   ADD KEY `id_color` (`id_color`);
 
 --
--- Chỉ mục cho bảng `product_list_classify`
+-- Indexes for table `product_list_classify`
 --
 ALTER TABLE `product_list_classify`
   ADD PRIMARY KEY (`id_product`,`id_classify`),
   ADD KEY `id_classify` (`id_classify`);
 
 --
--- Chỉ mục cho bảng `promotion`
+-- Indexes for table `promotion`
 --
 ALTER TABLE `promotion`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `NAME` (`name`),
-  ADD UNIQUE KEY `image` (`image`) USING HASH,
+  ADD UNIQUE KEY `image` (`image`),
   ADD KEY `id_status` (`id_status`);
 
 --
--- Chỉ mục cho bảng `receipt`
+-- Indexes for table `receipt`
 --
 ALTER TABLE `receipt`
   ADD PRIMARY KEY (`id`),
@@ -831,82 +879,67 @@ ALTER TABLE `receipt`
   ADD KEY `id_status` (`id_status`);
 
 --
--- Chỉ mục cho bảng `size`
+-- Indexes for table `size`
 --
 ALTER TABLE `size`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_size_status` (`id_status`);
 
 --
--- Chỉ mục cho bảng `staff`
+-- Indexes for table `staff`
 --
 ALTER TABLE `staff`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username_staff` (`username_staff`),
-  ADD KEY `id_status` (`id_status`),
+  ADD UNIQUE KEY `id_user` (`id_user`),
   ADD KEY `staff_ibfk_2` (`gender`);
 
 --
--- Chỉ mục cho bảng `staff_position`
+-- Indexes for table `staff_position`
 --
 ALTER TABLE `staff_position`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `NAME` (`name`);
 
 --
--- Chỉ mục cho bảng `staff_position_list`
+-- Indexes for table `staff_position_list`
 --
 ALTER TABLE `staff_position_list`
   ADD PRIMARY KEY (`id_position`,`id_staff`),
   ADD KEY `id_staff` (`id_staff`);
 
 --
--- Chỉ mục cho bảng `status_customer`
---
-ALTER TABLE `status_customer`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `NAME` (`name`);
-
---
--- Chỉ mục cho bảng `status_product`
+-- Indexes for table `status_product`
 --
 ALTER TABLE `status_product`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `NAME` (`name`);
 
 --
--- Chỉ mục cho bảng `status_promotion`
+-- Indexes for table `status_promotion`
 --
 ALTER TABLE `status_promotion`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `NAME` (`name`);
 
 --
--- Chỉ mục cho bảng `status_receipt`
+-- Indexes for table `status_receipt`
 --
 ALTER TABLE `status_receipt`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `NAME` (`name`);
 
 --
--- Chỉ mục cho bảng `status_size`
+-- Indexes for table `status_size`
 --
 ALTER TABLE `status_size`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `status_staff`
---
-ALTER TABLE `status_staff`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `NAME` (`name`);
-
---
--- Các ràng buộc cho các bảng đã đổ
+-- Constraints for dumped tables
 --
 
 --
--- Các ràng buộc cho bảng `cart`
+-- Constraints for table `cart`
 --
 ALTER TABLE `cart`
   ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`id_customer`) REFERENCES `customer` (`id`),
@@ -915,21 +948,21 @@ ALTER TABLE `cart`
   ADD CONSTRAINT `cart_ibfk_4` FOREIGN KEY (`id_size`) REFERENCES `size` (`id`);
 
 --
--- Các ràng buộc cho bảng `classify`
+-- Constraints for table `classify`
 --
 ALTER TABLE `classify`
   ADD CONSTRAINT `classify_ibfk_1` FOREIGN KEY (`id_big_classify`) REFERENCES `classify` (`id`),
   ADD CONSTRAINT `classify_ibfk_2` FOREIGN KEY (`gender`) REFERENCES `gender` (`id`);
 
 --
--- Các ràng buộc cho bảng `customer`
+-- Constraints for table `customer`
 --
 ALTER TABLE `customer`
-  ADD CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`id_status`) REFERENCES `status_customer` (`id`),
-  ADD CONSTRAINT `customer_ibfk_2` FOREIGN KEY (`gender`) REFERENCES `gender` (`id`);
+  ADD CONSTRAINT `customer_ibfk_2` FOREIGN KEY (`gender`) REFERENCES `gender` (`id`),
+  ADD CONSTRAINT `customer_ibfk_3` FOREIGN KEY (`id_user`) REFERENCES `account` (`id`);
 
 --
--- Các ràng buộc cho bảng `detail_import_coupon`
+-- Constraints for table `detail_import_coupon`
 --
 ALTER TABLE `detail_import_coupon`
   ADD CONSTRAINT `detail_import_coupon_ibfk_1` FOREIGN KEY (`id_import_coupon`) REFERENCES `import_coupon` (`id`),
@@ -938,14 +971,14 @@ ALTER TABLE `detail_import_coupon`
   ADD CONSTRAINT `detail_import_coupon_ibfk_4` FOREIGN KEY (`id_color`) REFERENCES `product_list` (`id_color`);
 
 --
--- Các ràng buộc cho bảng `detail_promotion`
+-- Constraints for table `detail_promotion`
 --
 ALTER TABLE `detail_promotion`
   ADD CONSTRAINT `detail_promotion_ibfk_1` FOREIGN KEY (`id_promotion`) REFERENCES `promotion` (`id`),
   ADD CONSTRAINT `detail_promotion_ibfk_2` FOREIGN KEY (`id_product`) REFERENCES `product` (`id`);
 
 --
--- Các ràng buộc cho bảng `detail_receipt`
+-- Constraints for table `detail_receipt`
 --
 ALTER TABLE `detail_receipt`
   ADD CONSTRAINT `detail_receipt_ibfk_1` FOREIGN KEY (`id_receipt`) REFERENCES `receipt` (`id`),
@@ -955,26 +988,32 @@ ALTER TABLE `detail_receipt`
   ADD CONSTRAINT `detail_receipt_ibfk_5` FOREIGN KEY (`id_color`) REFERENCES `product_in_stock` (`id_color`);
 
 --
--- Các ràng buộc cho bảng `image_product`
+-- Constraints for table `event`
+--
+ALTER TABLE `event`
+  ADD CONSTRAINT `event_ibfk_1` FOREIGN KEY (`actor`) REFERENCES `account` (`username`);
+
+--
+-- Constraints for table `image_product`
 --
 ALTER TABLE `image_product`
   ADD CONSTRAINT `image_product_ibfk_1` FOREIGN KEY (`id_product`) REFERENCES `product` (`id`);
 
 --
--- Các ràng buộc cho bảng `import_coupon`
+-- Constraints for table `import_coupon`
 --
 ALTER TABLE `import_coupon`
   ADD CONSTRAINT `import_coupon_ibfk_1` FOREIGN KEY (`id_staff`) REFERENCES `staff` (`id`);
 
 --
--- Các ràng buộc cho bảng `product`
+-- Constraints for table `product`
 --
 ALTER TABLE `product`
   ADD CONSTRAINT `fk_madein` FOREIGN KEY (`madein`) REFERENCES `input_country` (`id`),
   ADD CONSTRAINT `fk_statusprod` FOREIGN KEY (`idstatus`) REFERENCES `status_product` (`id`);
 
 --
--- Các ràng buộc cho bảng `product_in_stock`
+-- Constraints for table `product_in_stock`
 --
 ALTER TABLE `product_in_stock`
   ADD CONSTRAINT `product_in_stock_ibfk_1` FOREIGN KEY (`id_import_coupon`) REFERENCES `detail_import_coupon` (`id_import_coupon`),
@@ -983,20 +1022,20 @@ ALTER TABLE `product_in_stock`
   ADD CONSTRAINT `product_in_stock_ibfk_4` FOREIGN KEY (`id_color`) REFERENCES `detail_import_coupon` (`id_color`);
 
 --
--- Các ràng buộc cho bảng `product_list_classify`
+-- Constraints for table `product_list_classify`
 --
 ALTER TABLE `product_list_classify`
   ADD CONSTRAINT `product_list_classify_ibfk_1` FOREIGN KEY (`id_product`) REFERENCES `product` (`id`),
   ADD CONSTRAINT `product_list_classify_ibfk_2` FOREIGN KEY (`id_classify`) REFERENCES `classify` (`id`);
 
 --
--- Các ràng buộc cho bảng `promotion`
+-- Constraints for table `promotion`
 --
 ALTER TABLE `promotion`
   ADD CONSTRAINT `promotion_ibfk_1` FOREIGN KEY (`id_status`) REFERENCES `status_promotion` (`id`);
 
 --
--- Các ràng buộc cho bảng `receipt`
+-- Constraints for table `receipt`
 --
 ALTER TABLE `receipt`
   ADD CONSTRAINT `receipt_ibfk_1` FOREIGN KEY (`id_staff`) REFERENCES `staff` (`id`),
@@ -1004,20 +1043,20 @@ ALTER TABLE `receipt`
   ADD CONSTRAINT `receipt_ibfk_3` FOREIGN KEY (`id_status`) REFERENCES `status_receipt` (`id`);
 
 --
--- Các ràng buộc cho bảng `size`
+-- Constraints for table `size`
 --
 ALTER TABLE `size`
   ADD CONSTRAINT `fk_size_status` FOREIGN KEY (`id_status`) REFERENCES `status_size` (`id`);
 
 --
--- Các ràng buộc cho bảng `staff`
+-- Constraints for table `staff`
 --
 ALTER TABLE `staff`
-  ADD CONSTRAINT `staff_ibfk_1` FOREIGN KEY (`id_status`) REFERENCES `status_staff` (`id`),
-  ADD CONSTRAINT `staff_ibfk_2` FOREIGN KEY (`gender`) REFERENCES `gender` (`id`);
+  ADD CONSTRAINT `staff_ibfk_2` FOREIGN KEY (`gender`) REFERENCES `gender` (`id`),
+  ADD CONSTRAINT `staff_ibfk_3` FOREIGN KEY (`id_user`) REFERENCES `account` (`id`);
 
 --
--- Các ràng buộc cho bảng `staff_position_list`
+-- Constraints for table `staff_position_list`
 --
 ALTER TABLE `staff_position_list`
   ADD CONSTRAINT `staff_position_list_ibfk_1` FOREIGN KEY (`id_position`) REFERENCES `staff_position` (`id`),
