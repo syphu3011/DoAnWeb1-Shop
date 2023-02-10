@@ -93,10 +93,9 @@ function bindStatusButList() {
 function saveCustomerDetail(idButton) {
   let splitIdButton = idButton.split("-");
   let customerId = splitIdButton[2];
-  console.log(selectedCustomer);
-
   temp = selectedCustomer;
   selectedCustomer = {
+    action: 'update',
     address: document.getElementById("customer-address").value,
     birthday: document.getElementById("customer-birthday").value,
     gender: document.getElementById("customer-gender").value,
@@ -111,41 +110,28 @@ function saveCustomerDetail(idButton) {
     status: temp.status,
     username: temp.username,
   };
-  // ! UNDONE
   console.log("This information will be update to the server");
   console.log(selectedCustomer);
-}
-
-// ! UNDONE
-function updateOnServer(dataToUpdate) {
-  const url = "http://example.com/my-php-script.php";
-  const data = dataToUpdate;
-
-  fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
+  postToServer(url, data)
+    .then(dataResponse => {
+      console.log('Post successfull.')
+      console.log(dataResponse)
     })
-    .catch((error) => {
-      console.error(error);
-    });
+    .catch(error => {
+      console.log(error)
+    })
+  // ! chưa request được
 }
+
 
 function renderEditCustomerDetail(idButton) {
   // * lấy id button cho vui thôi chứ có làm gì đâu
 
-
-  // ! THIẾU NGÀY THAM GIA
+  // ! chưa có upload ảnh
   document.getElementById("detail-customer-content").innerHTML = `
     <div style="display: flex; flex-direction: row;">
     <div style="display: flex; flex-direction: column;">
-      <img width="100" height="100" src="https://picsum.photos/100/100/?blur" alt="Girl in a jacket" width="500" height="600">
+      <img width="100" height="100" src="https://picsum.photos/100/100/?blur" alt="" width="500" height="600">
       <button style="margin-top: 1rem;" type="submit">Upload</button>
     </div>
     <form style="display: flex; flex-direction: column; align-items:center; padding-left: 1rem; padding-bottom: 1rem;">
@@ -192,10 +178,11 @@ function renderAddNewCusInterface() {
   document.getElementById("add-new-cus-box-content").style.display = "flex";
   console.log(sizeOfTable)
   let expectedId = "KH" + String(sizeOfTable+1).padStart(3, '0');
+  // ! chưa có upload ảnh
   document.getElementById("add-new-cus-box-content").innerHTML = `
   <div style="display: flex; flex-direction: row; padding: 1rem;">
       <div style="display: flex; flex-direction: column; padding-left: 1rem; padding-top: 1rem;">
-        <img width="100" height="100" src="https://picsum.photos/200" alt="Girl in a jacket" width="500" height="600">
+        <img width="100" height="100" src="https://picsum.photos/200" alt="" width="500" height="600">
         <button style="margin-top: 1rem;" type="submit">Upload</button>
       </div>
       <form style="display: flex; flex-direction: column; align-items:center; padding-left: 1rem; padding-bottom: 1rem;">
@@ -446,7 +433,7 @@ function searchCustomer() {
   let searchBox = document.getElementById("text-search");
   if (searchBox.value === "")
     console.log("Vui lòng điền keyword cần tìm kiếm.");
-  // ! CHƯA CÓ TÌM KIẾM NHÂN VIÊN
+  // ! chưa có tìm kiếm
 }
 
 function closeCustomerPopupDetail() {
@@ -456,35 +443,62 @@ function closeCustomerPopupDetail() {
 
 
 function saveNewCustomer(id) {
-  if (!readyToPostNewCustomer)
-    return
-  let url = '/admin/Server/customer/customer.php';
+  // if (!readyToPostNewCustomer)
+  //   return
+  
+  // let data = {
+  //   action: 'create',
+  //   username: document.getElementById("customer-username").value,
+  //   password: document.getElementById("customer-password").value,
+  //   name: document.getElementById("customer-name").value,
+  //   gender: document.getElementById("customer-gender").value,
+  //   birthday: document.getElementById("customer-birthday").value,
+  //   privilege: document.getElementById("customer-privilege").value,
+  //   numberphone: document.getElementById("customer-numberphone").value,
+  //   image: '',
+  //   date_created: '',
+  //   address: document.getElementById("customer-address").value
+  // }
+  let url = '/doan/admin/Server/customer/customer.php';
   let data = {
     action: 'create',
-    username: document.getElementById("customer-username").value,
-    password: document.getElementById("customer-password").value,
-    name: document.getElementById("customer-name").value,
-    gender: document.getElementById("customer-gender").value,
-    birthday: document.getElementById("customer-birthday").value,
-    privilege: document.getElementById("customer-privilege").value,
-    numberphone: document.getElementById("customer-numberphone").value,
-    image: '',
-    date_created: '',
-    address: document.getElementById("customer-address").value
-    // ! chưa có image
+    username: 'cicada5',
+    password: 'cicada3303',
+    name: 'Lang Thang',
+    gender: 'nam',
+    birthday: '2002-06-28 00:00:00',
+    privilege: 'customer',
+    numberphone: '394142899',
+    status: 'active',
+    birthday: '2002-11-30 00:00:00',
+    address: 'HCM'
   }
+    // image: '',
+    // date_created: '',
+    // address: document.getElementById("customer-address").value
+  data.gender = data.gender.toLowerCase()
   console.log(data)
+  postToServer(url, data)
+    .then(dataResponse => {
+      console.log('Post successfull.')
+      console.log(dataResponse)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  // ! chưa request được
 }
 
 async function postToServer(url, data) {
   const response = await fetch(url, {
     method: 'POST',
     headers: {
+      'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(data)
   })
-  return response.json()
+  return response;
 }
 
 function closeAddCustomer() {
