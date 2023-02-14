@@ -9,10 +9,46 @@ $headerArr = Table::describe($conn, $tableName);
 header('Content-Type: application/json; charset=utf-8');
 
 if ($_SERVER['REQUEST_METHOD'] === "GET"){	
-	// ? http://localhost/doan/admin/Server/account/account.php
-	$arrFromDb = Table::tableQueryAll($conn, $tableName);
-	echo Table::jsonify($conn, $arrFromDb, $tableName);
-} else 
+	$getAll = True;
+	$arrHeader = Table::describe($conn, $tableName);
+
+	foreach ($_REQUEST as $key => $value) {
+		foreach ($arrHeader as $key2 => $value2) {
+			if ($key === $value2) {
+				$getAll = False;
+				break;
+			}
+		}
+		if (!$getAll)
+			break;
+	}
+
+	if ($getAll) {
+		// ? http://localhost/doan/admin/Server/account/account.php
+		$arrFromDb = Table::tableQueryAll($conn, $tableName);
+		echo Table::jsonify($conn, $arrFromDb, $tableName);
+	} else {
+		// ? http://localhost/doan/admin/Server/account/account.php?username=syphu
+		$arrProperty = array();
+		$arrContent = array();
+		foreach ($_REQUEST as $key => $value) {
+			array_push($arrProperty, $key);
+			array_push($arrContent, $value);
+		}
+		$arrFromDb = Table::tableQueryMultipleProperty(
+			$conn, 
+			$tableName,
+			$arrProperty,
+			$arrContent
+		);
+		echo Table::jsonify($conn, $arrFromDb, $tableName);
+	}
+	
+}
+
+
+
+
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
 	if (isset($_REQUEST["action"])){
 		// ? http://localhost/doan/admin/Server/account/account.php?action=update&id=USR014&username=phideptraihehee&password=123123&privilege=sales&session&status=idle
