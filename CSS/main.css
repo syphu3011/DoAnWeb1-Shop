@@ -6,92 +6,6 @@
     display: none;
 }
 
-
-/* #gio-hang {
-    height: 650px;
-    width: 1150px;
-    background-color: white;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    overflow-y: scroll;
-    margin-right: -15px;
-    padding-right: 20px;
-    border-radius: 20px;
-} */
-
-
-/* #di-cart {
-    border: 3px solid black;
-    border-radius: 20px;
-    overflow: hidden;
-} */
-
-
-/* #divdiv-cart {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-} */
-
-
-/* #gio-hang table {
-    margin: 20px;
-    margin-right: 40px;
-    display: block;
-} */
-
-
-/* #gio-hang tbody {} */
-
-
-/* #gio-hang tr {
-    padding: 10px;
-    display: grid;
-    width: 1100px;
-    grid-template-columns: 100px 1fr 130px 1fr 120px 1fr 50px;
-    border-bottom: 1px solid black;
-    gap: 20px;
-} */
-
-
-/* #gio-hang th {
-    text-align: left;
-} */
-
-
-/* #active-cart {
-    display: flex;
-    justify-content: space-between;
-    line-height: 30px;
-    /* height: 100px; */
-
-
-/* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
-
-
-/* background-color: aqua; */
-
-
-/* margin: 20px 0 20px 20px; */
-
-
-/* }  */
-
-
-/* #btn-thanhtoan {
-    border: 1px solid gray;
-    cursor: pointer;
-    padding: 10px 20px;
-    background-color: white;
-    text-align: center;
-    transition: 0.7s;
-} */
-
-
-/* #btn-thanhtoan:hover {
-    background-color: black;
-    color: white;
-} */
-
 #noti,
 #thanh-toan {
     display: none;
@@ -192,11 +106,13 @@ input[type=number] {
 #tranggiohang {
     background-color: white;
     border-radius: 20px;
-    margin: 40px;
-    max-height: 700px;
+    width: 90%;
+    /* margin: 40px; */
+    /* max-height: 700px; */
 }
 
 .table-giohang {
+    width: 99%;
     font-size: 16px;
     margin: 10px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
