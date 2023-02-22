@@ -8,7 +8,7 @@
 }
 
 .image-poster {
-    object-fit: fill;
+    object-fit: cover;
     border-radius: 20px;
     height: 270px;
     width: 49%;

@@ -32,11 +32,13 @@ let showcart = document.getElementById("show-cart");
 let updateinf = document.getElementById("update-in4");
 let inStock = new Array();
 let arrImg = [
+  "Unknown.jpeg",
   "poster.png",
   "img_banner_watch_women.jpeg",
   "img_banner_watch_men.jpeg",
   "balo-img.png",
   "sale-0.jpeg",
+  
 ];
 let x = 1;
 let y = 2;
