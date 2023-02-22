@@ -1,0 +1,51 @@
+#poster {
+    margin: 170px 40px 0 40px;
+    display: flex;
+    justify-content: space-between;
+    height: 270px;
+    z-index: 0;
+    box-sizing: border-box;
+}
+
+.image-poster {
+    object-fit: fill;
+    border-radius: 20px;
+    height: 270px;
+    width: 49%;
+}
+
+.btn {
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+    height: 30px;
+    position: absolute;
+    margin: 110px 0;
+    border-radius: 50px;
+    opacity: 0.5;
+    z-index: 1;
+    padding: 10px;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.btn:hover {
+    margin: 108px 0;
+    transition: 0.4s;
+    height: 34px;
+}
+
+#btn-next {
+    right: 10px;
+}
+
+#btn-next:hover {
+    right: 8px;
+}
+
+#btn-previous {
+    left: 10px;
+    transform: rotate(180deg);
+}
+
+#btn-previous:hover {
+    left: 8px;
+}

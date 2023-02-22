@@ -1,0 +1,165 @@
+#account,
+#productTag {
+    position: fixed;
+    background-color: rgba(128, 128, 128, 0.7);
+    top: 0;
+    width: 100%;
+    z-index: 6;
+    bottom: 0;
+    display: none;
+    /* display: flex; */
+    justify-content: center;
+}
+
+#in4,
+#signin,
+#update-in4,
+#setnewpass,
+#signup,
+#otpcode {
+    position: relative;
+    background-color: white;
+    padding: 10px 30px;
+    display: none;
+    border-radius: 20px;
+    width: 500px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+#setnewpass,
+#otpcode {
+    height: 180px;
+}
+
+#signup {}
+
+#in4 {}
+
+#update-in4 {}
+
+#exit-log {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    height: 30px;
+    width: 30px;
+    border-radius: 40px;
+    background-color: white;
+}
+
+.input-region {
+    border: none;
+    border-bottom: 1px solid black;
+    line-height: 30px;
+    width: 100%;
+    font-size: 18px;
+    outline: none;
+}
+
+#btn-signup {
+    color: red;
+    font-size: 11px;
+}
+
+#inp-firstname,
+#inp-lastname,
+.inp-name {
+    height: 25px;
+    border: none;
+    border-bottom: 1px solid black;
+    outline: none;
+    font-size: 18px;
+}
+
+.inp-name {
+    width: 100%;
+}
+
+#forgot-pass {
+    text-align: left;
+    margin-top: 20px;
+    font-size: 10px;
+    color: rgba(0, 0, 0);
+}
+
+#forgot-pass:hover {
+    color: rgba(255, 0, 0, 0.7);
+}
+
+#btn-login,
+#btn-regis {
+    border: 1px solid gray;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-top: 30px;
+    text-align: center;
+    transition: 0.7s;
+}
+
+#back:hover {
+    color: rgba(0, 0, 0, 0.7);
+}
+
+#btn-signup:hover {
+    color: rgba(255, 0, 0, 0.7);
+}
+
+#exit-log,
+#btn-signup,
+#forgot-pass,
+#btn-login,
+#birthday,
+.birthday {
+    cursor: pointer;
+}
+
+#birthday {
+    margin-top: 20px;
+}
+
+.birthday,
+#birthday {
+    border-radius: 20px;
+    padding: 5px 10px;
+}
+
+#btn-addimg {
+    font-size: 10px;
+    text-align: center;
+    border: 1px solid gray;
+    padding: 5px 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+#btn-login:hover,
+#btn-regis:hover,
+#btn-addimg:hover,
+#save-update:hover,
+#btn-getotp:hover {
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#save-update {
+    border: 1px solid gray;
+    padding: 5px 30px;
+    border-radius: 20px;
+}
+
+#back {
+    cursor: pointer;
+    position: absolute;
+    display: flex;
+    font-size: 13px;
+    top: 30px;
+    left: 10px;
+}
+
+#btn-getotp {
+    padding: 5px 20px;
+    border: 1px solid gray;
+    font-size: 15px;
+    border-radius: 20px;
+}

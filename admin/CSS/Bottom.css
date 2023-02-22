@@ -1,0 +1,28 @@
+table, tr, th,td{
+   border:1px solid black;
+   border-collapse: collapse;
+   font-size: 12px;
+   text-align: center;
+   padding: 5px 10px;
+   border-width: 1px;
+}
+.Bottom{
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: center;
+}
+table{
+   border-collapse:collapse;
+   border-spacing: 0;
+}
+.detail{
+   margin: 0;
+   
+   cursor: pointer;
+}
+
+.detail:hover{
+
+   text-decoration: underline;
+}

@@ -1,0 +1,264 @@
+.header {
+    height: 80px;
+    position: fixed;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.4);
+    display: flex;
+    left: 0;
+    justify-content: space-between;
+    top: 0;
+    right: 0;
+    background-color: white;
+    z-index: 5;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+
+.header a {
+    line-height: 20px;
+    text-decoration: none;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.bar {
+    height: 40px;
+    position: relative;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin: 40px 0 0 30px;
+}
+
+#home-page {
+    width: 96px;
+    line-height: 20px;
+    text-decoration: none;
+}
+
+#home-page a {
+    font-size: 16px;
+    color: black;
+}
+
+#product {
+    top: 80px;
+    padding-top: 20px;
+    background-color: white;
+    height: 320px;
+    display: none;
+    /* display: block; */
+    right: 0px;
+    left: 0px;
+    position: absolute;
+}
+
+
+/* 
+#men-product {
+    display: block;
+} */
+
+#choose-product-women,
+#choose-product-men,
+#home-page {
+    padding: 0 10px;
+    margin: 0 20px;
+    height: 40px;
+    font-size: 16px;
+    line-height: 40px;
+}
+
+#home-page:hover,
+#choose-product-women:hover,
+#choose-product-men:hover {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+#logo {
+    min-width: 250px;
+    margin-left: 30px;
+}
+
+#show-filter {
+    margin-left: 10px;
+    position: absolute;
+    top: 65px;
+    left: 10px;
+    cursor: pointer;
+    z-index: 3;
+    height: 30px;
+    border-radius: 20px;
+    background-color: white;
+    font-size: 12px;
+}
+
+#show-filter:hover {
+    background-color: rgba(128, 128, 128, 0.9);
+}
+
+.list-item {
+    font-size: 11px;
+    color: gray;
+    line-height: 15px;
+    padding: 5px 0;
+}
+
+.list-item:hover {
+    color: black;
+}
+#setting-admin{
+    display: none;
+}
+#user,
+#cart,#setting-admin {
+    margin: -15px 20px;
+    padding: 10px 10px 5px 10px;
+    height: 40px;
+    position: relative;
+}
+
+#btn-search {
+    height: 20px;
+    transform: rotate(90deg);
+    margin-left: -30px;
+    padding: 2px;
+    cursor: pointer;
+}
+
+#btn-search:active {
+    background-color: rgba(128, 128, 128, 0.4);
+    border-radius: 20px;
+}
+
+#cart {
+    padding-top: 5px;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#inp-search {
+    padding: 0px 40px 0px 10px;
+    width: 150px;
+    border: 1px solid gray;
+    border-radius: 20px;
+    height: 30px;
+}
+
+#inp-search[type=text]:focus {
+    outline: none;
+    border-color: black;
+}
+
+#up-date {
+    border-top: 1px solid gray;
+}
+
+#log-out,
+#up-date,
+#ls-dh {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#up-date,
+#name,
+#log-out,
+#ls-dh {
+    height: 40px;
+    padding: 0 5px;
+    line-height: 40px;
+}
+
+#show-user {
+    display: none;
+    width: 240px;
+    top: 82px;
+    right: 40px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 10px;
+    background-color: white;
+    position: absolute;
+    padding: 10px;
+}
+
+#choose-product-women,
+#choose-product-men,
+#home-page,
+#user,
+.list-item,
+#name,
+#up-date,
+#log-out,
+#cart,
+#btn-update,
+#ls-dh {
+    cursor: pointer;
+}
+
+#name:hover,
+#up-date:hover,
+#log-out:hover,
+#ls-dh:hover {
+    background-color: rgba(128, 128, 128, 0.4);
+    border-radius: 10px;
+}
+
+body {
+    margin: 0;
+}
+
+#show-cart {
+    position: absolute;
+    height: 300px;
+    width: 330px;
+    background-color: rgba(248, 248, 248, 255);
+    top: 81px;
+    right: 40px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#btn-update {
+    margin-top: -50px;
+    font-size: 13px;
+    display: flex;
+    justify-content: right;
+}
+
+#birthday {
+    margin-left: 20px;
+}
+
+#div-cart {
+    display: none;
+    background-color: rgba(128, 128, 128, 0.7);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+    justify-content: center;
+    z-index: 6;
+}
+
+#thaydoi-mk {
+    cursor: pointer;
+    color: blue;
+    margin-right: 20px;
+    line-height: 30px;
+}
+
+#thaydoi-mk:hover {
+    color: rgba(0, 0, 255, 0.5);
+}
+
+#nhapthaydoi {
+    display: none;
+    padding: 10px 20px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}

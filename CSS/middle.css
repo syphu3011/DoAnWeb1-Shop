@@ -1,0 +1,31 @@
+.middle {
+    width: 100%;
+    /* display: flex; */
+    margin-top: 30px;
+    margin-bottom: 300px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    display: none;
+}
+
+.left {
+    margin: 90px 0 0 40px;
+    font-size: 14px;
+    /* background-color: aqua; */
+    width: 20%;
+    display: block;
+    padding-right: 0;
+    min-width: 140px;
+}
+
+.filter-left {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid black;
+}
+
+.filter-left:hover {
+    color: rgba(0, 0, 0, 0.7);
+}

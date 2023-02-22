@@ -1,0 +1,72 @@
+
+body {
+   margin: 0;
+   
+}
+#background-color-captaikhoan {
+   background-color: rgba(0, 0, 0, 0.6);
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   margin: 0;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   height: 100%;
+   width: 100%;
+}
+#background-captaikhoan {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   
+   width: 800px;
+   background-color: rgb(255, 255, 255);
+}
+.CapTaiKhoanBox{
+   display: flex;
+   flex-direction: column;
+   width: 600px;
+}
+.Title{
+   text-align: center;
+   font-size: 30px;
+}
+.Input{
+   border-radius: 20px;
+   margin-left: 50px;
+   height: 30px;
+   margin-top: 20px;
+}
+.SelectBox{
+   margin-left: 110px;
+}
+.DateBox{
+   margin-left: 87px;
+}
+.ButtonBox{
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+   margin-left: 185px;
+}
+.ButtonBox  button{
+   border-radius: 30px;
+   /* margin-top: 10px; */
+   transition: color 1s, background-color 1s;
+   /* margin-bottom: 20px; */
+}
+Button:hover{
+   color: white;
+   background-color: black;
+}
+.CapTKButton{
+   border-radius: 3px;
+   transition: color 1s, background-color 1s;
+}
+.tag-cv {
+   margin-right: 5px;
+   margin-top: 5px;
+}

@@ -1,0 +1,241 @@
+/* Dùng chung */
+
+table,
+th,
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+td,
+tr,
+th {
+    padding: 5px 5px;
+    text-align: center;
+}
+
+
+/* Tiêu đề và button  */
+
+.title_order {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 44px;
+}
+
+.btn_order {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    background-color: white;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 5px 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: black;
+    color: white;
+}
+
+.text_order {
+    font-size: 30px;
+}
+
+.tag_select1 {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    align-items: center;
+    background-color: white;
+    padding-bottom: 10px;
+    position: fixed;
+    width: 350px;
+    /* top: 150px;
+    left: 600px;
+    right: 600px; */
+    justify-content: center;
+    visibility: hidden;
+    border: 1px solid;
+}
+
+/* .name-filter {
+    background-color: rgb(128, 128, 128);
+
+    top: 150px;
+    left: 600px;
+    right: 600px; 
+     position: relative;
+    text-align: center;
+    width: 100%;
+} */
+
+
+
+option {
+    font-size: 12px;
+}
+
+/* .btn_select {
+    background-color: white;
+    display: flex;
+    text-align: center;
+    width: 195px;
+    height: 38px;
+    line-height: 38px;
+    padding: 0;
+    border-style: solid;
+    border-width: 1px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-left: none;
+    padding: 5px 5px;
+} */
+
+/* .text_find {
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    width: 115px;
+    height: 25px;
+    line-height: 25px;
+    border-style: solid;
+    border-width: 1px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+} */
+
+
+/* Thanh tìm kiếm */
+
+.find_bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 10px 0;
+    height: 30px;
+}
+
+.text {
+    height: 100%;
+    border-radius: 10px;
+}
+
+.icon_find {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    border-radius: 10px;
+    border: 1px solid;
+    width: 30px;
+    padding: 5 5px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.icon_find:hover {
+    background-color: black;
+}
+
+.icon {
+    height: 80%;
+}
+
+
+/* Bảng */
+
+.table2 {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    border-spacing: 0px;
+}
+
+.detail_o,
+.detail_h {
+    cursor: pointer;
+}
+
+.detail_o:hover,
+.detail_h:hover {
+    text-decoration: underline;
+}
+
+
+/* Lịch sử đơn hàng */
+
+.order_history {
+    display: none;
+}
+
+
+/* thẻ chi tiết đơn hàng */
+
+.detail_order {
+    display: flex;
+    flex-direction: column;
+    justify-self: flex-start;
+    align-items: center;
+    background-color: white;
+    padding: 10px 10px;
+    position: fixed;
+    top: 150px;
+    left: 200px;
+    right: 200px;
+    visibility: hidden;
+}
+
+.detail_order button:hover {
+    background-color: red;
+    border: none;
+}
+
+.detail_order button {
+    padding: 5px 5px;
+}
+
+#dialog7 {
+    background-color: rgb(128, 128, 128, 0.3);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.close {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    right: 0;
+    top: 0;
+    padding: 0;
+}
+
+.close:hover {
+    background-color: red;
+    color: white;
+    border: none;
+}
+
+.detail_order p {
+    margin: 0;
+}

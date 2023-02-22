@@ -1,0 +1,313 @@
+*{
+    font-family: 'Bungee', cursive;
+    box-sizing: border-box;
+    /* position: relative; */
+    
+}
+
+table,th,td{
+    border:1px solid black;
+    border-collapse: collapse;
+}
+
+td,tr,th{
+    padding: 5px 5px;  
+    text-align: center;
+}
+
+table{
+    width: 100%;
+}
+
+button{
+    background-color: white;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 5px 5px;      
+}
+button:hover{
+    background-color: black;
+    color: white;
+}
+
+.size{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button_size{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 44px;
+}
+
+.text_s{
+    display: flex;
+    font-size: 30px;
+    margin: 0 20px;
+}
+.button_s{
+    margin: 0 30px;
+    width:147px;
+}
+
+.delete1:hover{
+    background-color: red;
+    border:none;
+}
+
+/* #cancel{
+    visibility: hidden;
+} */
+
+.table3{
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    border-spacing: 0px;
+    
+}
+
+/* Box thêm sửa */
+
+#dialog1{
+    display: flex;
+    background-color: rgb(128, 128, 128,0.4);
+    position: fixed;
+    align-items: center;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* display: none; */
+}
+.box{
+    background-color: white;
+    z-index: 2;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    margin-left: 100px;
+    padding: 10px 100px;
+    position: fixed;
+    top: 150px;
+    left: 250px;
+    right: 250px;
+    /* visibility: hidden; */
+}
+
+.title{
+    font-size: 30px;
+    text-align: center;
+}
+
+.ID2{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    height: 24px;
+    margin-bottom: 20px;
+}
+
+.ID2 input{
+    background-color: rgb(128, 128, 128,0.4);
+    width: 80%;
+    border-radius: 10px;
+    margin-left: 100px;
+}
+
+.name_s{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    height: 24px;
+    margin-bottom: 20px;
+}
+
+.name_s input{
+    width: 80%;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
+
+.number_size{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.num_detail_left {
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+}
+
+.num1 input{
+    width: 30%;
+    margin-left: 100px;
+    height: 24px;
+    border-radius:10px ;
+}
+
+.num2 input{
+    width: 30%;
+    margin-left: 90px;
+    height: 24px;
+    border-radius:10px ;
+}
+
+.num3 input{
+    width: 30%;
+    margin-left: 100px;
+    height: 24px;
+    border-radius:10px ;
+}
+
+.num4 input{
+    width: 30%;
+    margin-left: 80px;
+    height: 24px;
+    border-radius:10px ;
+}
+
+.num5 input{
+    width: 30%;
+    margin-left: 50px;
+    height: 24px;
+    border-radius:10px ;
+}
+
+.num_detail_right {
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    margin-left: 70px;
+}
+
+.button{
+    display: flex;
+    flex-direction:row;
+    justify-content: center;
+}
+
+.button_add2{
+    width:147px;
+}
+
+/* Lựa chọn  */
+
+.select{
+    position: fixed;
+    background-color: white;
+    z-index: 2;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 10px 100px;
+    height: 200px;
+    top: 150px;
+    left: 250px;
+    right: 250px;
+    /* visibility: hidden; */
+}
+
+.select button{
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.close{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    right: 0;
+    top:0;
+    padding: 0;
+}
+
+.close:hover{
+   background-color: red;
+   color: white;
+   border: none;
+}
+
+#input_ID{
+    background: white;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    padding: 10px 10px;
+    top: 150px;
+    left: 350px;
+    right: 350px;
+    visibility: hidden;
+}
+
+.in_id{
+    margin-bottom: 20px;
+    width: 80%;
+    border-radius: 10px;
+}
+#btn-skt{
+    display: none;
+}
+#btn-skt:checked ~ .button_size #div-btn1{
+display: none;
+}
+#btn-skt:not(:checked) ~ .button_size #div-btn2{
+display: none;
+}
+
+#btn-tkt{
+    display: none;
+}
+#btn-tkt:checked ~ .button_size #div-btn1{
+display: none;
+}
+#btn-tkt:not(:checked) ~ .button_size #div-btn3{
+display: none;
+}
+
+#btn-xkt{
+    display: none;
+}
+#btn-xkt:checked ~ .button_size #div-btn1{
+display: none;
+}
+#btn-xkt:not(:checked) ~ .button_size #div-btn4{
+display: none;
+}
+
+.detail{
+    margin: 0px;
+    cursor: pointer;
+}
+
+.detail:hover{
+    text-decoration: underline;
+}
+
+.button_size label{
+    cursor: pointer;
+}

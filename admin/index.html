@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Admin</title>
+    <link rel="stylesheet" href="./CSS/homepage.css">
+    <link rel="stylesheet" href="CSS/Header.css">
+    <link rel="stylesheet" href="CSS/Middle.css">
+    <link rel="stylesheet" href="CSS/Bottom.css">
+    <link rel="stylesheet" href="CSS/order.css">
+    <link rel="stylesheet" href="CSS/summary.css">
+    <link rel="stylesheet" href="CSS/size.css">
+    <link rel="stylesheet" href="CSS/QuanLyNv2.css">
+    <link rel="stylesheet" href="CSS/KhuyenMai3.css">
+    <link rel="stylesheet" href="CSS/product.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+    <style>
+        #div-thongso {
+            position: fixed;
+            top: 0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(128, 128, 128, 0.4);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            font-size: 22px;
+        }
+        
+        #lim_bot_nv,
+        #lim_top_nv,
+        #lim_bot,
+        #lim_top {
+            padding: 5px 10px;
+            width: 100px;
+            border-radius: 20px;
+            margin: 0 20px;
+            outline: none;
+        }
+        
+        #btn-xnts {
+            font-size: 16px;
+            padding: 5px 40px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body id="body-page">
+    <div id="background-admin-homepage">
+        <div id="back-head">
+            <div id="back-ham">
+                <img src="./Image/hamburgerAdmin.png" id="img-ham" alt="">
+            </div>
+            <div id="back-image">
+                <img src="./Image/admin-icon 1.png" id="img-admin" alt="">
+            </div>
+            <div id="back-account">
+                <div id="back-border-account">
+                    <img src="./Image/User_light@3x.png" alt="" style="height: 30px;">
+                    <p id="name-staff" style="font-size: 15px; overflow: hidden;white-space: nowrap; max-width: 100px; max-height: 42px; text-overflow: ellipsis;">
+                        Tài khoản
+                    </p>
+                    <div id="back-arrow">
+                        <img src="./Image/logout-8-64.png" height="15px" alt="">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div id="back-left-bar">
+            <ul id="leftbar-list" style="overflow-y: auto;">
+                <li id="homepage">
+                    <img src="./Image/Home Info.png" class="img-li" alt=""> Trang chủ
+                </li>
+                <li id="consumer">
+                    <img src="./Image/Consumer.png" alt="" class="img-li"> Khách hàng
+                </li>
+                <li id="product">
+                    <img src="./Image/Box_alt_fill.png" alt="" class="img-li"> Sản phẩm
+                </li>
+                <li id="orderr">
+                    <img src="./Image/Order.png" alt="" class="img-li"> Đơn hàng
+                </li>
+                <li id="input">
+                    <img src="./Image/input_prod.png" alt="" class="img-li"> Nhập hàng
+                </li>
+                <li id="staff">
+                    <img src="./Image/staff-icon-black 1.png" alt="" class="img-li"> Nhân viên
+                </li>
+                <li id="size">
+                    <img src="./Image/iconmonstr-ruler-16-240 1.png " alt="" class="img-li"> Kích thước
+                </li>
+                <li id="promote">
+                    <img src="./Image/promote.png" alt="" class="img-li"> Khuyến mãi
+                </li>
+                <li id="stats">
+                    <img src="./Image/Chart_fill.png" alt="" class="img-li"> Thống kê
+                </li>
+                <li id="variable">
+                    <img src="./Image/cog.png" alt="" class="img-li"> Thông số
+                </li>
+
+            </ul>
+        </div>
+        <div id="content">
+            <div id="background-history-admin" class="background-table">
+                <p class="p-title">Chào mừng bạn trở lại!</p>
+                <table class="table-admin" id="table-admin" style="width: 80%;">
+                    <tr class="row-table-admin">
+                        <th class="header-table-admin" style="width: 20%;">Tên</th>
+                        <th class="header-table-admin" style="width: 60%;">Nội dung</th>
+                        <th class="header-table-admin" style="width: 20%;">Ngày thực hiện</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="Background" id="Background" style="display: none;">
+                <header>
+                    <div class="back-name-page-admin">
+                        khách hàng
+                    </div>
+                    <div id="HeadButton">
+                        <div id="HeadButton1" class="HeadButton">
+                            <button class="btn-left" onclick=OpenBtnLock()>Khóa Tài Khoản</button>
+                            <button class="btn-left" onclick=OpenBtnOLock()>Mở tài khoản</button>
+                        </div>
+
+                        <div id="HeadButton2" class="HeadButton">
+                            <button class="btn-left" onclick=OpenPopupLock()>Xác nhận khóa</button>
+                            <button class="btn-left" onclick=CloseBtnLock()>hủy</button>
+                        </div>
+
+                        <div id="HeadButton3" class="HeadButton">
+                            <button class="btn-left" onclick=OpenPopupOpen()>Xác nhận mở lại</button>
+                            <button class="btn-left" onclick=CloseBtnLock()>hủy</button>
+                        </div>
+                    </div>
+                </header>
+                <div class="Middle">
+                    <div class="SearchBox">
+                        <input id="text-search" class="SearchBar" type="text" placeholder="Search">
+                        <img class="SearchIcon" src="Image/icon_search.png" onclick=Search()>
+                        <img class="SearchIcon" src="Image/Filter@3x.png" onclick=OpenFilter()>
+                    </div>
+
+                </div>
+                <div class="Bottom">
+                    <table id="myTable" cellspacing="pixels" style="width: 80%;">
+                        <tr class="first-row">
+                            <th>id</th>
+                            <th>Họ và tên</th>
+                            <th>Username</th>
+                            <th>Ngày sinh</th>
+                            <th>số điện thoại</th>
+                            <th>Ngày Tham gia</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </table>
+                </div>
+                <div id="dialog">
+                    <div class="Section" id="Confirm-Cancel-Lock">
+                        <div>Bạn có chắc chắn muốn khóa</div>
+                        <div class="Btn-confirm">
+                            <button onclick=LockAccount()>Có</button>
+                            <button onclick=ClosePopupLock()>Không</button>
+                        </div>
+                    </div>
+                    <div class="Section" id="Confirm-Cancel-Open">
+                        <div>Bạn có chắc chắn muốn mở khóa</div>
+                        <div class="Btn-confirm">
+                            <button onclick=OpenAccount()>Có</button>
+                            <button onclick=ClosePopupOpen()>Không</button>
+                        </div>
+                    </div>
+                    <div class="Section" id="Section">
+                        <div class="name-filter">Bộ lọc</div>
+                        <div class="find_all" id="find-head">
+                            <label class="text_find">tìm theo</label>
+                            <select class="btn_select" id="sl-all">
+                                <option value="all">Tất cả</option>
+                                <option value="ID">ID</option>
+                                <option value="Name">Tên</option>
+                                <option value="Username">username</option>
+                                <option value="NumberPhone">số điện thoại</option>
+                            </select>
+                        </div>
+                        <div class="find_all">
+                            <label class="text_find" for="birth-day">ngày sinh</label>
+                            <input id="birth-day" class="btn_select" type="date" name="birthday">
+                        </div>
+                        <div class="find_all">
+                            <label class="text_find" for="date-init">ngày tạo</label>
+                            <input id="date-init" class="btn_select" type="date" name="birthday">
+                        </div>
+                        <div class="find_all">
+                            <label class="text_find">trạng thái</label>
+                            <select class="btn_select" id="sl-status">
+                                <option value="all">Tất cả</option>
+                                <option value="Đã khóa">Đã khóa</option>
+                                <option value="Đang hoạt động">Còn hoạt động</option>
+                            </select>
+                        </div>
+                        <button onclick=CloseFilter() style="margin-top: 10px;">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+            <div id="background-prod" style="display: none;">
+                <div>
+                    <p class="back-name-page-admin">Sản Phẩm</p>
+                </div>
+                <div class="HeadButton">
+                    <button class="btn-left" id="add_type">Thêm loại sản phẩm</button>
+                    <button class="btn-left" id="add">Thêm sản phẩm</button>
+                    <button class="btn-left" id="delete2">Xóa nhiều</button>
+                    <button class="btn-left" id="cancel">Hủy</button>
+                </div>
+                <div class="find_bar">
+                    <input type="text" class="text" id="inp-lookup">
+                    <div class="icon_find" id="lookup-btn">
+                        <img src="Image/icon_search.png" class="icon">
+                    </div>
+                    <div class="icon_find" id="filter">
+                        <img src="Image/Filter@3x.png" class="icon">
+                    </div>
+                    <div class=""></div>
+                </div>
+                <div class="table1">
+                    <table id="table-prod" style="width: 80%;">
+
+                        <!-- <tr class="row">
+                                <td>SP00000001</td>
+                                <td>Áo hoodie đen</td>
+                                <td>Việt nam</td>
+                                <td>Áo, phụ kiện</td>
+                                <td>2.000.000.000</td>
+                                <td>2.000.000.000</td>
+                                <td>Sếp bảo thêm</td>
+                                <td class="detail" id="detail">Chi tiết</td>
+                                <td>Còn  hoạt động</td>
+        
+                            </tr>
+                            <tr class="row">
+                                <td>SP00000001</td>
+                                <td>Áo hoodie đen</td>
+                                <td>Việt nam</td>
+                                <td>Áo, phụ kiện</td>
+                                <td>2.000.000.000</td>
+                                <td>2.000.000.000</td>
+                                <td>Sếp bảo thêm</td>
+                                <td class="detail">Chi tiết</td>
+                                <td>Còn  hoạt động</td>
+                            </tr>
+                            <tr class="row">
+                                <td>SP00000001</td>
+                                <td>Áo hoodie đen</td>
+                                <td>Việt nam</td>
+                                <td>Áo, phụ kiện</td>
+                                <td>2.000.000.000</td>
+                                <td>2.000.000.000</td>
+                                <td>Sếp bảo thêm</td>
+                                <td class="detail">Chi tiết</td>
+                                <td>Còn  hoạt động</td>
+                            </tr>
+                            <tr class="row">
+                                <td>SP00000001</td>
+                                <td>Áo hoodie đen</td>
+                                <td>Việt nam</td>
+                                <td>Áo, phụ kiện</td>
+                                <td>2.000.000.000</td>
+                                <td>2.000.000.000</td>
+                                <td>Sếp bảo thêm</td>
+                                <td class="detail">Chi tiết</td>
+                                <td>Còn  hoạt động</td>
+                            </tr>
+                            <tr class="row">
+                                <td>SP00000001</td>
+                                <td>Áo hoodie đen</td>
+                                <td>Việt nam</td>
+                                <td>Áo, phụ kiện</td>
+                                <td>2.000.000.000</td>
+                                <td>2.000.000.000</td>
+                                <td>Sếp bảo thêm</td>
+                                <td class="detail">Chi tiết</td>
+                                <td>Còn  hoạt động</td>
+                            </tr>
+                            <tr class="row">
+                                <td>SP00000001</td>
+                                <td>Áo hoodie đen</td>
+                                <td>Việt nam</td>
+                                <td>Áo, phụ kiện</td>
+                                <td>2.000.000.000</td>
+                                <td>2.000.000.000</td>
+                                <td>Sếp bảo thêm</td>
+                                <td class="detail">Chi tiết</td>
+                                <td>Còn  hoạt động</td>
+                            </tr>
+                            <tr class="row">
+                                <td>SP00000001</td>
+                                <td>Áo hoodie đen</td>
+                                <td>Việt nam</td>
+                                <td>Áo, phụ kiện</td>
+                                <td>2.000.000.000</td>
+                                <td>2.000.000.000</td>
+                                <td>Sếp bảo thêm</td>
+                                <td class="detail">Chi tiết</td>
+                                <td>Còn  hoạt động</td>
+                            </tr>
+                            <tr class="row">
+                                <td>SP00000001</td>
+                                <td>Áo hoodie đen</td>
+                                <td>Việt nam</td>
+                                <td>Áo, phụ kiện</td>
+                                <td>2.000.000.000</td>
+                                <td>2.000.000.000</td>
+                                <td>Sếp bảo thêm</td>
+                                <td class="detail">Chi tiết</td>
+                                <td>Còn  hoạt động</td>
+                            </tr>
+                            <tr class="row">
+                                <td>SP00000001</td>
+                                <td>Áo hoodie đen</td>
+                                <td>Việt nam</td>
+                                <td>Áo, phụ kiện</td>
+                                <td>2.000.000.000</td>
+                                <td>2.000.000.000</td>
+                                <td>Sếp bảo thêm</td>
+                                <td class="detail">Chi tiết</td>
+                                <td>Còn  hoạt động</td>
+                            </tr>
+                            <tr class="row">
+                                <td>SP00000001</td>
+                                <td>Áo hoodie đen</td>
+                                <td>Việt nam</td>
+                                <td>Áo, phụ kiện</td>
+                                <td>2.000.000.000</td>
+                                <td>2.000.000.000</td>
+                                <td>Sếp bảo thêm</td>
+                                <td class="detail">Chi tiết</td>
+                                <td>Còn hoạt động</td>
+                            </tr>
+                            <tr class="row">
+                                <td>SP00000001</td>
+                                <td>Áo hoodie đen</td>
+                                <td>Việt nam</td>
+                                <td>Áo, phụ kiện</td>
+                                <td>2.000.000.000</td>
+                                <td>2.000.000.000</td>
+                                <td>Sếp bảo thêm</td>
+                                <td class="detail">Chi tiết</td>
+                                <td>Còn hoạt động</td>
+                            </tr>
+                            <tr class="row">
+                                <td>SP00000001</td>
+                                <td>Áo hoodie đen</td>
+                                <td>Việt nam</td>
+                                <td>Áo, phụ kiện</td>
+                                <td>2.000.000.000</td>
+                                <td>2.000.000.000</td>
+                                <td>Sếp bảo thêm</td>
+                                <td class="detail">Chi tiết</td>
+                                <td>Còn hoạt động</td>
+                            </tr> -->
+                    </table>
+                </div>
+                <div id="dialog4">
+                    <!-- Thêm sản phẩm -->
+                    <div class="set_product" id="add_pro">
+                        <button class="close" id="close">X</button>
+                        <div class="title">Thêm sản phẩm</div>
+                        <div class="ID">
+                            <label for="inp-id">ID</label>
+                            <input type="text" id="inp-id" readonly>
+                        </div>
+                        <div class="center">
+                            <div class="left">
+                                <div>
+                                    <label for="inp-name">Tên sản phẩm:</label>
+                                    <input type="text" id="inp-name">
+                                </div>
+                                <div class="edit_type">
+                                    <label>Loại:</label>
+                                    <button class="add_type" onclick=BoxSelect()>Thêm loại</button>
+                                </div>
+                                <div class="type_list" id="add-pro-type">
+
+                                </div>
+                                <div id="div-add-image" class="div-add-image">
+                                    Hình ảnh:
+                                    <img id="add-img" class="img" src="Image/add.png" onmouseover="switch_image(this)" onmouseout="switch_default(this)">
+                                    <ul id="image-div" class="image-div">
+
+                                    </ul>
+
+                                    <input type="file" id="choose-img-prod">
+                                </div>
+                            </div>
+                            <div class="right">
+                                <div class="div-price">
+                                    <label for="inp-price">Giá bán:</label>
+                                    <input type="number" min="1" id="inp-price">
+                                </div>
+                                <div class="div-made">
+                                    <label for="inp-made-in">Xuất Xứ:</label>
+                                    <input type="text" name="" id="inp-made-in">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="describe">
+                            <label for="" id="inp-description">Mô tả</label>
+                            <textarea id="add-des"></textarea>
+                        </div>
+                        <div class="button_add1">
+                            <button id="submit">Xác nhận thêm</button>
+                        </div>
+                    </div>
+                    <!-- Sửa sản phầm -->
+                    <div id="input_ID">
+                        <button class="close" id="close4">X</button>
+                        <label class="title" for="in_id">Nhập ID sản phẩm</label>
+                        <input class="in_id" id="in_id" type="text">
+                        <button id="o_edit">Sửa sản phẩm</button>
+                    </div>
+                    <div class="set_product" id="edit_pro">
+                        <button class="close" id="close2">X</button>
+                        <div class="title">Sửa sản phẩm</div>
+                        <div class="ID">
+                            <label for="edit-id">ID</label>
+                            <input id="edit-id" type="text" readonly>
+                        </div>
+                        <div class="center">
+                            <div class="left">
+                                <div>
+                                    <label for="edit-name">Tên sản phẩm</label>
+                                    <input id="edit-name" type="text">
+                                </div>
+                                <div class="edit_type">
+                                    <label>Loại</label>
+                                    <button class="add_type" onclick=BoxSelect()>Thêm loại</button>
+
+                                </div>
+                                <div class="type_list" id="add-type-edit">
+
+                                </div>
+                                <div id="div-add-image2" class="div-add-image">
+                                    Hình ảnh:
+                                    <img id="add-img12" class="img" src="Image/add.png" onmouseover="switch_image(this)" onmouseout="switch_default(this)">
+                                    <ul id="image-div2" class="image-div">
+
+                                    </ul>
+                                    <input type="file" id="choose-img-prod2">
+                                </div>
+                            </div>
+                            <div class="right">
+                                <div class="div-price">
+                                    <label for="edit-price">Giá bán</label>
+                                    <input id="edit-price" type="number">
+                                </div>
+                                <div class="div-made">
+                                    <label for="edit-made-in">Xuất Xứ:</label>
+                                    <input type="text" name="edit-made-in" id="edit-made-in">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="describe">
+                            <label for="">Mô tả</label>
+                            <textarea id="edit-des"></textarea>
+                        </div>
+                        <div class="button_add1">
+                            <button id="confirm">Xác nhận sửa</button>
+                        </div>
+                    </div>
+                    <!-- chi tiết sản phẩm -->
+                    <div class="set_product" id="detail_pro">
+                        <button class="close" id="close3">X</button>
+                        <div class="title">Chi tiết sản phẩm
+                        </div>
+                        <div class="ID">
+                            <label for="detail-id">ID</label>
+                            <input id="detail-id" type="text" readonly>
+                        </div>
+                        <div class="center_d">
+                            <div class="left">
+                                <div>
+                                    <label for="detail-name">Tên sản phẩm</label>
+                                    <input id="detail-name" readonly type="text">
+                                </div>
+                                <div class="edit_type">
+                                    <label id="detail-type">Loại</label>
+                                </div>
+
+                                <div class="type_list" id="type-div">
+
+                                </div>
+                                <div id="div-add-image1" class="div-add-image">
+                                    Hình ảnh:
+                                    <ul id="image-div1" class="image-div">
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="right">
+                                <div class="div-prices">
+                                    <label for="detail-price">Giá bán</label>
+                                    <input id="detail-price" readonly type="text">
+                                </div>
+                                <div class="div-made">
+                                    <label for="detail-made-in">Xuất Xứ</label>
+                                    <input id="detail-made-in" readonly type="text">
+                                </div>
+                                <div class="div-table">
+                                    <label for="">Số lượng</label>
+                                    <table id="amount-table">
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="describe">
+                            <label for="textarea">Mô tả</label>
+                            <textarea></textarea>
+                        </div>
+                    </div>
+                    <div class="set3_product" id="add_type_pro">
+                        <button class="close" id="close5">X</button>
+                        <div class="title">Thêm loại sản phẩm</div>
+                        <div class="ID_type">
+                            <label for="type_id">ID:</label>
+                            <input id="type_id" type="text" readonly>
+                        </div>
+                        <div class="name_type">
+                            <label for="type_name">Tên loại:</label>
+                            <input id="type_name" type="text">
+                        </div>
+                        <div class="option_type">
+                            <label for="type-select">Thuộc loại</label>
+                            <select name="'" id="type-select">
+                                <option value="Ao">Áo</option>
+                                <option value="Quan">Quần</option>
+                                <option value="PK">Phụ kiện</option>
+                            </select>
+                        </div>
+                        <div class="button_add1">
+                            <button id="accept" onclick=AddType()>Xác nhận thêm</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="dialog-s">
+                    <!-- Thêm loại-->
+                    <div id="select">
+                        <button class="close" id="close6">X</button>
+                        <div class="title">Chọn loại</div>
+                        <div class="div_select">
+                            <label for="select_big">Chọn loại:</label>
+                            <select id="select_big" onchange=select(this)>
+                                <option value="ao">Áo</option>
+                                <option value="quan">Quần</option>
+                                <option value="phukien">Phụ kiện</option>
+                            </select>
+                        </div>
+                        <select class="select_box" id="select_a">
+
+                        </select>
+                        <select class="select_box" id="select_q">
+
+                        </select>
+                        <select class="select_box" id="select_p">
+                            <option value="balo">Balo</option>
+                            <option value="đồng Hồ">Đồng hồ</option>
+                            <option value="ví">Ví</option>
+                        </select>
+                        <button id="okay">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+            <div id="background_order" style="display: none;">
+                <div class="order" id="order">
+                    <div class="title_order">
+                        <p class="back-name-page-admin">Đơn hàng</p>
+                    </div>
+                    <div class="HeadButton">
+                        <button id="detail">Lịch sử xác nhận</button>
+                    </div>
+                    <div class="find_bar">
+                        <input type="text" class="text" id="text-search2">
+                        <div class="icon_find" onclick=SearchO>
+                            <img src="Image/icon_search.png" class="icon" onclick=SearchO()>
+                        </div>
+                        <div class="icon_find" onclick=OpenFilterOrder()>
+                            <img src="Image/Filter@3x.png" class="icon">
+                        </div>
+                    </div>
+                    <div class="HeadButton">
+                        <div class="find_all1">
+                            <p class="text_find">Từ ngày:</p>
+                            <input class="btn_select" type="date" id="date-init-first">
+                        </div>
+                        <div class="find_all1">
+                            <p class="text_find">Đến ngày:</p>
+                            <input class="btn_select" type="date" id="date-init-last">
+                        </div>
+                        <button style="height:35px ; width: 50px; line-height: 11px;" onclick=timtheokhoang()>Lọc</button>
+                    </div>
+                    <div class="table2">
+                        <table id="table-order" style="width: 80%;">
+                            <tr class="first-row">
+                                <th>Mã đơn</th>
+                                <th>Id khách hàng</th>
+                                <th>Tên khách hàng</th>
+                                <th>Ngày đặt</th>
+                                <th>Tổng tiền</th>
+                                <th>Chi tiết</th>
+                                <th>Trạng thái</th>
+                                <th>Xác nhận</th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="order_history" id="order_h">
+                    <div class="title_order">
+                        <p class="text_order">Lịch sử xác nhận đơn hàng</p>
+                    </div>
+                    <div class="btn_order">
+                        <button class="btn-left" id="page_order">Đơn hàng</button>
+                    </div>
+                    <div class="find_bar">
+                        <input type="text" class="text" id="text-find">
+                        <div class="icon_find" onclick=SearchHis()>
+                            <img src="Image/icon_search.png" class="icon">
+                        </div>
+                        <div class="icon_find" onclick=OpenFilterHis()>
+                            <img src="Image/Filter@3x.png" class="icon">
+                        </div>
+                    </div>
+                    <div class="HeadButton">
+                        <div class="find_all1">
+                            <p class="text_find">Từ ngày:</p>
+                            <input class="btn_select" type="date" id="date-confirm-first">
+                        </div>
+                        <div class="find_all1">
+                            <p class="text_find">Đến ngày:</p>
+                            <input class="btn_select" type="date" id="date-confirm-last">
+                        </div>
+                        <button style="height:35px ; width: 50px; line-height: 11px;" onclick=timtheokhoangLS()>Lọc</button>
+                    </div>
+                    <div class="table2">
+                        <table id="table-history" style="width: 80%;">
+                            <tr>
+                                <th>Mã đơn</th>
+                                <th>Id khách hàng</th>
+                                <th>Tên khách hàng</th>
+                                <th>Ngày xác nhận</th>
+                                <th>Tổng tiền</th>
+                                <th>Chi tiết</th>
+                                <th>Trạng thái</th>
+                                <th>ID nhân viên</th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div id="dialog7">
+                    <div class="detail_order" id="box_detail">
+                        <button class="close" onclick=CloseDetailOr()>X</button>
+                        <div id="Text-detail-order" class="text_order"></div>
+                        <table id="Table-detail-order">
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên sản phẩm</th>
+                                <th>SIZE</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                <th>Số lượng còn</th>
+                                <th>Giá giảm</th>
+                                <th>Thành tiền</th>
+                            </tr>
+                        </table>
+                        <p id="total">Tống đơn hàng:</p>
+                        <div>
+                            <button id="confirm-order" class="btn-left"> Xác nhận Đơn hàng</button>
+                            <button id="cancel-order" class="btn-left">Hủy đơn hàng</button>
+                        </div>
+                    </div>
+                    <div class="detail_order" id="box_detail_h">
+                        <button class="close" onclick=CloseDetailHis()>X</button>
+                        <label for="" class="text_order" id="Text-Detail-History">Chi tiết đơn hàng
+                                DH00000001</label>
+                        <table id="Table-detail-history">
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên sản phẩm</th>
+                                <th>SIZE</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                <th>Giá giảm</th>
+                                <th>Thành tiền</th>
+                            </tr>
+                        </table>
+                        <p id="Lbl-date">Ngày đặt: </p>
+                        <p id="total-his">Tổng đơn hàng:</p>
+                    </div>
+                    <div class="tag_select1" id="box-search">
+                        <div class="name-filter">Bộ lọc</div>
+                        <div class="find_all" id="find-head">
+                            <p class="text_find">Tìm theo:</p>
+                            <select class="btn_select" id="sl-all2">
+                                    <option value="all">Tất cả</option>
+                                    <option value="id">ID Đơn hàng</option>
+                                    <option value="idcus">ID khách hàng</option>
+                                    <option value="namecus">Tên khách hàng</option>
+                                </select>
+                        </div>
+                        <div class="find_all">
+                            <p class="text_find">Ngày đặt:</p>
+                            <input class="btn_select" type="date" id="date-init2">
+                        </div>
+                        <div class="find_all">
+                            <p class="text_find">Tổng tiền:</p>
+                            <select class="btn_select" id="sl-total">
+                                    <option value="all">Tất cả</option>
+                                    <option value="1">Dưới 1 triệu</option>
+                                    <option value="1-10">Từ 1 đến 10 triệu</option>
+                                    <option value="10-50">Từ 10 đến 50 triệu</option>
+                                </select>
+                        </div>
+                        <button onclick=CloseFilterOrder() style="margin-top: 10px">Xác nhận</button>
+                    </div>
+                    <div class="tag_select1" id="box-search2">
+                        <div class="name-filter">Bộ lọc</div>
+                        <div class="find_all" id="find-head">
+                            <p class="text_find">Tìm theo:</p>
+                            <select class="btn_select" id="sl-all-h">
+                                    <option value="all">Tất cả</option>
+                                    <option value="id">ID đơn hàng</option>
+                                    <option value="idcus">ID khách hàng</option>
+                                    <option value="namecus">Tên khách hàng</option>
+                                    <option value="idstaff">ID nhân viên</option>
+                                </select>
+                        </div>
+                        <div class="find_all">
+                            <p class="text_find">Ngày xác nhận:</p>
+                            <input class="btn_select" type="date" id="date-confirm">
+                        </div>
+
+                        <div class="find_all">
+                            <p class="text_find">Tổng tiền:</p>
+                            <select class="btn_select" id="sl-total-h">
+                                    <option value="all">Tất cả</option>
+                                    <option value="1">Dưới 1 triệu</option>
+                                    <option value="1-10">Từ 1 đến 10 triệu</option>
+                                    <option value="10-50">Từ 10 đến 50 triệu</option>
+                                </select>
+                        </div>
+                        <div class="find_all">
+                            <p class="text_find">Trạng thái:</p>
+                            <select class="btn_select" id="sl-status2">
+                                    <option value="all">Tất cả</option>
+                                    <option value="Xác nhận">xác nhận</option>
+                                    <option value="Đã hủy">Đã hủy</option>
+                                </select>
+                        </div>
+                        <button style="margin-top: 10px;" onclick=CloseFilterHis()>Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+            <div id="body-input" style="display: none;">
+                <div class="background-table" style="top: 0px; position: relative;">
+                    <div>
+
+                        <div class="back-name-page-admin">Nhập hàng</div>
+
+                    </div>
+                    <div class="back-button-left" id="back-button-left">
+                        <button class="btn-left" class="btn" id="history-import-product">Lịch sử nhập</button>
+                        <button class="btn-left" class="btn" id="import-product">Thêm hàng</button>
+                        <button class="btn-left" class="btn" id="remove-import-product">Xóa hàng</button>
+                    </div>
+                    <textarea class="note" id="note" placeholder="Ghi chú"></textarea>
+                    <div class="content-table" id="content-table-import">
+                        <table class="table-admin">
+                            <thead>
+                                <tr class="first-row">
+                                    <th>ID</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>số lượng</th>
+                                    <th>size</th>
+                                    <th>Giá nhập</th>
+                                    <th>Thành tiền</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="body-table-stuff">
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="back-sum-money" id="back-sum-money">
+                        Tổng tiền: 0
+                    </div>
+                    <div class="back-btn-import">
+                        <button class="btn" id="btn-import">Nhập hàng</button>
+                    </div>
+                </div>
+
+                <div class="back-import-page" id="back-import-page-importprod">
+                    <div class="import-page" id="import-page-product">
+                        <p>Thêm hàng</p>
+                        <div id="div-id">
+                            <p class="label-input">ID</p>
+                            <div id="div-input-id">
+                                <input type="text" id="input-id" name="import-id" style="height: 25px;margin:0px">
+                                <button id="select-id" style="height: 25px; padding:5px; margin: 0px;">
+                                        <img src="./Image/arrow.png" class="img-button">
+                                    </button>
+                                <ul class="list-drop-down" id="list-drop-down-id">
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="div-second">
+                            <p class="label-input">Số lượng</p>
+                            <div id="div-input-amount">
+                                <input type="number" id="input-amount" name="import-amount" min="1" style="height: 25px;margin:0px">
+                            </div>
+                            <p style="width: 10%; margin-left: 15px; margin-right: 5px;visibility: hidden" id="size-p">size</p>
+                            <div id="div-input-size" style="visibility: hidden">
+                                <button id="select-size" style="height: 25px;padding: 5px; margin: 0px;">
+                                        <div id="inside-select-size">
+                                            <p id="p-size" id="AS">S</p>
+                                            <img src="./Image/arrow.png" class="img-button">
+                                        </div>
+                                    </button>
+                                <ul class="list-drop-down" id="list-drop-down-size">
+                                    <li class="li-drop-down">S</li>
+                                    <li class="li-drop-down">M</li>
+                                    <li class="li-drop-down">L</li>
+                                    <li class="li-drop-down">Xl</li>
+                                    <li class="li-drop-down">2XL</li>
+                                    <li class="li-drop-down">3XL</li>
+                                    <li class="li-drop-down">4XL</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="div-price">
+                            <p class="label-input">
+                                Giá nhập
+                            </p>
+                            <div id="div-input-price">
+                                <input type="number" min="1000" step="500" id="input-price" name="import-price" style="height: 25px;margin:0px">
+                            </div>
+                        </div>
+                        <button id="submit-import">Thêm hàng</button>
+                    </div>
+                </div>
+
+                <div id="back-history-import-page">
+                    <div id="history-import-page">
+                        Lịch sử Nhập
+                        <div class="content-table" id="content-table-history-import">
+                            <table style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>ID phiếu</th>
+                                        <th>id nhân viên</th>
+                                        <th>tổng tiền</th>
+                                        <th>chi tiết</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="body-history-import">
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                <div id="back-detail-import">
+                    <div id="detail-import">
+                        Chi tiết phiếu PN000000000000001
+                        <div class="content-table" id="content-table-history-import-detail">
+                            <table style="width: 100% ;">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>số lượng</th>
+                                        <th>size</th>
+                                        <th>Giá nhập</th>
+                                        <th>Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>SP000000001</th>
+                                        <th>Áo hoodie</th>
+                                        <th>1.000</th>
+                                        <th>S</th>
+                                        <th>2.000.000</th>
+                                        <th>2.000.000.000</th>
+                                    </tr>
+                                    <tr>
+                                        <th>SP000000001</th>
+                                        <th>Áo hoodie</th>
+                                        <th>1.000</th>
+                                        <th>S</th>
+                                        <th>2.000.000</th>
+                                        <th>2.000.000.000</th>
+                                    </tr>
+                                    <tr>
+                                        <th>SP000000001</th>
+                                        <th>Áo hoodie</th>
+                                        <th>1.000</th>
+                                        <th>S</th>
+                                        <th>2.000.000</th>
+                                        <th>2.000.000.000</th>
+                                    </tr>
+                                    <tr>
+                                        <th>SP000000001</th>
+                                        <th>Áo hoodie</th>
+                                        <th>1.000</th>
+                                        <th>S</th>
+                                        <th>2.000.000</th>
+                                        <th>2.000.000.000</th>
+                                    </tr>
+                                    <tr>
+                                        <th>SP000000001</th>
+                                        <th>Áo hoodie</th>
+                                        <th>1.000</th>
+                                        <th>S</th>
+                                        <th>2.000.000</th>
+                                        <th>2.000.000.000</th>
+                                    </tr>
+                                    <tr>
+                                        <th>SP000000001</th>
+                                        <th>Áo hoodie</th>
+                                        <th>1.000</th>
+                                        <th>S</th>
+                                        <th>2.000.000</th>
+                                        <th>2.000.000.000</th>
+                                    </tr>
+                                    <tr>
+                                        <th>SP000000001</th>
+                                        <th>Áo hoodie</th>
+                                        <th>1.000</th>
+                                        <th>S</th>
+                                        <th>2.000.000</th>
+                                        <th>2.000.000.000</th>
+                                    </tr>
+                                    <tr>
+                                        <th>SP000000001</th>
+                                        <th>Áo hoodie</th>
+                                        <th>1.000</th>
+                                        <th>S</th>
+                                        <th>2.000.000</th>
+                                        <th>2.000.000.000</th>
+                                    </tr>
+                                    <tr>
+                                        <th>SP000000001</th>
+                                        <th>Áo hoodie</th>
+                                        <th>1.000</th>
+                                        <th>S</th>
+                                        <th>2.000.000</th>
+                                        <th>2.000.000.000</th>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <button id="delete-import" style="margin-top: 20px">Xóa phiếu</button>
+                    </div>
+                </div>
+            </div>
+            <div id="bgr-nv" style="display:none">
+                <div id="background-nv">
+                    <input type="checkbox" id="PhanCvNv">
+                    <input type="checkbox" id="HuyCvNv">
+                    <header>
+                        <div class="back-name-page-admin">Nhân viên</div>
+                        <div id="HeadButton11" class="HeadButton0">
+                            <div id="HeadButton21">
+                                <button id="CapTaiKhoan-Button" class="btn-left">Cấp tài khoản</button>
+
+                            </div>
+
+                            <div id="HeadButton41" class="HeadButton0">
+                                <button class="btn-left">xác nhận</button>
+                                <button class="btn-left"><label onclick="huyphanchucvu()"
+                                            for="PhanCvNv">Hủy</label></button>
+                            </div>
+
+                            <div id="HeadButton51" class="HeadButton0">
+                                <button class="btn-left">xác nhận hủy</button>
+                                <button class="btn-left"><label onclick="huyhuychucvu()"
+                                            for="HuyCvNv">hủy</label></button>
+                            </div>
+                        </div>
+                    </header>
+
+
+                    <div class="Middle1">
+
+                        <div class="Section1">
+                            <div>
+                                <label for="">tìm theo</label>
+                                <select name="" id="timtheo">
+                                        <option value="tatca">Tất cả</option>
+                                        <option value="id">id</option>
+                                        <option value="name">tên</option>
+                                    </select>
+                            </div>
+
+                            <div>
+                                <label for="">ngày sinh</label>
+                                <input oninput="SearchNv()" id="ngsinh" type="date" name="birthday">
+                            </div>
+                            <div>
+                                <label for="">ngày cấp</label>
+                                <input oninput="SearchNv()" type="date" id="ngaythamgia" name="birthday">
+                            </div>
+                            <div>
+                                <label trangthai for="">trạng thái</label>
+                                <select oninput="SearchNv()" name="" id="trangthai">
+                                        <option value="">Tất cả</option>
+                                        <option value="0">Còn làm việc</option>
+                                        <option value="1">Hết làm việc</option>
+                                    </select>
+                            </div>
+                        </div>
+                        <div class="Middle">
+                            <div class="SearchBox">
+                                <input oninput="SearchNv()" id="SearchBar" class="SearchBar" type="text" placeholder="Search">
+                                <img onclick="SearchNv()" class="SearchIcon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/OOjs_UI_icon_search-ltr.svg/1200px-OOjs_UI_icon_search-ltr.svg.png" alt="">
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="Bottom">
+                        <table border="1px" cellspacing=1 id="myTable1" style="width: 80%;">
+                            <tr class="first-row">
+                                <th>ID</th>
+                                <th>HỌ VÀ TÊN</th>
+                                <th>user name</th>
+                                <th>ngày sinh</th>
+                                <th>số điện thoại</th>
+                                <th>ngày cấp</th>
+                                <th>chức vụ</th>
+                                <th>trạng thái</th>
+                                <th></th>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="NewScr"></div>
+                </div>
+            </div>
+            <div id="bgr-size" style="display: none;">
+                <div class="size">
+                    <div>
+                        <p class="back-name-page-admin">Kích thước</p>
+                    </div>
+                    <input type="checkbox" id="btn-skt">
+                    <!-- <input type="checkbox" id="btn-tkt"> -->
+                    <input type="checkbox" id="btn-xkt">
+                    <div class="button_size">
+                        <div id="div-btn1">
+                            <button class="button_s" id="edit" onclick=TableEdit()><label for="btn-skt">Sửa kích
+                                        thước</label></button>
+                            <button class="button_s" id="add1"><label for="btn-tkt">Thêm kích thước</label></button>
+                            <button class="button_s" id="delete1"><label for="btn-xkt">Xóa kích
+                                        thước</label></button>
+                        </div>
+                        <div id="div-btn2">
+                            <button onclick="huy()"><label for="btn-skt">Hủy</label></button>
+                        </div>
+                        <div id="div-btn4">
+                            <button onclick=huy()><label for="btn-xkt">Hủy</label></button>
+                        </div>
+                    </div>
+                    <div class="table3">
+                        <table id="myTable2">
+                            <tr class="first-row">
+                                <th>ID</th>
+                                <th>Tên</th>
+                                <th>Chi tiết</th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="newScr"></div>
+            </div>
+            <div id="bgr-km" style="display: none;">
+                <div class="PageKhuyenMai">
+                    <div id="KhuyenMai1-BackGround">
+                        <div id="KhuyenMai2">
+                            <div class="Header">
+                                <div class="back-name-page-admin">Khuyến mãi</div>
+                                <div id="" class="HeadButton">
+                                    <div id="headkm">
+                                        <button onclick=Themkhuyenmai() class="ThemKhuyenMaiButton" style=" margin-right: 20px; display: flex;">
+                                                thêm khuyến mãi
+                                            </button>
+                                        <button id="SuaKhuyenMai-Btn" class="SuaKhuyenMaiButton" onclick=suakhuyenmai() style=" display: flex;">
+                                                    sửa khuyến mãi
+                                                </button>
+                                    </div>
+                                    <div style="display: none;" id="headkm2">
+                                        <button id="btn-huy-km" class="huysuakhuyenmaibutton" onclick=renderTable2() style="width: 100%; display: block;">hủy</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="Middle">
+                                <table id="myTable31" style="border:1px; width: 80%;" cellspacing=1>
+                                    <tr class="first-row">
+                                        <th>Mã khuyễn mãi</th>
+                                        <th>tên khuyến mãi</th>
+                                        <th>nội dung</th>
+                                        <th>ngày bắt đầu</th>
+                                        <th>ngày kết thúc</th>
+                                        <th>danh sách áp dụng</th>
+                                        <th>phần trăm giảm</th>
+                                        <th>giảm giá</th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="PageUp">
+                    </div>
+                    <div id="popup" style="display: none">
+                        <div class="themsanpham" id="them">
+                            <label for="">Nhập ID sản phẩm</label>
+                            <input id="idprod" type="text">
+                            <button id="btn-xacnhan">Xác nhận</button>
+                        </div>
+                    </div>
+                    <div id="popup2">
+                        <div class="themsanpham" id="sua">
+                            <label for="">Nhập ID sản phẩm</label>
+                            <input id="idprod2" type="text">
+                            <button id="btn-xacnhan2">Xác nhận</button>
+                        </div>
+                    </div>
+                    <div id="dialog5">
+                        <div id="list-detail">
+                            <div class="title"> Dánh sách áp dụng</div>
+                            <div>
+                                <table id="list-table">
+                                    <tr>
+                                        <th>mã sản phẩm</th>
+                                        <th>tên sản phẩm</th>
+                                        <th>xuất xứ</th>
+                                        <th>loại</th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="back-chart-page" style="display: none">
+                <div>
+                    <div class="back-name-page-admin">Thống kê</div>
+                </div>
+                <div id="statistics">
+                    <div class="div-select-btn">
+                        <button class="select-btn" id="select-type-statistic" style="height: 25px;padding: 5px; margin: 0px;">
+                                <div class="inside-select" id="inside-select-type-statistic">
+                                    <p class="p-statistics" id="title-type">Tất cả</p>
+                                    <img src="./Image/arrow.png" class="img-button">
+                                </div>
+                            </button>
+                        <ul class="list-drop-down" id="list-drop-down-choose-statistics">
+                        </ul>
+                    </div>
+                    <div class="div-select-btn">
+                        <label for="inp-date-begin">Từ: </label>
+                        <input type="date" onkeydown="return false" id="inp-date-begin">
+                        <label for="inp-date-end">Đến: </label>
+                        <input type="date" onkeydown="return false" id="inp-date-end">
+                    </div>
+                </div>
+                <!-- <div id="back_sum" style="margin-left: 20px;">
+                        <p id="sum-revenue" style="margin-bottom: 10px">Tổng thu: 0</p>
+                        <p id="sum-expend" style="margin-bottom: 10px">Tổng chi: 0</p>
+                        <p id="total1" style="margin-bottom: 10px">Tổng lợi nhuận: 0</p>    
+                    </div> -->
+                <table style="width: 80%">
+                    <thead id="head-stat">
+
+                    </thead>
+                    <tbody id="body-stat">
+                        </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+        <div id="div-thongso">
+
+        </div>
+    </div>
+    <script src="./JS/HistoryAdmin.js" async></script>
+    <script src="./JS/homepage.js"></script>
+    <script src="./JS/khachhang.js"></script>
+    <script src="./JS/order.js"></script>
+    <script src="./JS/importProduct.js"></script>
+    <script src="./JS/QuanLyNv.js"></script>
+    <script src="./JS/size.js"></script>
+    <script src="./JS/KhuyenMai1.js"></script>
+    <script src="./JS/product.js"></script>
+    <script src="./JS/statistics.js"></script>
+    <script src="./JS/thongso.js"></script>
+</body>
+
+</html>

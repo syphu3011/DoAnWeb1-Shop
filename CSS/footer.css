@@ -1,0 +1,60 @@
+#footer {
+    margin-top: 250px;
+}
+
+#copyright {
+    height: 50px;
+    background-color: black;
+    color: white;
+    text-align: center;
+    line-height: 50px;
+}
+
+.profile {
+    border-top: 1px solid rgba(128, 128, 128, 0.4);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.profile div {
+    border-right: 1px solid rgba(128, 128, 128, 0.4);
+    padding: 20px 30px 50px 30px;
+}
+
+.title-footer {
+    margin: 25px 0;
+    font-size: 16px;
+}
+
+.profile a {
+    display: block;
+    line-height: 20px;
+    text-decoration: none;
+    font-size: 12px;
+    color: rgba(128, 128, 128, 0.8);
+}
+
+a:hover {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.footer-contact {
+    display: block;
+    font-size: 12px;
+    line-height: 20px;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.footer-contact div {
+    padding: 0;
+    border: none;
+}
+
+.icon-contact {
+    margin-top: 10px;
+    border: 1px solid gray;
+    height: 20px;
+    padding: 10px;
+}
