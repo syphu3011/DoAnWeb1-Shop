@@ -631,15 +631,15 @@ let arr = {
         { id: "QUTHNA", name: "Quần túi hộp" },
       ],
     },
-    {
-      id: "PK",
-      name: "Phụ kiện nam - nữ",
-      miniClassify: [
-        { id: "PKDH", name: "Đồng hồ" },
-        { id: "PKTL", name: "Thắt lưng" },
-        { id: "PKBT", name: "Balo / túi xách" },
-      ],
-    },
+    // {
+    //   id: "PK",
+    //   name: "Phụ kiện nam - nữ",
+    //   miniClassify: [
+    //     { id: "PKDH", name: "Đồng hồ" },
+    //     { id: "PKTL", name: "Thắt lưng" },
+    //     { id: "PKBT", name: "Balo / túi xách" },
+    //   ],
+    // },
   ],
   receipt: [
     {
@@ -806,7 +806,7 @@ let arr = {
       username: "syphu",
       password: "123123",
       sex: "Nam",
-      birth_day: "30/11/2002",
+      birth_day: "30-11-2002",
       number_phone: "0594155555",
       image: " ",
       address: "",
@@ -820,7 +820,7 @@ let arr = {
       username: "ducan",
       password: "123123",
       sex: "Nam",
-      birth_day: "18/0/42002",
+      birth_day: "18-04-2002",
       number_phone: "0494142222",
       image: " ",
       address: "",
@@ -834,7 +834,7 @@ let arr = {
       username: "phuongvi",
       password: "123123",
       sex: "Nam",
-      birth_day: "18/02/2002",
+      birth_day: "18-02-2002",
       number_phone: "0394142181",
       image: " ",
       address: "",
@@ -844,7 +844,7 @@ let arr = {
     {
       id: "KH000005",
       name: "Do Minh",
-      date_init: "20:58 24/10/2022",
+      date_init: "20:58 24-10-2022",
       username: "dominh",
       password: "123123",
       sex: "Nam",
@@ -1291,10 +1291,10 @@ let arr = {
     },
   ],
 };
-if (localStorage.getItem("data")==null){
-  localStorage.setItem("data",JSON.stringify(arr))
+if (localStorage.getItem("data") == null) {
+  localStorage.setItem("data", JSON.stringify(arr));
 }
-data=localStorage.getItem("data")
+data = localStorage.getItem("data");
 // function testthoi() {
 //   document.getElementById("inp-firstname").value = "123";
 //   document.getElementById("inp-lastname").value = "123";

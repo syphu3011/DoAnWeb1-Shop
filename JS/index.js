@@ -38,7 +38,6 @@ let arrImg = [
   "img_banner_watch_men.jpeg",
   "balo-img.png",
   "sale-0.jpeg",
-  
 ];
 let x = 1;
 let y = 2;
@@ -162,15 +161,9 @@ function checkDate(birthday) {
   ) {
     return false;
   }
+
   return true;
 }
-// let sex = ""
-// document.getElementsByName("sex").forEach(e => {
-//     e.onclick = function() {
-//         sex = e.value
-//     }
-// })
-// let num_phone = "+84|0|0123456789"
 
 function checkValidPhoneNumber(number) {
   if (data.variable[1].var1.indexOf(number[0]) != -1) {
@@ -210,13 +203,16 @@ function checkValidNameU(f_name, l_name) {
   }
   return true;
 }
+//
+//
+//
+//
 btnsigup.onclick = function () {
   let username = document.getElementById("inp-username");
   let sex = "";
   let s = document.getElementsByName("sex");
   for (let i = 0; i < 3; i++) {
     if (s[i].checked) {
-      // console.log(s[i].value)
       sex = document.getElementById("update-in4").getElementsByTagName("label")[
         i
       ].textContent;
@@ -288,6 +284,9 @@ btnsigup.onclick = function () {
     alert("Không được bỏ trống bất cứ thông tin nào!");
   }
 };
+//
+//
+//
 //đăng nhập
 document
   .getElementById("mailorphone")
@@ -369,11 +368,11 @@ function login() {
         document.getElementById("update-contact").value =
           currentUser.number_phone;
         let birthday =
-          currentUser.birth_day.split("/")[2] +
+          currentUser.birth_day.split("-")[2] +
           "-" +
-          currentUser.birth_day.split("/")[1] +
+          currentUser.birth_day.split("-")[1] +
           "-" +
-          currentUser.birth_day.split("/")[0];
+          currentUser.birth_day.split("-")[0];
         document.getElementById("update-birthday").value = birthday;
         document.getElementById("birthday-in4").innerHTML = birthday;
         document.getElementById("phone-in4").innerHTML =
@@ -396,9 +395,6 @@ function login() {
     } else {
       alert("Tài khoản hiện đang bị khóa");
     }
-    // if (!checkOk) {
-    //     alert("Tài khoản hoặc mật khẩu không chính xác")
-    // }
   }
 }
 btnlogin.onclick = function () {
@@ -544,7 +540,9 @@ showsale.onclick = function () {
 function showFilter(list1, arr, id, list2, list3, select) {
   if (list1.style.display == "block") {
     list1.style.display = "";
-    document.getElementById(id).remove();
+    if (document.getElementById(id) != null) {
+      document.getElementById(id).remove();
+    }
   } else {
     list1.style.display = "block";
     if (id != "") {
@@ -595,11 +593,12 @@ data.largeClassify.forEach((e) => {
     itemstype.push(el.name);
   });
 });
-// document.getElementById("list-type")
-//  document.getElementById("list-type").getElementsByClassName("list-item")
-// var itemsprice = new Array()
-// itemsprice.push("tất cả")
-
+//
+//
+//
+//
+//
+//
 var itemsprice = document
   .getElementById("list-price")
   .getElementsByClassName("list-item");
@@ -638,7 +637,9 @@ btnprodw.onmouseenter = function () {
 };
 btnprodw.onmouseleave = function () {
   prod.style.display = "";
-  document.getElementById("sanpham").remove();
+  if (document.getElementById("sanpham") != null) {
+    document.getElementById("sanpham").remove();
+  }
 };
 
 btnprodm.onmouseenter = function () {
@@ -650,10 +651,18 @@ btnprodm.onmouseenter = function () {
 };
 btnprodm.onmouseleave = function () {
   prod.style.display = "";
-  document.getElementById("sanpham").remove();
+  if (document.getElementById("sanpham") != null) {
+    document.getElementById("sanpham").remove();
+  }
 };
-let isProductShow = false;
 
+let isProductShow = false;
+//
+//
+//
+//
+//
+//
 function createListType(sex) {
   let sp = document.createElement("div");
   sp.id = "sanpham";
@@ -686,18 +695,28 @@ function createListType(sex) {
           if (isHomePage) {
             isProductShow = true;
             isHomePage = false;
-            document.getElementById("div-main").remove();
+            if (document.getElementById("div-main") != null) {
+              document.getElementById("div-main").remove();
+            }
           } else if (isProductShow) {
             if (arrProduct.length > 0) {
-              document.getElementById("page-number").remove();
-              document.getElementById("div-list").remove();
+              if (document.getElementById("page-number") != null) {
+                document.getElementById("page-number").remove();
+              }
+              if (document.getElementById("div-list")) {
+                document.getElementById("div-list").remove();
+              }
             }
-            document.getElementById("div-title").remove();
+            if (document.getElementById("div-title") != null) {
+              document.getElementById("div-title").remove();
+            }
           } else if (isSearch) {
             isProductShow = true;
             isHomePage = false;
             isSearch = false;
-            document.getElementById("searc").remove();
+            if (document.getElementById("searc") != null) {
+              document.getElementById("searc").remove();
+            }
           }
           currentPage = 1;
           pathImage.length = 0;
@@ -715,14 +734,12 @@ function createListType(sex) {
                 12
               );
               if (data.largeClassify[i].id == "PK") {
-                // document.getElementById("left").style.display = "none"
                 if (arrProduct.length > 0) {
                   document.getElementById(
                     "list-product"
                   ).style.gridTemplateColumns = "1fr 1fr 1fr 1fr";
                 }
                 document.getElementById("space-product").style.width = "100%";
-                // console.log("log")
               }
             } else {
               pos -= 10;
@@ -730,16 +747,9 @@ function createListType(sex) {
             }
           }, 1);
         };
-        let a = document.createElement("a");
-        a.href =
-          "#" +
-          data.largeClassify[i].id +
-          "-" +
-          data.largeClassify[i].miniClassify[j].id;
-        a.appendChild(
+        li.appendChild(
           document.createTextNode(data.largeClassify[i].miniClassify[j].name)
         );
-        li.appendChild(a);
         ul.appendChild(li);
       }
     }
@@ -752,7 +762,9 @@ function createListType(sex) {
   };
   prod.onmouseleave = function () {
     prod.style.display = "";
-    document.getElementById("sanpham").remove();
+    if (document.getElementById("sanpham") != null) {
+      document.getElementById("sanpham").remove();
+    }
   };
 }
 
@@ -794,19 +806,16 @@ function TongTien(cart) {
   return tong;
 }
 let thanhtoansp = new Array();
-
+//
+//
+//
+//
 //thanh toán giỏ hàng
 function ttGioHang(thanhtoansp) {
-  // path = JSON.parse(JSON.stringify(pathImg))
-  // thanhtoansp.length = 0
-  // inStock.length = 0
-  // getAmount(thanhtoansp.idProd)
   let div = document.createElement("div");
   let table = document.createElement("table");
   thanhtoansp.forEach((e) => {
-    // pathImage.length = 0
     arrProduct.length = 0;
-    // getPath(e.idProd, path)
     getProduct(e.idProd);
     let tr = document.createElement("tr");
     let divPro = document.createElement("div");
@@ -818,7 +827,6 @@ function ttGioHang(thanhtoansp) {
     let name = document.createElement("div");
     name.appendChild(document.createTextNode(arrProduct[0].name));
     name.style.fontSize = "12px";
-    // console.log(name)
     di.appendChild(name);
     console.log(e.idSize);
     if (e.idSize != "") {
@@ -959,7 +967,6 @@ function updateSize(index, cur, text) {
   div.style.textAlign = "center";
   let arrBut = new Array();
   data.size.forEach((el) => {
-    // console.log(el.id)
     if (el.id.indexOf(cur.idSize[0]) != -1) {
       let btnSize = document.createElement("div");
       arrBut.push(btnSize);
@@ -1118,25 +1125,31 @@ document.getElementById("thaydoi-mk").onclick = function () {
     tdmk = false;
     document.getElementById("nhapthaydoi").style.display = "";
     document.getElementById("thaydoi-mk").textContent = "Thay đổi";
-
-    // document.getElementById("update-in4").style.height = "530px"
   } else {
     tdmk = true;
     document.getElementById("thaydoi-mk").textContent = "Đóng";
     document.getElementById("nhapthaydoi").style.display = "block";
-    // document.getElementById("update-in4").style.height = "530px"
   }
 };
 let isSearch = false;
 let isHomePage = false;
 document.getElementById("home-page").onclick = function () {
+  document.getElementById("selected-type").innerHTML = "Tất cả";
+  document.getElementById("selected-price").innerHTML = "Tất cả";
+  document.getElementById("selected-sale").innerHTML = "Tất cả";
   if (document.getElementsByClassName("middle")[0].style.display == "flex") {
     document.getElementsByClassName("middle")[0].style.display = "";
     if (arrProduct.length > 0) {
-      document.getElementById("div-list").remove();
-      document.getElementById("page-number").remove();
+      if (document.getElementById("div-list") != null) {
+        document.getElementById("div-list").remove();
+      }
+      if (document.getElementById("page-number") != null) {
+        document.getElementById("page-number").remove();
+      }
     }
-    document.getElementById("div-title").remove();
+    if (document.getElementById("div-title") != null) {
+      document.getElementById("div-title").remove();
+    }
     console.log(isSearch);
   }
   if (!isHomePage || isSearch) {
@@ -1156,10 +1169,15 @@ document.getElementById("home-page").onclick = function () {
   if (isSearch) {
     isSearch = false;
     c = 0;
-    document.getElementById("searc").remove();
+    if (document.getElementById("searc") != null) {
+      document.getElementById("searc").remove();
+    }
   }
 };
 let arrayPro = new Array();
+//
+//
+//
 //tìm
 function search(text, classify = "", minPrice = 0, maxPrice = 0, promote = "") {
   function checkValidName(arg1, arg2) {
@@ -1298,7 +1316,9 @@ function createMainPro(clasify) {
       if (pos <= 300) {
         clearInterval(id);
         document.getElementById("main").style.display = "";
-        document.getElementById("div-main").remove();
+        if (document.getElementById("div-main") != null) {
+          document.getElementById("div-main").remove();
+        }
         document.getElementsByClassName("middle")[0].style.display = "flex";
         let title = document.createElement("div");
         title.id = "div-title";
@@ -1439,7 +1459,6 @@ function createListProduct(
   liItem.className = "product-item";
   let imgTag = document.createElement("img");
   imgTag.src = path + img[0];
-  // console.log(path + img[0])
   let giamgia = document.createElement("div");
   giamgia.style.position = "absolute";
   giamgia.style.right = "10px";
@@ -1751,7 +1770,6 @@ function amount(current, pricee) {
   div.appendChild(btnAdd);
   let text = document.createElement("div");
   text.id = "sanphamcosan";
-  console.log(current);
   text.appendChild(document.createTextNode(current + " sản phẩm có sẵn"));
   text.style.fontSize = "10px";
   text.style.color = "gray";
@@ -1766,7 +1784,6 @@ function amount(current, pricee) {
     document.createTextNode("Tổng cộng: " + calculated(pricee) + " VND")
   );
   divAmou.appendChild(divPr);
-
   return divAmou;
 }
 
@@ -1791,14 +1808,11 @@ document.getElementById("div-onClickProduct").onclick = function (e) {
     setTimeout(() => {
       document.getElementById("div-onClickProduct").style.display = "";
       isCTSP = false;
-      // productTag.style = ""
-      // document.getElementById("tagdivProduct").remove()
     }, 400);
   }
 };
 
 function createPageNumber(idPr, product, proInpage) {
-  // console.log(idPr)
   let totalProduct = product.length;
   let totalPage = 0;
   if (totalProduct % 12 > 0) {
@@ -1822,7 +1836,6 @@ function createPageNumber(idPr, product, proInpage) {
     li.style.boxShadow = "rgba(0, 0, 0, 0.24) 0px 3px 8px";
     li.style.transition = "0.8s";
     let a = document.createElement("a");
-    // a.style.padding = "5px 10px"
     a.style.color = "black";
     aArr.push(a);
     a.appendChild(document.createTextNode(i));
@@ -1836,7 +1849,9 @@ function createPageNumber(idPr, product, proInpage) {
       let id = setInterval(function frame() {
         if (pos <= 300) {
           clearInterval(id);
-          document.getElementById("list-product").remove();
+          if (document.getElementById("list-product") != null) {
+            document.getElementById("list-product").remove();
+          }
           document
             .getElementById("div-list")
             .appendChild(addListProduct(idPr, proInpage));
@@ -1893,7 +1908,6 @@ saveUpdate.onclick = function () {
   let update_birthday = document.getElementById("update-birthday");
   let update_contact = document.getElementById("update-contact");
   let update_name = document.getElementById("update-name");
-
   let name = update_name.value;
   let birthday = update_birthday.value;
   let contact = update_contact.value.replace("+84", "0");
@@ -1901,15 +1915,11 @@ saveUpdate.onclick = function () {
   let s = document.getElementsByName("sex");
   for (let i = 3; i < s.length; i++) {
     if (s[i].checked) {
-      // console.log(s[i].value)
       sex = document.getElementById("update-in4").getElementsByTagName("label")[
         i - 3
       ].textContent;
     }
   }
-  // update_sex_male.checked ? update_sex_male.value : update_sex_female.value
-  // console.log(sex)
-  //constraint
   let correct = true;
   data.customer.forEach((element) => {
     if (element.number_phone == contact && element.id != currentUser.id) {
@@ -1932,16 +1942,26 @@ saveUpdate.onclick = function () {
         if (checkDate(update_birthday.value)) {
           if (tdmk) {
             if (
-              checkUpdatePassword(document.getElementById("mkht").value) &&
-              document.getElementById("mkm").value &&
-              document.getElementById("xnmkm").value
+              checkUpdatePassword(
+                document.getElementById("mkht").value,
+                document.getElementById("mkm").value,
+                document.getElementById("xnmkm").value
+              )
             ) {
               currentUser.name = name;
-              currentUser.birth_day = birthday;
+              currentUser.birth_day =
+                birthday.split("-")[2] +
+                "-" +
+                birthday.split("-")[1] +
+                "-" +
+                birthday.split("-")[0];
               currentUser.sex = sex;
               currentUser.number_phone = contact;
               currentUser.image = imgLinkChange;
               currentUser.password = document.getElementById("xnmkm").value;
+              document.getElementById("mkht").value = "";
+              document.getElementById("mkm").value = "";
+              document.getElementById("xnmkm").value = "";
               localStorage.setItem("data", JSON.stringify(data));
               alert("Cập nhật thông tin thành công");
             } else {
@@ -1949,11 +1969,18 @@ saveUpdate.onclick = function () {
             }
           } else {
             currentUser.name = name;
-            currentUser.birth_day = birthday;
+            currentUser.birth_day =
+              birthday.split("-")[2] +
+              "-" +
+              birthday.split("-")[1] +
+              "-" +
+              birthday.split("-")[0];
             currentUser.sex = sex;
             currentUser.number_phone = contact;
             currentUser.image = imgLinkChange;
-            // currentUser.password = document.getElementById("xnmkm").value
+            document.getElementById("mkht").value = "";
+            document.getElementById("mkm").value = "";
+            document.getElementById("xnmkm").value = "";
             localStorage.setItem("data", JSON.stringify(data));
             alert("Cập nhật thông tin thành công");
           }
@@ -2171,9 +2198,10 @@ function fillReceipt(receipt) {
     if (e.target.matches("#div-hoadon")) {
       showacc(document.getElementById("hoa-don"), 0, 1200);
       setTimeout(() => {
-        document.getElementById("div-hoadon").remove();
+        if (document.getElementById("div-hoadon") != null) {
+          document.getElementById("div-hoadon").remove();
+        }
       }, 350);
     }
   };
 }
-

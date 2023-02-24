@@ -49,3 +49,6 @@
 #btn-previous:hover {
     left: 8px;
 }
+#list-pro{
+    display: flex;
+}
