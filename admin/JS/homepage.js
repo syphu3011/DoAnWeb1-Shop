@@ -113,7 +113,7 @@ if (localStorage.getItem("checkLogin") == "true") {
         hideCurrent()
         appearDiv(document.getElementById("background-prod"))
 
-        fillProd()
+        // fillProd()
         fillType()
 
     }

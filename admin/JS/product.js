@@ -1,6 +1,6 @@
 
 $.ajax({
-    url: './Server/products.php',
+    url: './Server/product/products.php',
     type: 'GET',
     dataType: 'json',
     success: function(data) {
@@ -445,7 +445,7 @@ $.ajax({
         //thêm sửa sản phẩm code
 
         function refreshData() {
-            obj = JSON.parse(localStorage.getItem("data"));
+            // obj = JSON.parse(localStorage.getItem("data"));
         }
 
         function compareTwoVar(id1, id2) {
@@ -476,33 +476,53 @@ $.ajax({
             return true;
         }
 
-        // function initId1(clasify) {
-        //     let id = ""
-        //     let max = 0
-        //     obj.largeClassify.forEach(element => {
-        //         element.miniClassify.forEach(elementMini => {
-        //             if (elementMini.name == clasify) {
-        //                 id = elementMini.id
-        //                 return
-        //             }
-        //         })
-        //         if (id != "") {
-        //             return
-        //         }
-        //     })
-        //     obj.product.forEach(element => {
-        //         if (element.id.toLowerCase().indexOf(id.toLowerCase()) != -1) {
-        //             max = parseInt(element.id.replace(id, ""))
-        //         }
-        //     })
-        //     return id + String(max + 1).padStart(4, "0")
-        // }
+        function initId1(clasify) {
+            let id = ""
+            let max = 0
+            // obj.largeClassify.forEach(element => {
+            //     element.miniClassify.forEach(elementMini => {
+            //         if (elementMini.name == clasify) {
+            //             id = elementMini.id
+            //             return
+            //         }
+            //     })
+            //     if (id != "") {
+            //         return
+            //     }
+            // })
+            obj.product.forEach(element => {
+                if (element.id.toLowerCase().indexOf(id.toLowerCase()) != -1) {
+                    max = parseInt(element.id.replace(id, ""))
+                }
+            })
+            // return id + String(max + 1).padStart(4, "0")
+            return "1";
+        }
 
         function addProd(Prod) {
             refreshData();
+            console.log(JSON.stringify(Prod.toJSON));
             if (checkConstraintAddProd(Prod)) {
-                obj.product.push(Prod.toJSON);
-                writeToLocalStorage(obj);
+                $.ajax({
+                    type: 'Post',
+                    url: './Server/product/create_product.php',
+                    data: JSON.stringify(Prod.toJSON),
+                    contentType:'application/json; charset=utf-8;',
+                    dataType: 'json',
+                    success: function(jqXHR, textStatus, errorThrown) {       
+                    //   alert("saved");
+                      console.log("Request failed: " + textStatus + ", " + errorThrown);
+                      alert("Request failed: " + textStatus + ", " + errorThrown);
+                    //   window.location = "http://localhost/DoAnWeb1-Shop/admin/Server/product/create_product.php"
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        // window.location = "http://localhost/DoAnWeb1-Shop/admin/Server/product/create_product.php"
+                      console.log("Request failed: " + textStatus + ", " + errorThrown);
+                      alert("Request failed: " + textStatus + ", " + errorThrown);
+                    }
+                  });
+                // obj.product.push(Prod.toJSON);
+                // writeToLocalStorage(obj);
             }
             fillProd();
         }
@@ -584,25 +604,25 @@ $.ajax({
             }
         }
 
-        // function checkNumber(str) {
-        //     for (let i = 0; i < str.length; i++) {
-        //         if (obj.variable[1].var3.indexOf(str[i]) == -1) {
-        //             return false
-        //         }
-        //     }
-        //     return true
-        // }
+        function checkNumber(str) {
+            // for (let i = 0; i < str.length; i++) {
+            //     if (obj.variable[1].var3.indexOf(str[i]) == -1) {
+            //         return false
+            //     }
+            // }
+            return true
+        }
         document.getElementById("submit").onclick = function() {
             //   document.getElementById("add_pro").style.visibility = "hidden";
             //   CloseDialog();
-            if (add.length == 0) {
-                alert("Bạn phải chọn loại")
-                return
-            }
-            if (arrImageAdd.length == 0) {
-                alert("Bạn phải thêm ảnh")
-                return
-            }
+            // if (add.length == 0) {
+            //     alert("Bạn phải chọn loại")
+            //     return
+            // }
+            // if (arrImageAdd.length == 0) {
+            //     alert("Bạn phải thêm ảnh")
+            //     return
+            // }
             if (checkNumber(document.getElementById("inp-price").value.toLowerCase())) {
                 createPopUpYesNo("Bạn có muốn thêm sản phẩm này không ?", function(background) {
                     let name = document.getElementById("inp-name").value.toLowerCase()
