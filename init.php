@@ -1,35 +1,18 @@
 <?php
-    // class Database {
-    //     private static $instance = null;
-    //     private $conn;
-        
-    //     private $host = "localhost";
-    //     private $user = "root";
-    //     private $pass = "";
-    //     private $name = "Shop";
-         
-    //     private function __construct() {
-    //         $this->conn = new PDO("mysql:host={$this->host};
-    //             dbname={$this->name}", $this->user,$this->pass,
-    //             array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
-    //     }
-         
-    //     public static function getInstance() {
-    //         if(!self::$instance) {
-    //             self::$instance = new Database();
-    //         }
-    //         return self::$instance;
-    //     }
-         
-    //     public function getConnection() {
-    //         return $this->conn;
-    //     }
-    // }
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "shop";
 
-$host = "localhost";
-$dbname = "Shop";
-$user = "root";
-$pass = "";
+    try {
+        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        // Thiết lập chế độ lỗi PDO thành ngoại lệ
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        echo "Kết nối thành công";
+    }
+    catch(PDOException $e)
+    {
+        echo "Kết nối thất bại: " . $e->getMessage();
+    }
 
-$conn = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
 ?>
