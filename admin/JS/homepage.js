@@ -109,11 +109,11 @@ if (localStorage.getItem("checkLogin") == "true") {
         statistics()
     }
 
-    function changeToProduct() {
+    async function changeToProduct() {
         hideCurrent()
         appearDiv(document.getElementById("background-prod"))
 
-        // fillProd()
+        await fillProd()
         fillType()
 
     }
@@ -160,7 +160,7 @@ if (localStorage.getItem("checkLogin") == "true") {
         openCloseLeftBar()
         changeToPromote()
     }
-    document.getElementById("product").onclick = function() {
+    document.getElementById("product").onclick = async function() {
         document.getElementById("content").style.display = "block"
         document.getElementById("div-thongso").style.display = "none"
 
@@ -183,5 +183,5 @@ if (localStorage.getItem("checkLogin") == "true") {
         changeToHomepage()
     }
 } else {
-    window.location.href = "../index.html"
+    // window.location.href = "../index.html"
 }

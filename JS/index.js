@@ -388,8 +388,9 @@ function login() {
         }
       } else {
         console.log("Bạn đang đăng nhập với vai trò nhân viên");
-        window.location.href = "admin/index.html";
         localStorage.setItem("currentStaff", JSON.stringify(currentStaff));
+        localStorage.setItem("checkLogin", true);
+        window.location.href = "admin/index.html";
       }
       checkOk = true;
     } else {
