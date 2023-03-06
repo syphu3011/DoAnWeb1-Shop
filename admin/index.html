@@ -56,6 +56,7 @@
 </head>
 
 <body id="body-page">
+<!-- <body id="body-page" onload="changeToConsumer()"> -->
     <div id="background-admin-homepage">
         <div id="back-head">
             <div id="back-ham">
@@ -133,25 +134,16 @@
                     </div>
                     <div id="HeadButton">
                         <div id="HeadButton1" class="HeadButton">
-                            <button class="btn-left" onclick=OpenBtnLock()>Khóa Tài Khoản</button>
-                            <button class="btn-left" onclick=OpenBtnOLock()>Mở tài khoản</button>
-                        </div>
-
-                        <div id="HeadButton2" class="HeadButton">
-                            <button class="btn-left" onclick=OpenPopupLock()>Xác nhận khóa</button>
-                            <button class="btn-left" onclick=CloseBtnLock()>hủy</button>
-                        </div>
-
-                        <div id="HeadButton3" class="HeadButton">
-                            <button class="btn-left" onclick=OpenPopupOpen()>Xác nhận mở lại</button>
-                            <button class="btn-left" onclick=CloseBtnLock()>hủy</button>
+                            <button class="btn-left" onclick=renderAddNewCusInterface()>Thêm khách hàng</button>
+                            <button class="btn-left" onclick=renderDeleteCus()>Xóa khách hàng</button>
+                            <button class="btn-left" onclick=changeToConsumer()>Làm mới</button>
                         </div>
                     </div>
                 </header>
                 <div class="Middle">
                     <div class="SearchBox">
                         <input id="text-search" class="SearchBar" type="text" placeholder="Search">
-                        <img class="SearchIcon" src="Image/icon_search.png" onclick=Search()>
+                        <img class="SearchIcon" src="Image/icon_search.png" onclick=searchCustomer()>
                         <img class="SearchIcon" src="Image/Filter@3x.png" onclick=OpenFilter()>
                     </div>
 
@@ -159,18 +151,25 @@
                 <div class="Bottom">
                     <table id="myTable" cellspacing="pixels" style="width: 80%;">
                         <tr class="first-row">
-                            <th>id</th>
-                            <th>Họ và tên</th>
-                            <th>Username</th>
-                            <th>Ngày sinh</th>
-                            <th>số điện thoại</th>
-                            <th>Ngày Tham gia</th>
-                            <th>Trạng thái</th>
+                            <th>id khách hàng</th>
+                            <th>id tài khoản</th>
+                            <th>ngày tham gia</th>
+                            <th>tên</th>
+                            <th>tên đăng nhập</th>
+                            <th>mật khẩu</th>
+                            <th>quyền</th>
+                            <th>trạng thái</th>
+                            <th>chi tiết</th>
                         </tr>
                     </table>
                 </div>
                 <div id="dialog">
-                    <div class="Section" id="Confirm-Cancel-Lock">
+                    <div class="Section" id="add-new-cus-box">
+                        <div id="add-new-cus-box-content"></div>
+                        <div id="btn-detail-add-customer-group"></div>
+                    </div>
+                    
+                    <!-- <div class="Section" id="Confirm-Cancel-Lock">
                         <div>Bạn có chắc chắn muốn khóa</div>
                         <div class="Btn-confirm">
                             <button onclick=LockAccount()>Có</button>
@@ -183,7 +182,7 @@
                             <button onclick=OpenAccount()>Có</button>
                             <button onclick=ClosePopupOpen()>Không</button>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="Section" id="Section">
                         <div class="name-filter">Bộ lọc</div>
                         <div class="find_all" id="find-head">
@@ -213,6 +212,23 @@
                             </select>
                         </div>
                         <button onclick=CloseFilter() style="margin-top: 10px;">Xác nhận</button>
+                    </div>
+                    <div class="Section" id="detail-customer-open">
+                        <div id="detail-customer-header"></div>
+                        <div id="detail-customer-content"></div>
+                        <div class="Btn-confirm" id="btn-detail-edit-customer-group">
+                            <button onclick=saveCustomerDetail()>Lưu lại</button>
+                            <button onclick=renderEditCustomerDetail()>Chỉnh sửa</button>
+                            <button onclick=closeCustomerPopupDetail()>Thoát</button>
+                        </div>
+                    </div>
+
+                    <div class="Section" id="warning-box" style="display:none;">
+                        warning box
+                    </div>
+
+                    <div class="Section" id="confirm-box" style="display:none;">
+                        confirm box
                     </div>
                 </div>
             </div>
@@ -1162,7 +1178,7 @@
     <script src="./JS/size.js"></script>
     <script src="./JS/KhuyenMai1.js"></script>
     <script src="./JS/product.js"></script>
-    <script src="./JS/statistics.js"></script>
+    <!-- <script src="./JS/statistics.js"></script> -->
     <script src="./JS/thongso.js"></script>
 </body>
 
