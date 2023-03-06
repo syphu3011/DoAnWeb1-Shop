@@ -52,14 +52,14 @@ let arrProduct = new Array();
 let currentPage = 1;
 let checkInCart = false;
 
-let data = JSON.parse(localStorage.getItem("data"));
-if (data == null) {
-  localStorage.setItem("data", JSON.stringify(arr));
-  localStorage.setItem("checkLogin", "true");
-  localStorage.setItem("currentIdUser", "");
-  localStorage.setItem("currentStaff", "");
-  data = JSON.parse(localStorage.getItem("data"));
-}
+// let data = JSON.parse(localStorage.getItem("data"));
+// if (data == null) {
+//   localStorage.setItem("data", JSON.stringify(arr));
+//   localStorage.setItem("checkLogin", "true");
+//   localStorage.setItem("currentIdUser", "");
+//   localStorage.setItem("currentStaff", "");
+//   data = JSON.parse(localStorage.getItem("data"));
+// }
 
 //
 let currentUser = null;
@@ -589,11 +589,12 @@ function showFilter(list1, arr, id, list2, list3, select) {
 
 var itemstype = new Array();
 itemstype.push("tất cả");
-data.largeClassify.forEach((e) => {
-  e.miniClassify.forEach((el) => {
-    itemstype.push(el.name);
-  });
-});
+
+// data.largeClassify.forEach((e) => {
+//   e.miniClassify.forEach((el) => {
+//     itemstype.push(el.name);
+//   });
+// });
 //
 //
 //
