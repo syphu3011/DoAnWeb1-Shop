@@ -81,7 +81,7 @@ function changeToHomepage() {
 function changeToConsumer() {
   hideCurrent();
   appearDiv(document.getElementById("Background"));
-  renderTable();
+  getCustomers();
 }
 
 function changeToOrder() {
@@ -202,5 +202,5 @@ document.getElementById("homepage").onclick = function () {
 };
 // }
 // else {
-//     // window.location.href = "../index.html"
+    // window.location.href = "../index.html"
 // }
