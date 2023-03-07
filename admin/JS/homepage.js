@@ -114,7 +114,7 @@ if (localStorage.getItem("checkLogin") == "true") {
         appearDiv(document.getElementById("background-prod"))
 
         await fillProd()
-        fillType()
+        // fillType()
 
     }
     document.getElementById("orderr").onclick = function() {

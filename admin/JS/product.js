@@ -94,7 +94,7 @@ document.getElementById("o_edit").onclick = function() {
 document.getElementById("close2").onclick = function() {
     document.getElementById("edit_pro").style.visibility = "hidden";
     document.getElementById("image-div2").innerHTML = ""
-    edit = []
+    tag_type_edit = []
     arrImageEdit = arrImageEdit.filter(() => true == false)
     document.getElementById("add-type-edit").innerHTML = ""
     CloseDialog();
@@ -222,7 +222,7 @@ function openFilter() {
 
 
     background_prod.appendChild(element);
-    find.forEach(e => {
+    tag_type_find.forEach(e => {
         let ele = document.createElement("p");
         ele.classList.add("item-tag");
         ele.appendChild(document.createTextNode(e));
@@ -232,7 +232,7 @@ function openFilter() {
         ele.appendChild(tag);
         tag.style.cursor = "pointer"
         tag.onclick = function() {
-            find.splice(CheckTagType(ele, find), 1);
+            tag_type_find.splice(CheckTagType(ele, tag_type_find), 1);
             ele.remove();
             checkClickClose = true
         }
@@ -295,9 +295,9 @@ function fillEdit(prod) {
             prod.price = document.getElementById("edit-price").value
             prod.made_in = document.getElementById("edit-made-in").value
             prod.description = document.getElementById("edit-des").value
-            prod.clasify = edit
+            prod.clasify = tag_type_edit
             prod.images = arrImageEdit
-            edit = []
+            tag_type_edit = []
             document.getElementById("add-type-edit").innerHTML = ""
             updateProd(prod)
             arrImageEdit = arrImageEdit.filter(() => true == false)
@@ -307,28 +307,13 @@ function fillEdit(prod) {
         }, function() {})
     };
     prod.clasify.forEach(e => {
-        AddTagType(document.getElementById("add-type-edit"), edit, true, e)
+        AddTagType(document.getElementById("add-type-edit"), tag_type_edit, true, e)
     })
+    remove_all_image()
+    let count = 0
     prod.images.forEach(e => {
-        arrImageEdit.push(e)
-        let btnRemove = document.createElement("button")
-        btnRemove.className = "add_type"
-        btnRemove.style.position = "absolute"
-        btnRemove.textContent = "X"
-        let img_div1 = addImg(e, "image-div2")
-        img_div1.appendChild(btnRemove)
-        img_div1.style.position = "relative"
-        btnRemove.style.right = "-5px"
-        btnRemove.style.top = "15px"
-        btnRemove.style.width = "10px"
-        btnRemove.style.height = "10px"
-        btnRemove.onclick = function() {
-            img_div1.remove()
-            btnRemove.remove()
-            arrImageEdit = arrImageEdit.filter(ele => ele != e)
-            prod.images = arrImageEdit
-        }
-
+        add_item_of_image("../Image/"+e, count)
+        count += 1
     })
 }
 
@@ -430,24 +415,13 @@ function Prod(id, name, made_in, description, price, images, classify, status) {
     this.images = images;
     this.clasify = classify;
     this.status = status;
-    this.toJSON = {
-        id: this.id,
-        name: this.name,
-        made_in: this.made_in,
-        description: this.description,
-        price: this.price,
-        images: this.images,
-        clasify: this.clasify,
-        status: this.status,
-    };
 }
 //thêm sửa sản phẩm code
 function get_Data() {
     return $.ajax({
         url: './Server/product/products.php',
         type: 'GET',
-        dataType: 'json',
-        data: "json_product"
+        dataType: 'json'
     })
 }
 async function refreshData() {
@@ -496,34 +470,56 @@ function checkConstraintUpdateProd(Prod) {
 function initId1(clasify) {
     let id = ""
     let max = 0
-    obj.largeClassify.forEach(element => {
-        element.miniClassify.forEach(elementMini => {
-            if (elementMini.name == clasify) {
-                id = elementMini.id
-                return
+    refreshData()
+    for (const element of obj.largeClassify) {
+        let pos = clasify.toLowerCase().indexOf(element.id.toLowerCase())
+        if (pos == 0) {
+            id = element.id
+            break
+        }
+    }
+    let last_product = obj.product[obj.product.length - 1]
+    let last_id = ""
+    let last_char
+
+    for (const product of obj.product) {
+        if (product.id.toLowerCase().indexOf(id.toLowerCase()) == 0) {
+            last_id = product.id
+        }
+        else {
+            if (last_id != "") {
+                break
             }
-        })
-        if (id != "") {
-            return
         }
-    })
-    obj.product.forEach(element => {
-        if (element.id.toLowerCase().indexOf(id.toLowerCase()) != -1) {
-            max = parseInt(element.id.replace(id, ""))
+    }
+    for (let i = 0; i < last_id.length; i++) {
+        let num_check = parseInt(last_id.charAt(i))
+        if (!Number.isNaN(num_check)) {
+            max = parseInt(last_id.split(last_char)[1])
+            break
         }
-    })
-    return id + String(max + 1).padStart(4, "0")
+        else {
+            last_char = last_id.charAt(i)
+        }
+    }
+    return id + String(max + 1).padStart(8, "0")
     // return "1";
 }
 
 async function addProd(Prod) {
     refreshData();
-    console.log(JSON.stringify(Prod.toJSON));
+    console.log(JSON.stringify(Prod));
     if (checkConstraintAddProd(Prod)) {
+        var images_data = new FormData();
+		let totalfiles = document.getElementById('choose-img-prod').files
+        for (var index = 0; index < totalfiles.length; index++) {
+            images_data.append("images[]", totalfiles[index]);
+        }
+        Prod.images = images_data
         $.ajax({
             type: 'Post',
             url: './Server/product/create_product.php',
-            data: JSON.stringify(Prod.toJSON),
+            data: JSON.stringify(Prod),
             contentType:'application/json; charset=utf-8;',
             dataType: 'json',
             success: function(jqXHR, textStatus, errorThrown) {       
@@ -640,40 +636,40 @@ document.getElementById("submit").onclick = function() {
     //     alert("Bạn phải thêm ảnh")
     //     return
     // }
-    if (checkNumber(document.getElementById("inp-price").value.toLowerCase())) {
-        createPopUpYesNo("Bạn có muốn thêm sản phẩm này không ?", function(background) {
-            let name = document.getElementById("inp-name").value.toLowerCase()
-            let price = document.getElementById("inp-price").value.toLowerCase()
-            let made_in = document.getElementById("inp-made-in").value.toLowerCase()
-            let des = document.getElementById("add-des").value.toLowerCase()
-            if (name == "" || price == "" || made_in == "") {
-                alert("Không thể bỏ trống tên, giá và xuất xứ")
-                return
-            }
-            let prod = new Prod(initId1(add[0]), name, made_in, des, price, arrImageAdd, add, 1)
-            addProd(prod)
-            blank("inp-name")
-            blank("inp-price")
-            blank("inp-made-in")
-            blank("add-des")
-            document.getElementById("add-pro-type").innerHTML = ""
-            arrImageAdd = arrImageAdd.filter(e => true == false)
-            document.getElementById("image-div").innerHTML = ""
-            add = add.filter(e => true == false)
-            arrImageAdd = arrImageAdd.filter(e => true == false)
-            let itemTypes = document.getElementsByClassName("item-tag")
-            Array.prototype.slice(itemTypes).forEach(element => {
-                element.remove()
-            })
-            document.getElementById("add_pro").style.visibility = "";
-            CloseDialog()
-
-        }, function() {
-
+    // if (checkNumber(document.getElementById("inp-price").value.toLowerCase())) {
+    createPopUpYesNo("Bạn có muốn thêm sản phẩm này không ?", function(background) {
+        let name = document.getElementById("inp-name").value.toLowerCase()
+        // let price = document.getElementById("inp-price").value.toLowerCase()
+        let made_in = document.getElementById("inp-made-in").value.toLowerCase()
+        let des = document.getElementById("add-des").value.toLowerCase()
+        if (name == "" || price == "" || made_in == "") {
+            alert("Không thể bỏ trống tên, giá và xuất xứ")
+            return
+        }
+        let prod = new Prod(initId1(tag_type_add[0]), name, made_in, des, 0, "", tag_type_add, 1)
+        addProd(prod)
+        blank("inp-name")
+        // blank("inp-price")
+        blank("inp-made-in")
+        blank("add-des")
+        document.getElementById("add-pro-type").innerHTML = ""
+        // arrImageAdd = arrImageAdd.filter(e => true == false)
+        document.getElementById("image-div").innerHTML = ""
+        tag_type_add = tag_type_add.filter(e => true == false)
+        arrImageAdd = arrImageAdd.filter(e => true == false)
+        let itemTypes = document.getElementsByClassName("item-tag")
+        Array.prototype.slice(itemTypes).forEach(element => {
+            element.remove()
         })
-    } else {
-        alert("Giá tiền chưa đúng định dạng")
-    }
+        document.getElementById("add_pro").style.visibility = "";
+        CloseDialog()
+
+    }, function() {
+
+    })
+    // } else {
+    //     alert("Giá tiền chưa đúng định dạng")
+    // }
 };
 
 document.getElementById("close").onclick = function() {
@@ -689,82 +685,82 @@ function CloseDialog() {
     document.getElementById("dialog4").style.display = "none";
 
 }
-
-function addType() {
+function add_img_files(files, count) {
+    var reader = new FileReader();
+    reader.readAsDataURL(files[count]);
+    reader.onload = function() {
+        add_item_of_image(reader.result, count)
+        if (files.length > count + 1) {
+            add_img_files(files, count + 1)
+        }
+    }
+}
+async function addType() {
     let inp = document.getElementById("choose-img-prod");
     inp.click();
     inp.onchange = function() {
-        let name_img = String(inp.value);
-        console.log(`C:\\fakepath\\`);
-        name_img = name_img.replace(`C:\\fakepath\\`, ``);
-        console.log(name_img);
-
-        arrImageAdd.push(name_img)
-        let btnRemove = document.createElement("button")
-        btnRemove.className = "add_type"
-        btnRemove.style.position = "absolute"
-        btnRemove.textContent = "X"
-        let img_div1 = addImg(name_img)
-        img_div1.appendChild(btnRemove)
-        img_div1.style.position = "relative"
-        btnRemove.style.right = "-5px"
-        btnRemove.style.top = "15px"
-        btnRemove.style.width = "10px"
-        btnRemove.style.height = "10px"
-        btnRemove.onclick = function() {
-            img_div1.remove()
-            btnRemove.remove()
-            arrImageAdd = arrImageAdd.filter(ele => ele != name_img)
-        }
+        remove_all_image()
+        add_img_files(inp.files, 0)
     };
 }
-
-function addTypeEdit() {
-    let inp = document.getElementById("choose-img-prod");
-    inp.click();
-    inp.onchange = function() {
-        let name_img = String(inp.value);
-        console.log(`C:\\fakepath\\`);
-        name_img = name_img.replace(`C:\\fakepath\\`, ``);
-        console.log(name_img);
-
-        arrImageEdit.push(name_img)
-        let btnRemove = document.createElement("button")
-        btnRemove.className = "add_type"
-        btnRemove.style.position = "absolute"
-        btnRemove.textContent = "X"
-        let img_div1 = addImg(name_img)
-        img_div1.appendChild(btnRemove)
-        img_div1.style.position = "relative"
-        btnRemove.style.right = "-5px"
-        btnRemove.style.top = "15px"
-        btnRemove.style.width = "10px"
-        btnRemove.style.height = "10px"
-        btnRemove.onclick = function() {
-            img_div1.remove()
-            btnRemove.remove()
-            arrImageAdd = arrImageAdd.filter(ele => ele != name_img)
-        }
-    };
+function add_item_of_image(name_img, count) {
+    let btnRemove = document.createElement("button")
+    btnRemove.className = "add_type remove_img"
+    btnRemove.style.position = "absolute"
+    btnRemove.textContent = "X"
+    let img_div1 = addImg(name_img, "image-div", count)
+    img_div1.appendChild(btnRemove)
+    img_div1.style.position = "relative"
+    btnRemove.style.right = "-5px"
+    btnRemove.style.top = "15px"
+    btnRemove.style.width = "10px"
+    btnRemove.style.height = "10px"
+    btnRemove.onclick = function(){
+        remove_image(img_div1, btnRemove, name_img)
+    }
 }
+function remove_image(img_div1, btnRemove, name_img) {
+    img_div1.remove()
+    btnRemove.remove()
+    // arrImageAdd = arrImageAdd.filter(ele => ele != name_img)
+}
+function remove_all_image() {
+    document.querySelectorAll(".remove_img").forEach(function(e){
+        e.click()
+    })
+}
+// function addTypeEdit() {
+//     document.querySelectorAll(".remove_img").forEach(function(e){
+//         e.click()
+//     })
+//     let inp = document.getElementById("choose-img-prod");
+//     inp.click();
+//     inp.onchange = function() {
+//         let name_img = String(inp.value);
+//         // console.log(`C:\\fakepath\\`);
+//         // name_img = name_img.replace(`C:\\fakepath\\`, ``);
+//         // console.log(name_img);
+//         add_item_of_image(name_img)
+//     };
+// }
 
-function addImg(name_img, idDiv = "image-div") {
+function addImg(name_img, idDiv = "image-div", count) {
     let img_div = document.getElementById(idDiv);
     let img_div1 = document.createElement("li");
     img_div.className = "div-img-prod1";
     img_div1.className = "div-img-prod2";
-    img_div1.id = "image-li";
+    img_div1.id = "image-li-"+count;
     let img = document.createElement("img");
     img.className = "img-prod";
     img_div.appendChild(img_div1);
     img_div1.appendChild(img);
-    img.src = "./Image/" + name_img;
+    img.src = name_img;
     return img_div1
 }
 let btn_add_img = document.getElementById("add-img");
 btn_add_img.onclick = addType;
-let btn_add_img_edit = document.getElementById("add-img12");
-btn_add_img_edit.onclick = addTypeEdit;
+// let btn_add_img_edit = document.getElementById("add-img12");
+// btn_add_img_edit.onclick = addTypeEdit;
 
 function addProdBtnEven() {
     let id = addProd;
@@ -906,8 +902,8 @@ function BoxSelect() {
     document.getElementById("select").style.visibility = "visible";
     document.getElementById("dialog-s").style.display = "block";
     let select_big = document.getElementById("select_big")
-    for (const option of select_big.options) {
-        option.remove()
+    for (const i = 0; i < select_big.options.length;) {
+        select_big.options[i].remove()
     }
     for (const iterator of obj.largeClassify) {
         const newOption = document.createElement('option');
@@ -916,7 +912,10 @@ function BoxSelect() {
         newOption.setAttribute('value', iterator.id)
         select_big.appendChild(newOption)
     }
-    select_big.onchange = function() {select(select_big)}
+    fillType(select_big.value)
+    select_big.onchange = function() {
+        fillType(select_big.value)
+    }
 }
 
 document.getElementById("close6").onclick = function() {
@@ -928,22 +927,32 @@ document.getElementById("okay").onclick = function() {
     document.getElementById("select").style.visibility = "hidden";
     document.getElementById("dialog-s").style.display = "none";
     if (document.getElementById("add_pro").style.visibility == "visible") {
-        AddTagType(document.getElementById("add-pro-type"), add);
+        AddTagType(document.getElementById("add-pro-type"), tag_type_add, true);
     } else if (
         document.getElementById("edit_pro").style.visibility == "visible"
     ) {
-        AddTagType(document.getElementById("add-type-edit"), edit, true);
+        AddTagType(document.getElementById("add-type-edit"), tag_type_edit, true);
     } else {
-        AddTagType(document.getElementById("type_list"), find, true);
+        AddTagType(document.getElementById("type_list"), tag_type_find, true);
     }
 };
 
 // Thêm tag loạif
-let add = [];
-let find = [];
-let edit = [];
+let tag_type_add = [];
+let tag_type_find = [];
+let tag_type_edit = [];
 
 function CheckTagType(type, a) {
+    if (a.length > 0) {
+        for(const classify of obj.largeClassify) {
+            if (a[0].toLowerCase().indexOf(classify.id.toLowerCase()) == 0) {
+                if (type.toLowerCase().indexOf(classify.id.toLowerCase()) != 0 || type.toLowerCase().indexOf(classify.id.toLowerCase()) == -1) {
+                    alert("Phải cùng loại lớn\n Ví dụ: Chọn là áo sơ mi thì không được chọn thêm quần dài")
+                    return -2
+                }
+            }
+        }
+    }
     for (let i = 0; i < a.length; i++) {
         if (a[i] == type) {
             return i;
@@ -971,69 +980,28 @@ function AddTagType(idtag, a, useList = false, content = "") {
         }
         a.push(content)
     } else {
-        if (document.getElementById("select_big").value == "ao") {
-            let type = document.getElementById("select_a").value;
-            if (CheckTagType(type, a) >= 0) {
-                return;
-            } 
-            else {
-                ele.appendChild(document.createTextNode(type));
-                let tag = document.createElement("button");
-                tag.classList.add("close_type");
-                tag.appendChild(document.createTextNode("X"));
-                ele.appendChild(tag);
-                tag.onclick = function() {
-                    a.splice(CheckTagType(type, a), 1);
-                    ele.remove();
-                    checkClickClose = true
-                };
-                if (!useList) {
-                    a.splice(0, a.length)
-                }
-                a.push(type)
+        let big_type = document.getElementById("select_big").value
+        let type = document.getElementById("select_classify").value;
+        let check = CheckTagType(type, a)
+        if (check >= 0 || check < -1) {
+            return;
+        } 
+        else {
+            ele.appendChild(document.createTextNode(document.getElementById("select_classify").selectedOptions[0].getAttribute("name")));
+            let tag = document.createElement("button");
+            tag.classList.add("close_type");
+            tag.appendChild(document.createTextNode("X"));
+            ele.appendChild(tag);
+            tag.onclick = function() {
+                a.splice(CheckTagType(type, a), 1);
+                ele.remove();
+                checkClickClose = true
+            };
+            if (!useList) {
+                a.splice(0, a.length)
             }
-        } else if (document.getElementById("select_big").value == "quan") {
-            let type = document.getElementById("select_q").value;
-            if (CheckTagType(type, a) >= 0) {
-                return;
-            } else {
-                ele.appendChild(document.createTextNode(type));
-                let tag = document.createElement("button");
-                tag.classList.add("close_type");
-                tag.appendChild(document.createTextNode("X"));
-                ele.appendChild(tag);
-                tag.onclick = function() {
-                    a.splice(CheckTagType(type, a), 1);
-                    ele.remove();
-                    checkClickClose = true
-                };
-                if (!useList) {
-                    a.splice(0, a.length)
-                }
-                a.push(type)
-            }
-        } else {
-            let type = document.getElementById("select_p").value;
-            if (CheckTagType(type, a) >= 0) {
-                return;
-            } else {
-                ele.appendChild(document.createTextNode(type));
-                let tag = document.createElement("button");
-                tag.classList.add("close_type");
-                tag.appendChild(document.createTextNode("X"));
-                ele.appendChild(tag);
-                tag.onclick = function() {
-                    a.splice(CheckTagType(type, a), 1);
-                    ele.remove();
-                    checkClickClose = true
-                };
-                if (!useList) {
-                    a.splice(0, a.length)
-                }
-                a.push(type)
-            }
+            a.push(type)
         }
-
     }
     if (useList) {
         idtag.appendChild(ele)
@@ -1043,50 +1011,22 @@ function AddTagType(idtag, a, useList = false, content = "") {
     }
 }
 
-function select(str) {
-    switch (str.value.toLowerCase()) {
-        case "ao":
-            document.getElementById("select_a").style.display = "block";
-            document.getElementById("select_q").style.display = "none";
-            document.getElementById("select_p").style.display = "none";
-            break;
-        case "quan":
-            document.getElementById("select_a").style.display = "none";
-            document.getElementById("select_q").style.display = "block";
-            document.getElementById("select_p").style.display = "none";
-            break;
-        case "phukien":
-            document.getElementById("select_a").style.display = "none";
-            document.getElementById("select_q").style.display = "none";
-            document.getElementById("select_p").style.display = "block";
-            break;
-    }
-}
 
-function fillType() {
-    let aTypeSelect = document.getElementById("select_a")
-    let qTypeSelect = document.getElementById("select_q")
-    let pTypeSelect = document.getElementById("select_p")
-    let strA = ""
-    let strQ = ""
-    let strP = ""
+function fillType(big_classify) {
+    let typeSelect = document.getElementById("select_classify")
+    let str = ""
         //fillA
-    obj.largeClassify[0].miniClassify.forEach(element => {
-        strA += `<option value="` + element.name + `">` + element.name + `</option>`
+    let save_current_large_classify
+    for (const element of obj.largeClassify) {
+        if (element.id.toLowerCase() === big_classify.toLowerCase()) {
+            save_current_large_classify = element
+            break
+        }
+    }
+    save_current_large_classify.miniClassify.forEach(element => {
+        str += `<option value="` + element.id + `" name="`+element.name+`">` + element.name + `</option>`
     })
-    aTypeSelect.innerHTML = strA
-        //fillQ
-    obj.largeClassify[1].miniClassify.forEach(element => {
-        strQ += `<option value="` + element.name + `">` + element.name + `</option>`
-    })
-    qTypeSelect.innerHTML = strQ
-        //fillP
-    // obj.largeClassify[1].miniClassify.forEach(element => {
-    //     strP += `<option value="` + element.name + `">` + element.name + `</option>`
-    // })
-    // aTypeSelect.innerHTML = strA
-    // qTypeSelect.innerHTML = strQ
-    // pTypeSelect.innerHTML = strP
+    typeSelect.innerHTML = str
 }
 // fillType()
 
@@ -1138,8 +1078,11 @@ function fillDetail(id) {
     })
     document.getElementById("type-div").innerHTML += "<p>" + prod.clasify[0] + "</p>"
     document.getElementById("image-div1").innerHTML = ""
+    remove_all_image()
+    let count = 0
     prod.images.forEach(element => {
-        addImg(element, "image-div1")
+        addImg("../Image/"+element, "image-div1", count)
+        count += 1
     })
 }
 //tim kiem
@@ -1168,15 +1111,15 @@ async function findProdAction() {
             console.log(min != null);
 
             if (min != null && !isNaN(min)) {
-                arProd = findProd(idOrName, nameAndId, nameAndId, madein, min, 9999999999, status, find)
+                arProd = findProd(idOrName, nameAndId, nameAndId, madein, min, 9999999999, status, tag_type_find)
             } else {
-                arProd = findProd(idOrName, nameAndId, nameAndId, madein, 0, 9999999999, status, find)
+                arProd = findProd(idOrName, nameAndId, nameAndId, madein, 0, 9999999999, status, tag_type_find)
             }
         } catch (e) {
-            arProd = findProd(idOrName, nameAndId, nameAndId, madein, 0, 9999999999, status, find)
+            arProd = findProd(idOrName, nameAndId, nameAndId, madein, 0, 9999999999, status, tag_type_find)
         }
     } else {
-        arProd = findProd(idOrName, nameAndId, nameAndId, madein, parseInt(amountString[0]), parseInt(amountString[1]), status, find)
+        arProd = findProd(idOrName, nameAndId, nameAndId, madein, parseInt(amountString[0]), parseInt(amountString[1]), status, tag_type_find)
     }
     await fillProd(arProd)
 }

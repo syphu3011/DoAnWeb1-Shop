@@ -400,14 +400,14 @@
 
                                     </ul>
 
-                                    <input type="file" id="choose-img-prod">
+                                    <input type="file" id="choose-img-prod" accept="image/png, image/jpg,image/jpeg, image/gif, image/svg" multiple>
                                 </div>
                             </div>
                             <div class="right">
-                                <div class="div-price">
+                                <!-- <div class="div-price">
                                     <label for="inp-price">Giá bán:</label>
                                     <input type="number" min="1" id="inp-price">
-                                </div>
+                                </div> -->
                                 <div class="div-made">
                                     <label for="inp-made-in">Xuất Xứ:</label>
                                     <input type="text" name="" id="inp-made-in">
@@ -456,7 +456,7 @@
                                     <ul id="image-div2" class="image-div">
 
                                     </ul>
-                                    <input type="file" id="choose-img-prod2">
+                                    <input type="file" id="choose-img-prod2" accept="image/png, image/jpg,image/jpeg, image/gif, image/svg" max="2097152">
                                 </div>
                             </div>
                             <div class="right">
@@ -565,20 +565,15 @@
                                 <option value="phukien">Phụ kiện</option> -->
                             </select>
                         </div>
-                        <div>
+                        <!-- <div id="select_div">
                             <select class="select_box" id="select_a">
 
                             </select>
                             <select class="select_box" id="select_q">
     
                             </select>
-                            <select class="select_box" id="select_p">
-                                <option value="balo">Balo</option>
-                                <option value="đồng Hồ">Đồng hồ</option>
-                                <option value="ví">Ví</option>
-                            </select>
-                        </div>
-                        
+                        </div> -->
+                        <select class="select_box" id="select_classify"></select>
                         <button id="okay">Xác nhận</button>
                     </div>
                 </div>
