@@ -631,6 +631,7 @@ let arr = {
         { id: "QUTHNA", name: "Quần túi hộp" },
       ],
     },
+    // ,
     // {
     //   id: "PK",
     //   name: "Phụ kiện nam - nữ",
@@ -1293,7 +1294,7 @@ let arr = {
 };
 let data;
 if (localStorage.getItem("data") == null) {
-  localStorage.setItem("data", JSON.stringify(JSON.parse(arr)));
+  localStorage.setItem("data", JSON.stringify(arr));
 }
 // function testthoi() {
 //   document.getElementById("inp-firstname").value = "123";

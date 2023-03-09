@@ -58,7 +58,7 @@ let checkInCart = false;
 //   localStorage.setItem("checkLogin", "true");
 //   localStorage.setItem("currentIdUser", "");
 //   localStorage.setItem("currentStaff", "");
-//   data = JSON.parse(localStorage.getItem("data"));
+data = JSON.parse(localStorage.getItem("data"));
 // }
 
 //
