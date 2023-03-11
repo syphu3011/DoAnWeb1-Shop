@@ -377,7 +377,7 @@
                         <button class="close" id="close">X</button>
                         <div class="title">Thêm sản phẩm</div>
                         <div class="ID">
-                            <label for="inp-id">ID</label>
+                            <label for="inp-id">ID:</label>
                             <input type="text" id="inp-id" readonly>
                         </div>
                         <div class="center">
@@ -385,6 +385,10 @@
                                 <div>
                                     <label for="inp-name">Tên sản phẩm:</label>
                                     <input type="text" id="inp-name">
+                                </div>
+                                <div class="div-made">
+                                    <label for="inp-made-in">Xuất Xứ:</label>
+                                    <input type="text" name="" id="inp-made-in">
                                 </div>
                                 <div class="edit_type">
                                     <label>Loại:</label>
@@ -402,21 +406,18 @@
 
                                     <input type="file" id="choose-img-prod" accept="image/png, image/jpg,image/jpeg, image/gif, image/svg" multiple>
                                 </div>
-                            </div>
-                            <div class="right">
-                                <!-- <div class="div-price">
-                                    <label for="inp-price">Giá bán:</label>
-                                    <input type="number" min="1" id="inp-price">
-                                </div> -->
-                                <div class="div-made">
-                                    <label for="inp-made-in">Xuất Xứ:</label>
-                                    <input type="text" name="" id="inp-made-in">
+                                <div class="describe">
+                                    <label for="" id="inp-description">Mô tả:</label>
+                                    <textarea id="add-des"></textarea>
                                 </div>
                             </div>
-                        </div>
-                        <div class="describe">
-                            <label for="" id="inp-description">Mô tả</label>
-                            <textarea id="add-des"></textarea>
+                            
+                            <!-- <div class="right">
+                                <div class="div-price">
+                                    <label for="inp-price">Giá bán:</label>
+                                    <input type="number" min="1" id="inp-price">
+                                </div>
+                            </div> -->
                         </div>
                         <div class="button_add1">
                             <button id="submit">Xác nhận thêm</button>
@@ -429,15 +430,15 @@
                         <input class="in_id" id="in_id" type="text">
                         <button id="o_edit">Sửa sản phẩm</button>
                     </div>
-                    <div class="set_product" id="edit_pro">
+                    <div class="set_product30" id="edit_pro">
                         <button class="close" id="close2">X</button>
                         <div class="title">Sửa sản phẩm</div>
-                        <div class="ID">
+                        <div class="ID5">
                             <label for="edit-id">ID</label>
                             <input id="edit-id" type="text" readonly>
                         </div>
                         <div class="center">
-                            <div class="left">
+                            <div class="left2">
                                 <div>
                                     <label for="edit-name">Tên sản phẩm</label>
                                     <input id="edit-name" type="text">
@@ -470,7 +471,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="describe">
+                        <div class="describe15">
                             <label for="">Mô tả</label>
                             <textarea id="edit-des"></textarea>
                         </div>
@@ -479,16 +480,16 @@
                         </div>
                     </div>
                     <!-- chi tiết sản phẩm -->
-                    <div class="set_product" id="detail_pro">
+                    <div class="set_product30" id="detail_pro">
                         <button class="close" id="close3">X</button>
                         <div class="title">Chi tiết sản phẩm
                         </div>
-                        <div class="ID">
+                        <div class="ID5     ">
                             <label for="detail-id">ID</label>
                             <input id="detail-id" type="text" readonly>
                         </div>
                         <div class="center_d">
-                            <div class="left">
+                            <div class="left2">
                                 <div>
                                     <label for="detail-name">Tên sản phẩm</label>
                                     <input id="detail-name" readonly type="text">
@@ -523,9 +524,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="describe">
+                        <div class="describe15">
                             <label for="textarea">Mô tả</label>
-                            <textarea></textarea>
+                            <textarea id="txt-detail-product"></textarea>
                         </div>
                     </div>
                     <div class="set3_product" id="add_type_pro">
