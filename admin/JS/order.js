@@ -21,17 +21,19 @@ document.getElementById("date-confirm-last").value = CurrentDate()
 
 
 function calculated(price) {
-    price = price.toString()
-    let ar = new Array()
-    for (let i = 0; i < price.length; i++) {
-        if (i % 3 == 0 && i != 0) {
-            ar.push(".")
+    if (price !== null) {
+        price = price.toString()
+        let ar = new Array()
+        for (let i = 0; i < price.length; i++) {
+            if (i % 3 == 0 && i != 0) {
+                ar.push(".")
+            }
+            ar.push(price[price.length - i - 1])
         }
-        ar.push(price[price.length - i - 1])
-    }
-    price = ""
-    for (let i = ar.length - 1; i >= 0; i--) {
-        price += ar[i]
+        price = ""
+        for (let i = ar.length - 1; i >= 0; i--) {
+            price += ar[i]
+        }
     }
     return price
 }

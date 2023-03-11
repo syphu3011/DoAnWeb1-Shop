@@ -342,7 +342,7 @@ async function fillProd(product = null) {
     hideRemove()
     table.appendChild(row_head)
     product.forEach((prod) => {
-        if (prod.status != "0") {
+        if (prod.idstatus != "0") {
             try {
                 let clasify 
                 clasify = prod.clasify
@@ -367,7 +367,7 @@ async function fillProd(product = null) {
                     '<th id="detail-' +
                     prod.id +
                     '">Chi tiết</th><th>' +
-                    (prod.status == 1 ? "Đang bán" : "Ngừng bán") +
+                    (prod.idstatus == "TT01" ? "Đang bán" : "Ngừng bán") +
                     '</th><th><button id="remove' +
                     prod.id +
                     '">Xóa</button></th></th><th><button id="update' +
@@ -431,7 +431,7 @@ async function refreshData() {
             return responseData
         }).catch(function(error) {
             // Xử lý lỗi
-            console.error(error);
+            console.log(error);
         });
         obj = response_data
         console.log(obj);
@@ -495,7 +495,10 @@ function initId1(clasify) {
     for (let i = 0; i < last_id.length; i++) {
         let num_check = parseInt(last_id.charAt(i))
         if (!Number.isNaN(num_check)) {
-            max = parseInt(last_id.split(last_char)[1])
+            const current_num = parseInt(last_id.split(last_char)[1])
+            if (max < current_num) {
+                max = current_num
+            }
             break
         }
         else {
@@ -505,40 +508,72 @@ function initId1(clasify) {
     return id + String(max + 1).padStart(8, "0")
     // return "1";
 }
+function to_form_data(object) {
+    var formData = new FormData();
 
+    for (var key in object) {
+        if (object.hasOwnProperty(key)) {
+            formData.append(key, object[key]);
+        }
+    }
+
+    return formData;
+}
+
+function to_form_data_with_name(objects, name) {
+    var formData = new FormData();
+
+    for (const key in objects) {
+        formData.append(name, objects[key]);
+    }
+
+    return formData;
+}
+function to_form_data_have_image(object, name_form_for_images, files) {
+    var formData = new FormData();
+
+    for (var key in object) {
+        if (object.hasOwnProperty(key)) {
+            formData.append(key, object[key]);
+        }
+    }
+    for (var index = 0; index < files.length; index++) {
+        formData.append(name_form_for_images, files[index]);
+     }
+    return formData;
+}
 async function addProd(Prod) {
     refreshData();
     console.log(JSON.stringify(Prod));
+
     if (checkConstraintAddProd(Prod)) {
-        var images_data = new FormData();
-		let totalfiles = document.getElementById('choose-img-prod').files
-        for (var index = 0; index < totalfiles.length; index++) {
-            images_data.append("images[]", totalfiles[index]);
-        }
-        Prod.images = images_data
+        var form_data = new FormData();
+        let totalfiles = document.getElementById('choose-img-prod').files;
+
+        // Prod.images = totalfiles
+        form_data = to_form_data_have_image(Prod, "images_ar[]", totalfiles);
+
         $.ajax({
-            type: 'Post',
+            type: 'POST',
             url: './Server/product/create_product.php',
-            data: JSON.stringify(Prod),
-            contentType:'application/json; charset=utf-8;',
+            data: form_data,
             dataType: 'json',
-            success: function(jqXHR, textStatus, errorThrown) {       
-            //   alert("saved");
-                console.log("Request failed: " + textStatus + ", " + errorThrown);
-                alert("Request failed: " + textStatus + ", " + errorThrown);
-            //   window.location = "http://localhost/DoAnWeb1-Shop/admin/Server/product/create_product.php"
+            contentType: false,
+            processData: false,
+            success: function(jqXHR, textStatus, errorThrown) {
+                console.log("Request success: " + textStatus + ", " + errorThrown);
+                alert("Request success: " + textStatus + ", " + errorThrown + jqXHR);
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                // window.location = "http://localhost/DoAnWeb1-Shop/admin/Server/product/create_product.php"
                 console.log("Request failed: " + textStatus + ", " + errorThrown);
-                alert("Request failed: " + textStatus + ", " + errorThrown);
+                alert("Request failed: " + textStatus + ", " + errorThrown + JSON.stringify(jqXHR));
             }
-            });
-        // obj.product.push(Prod.toJSON);
-        // writeToLocalStorage(obj);
+        });
     }
+
     await fillProd();
 }
+
 
 async function updateProd(Prod) {
     await refreshData();

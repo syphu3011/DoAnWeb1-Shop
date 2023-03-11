@@ -1,7 +1,14 @@
 <?php
     require_once('../../../init.php');
     //Sản phẩm
-    $sql = "SELECT id, name, madein made_in, description, idstatus, GROUP_CONCAT(id_classify SEPARATOR ',') clasify,GROUP_CONCAT(link_image SEPARATOR ',') images, MIN(price) price FROM product, image_product, product_list_classify, product_list WHERE id = image_product.id_product and id = product_list_classify.id_product and id = product_list.id_product group by id";
+    $sql = "SELECT id, name, madein made_in, description, idstatus, GROUP_CONCAT(DISTINCT id_classify SEPARATOR ',') clasify,GROUP_CONCAT(DISTINCT link_image SEPARATOR ',') images, MIN(price) price 
+    FROM product 
+    left join image_product on id = image_product.id_product 
+    left join product_list_classify on id = product_list_classify.id_product 
+    left join product_list on id = product_list.id_product 
+    group by id
+    
+    ";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $product = $stmt->fetchAll(PDO::FETCH_ASSOC);
