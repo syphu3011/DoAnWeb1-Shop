@@ -1,4 +1,4 @@
-if (localStorage.getItem("checkLogin") == "true") {
+// if (localStorage.getItem("checkLogin") == "true") {
     let current_staff = JSON.parse(localStorage.getItem("currentStaff"))
     let contentDiv = document.getElementById("content")
     let left_bar = document.getElementById("back-left-bar")
@@ -182,6 +182,7 @@ if (localStorage.getItem("checkLogin") == "true") {
         openCloseLeftBar()
         changeToHomepage()
     }
-} else {
-    // window.location.href = "../index.html"
-}
+// } 
+// else {
+//     // window.location.href = "../index.html"
+// }

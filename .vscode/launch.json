@@ -9,7 +9,7 @@
             "type": "php",
             "request": "launch",
             "port": [
-                9000
+                9003
             ]
         },
         {
@@ -34,12 +34,6 @@
             "program": "${file}",
             "cwd": "${fileDirname}",
             "externalConsole": false,
-            "port": 80
-        },
-        {
-            "name": "Listen for Xdebug",
-            "type": "php",
-            "request": "launch",
             "port": 80
         }
     ]
