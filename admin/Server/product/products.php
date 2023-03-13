@@ -11,7 +11,8 @@
     ";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
-    $product = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    echo "vãi";
     // Chuyển chuỗi các link ảnh và loại sản phẩm thành mảng
     foreach ($products as &$product) {
         $product['images'] = explode(',', $product['images']);
