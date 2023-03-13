@@ -1323,6 +1323,7 @@ xhttp.onreadystatechange = function () {
     var response = JSON.parse(this.responseText); // lưu phản hồi vào biến cục bộ
     // sử dụng biến response ngay tại đây
     get_data(response);
+    createHomepage();
   }
 };
 xhttp.open("GET", "server/homepage.php", true);
