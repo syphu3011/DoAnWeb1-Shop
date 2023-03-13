@@ -1305,3 +1305,22 @@ if (localStorage.getItem("data") == null) {
 //   document.getElementById("birthday").value = "2002-10-10";
 //   document.getElementById("phone-mail-regis").value = "0395932776";
 // }
+let result = new Array();
+function get_data(cus) {
+  result.customer = cus.customer;
+  result.largeClassify = cus.largeClassify;
+  result.color = cus.color;
+  result.size = cus.size;
+}
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function () {
+  if (this.readyState == 4 && this.status == 200) {
+    var response = JSON.parse(this.responseText); // lưu phản hồi vào biến cục bộ
+    // sử dụng biến response ngay tại đây
+    console.log(response);
+    get_data(response);
+  }
+};
+xhttp.open("GET", "server/homepage.php", true);
+xhttp.send();
+console.log(result);
