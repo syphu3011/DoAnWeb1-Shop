@@ -51,17 +51,8 @@ let pathImage = new Array();
 let arrProduct = new Array();
 let currentPage = 1;
 let checkInCart = false;
-
-// let data = JSON.parse(localStorage.getItem("data"));
-// if (data == null) {
-//   localStorage.setItem("data", JSON.stringify(arr));
-//   localStorage.setItem("checkLogin", "true");
-//   localStorage.setItem("currentIdUser", "");
-//   localStorage.setItem("currentStaff", "");
-data = JSON.parse(localStorage.getItem("data"));
-// }
-
-//
+// data = JSON.parse(localStorage.getItem("data"));
+// data = result;
 let currentUser = null;
 let firstName = document.getElementById("inp-firstname");
 let lastName = document.getElementById("inp-lastname");
@@ -515,9 +506,15 @@ document.getElementById("forgot-pass").onclick = function () {
   }, 300);
 };
 showtype.onclick = function () {
+  let arrType = new Array();
+  data.largeClassify.forEach((e) => {
+    e.miniClassify.forEach((el) => {
+      arrType.push(el.name);
+    });
+  });
   showFilter(
     listtype,
-    itemstype,
+    arrType,
     "id-type",
     listprice,
     listsale,
@@ -527,10 +524,15 @@ showtype.onclick = function () {
 showprice.onclick = function () {
   showFilter(listprice, itemsprice, "", listsale, listtype);
 };
+//bộ lọc khuyến mãi
 showsale.onclick = function () {
+  let arrPromo = new Array();
+  data.promote.forEach((e) => {
+    arrPromo.push(e.content);
+  });
   showFilter(
     listsale,
-    itemssale,
+    arrPromo,
     "id-sale",
     listtype,
     listprice,
@@ -595,20 +597,22 @@ itemstype.push("tất cả");
 //     itemstype.push(el.name);
 //   });
 // });
+console.log(data.largeClassify);
 //
 //
 //
 //
 //
 //
+console.log(data);
 var itemsprice = document
   .getElementById("list-price")
   .getElementsByClassName("list-item");
 var itemssale = new Array();
 itemssale.push("tất cả");
-data.promote.forEach((e) => {
-  itemssale.push(e.name);
-});
+// data.promote.forEach((e) => {
+//   itemssale.push(e.name);
+// });
 // document.getElementById("list-sale").getElementsByClassName("list-item")
 select(itemstype, document.getElementById("selected-type"), listtype);
 select(itemsprice, document.getElementById("selected-price"), listprice);
