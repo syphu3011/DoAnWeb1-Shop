@@ -11,7 +11,7 @@
     ";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
-    $product = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     // Chuyển chuỗi các link ảnh và loại sản phẩm thành mảng
     foreach ($products as &$product) {
         $product['images'] = explode(',', $product['images']);
@@ -41,7 +41,11 @@
         $value['miniClassify'] = $mini_classify;
     }
     //tạo json 
-    $result = array('product' => $product, 'prodInStock' => $prodInStock, 'largeClassify' => $big_classify);
+    $result = array(
+        'product' => $products, 
+        'prodInStock' => $prodInStock, 
+        'largeClassify' => $big_classify
+    );
     //Chuyển kết quả thành JSON và xuất ra
     $json = json_encode($result, JSON_UNESCAPED_UNICODE);
     header('Content-Type: application/json; charset=utf-8');
