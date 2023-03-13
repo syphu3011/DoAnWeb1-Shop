@@ -41,7 +41,7 @@
         $value['miniClassify'] = $mini_classify;
     }
     //tạo json 
-    $result = array('product' => $product, 'prodInStock' => $prodInStock, 'largeClassify' => $big_classify);
+    $result = array('product' => $products, 'prodInStock' => $prodInStock, 'largeClassify' => $big_classify);
     //Chuyển kết quả thành JSON và xuất ra
     $json = json_encode($result, JSON_UNESCAPED_UNICODE);
     header('Content-Type: application/json; charset=utf-8');
