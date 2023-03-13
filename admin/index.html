@@ -430,18 +430,22 @@
                         <input class="in_id" id="in_id" type="text">
                         <button id="o_edit">Sửa sản phẩm</button>
                     </div>
-                    <div class="set_product30" id="edit_pro">
+                    <div class="set_product" id="edit_pro">
                         <button class="close" id="close2">X</button>
                         <div class="title">Sửa sản phẩm</div>
-                        <div class="ID5">
+                        <div class="ID">
                             <label for="edit-id">ID</label>
                             <input id="edit-id" type="text" readonly>
                         </div>
                         <div class="center">
-                            <div class="left2">
+                            <div class="left">
                                 <div>
                                     <label for="edit-name">Tên sản phẩm</label>
                                     <input id="edit-name" type="text">
+                                </div>
+                                <div class="div-made">
+                                    <label for="edit-made-in">Xuất Xứ:</label>
+                                    <input type="text" name="edit-made-in" id="edit-made-in">
                                 </div>
                                 <div class="edit_type">
                                     <label>Loại</label>
@@ -459,22 +463,16 @@
                                     </ul>
                                     <input type="file" id="choose-img-prod2" accept="image/png, image/jpg,image/jpeg, image/gif, image/svg" max="2097152">
                                 </div>
-                            </div>
-                            <div class="right">
-                                <div class="div-price">
-                                    <label for="edit-price">Giá bán</label>
-                                    <input id="edit-price" type="number">
-                                </div>
-                                <div class="div-made">
-                                    <label for="edit-made-in">Xuất Xứ:</label>
-                                    <input type="text" name="edit-made-in" id="edit-made-in">
+                                <div class="describe">
+                                    <label for="">Mô tả</label>
+                                    <textarea id="edit-des"></textarea>
                                 </div>
                             </div>
+                            <!-- <div class="right">
+
+                            </div> -->
                         </div>
-                        <div class="describe15">
-                            <label for="">Mô tả</label>
-                            <textarea id="edit-des"></textarea>
-                        </div>
+                        
                         <div class="button_add1">
                             <button id="confirm">Xác nhận sửa</button>
                         </div>
@@ -509,10 +507,6 @@
                                 </div>
                             </div>
                             <div class="right">
-                                <div class="div-prices">
-                                    <label for="detail-price">Giá bán</label>
-                                    <input id="detail-price" readonly type="text">
-                                </div>
                                 <div class="div-made">
                                     <label for="detail-made-in">Xuất Xứ</label>
                                     <input id="detail-made-in" readonly type="text">

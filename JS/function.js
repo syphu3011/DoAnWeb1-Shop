@@ -1292,10 +1292,10 @@ let arr = {
     },
   ],
 };
-let data;
-if (localStorage.getItem("data") == null) {
-  localStorage.setItem("data", JSON.stringify(arr));
-}
+let data = new Array();
+// if (localStorage.getItem("data") == null) {
+//   localStorage.setItem("data", JSON.stringify(arr));
+// }
 // function testthoi() {
 //   document.getElementById("inp-firstname").value = "123";
 //   document.getElementById("inp-lastname").value = "123";
@@ -1305,22 +1305,27 @@ if (localStorage.getItem("data") == null) {
 //   document.getElementById("birthday").value = "2002-10-10";
 //   document.getElementById("phone-mail-regis").value = "0395932776";
 // }
-let result = new Array();
 function get_data(cus) {
-  result.customer = cus.customer;
-  result.largeClassify = cus.largeClassify;
-  result.color = cus.color;
-  result.size = cus.size;
+  data.customer = cus.customer;
+  data.largeClassify = cus.largeClassify;
+  data.color = cus.color;
+  data.size = cus.size;
+  data.cart = cus.cart;
+  data.product = cus.product;
+  data.product_in_stock = cus.product_in_stock;
+  data.promote = cus.promotion;
+  data.receipt = cus.receipt;
+  data.staff = cus.staff;
 }
 var xhttp = new XMLHttpRequest();
 xhttp.onreadystatechange = function () {
   if (this.readyState == 4 && this.status == 200) {
     var response = JSON.parse(this.responseText); // lưu phản hồi vào biến cục bộ
     // sử dụng biến response ngay tại đây
-    console.log(response);
     get_data(response);
+    createHomepage();
   }
 };
 xhttp.open("GET", "server/homepage.php", true);
 xhttp.send();
-console.log(result);
+console.log(data);

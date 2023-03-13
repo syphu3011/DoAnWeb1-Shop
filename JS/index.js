@@ -51,17 +51,7 @@ let pathImage = new Array();
 let arrProduct = new Array();
 let currentPage = 1;
 let checkInCart = false;
-
-// let data = JSON.parse(localStorage.getItem("data"));
-// if (data == null) {
-//   localStorage.setItem("data", JSON.stringify(arr));
-//   localStorage.setItem("checkLogin", "true");
-//   localStorage.setItem("currentIdUser", "");
-//   localStorage.setItem("currentStaff", "");
-data = JSON.parse(localStorage.getItem("data"));
-// }
-
-//
+// data = JSON.parse(localStorage.getItem("data"));
 let currentUser = null;
 let firstName = document.getElementById("inp-firstname");
 let lastName = document.getElementById("inp-lastname");
@@ -206,7 +196,7 @@ function checkValidNameU(f_name, l_name) {
 //
 //
 //
-//
+//Đăng ký tài khoản
 btnsigup.onclick = function () {
   let username = document.getElementById("inp-username");
   let sex = "";
@@ -302,100 +292,124 @@ document.getElementById("passwd").addEventListener("keypress", function (ev) {
 });
 
 function login() {
-  let count = 0;
   if (mailorphone.value == "" || passwd.value == "") {
     alert("vui lòng nhập đủ thông tin");
   } else {
-    let checkOk = false;
-    let lock = false;
-    let isStaff = false;
+    let login = false;
+    let users = new Array();
     data.customer.forEach((element) => {
-      if (
-        (element.username == mailorphone.value ||
-          element.number_phone == mailorphone.value) &&
-        element.password == passwd.value
-      ) {
-        if (element.status.toLowerCase() == "đã khóa") {
-          lock = true;
-        } else {
-          username = element.username;
-          currentUser = element;
-        }
-        count = 1;
-      }
+      users.push(element);
     });
     data.staff.forEach((element) => {
-      if (
-        (element.username == mailorphone.value ||
-          element.number_phone == mailorphone.value) &&
-        element.password == passwd.value
-      ) {
-        if (element.status.toLowerCase() == "đã khóa") {
-          lock = true;
-        } else {
-          isStaff = true;
-          username = element.username;
-          currentStaff = element;
-        }
-        count = 1;
-      }
+      users.push(element);
     });
-    if (count != 1) {
-      alert("Tài khoản hoặc mật khẩu không chính xác");
-      return;
-    }
-    console.log(currentUser);
-    if (!lock) {
-      if (!isStaff) {
-        console.log("Bạn đang đăng nhập với vai trò khách hàng");
-        showacc(signin, 0, 1200);
-        setTimeout(() => {
-          signin.style.display = "";
-          account.style.display = "";
-          document.getElementById("noti").style.display = "flex";
-          document.getElementById("noti-noti").innerHTML =
-            "Đăng nhập thành công";
-          showacc(document.getElementById("noti-noti"), -500, 0);
-          document.getElementById("noti-noti").style.display = "flex";
-          setTimeout(() => {
-            document.getElementById("noti").style.display = "";
-          }, 700);
-        }, 450);
-
-        document.getElementById("name-in4").innerHTML = currentUser.name;
-        document.getElementById("update-name").value = currentUser.name;
-
-        document.getElementById("update-contact").value =
-          currentUser.number_phone;
-        let birthday =
-          currentUser.birth_day.split("-")[2] +
-          "-" +
-          currentUser.birth_day.split("-")[1] +
-          "-" +
-          currentUser.birth_day.split("-")[0];
-        document.getElementById("update-birthday").value = birthday;
-        document.getElementById("birthday-in4").innerHTML = birthday;
-        document.getElementById("phone-in4").innerHTML =
-          currentUser.number_phone;
-        localStorage.setItem("currentIdUser", JSON.stringify(currentUser));
-        let se = document
-          .getElementById("update-in4")
-          .getElementsByTagName("label");
-        for (let i = 0; i < 3; i++) {
-          if (se[i].textContent == currentUser.sex) {
-            document.getElementsByName("sex")[i + 3].checked = true;
-          }
+    // console.log(arr_user);
+    for (let user of users) {
+      if (
+        user.username_customer == mailorphone.value ||
+        user.numberphone == mailorphone.value
+      ) {
+        if (user.password_customer == passwd.value) {
+          console.log("Đăng nhập thành công");
+          login = true;
+          return;
+        } else {
+          alert("Bạn đã nhập sai mật khẩu!");
         }
-      } else {
-        console.log("Bạn đang đăng nhập với vai trò nhân viên");
-        localStorage.setItem("currentStaff", JSON.stringify(currentStaff));
-        localStorage.setItem("checkLogin", true);
-        window.location.href = "admin/index.html";
       }
-      checkOk = true;
-    } else {
-      alert("Tài khoản hiện đang bị khóa");
     }
+    if (login) {
+      alert("Đăng nhập thành công!");
+    }
+    // let lock = false;
+    // let isStaff = false;
+    // data.customer.forEach((element) => {
+    //   if (
+    //     (element.username == mailorphone.value ||
+    //       element.number_phone == mailorphone.value) &&
+    //     element.password == passwd.value
+    //   ) {
+    //     if (element.status.toLowerCase() == "đã khóa") {
+    //       lock = true;
+    //     } else {
+    //       username = element.username;
+    //       currentUser = element;
+    //     }
+    //     count = 1;
+    //   }
+    // });
+    // data.staff.forEach((element) => {
+    //   if (
+    //     (element.username == mailorphone.value ||
+    //       element.number_phone == mailorphone.value) &&
+    //     element.password == passwd.value
+    //   ) {
+    //     if (element.status.toLowerCase() == "đã khóa") {
+    //       lock = true;
+    //     } else {
+    //       isStaff = true;
+    //       username = element.username;
+    //       currentStaff = element;
+    //     }
+    //     count = 1;
+    //   }
+    // });
+    // if (count != 1) {
+    //   alert("Tài khoản hoặc mật khẩu không chính xác");
+    //   return;
+    // }
+    // console.log(currentUser);
+    // if (!lock) {
+    //   if (!isStaff) {
+    //     console.log("Bạn đang đăng nhập với vai trò khách hàng");
+    //     showacc(signin, 0, 1200);
+    //     setTimeout(() => {
+    //       signin.style.display = "";
+    //       account.style.display = "";
+    //       document.getElementById("noti").style.display = "flex";
+    //       document.getElementById("noti-noti").innerHTML =
+    //         "Đăng nhập thành công";
+    //       showacc(document.getElementById("noti-noti"), -500, 0);
+    //       document.getElementById("noti-noti").style.display = "flex";
+    //       setTimeout(() => {
+    //         document.getElementById("noti").style.display = "";
+    //       }, 700);
+    //     }, 450);
+
+    //     document.getElementById("name-in4").innerHTML = currentUser.name;
+    //     document.getElementById("update-name").value = currentUser.name;
+
+    //     document.getElementById("update-contact").value =
+    //       currentUser.number_phone;
+    //     let birthday =
+    //       currentUser.birth_day.split("-")[2] +
+    //       "-" +
+    //       currentUser.birth_day.split("-")[1] +
+    //       "-" +
+    //       currentUser.birth_day.split("-")[0];
+    //     document.getElementById("update-birthday").value = birthday;
+    //     document.getElementById("birthday-in4").innerHTML = birthday;
+    //     document.getElementById("phone-in4").innerHTML =
+    //       currentUser.number_phone;
+    //     localStorage.setItem("currentIdUser", JSON.stringify(currentUser));
+    //     let se = document
+    //       .getElementById("update-in4")
+    //       .getElementsByTagName("label");
+    //     for (let i = 0; i < 3; i++) {
+    //       if (se[i].textContent == currentUser.sex) {
+    //         document.getElementsByName("sex")[i + 3].checked = true;
+    //       }
+    //     }
+    //   } else {
+    //     console.log("Bạn đang đăng nhập với vai trò nhân viên");
+    //     localStorage.setItem("currentStaff", JSON.stringify(currentStaff));
+    //     localStorage.setItem("checkLogin", true);
+    //     window.location.href = "admin/index.html";
+    //   }
+    //   checkOk = true;
+    // } else {
+    //   alert("Tài khoản hiện đang bị khóa");
+    // }
   }
 }
 btnlogin.onclick = function () {
@@ -514,10 +528,17 @@ document.getElementById("forgot-pass").onclick = function () {
     showacc(setnewpass, -500, 0);
   }, 300);
 };
+//Bộ lọc loại
 showtype.onclick = function () {
+  let arrType = new Array();
+  data.largeClassify.forEach((e) => {
+    e.miniClassify.forEach((el) => {
+      arrType.push(el.name);
+    });
+  });
   showFilter(
     listtype,
-    itemstype,
+    arrType,
     "id-type",
     listprice,
     listsale,
@@ -527,10 +548,15 @@ showtype.onclick = function () {
 showprice.onclick = function () {
   showFilter(listprice, itemsprice, "", listsale, listtype);
 };
+//bộ lọc khuyến mãi
 showsale.onclick = function () {
+  let arrPromo = new Array();
+  data.promote.forEach((e) => {
+    arrPromo.push(e.content);
+  });
   showFilter(
     listsale,
-    itemssale,
+    arrPromo,
     "id-sale",
     listtype,
     listprice,
@@ -590,25 +616,22 @@ function showFilter(list1, arr, id, list2, list3, select) {
 var itemstype = new Array();
 itemstype.push("tất cả");
 
-// data.largeClassify.forEach((e) => {
-//   e.miniClassify.forEach((el) => {
-//     itemstype.push(el.name);
-//   });
-// });
+console.log(data.largeClassify);
 //
 //
 //
 //
 //
 //
+console.log(data);
 var itemsprice = document
   .getElementById("list-price")
   .getElementsByClassName("list-item");
 var itemssale = new Array();
 itemssale.push("tất cả");
-data.promote.forEach((e) => {
-  itemssale.push(e.name);
-});
+// data.promote.forEach((e) => {
+//   itemssale.push(e.name);
+// });
 // document.getElementById("list-sale").getElementsByClassName("list-item")
 select(itemstype, document.getElementById("selected-type"), listtype);
 select(itemsprice, document.getElementById("selected-price"), listprice);
@@ -668,6 +691,7 @@ let isProductShow = false;
 function createListType(sex) {
   let sp = document.createElement("div");
   sp.id = "sanpham";
+  //
   for (let i = 0; i < data.largeClassify.length; i++) {
     let div = document.createElement("div");
     div.style.borderRight = "1px solid gray";
@@ -687,8 +711,7 @@ function createListType(sex) {
     for (let j = 0; j < data.largeClassify[i].miniClassify.length; j++) {
       if (
         data.largeClassify[i].miniClassify[j].id.indexOf(sex.toUpperCase()) !=
-          -1 ||
-        data.largeClassify[i].id == "PK"
+        -1
       ) {
         let li = document.createElement("li");
         li.className = "list-item";
@@ -1276,7 +1299,7 @@ function createHomepage() {
       j
     ].style.gridTemplateColumns = "1fr 1fr 1fr 1fr 1fr";
 }
-createHomepage();
+// createHomepage();
 //
 //
 //màn hình chính

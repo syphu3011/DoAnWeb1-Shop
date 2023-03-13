@@ -375,7 +375,7 @@ async function fillProd(product = null) {
                     '">Sửa</button></th>';
                 table.appendChild(row);
                 document.getElementById("detail-" + prod.id).onclick = function() {
-                    document.getElementById("dialog4").style.display = "block";
+                    document.getElementById("dialog4").style.display = "flex";
                     document.getElementById("detail_pro").style.visibility = "visible";
                     fillDetail(prod.id)
                 }
@@ -713,7 +713,7 @@ document.getElementById("close").onclick = function() {
 };
 
 function OpenDialog() {
-    document.getElementById("dialog4").style.display = "block";
+    document.getElementById("dialog4").style.display = "flex";
 }
 
 function CloseDialog() {
