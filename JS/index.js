@@ -303,23 +303,51 @@ function login() {
     data.staff.forEach((element) => {
       users.push(element);
     });
-    // console.log(arr_user);
     for (let user of users) {
+      //kiểm tra tồn tại tài khoản
       if (
-        user.username_customer == mailorphone.value ||
+        user.username == mailorphone.value ||
         user.numberphone == mailorphone.value
       ) {
-        if (user.password_customer == passwd.value) {
-          console.log("Đăng nhập thành công");
-          login = true;
-          return;
+        //Kiểm tra tài khoản chính xác
+        if (user.password == passwd.value) {
+          //Kiểm tra trạng thái tài khoản
+          if (user.id_status=="TT04"||user.id_status=="TT05"){
+            console.log("Đăng nhập thành công");
+            currentUser=user
+            login = true;
+          }else{
+            alert("Khoản của bạn hiện đang bị khóa!");
+          }
         } else {
           alert("Bạn đã nhập sai mật khẩu!");
         }
       }
     }
     if (login) {
-      alert("Đăng nhập thành công!");
+      if (currentUser.id.indexOf("KH")!=-1){
+        // alert("Đăng nhập thành công!");
+      showacc(signin, 0, 1200);
+      //Bảng thông báo
+        setTimeout(() => {
+          signin.style.display = "";
+          account.style.display = "";
+          document.getElementById("noti").style.display = "flex";
+          document.getElementById("noti-noti").innerHTML =
+            "Đăng nhập thành công";
+          showacc(document.getElementById("noti-noti"), -500, 0);
+          document.getElementById("noti-noti").style.display = "flex";
+          setTimeout(() => {
+            document.getElementById("noti").style.display = "";
+          }, 700);
+        }, 450);
+      }else{
+        console.log("Bạn đang đăng nhập với vai trò nhân viên");
+        localStorage.setItem("currentStaff", JSON.stringify(currentUser));
+        localStorage.setItem("checkLogin", true);
+        window.location.href = "./admin/index.html";
+      }
+      
     }
     // let lock = false;
     // let isStaff = false;

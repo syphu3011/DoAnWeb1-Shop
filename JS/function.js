@@ -1307,6 +1307,12 @@ let data = new Array();
 // }
 function get_data(cus) {
   data.customer = cus.customer;
+  for(let i=0;i<data.customer.length;i++){
+    data.customer[i].username=data.customer[i].username_customer
+    data.customer[i].password=data.customer[i].password_customer
+    delete data.customer[i].username_customer
+    delete data.customer[i].password_customer
+  }
   data.largeClassify = cus.largeClassify;
   data.color = cus.color;
   data.size = cus.size;
@@ -1316,6 +1322,12 @@ function get_data(cus) {
   data.promote = cus.promotion;
   data.receipt = cus.receipt;
   data.staff = cus.staff;
+  for(let i=0;i<data.staff.length;i++){
+    data.staff[i].username=data.staff[i].username_staff
+    data.staff[i].password=data.staff[i].password_staff
+    delete data.staff[i].username_staff
+    delete data.staff[i].password_staff
+  }
 }
 var xhttp = new XMLHttpRequest();
 xhttp.onreadystatechange = function () {
