@@ -318,9 +318,11 @@ function login() {
             login = true;
           } else {
             alert("Khoản của bạn hiện đang bị khóa!");
+            return;
           }
         } else {
           alert("Bạn đã nhập sai mật khẩu!");
+          return;
         }
       }
     }
@@ -344,6 +346,7 @@ function login() {
         }, 450);
       } else {
         //Đăng nhập vào nhân viên
+        currentUser = null;
         console.log("Bạn đang đăng nhập với vai trò nhân viên");
         localStorage.setItem("currentStaff", JSON.stringify(currentUser));
         localStorage.setItem("checkLogin", true);
@@ -647,14 +650,12 @@ function showFilter(list1, arr, id, list2, list3, select) {
 var itemstype = new Array();
 itemstype.push("tất cả");
 
-console.log(data.largeClassify);
 //
 //
 //
 //
 //
 //
-console.log(data);
 var itemsprice = document
   .getElementById("list-price")
   .getElementsByClassName("list-item");
@@ -1074,6 +1075,7 @@ document.getElementById("thanh-toan").onclick = function (e) {
   }
 };
 btnuser.onclick = function () {
+  document.getElementById("passwd").value = "";
   if (currentUser != null) {
     if (showuser.style.display == "") {
       uname.innerHTML = currentUser.name;
@@ -1156,11 +1158,16 @@ btnshowfilter.onclick = function () {
     }
   }
 };
+//Phần thông tin người dùng
 uname.onclick = function () {
   account.style.display = "flex";
   showacc(in4, -500, 0);
   document.getElementById("show-user").style.display = "";
-  document.getElementById("named").innerHTML = username;
+  document.getElementById("named").innerHTML = currentUser.name;
+  document.getElementById("name-in4").innerHTML = currentUser.name;
+  document.getElementById("phone-in4").innerHTML = currentUser.numberphone;
+  document.getElementById("birthday-in4").innerHTML =
+    currentUser.birthday.split(" ")[0];
 };
 document.getElementById("up-date").onclick = function () {
   account.style.display = "flex";
