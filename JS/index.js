@@ -312,11 +312,11 @@ function login() {
         //Kiểm tra tài khoản chính xác
         if (user.password == passwd.value) {
           //Kiểm tra trạng thái tài khoản
-          if (user.id_status=="TT04"||user.id_status=="TT05"){
+          if (user.id_status == "TT04" || user.id_status == "TT05") {
             console.log("Đăng nhập thành công");
-            currentUser=user
+            currentUser = user;
             login = true;
-          }else{
+          } else {
             alert("Khoản của bạn hiện đang bị khóa!");
           }
         } else {
@@ -325,10 +325,11 @@ function login() {
       }
     }
     if (login) {
-      if (currentUser.id.indexOf("KH")!=-1){
+      //Đăng nhập vào khách hàng
+      if (currentUser.id.indexOf("KH") != -1) {
         // alert("Đăng nhập thành công!");
-      showacc(signin, 0, 1200);
-      //Bảng thông báo
+        showacc(signin, 0, 1200);
+        //Bảng thông báo
         setTimeout(() => {
           signin.style.display = "";
           account.style.display = "";
@@ -341,13 +342,15 @@ function login() {
             document.getElementById("noti").style.display = "";
           }, 700);
         }, 450);
-      }else{
+      } else {
+        //Đăng nhập vào nhân viên
         console.log("Bạn đang đăng nhập với vai trò nhân viên");
         localStorage.setItem("currentStaff", JSON.stringify(currentUser));
         localStorage.setItem("checkLogin", true);
         window.location.href = "./admin/index.html";
       }
-      
+    } else {
+      alert("Không tìm thấy tài khoản");
     }
     // let lock = false;
     // let isStaff = false;

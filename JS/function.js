@@ -1306,27 +1306,37 @@ let data = new Array();
 //   document.getElementById("phone-mail-regis").value = "0395932776";
 // }
 function get_data(cus) {
+  //Khách hàng
   data.customer = cus.customer;
-  for(let i=0;i<data.customer.length;i++){
-    data.customer[i].username=data.customer[i].username_customer
-    data.customer[i].password=data.customer[i].password_customer
-    delete data.customer[i].username_customer
-    delete data.customer[i].password_customer
+  for (let i = 0; i < data.customer.length; i++) {
+    data.customer[i].username = data.customer[i].username_customer;
+    data.customer[i].password = data.customer[i].password_customer;
+    delete data.customer[i].username_customer;
+    delete data.customer[i].password_customer;
   }
+  //Loại sản ohẩm
   data.largeClassify = cus.largeClassify;
+  //Màu
   data.color = cus.color;
+  //Kích cỡ
   data.size = cus.size;
+  //Giỏ hàng
   data.cart = cus.cart;
+  //Sản phẩm
   data.product = cus.product;
+  //Sản phẩm trong kho
   data.product_in_stock = cus.product_in_stock;
+  //Khuyến mãi
   data.promote = cus.promotion;
+  //Hoá đơn
   data.receipt = cus.receipt;
+  //Nhân viên
   data.staff = cus.staff;
-  for(let i=0;i<data.staff.length;i++){
-    data.staff[i].username=data.staff[i].username_staff
-    data.staff[i].password=data.staff[i].password_staff
-    delete data.staff[i].username_staff
-    delete data.staff[i].password_staff
+  for (let i = 0; i < data.staff.length; i++) {
+    data.staff[i].username = data.staff[i].username_staff;
+    data.staff[i].password = data.staff[i].password_staff;
+    delete data.staff[i].username_staff;
+    delete data.staff[i].password_staff;
   }
 }
 var xhttp = new XMLHttpRequest();
