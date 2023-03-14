@@ -102,7 +102,7 @@ td,tr,th{
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    /* margin-top:20pxs; */
+    margin: 10px;
     border-collapse: collapse;
     height: 22px;
     padding: 0;
