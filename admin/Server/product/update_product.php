@@ -1,5 +1,6 @@
 <?php
-    if ($_SERVER('REQUEST_METHOD') === 'UPDATE') {
+    if ($_SERVER('REQUEST_METHOD') === 'PUT') {
+        require_once("../../../init.php");
         try {
             // bắt đầu phiên
             $conn -> beginTransaction();
@@ -7,7 +8,7 @@
             $query = "UPDATE product 
             SET name = :name, madein = :made_in, description = :description, idstatus = :idstatus
             WHERE id = :id";
-            $stmt = $conn -> prepare($conn);
+            $stmt = $conn -> prepare($query);
             // thiết lập các biến prepare
             $stmt -> bindParam(":name", $_POST["name"]);
             $stmt -> bindParam(":made_in", $_POST["made_in"]);
