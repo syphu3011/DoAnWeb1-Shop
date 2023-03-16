@@ -1,12 +1,11 @@
 <?php
     require_once("../init.php");
-    $data;
     //
     //Lấy dữ liệu customers
-    $stm=$conn->prepare("SELECT * FROM `customer`");
-    $stm->execute();
-    $customer = $stm->fetchAll(PDO::FETCH_ASSOC);
-    $stm=null;
+    // $stm=$conn->prepare("SELECT * FROM `customer`");
+    // $stm->execute();
+    // $customer = $stm->fetchAll(PDO::FETCH_ASSOC);
+    // $stm=null;
     //
     //Lấy dữ liệu loại sản phẩm
     $stm=$conn->prepare("SELECT * FROM `classify` WHERE id_big_classify is NULL");
@@ -77,11 +76,11 @@
     $data["receipt"]=$receipt;
     //
     //Lấy dữ liệu nhân viên
-    $stm=$conn->prepare("SELECT * FROM `staff`");
-    $stm->execute();
-    $staff=$stm->fetchAll(PDO::FETCH_ASSOC);
-    $stm=null;
-    $data["staff"]=$staff;
-    header('Content-Type: application/json; charset=utf-8');
+    // $stm=$conn->prepare("SELECT * FROM `staff`");
+    // $stm->execute();
+    // $staff=$stm->fetchAll(PDO::FETCH_ASSOC);
+    // $stm=null;
+    // $data["staff"]=$staff;
+    // header('Content-Type: application/json; charset=utf-8');
     echo json_encode($data);
 ?>
