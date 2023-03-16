@@ -175,7 +175,7 @@ button:hover .img-button{
     display: flex;
     margin-top: 15px;
     /* justify-content: space-evenly; */
-    /* align-items: center;  */
+    align-items: center; 
     width: 100%;
 
 }
@@ -264,7 +264,7 @@ button:hover .img-button{
 #div-price {
     width: 100%;
     display: flex;
-    margin-top: 15px;
+    /* margin-top: 15px; */
     margin-bottom: 15px;
 }
 #div-input-price {
@@ -399,6 +399,16 @@ button:hover .img-button{
 .delete-import-1-prod:hover {
     background-color: red;
     color: white;
+}
+.div-made30{
+    width: 100%;
+    display: flex;
+    justify-content: start  ;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.div-made30 input{
+    border-radius: 5px;
 }
 /* 
 @media screen and (max-width: 950px){

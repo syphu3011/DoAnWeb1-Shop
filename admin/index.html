@@ -386,10 +386,6 @@
                                     <label for="inp-name">Tên sản phẩm:</label>
                                     <input type="text" id="inp-name">
                                 </div>
-                                <div class="div-made">
-                                    <label for="inp-made-in">Xuất Xứ:</label>
-                                    <input type="text" name="" id="inp-made-in">
-                                </div>
                                 <div class="edit_type">
                                     <label>Loại:</label>
                                     <button class="add_type" onclick=BoxSelect()>Thêm loại</button>
@@ -820,7 +816,7 @@
                             <p class="label-input">Số lượng</p>
                             <div id="div-input-amount">
                                 <input type="number" id="input-amount" name="import-amount" min="1" style="height: 25px;margin:0px">
-                            </div>
+                        </div>
                             <p style="width: 10%; margin-left: 15px; margin-right: 5px;visibility: hidden" id="size-p">size</p>
                             <div id="div-input-size" style="visibility: hidden">
                                 <button id="select-size" style="height: 25px;padding: 5px; margin: 0px;">
@@ -840,6 +836,10 @@
                                 </ul>
                             </div>
                         </div>
+                        <div class="div-made30">
+                            <label for="inp-made-in" class="label-input">Xuất Xứ:</label>
+                            <input type="text" style="height: 25px;margin:0px" id="inp-made-in">
+                        </div>
                         <div id="div-price">
                             <p class="label-input">
                                 Giá nhập
@@ -848,6 +848,17 @@
                                 <input type="number" min="1000" step="500" id="input-price" name="import-price" style="height: 25px;margin:0px">
                             </div>
                         </div>
+                        <div class="div-made30">
+                            <label for="inp-price-sell" class="label-input">giá bán:</label>
+                            <input type="text" style="height: 25px;margin:0px" id="inp-price-sell">
+                        </div>
+                        <div class="div-made30">
+                            <label for="inp-price-sell" class="label-input">Màu sắc:</label>
+                            <input type="text" style="height: 25px;margin:0px" id="inp-color">
+                            <input type="color" id="change-color" >
+                        </div>
+
+                        
                         <button id="submit-import">Thêm hàng</button>
                     </div>
                 </div>
