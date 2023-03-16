@@ -39,9 +39,13 @@
         $stmt_mini_classify->execute();
         $mini_classify = $stmt_mini_classify->fetchAll(PDO::FETCH_ASSOC);
         $value['miniClassify'] = $mini_classify;
-    }
+    }//Xuất xứ
+    $sql_made_in = "SELECT id, name FROM input_country";
+    $stmt = $conn->prepare($sql_made_in);
+    $stmt->execute();
+    $made_in = $stmt->fetchAll(PDO::FETCH_ASSOC);
     //tạo json 
-    $result = array('product' => $products, 'prodInStock' => $prodInStock, 'largeClassify' => $big_classify);
+    $result = array('product' => $products, 'prodInStock' => $prodInStock, 'largeClassify' => $big_classify, 'input_country' => $made_in);
     //Chuyển kết quả thành JSON và xuất ra
     $json = json_encode($result, JSON_UNESCAPED_UNICODE);
     header('Content-Type: application/json; charset=utf-8');
