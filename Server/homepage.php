@@ -1,12 +1,6 @@
 <?php
     require_once("../init.php");
     //
-    //Lấy dữ liệu customers
-    // $stm=$conn->prepare("SELECT * FROM `customer`");
-    // $stm->execute();
-    // $customer = $stm->fetchAll(PDO::FETCH_ASSOC);
-    // $stm=null;
-    //
     //Lấy dữ liệu loại sản phẩm
     $stm=$conn->prepare("SELECT * FROM `classify` WHERE id_big_classify is NULL");
     $stm->execute();

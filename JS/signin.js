@@ -1,40 +1,79 @@
-let currentUser = null
-btnlogin.onclick = function() {
-    if (mailorphone.value == "" || passwd.value == "") {
-        alert("vui lòng nhập đủ thông tin")
-    } else {
-        let checkOk = false
-        data.customer.forEach(element => {
-            if ((element.username == mailorphone.value || element.number_phone == mailorphone.value) && element.password == passwd.value) {
-                showacc(signin, 0, 1200)
-                setTimeout(() => {
-                    signin.style.display = ""
-                    account.style.display = ""
-                }, 450);
-                username = element.username
-                currentUser = element
-                document.getElementById("name-in4").innerHTML = currentUser.name
-                document.getElementById("update-name").value = currentUser.name
-                document.getElementById("update-contact").value = currentUser.number_phone
-                let birthday = currentUser.birth_day.split("-")[2] + "-" + currentUser.birth_day.split("-")[1] + "-" + currentUser.birth_day.split("-")[0]
-                document.getElementById("birthday-in4").innerHTML = birthday
-                document.getElementById("phone-in4").innerHTML = currentUser.number_phone
-                localStorage.setItem("currentIdUser", JSON.stringify(currentUser))
-
-                checkOk = true
+// let test;
+document
+  .getElementById("form_login")
+  .addEventListener("submit", function (event) {
+    //Ngăn chặn hành vi mặc định của trình duyệt
+    event.preventDefault();
+    // Lấy giá trị của tên đăng nhập và mật khẩu từ form
+    var username = document.getElementById("mailorphone").value;
+    var password = document.getElementById("passwd").value;
+    if (username != "") {
+      if (password != "") {
+        // Tạo đối tượng XMLHttpRequest để gửi yêu cầu Ajax
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+            // Xử lý kết quả trả về từ server
+            //kiểm tra xem request được gửi đi đã thành công hay chưa
+            if (xhr.status === 200) {
+              var response = JSON.parse(xhr.responseText);
+              console.log(response);
+              //   test = response;
+              if (response.success) {
+                //Đăng nhập với vai trò nhân viên
+                if (response.data[0].id.indexOf("NV") != -1) {
+                  console.log("Bạn đang đăng nhập với vai trò nhân viên");
+                  localStorage.setItem(
+                    "currentStaff",
+                    JSON.stringify(currentUser)
+                  );
+                  localStorage.setItem("checkLogin", true);
+                  window.location.href = "./admin/index.html";
+                } else {
+                  //Đăng nhập vào enduser
+                  currentUser = response.data[0];
+                  //Ẩn giao diện đăng nhập
+                  showacc(signin, 0, 1200);
+                  // Thông báo đăng nhập thành công
+                  //Bảng thông báo
+                  setTimeout(() => {
+                    signin.style.display = "";
+                    account.style.display = "";
+                    document.getElementById("noti").style.display = "flex";
+                    document.getElementById("noti-noti").innerHTML =
+                      "Đăng nhập thành công";
+                    showacc(document.getElementById("noti-noti"), -500, 0);
+                    document.getElementById("noti-noti").style.display = "flex";
+                    setTimeout(() => {
+                      document.getElementById("noti").style.display = "";
+                    }, 700);
+                  }, 450);
+                  // alert("Đăng nhập thành công!");
+                }
+              } else {
+                // Thông báo đăng nhập thất bại
+                document.getElementById("mailorphone").focus();
+                alert("Tên đăng nhập hoặc mật khẩu không chính xác!");
+              }
+            } else {
+              // Thông báo lỗi nếu có
+              alert("Lỗi khi kết nối đến server!");
             }
-        })
-        if (!checkOk) {
-            alert("Tài khoản hoặc mật khẩu không chính xác")
-        }
-    }
-}
-document.getElementById("hide-show").onclick = function() {
-    if (document.getElementById("passwd").type == "password") {
-        document.getElementById("passwd").type = "text"
-        document.getElementById("img-hideshow").src = "Image/eye.png"
+          }
+        };
+        // Gửi yêu cầu Ajax đến server để xác thực đăng nhập
+        xhr.open("POST", "./Server/get_customer.php");
+        xhr.setRequestHeader(
+          "Content-type",
+          "application/x-www-form-urlencoded"
+        );
+        xhr.send("username=" + username + "&password=" + password);
+      } else {
+        document.getElementById("passwd").focus();
+        alert("Mật khẩu không được bỏ trống");
+      }
     } else {
-        document.getElementById("passwd").type = "password"
-        document.getElementById("img-hideshow").src = "Image/hidden.png"
+      document.getElementById("mailorphone").focus();
+      alert("Tên đăng nhập không được bỏ trống");
     }
-}
+  });

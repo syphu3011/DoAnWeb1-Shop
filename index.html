@@ -160,7 +160,8 @@ position: relative;">
             object-fit: scale-down;" src="Image/exit.png" alt="">
             </div>
             <!-- đăng nhập -->
-            <div id="signin">
+            <form id="form_login" action="" method="post">
+                <div id="signin">
                 <div style="line-height: 30px;
                 font-size: 22px;
                 display: block;
@@ -190,9 +191,12 @@ position: relative;">
                     </div>
                 </div>
                 <div id="forgot-pass">quên mật khẩu?</div>
-                <div id="btn-login">
+                <!-- <div id="btn-login">
                     đăng nhập
-                </div>
+                </div> -->
+                <button id="btn-login" type="submit">
+                    Đăng nhập
+                </button>
                 <div style="line-height: 30px;
                 font-size: 15px;
                 display: block;
@@ -201,6 +205,7 @@ position: relative;">
                     bạn chưa có tài khoản? <span id="btn-signup">đăng kí ngay</span>
                 </div>
             </div>
+            </form>
             <!-- đăng ký -->
             <div id="signup">
                 <div style="font-size: 22px;
@@ -973,4 +978,5 @@ position: relative;">
 <script src="./JS/xemsp.js"></script>
 <script src="./JS/timkiem.js"></script>
 <script src="./JS/lsdh.js"></script>
+<script src="JS/signin.js"></script>
 </html>
