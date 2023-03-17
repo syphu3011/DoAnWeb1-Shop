@@ -739,3 +739,25 @@ function eventRemove(idandidSize) {
 submit_import.onclick = eventImport
 
 import_btn.onclick = openImportPage
+
+
+// màu sắc
+// Lấy đối tượng input color và đối tượng input text
+const colorPicker = document.querySelector("#change-color");
+const textInput = document.querySelector("#inp-color");
+
+// Bắt sự kiện khi người dùng chọn màu
+colorPicker.addEventListener("input", () => {
+  // Lấy mã màu được chọn
+  const color = colorPicker.value;
+
+  // Fill màu cho input text
+  textInput.value = color;
+});
+textInput.addEventListener("input", () => {
+    // Lấy giá trị màu được nhập
+    const color = textInput.value;
+  
+    // Fill màu cho input color
+    colorPicker.value = color;
+  });
