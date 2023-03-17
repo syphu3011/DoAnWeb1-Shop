@@ -1,9 +1,15 @@
 <?php
     if ($_SERVER('REQUEST_METHOD') === 'PUT') {
         require_once("../../../init.php");
+        require_once('./same_function_product.php');
         try {
             // bắt đầu phiên
             $conn -> beginTransaction();
+            // Kiểm tra tên
+            if (!check_name($conn, $_POST["name"], $_POST["id"])) {
+                die("Tên không được trùng lặp với các sản phẩm khác!");
+            };
+            check_input_country($conn, $_POST["made_in"]);
             // thiết lập query
             $query = "UPDATE product 
             SET name = :name, madein = :made_in, description = :description, idstatus = :idstatus

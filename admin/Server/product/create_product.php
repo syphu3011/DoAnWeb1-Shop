@@ -1,6 +1,6 @@
 <?php
 require_once("../../../init.php");
-require_once("./same_function_product");
+require_once("./same_function_product.php");
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES)) {
     try {
         $conn -> beginTransaction();

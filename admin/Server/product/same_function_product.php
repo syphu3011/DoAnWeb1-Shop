@@ -1,7 +1,8 @@
 <?php
-    function check_name($conn, $name) {
-        $stmt = $conn->prepare("SELECT * FROM product WHERE name = :name");
+    function check_name($conn, $name, $id = '') {
+        $stmt = $conn->prepare("SELECT * FROM product WHERE name = :name and id <> :id");
         $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':id', $name);
         $stmt -> execute();
         $row_fetch = $stmt -> rowCount();
         if ($row_fetch > 0) {
