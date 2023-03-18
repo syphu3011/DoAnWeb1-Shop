@@ -10,6 +10,18 @@
             INSERT INTO `detail_import_coupon`(`id_import_coupon`, `id_product`, `id_size`, `id_color`, `amount`, `price_input`)
             VALUES (:idInput,:idProd,:idSize,:idColor,:amount,:price)
             ";
+            $query_insert_product_list = "
+            INSERT INTO `product_list`(`id_product`, `id_size`, `id_color`, `price`)
+            VALUES (:idProd,:idSize,:idColor,:price)
+            ";
+            $query_update_product_list = "
+            UPDATE `product_list`
+            SET price = :price
+            WHERE
+            id_product = :idProd 
+            and id_size = :idSize
+            and id_color = :idColor
+            ";  
             $query_product_in_stock = "
             INSERT INTO `product_in_stock`(`id_import_coupon`, `id_product`, `id_size`, `id_color`, `amount`, `price_input`)
             VALUES (:idInput,:idProd,:idSize,:idColor,:amount,:price)
@@ -26,6 +38,45 @@
             $stmt = $conn->prepare($query_product_in_stock);
             foreach($_POST['ProdInStock'] as $prod_in_stock) {
                 $stmt->execute($prod_in_stock);
+            }
+            // Xử lý thêm và cập nhật hàng
+
+            // Phân loại
+            $array_insert = array();
+            $array_update = array();
+            $query_check_exist = 
+                "SELECT *
+                FROM product_list
+                WHERE id_product = :idProd 
+                and id_size = :idSize 
+                and id_color = :idColor";
+            $stmt = $conn->prepare($query_check_exist);
+            foreach($_POST['ProductList'] as $prod_list) {
+                $stmt->bindParam(':idProd', $prod_list['idProd']);
+                $stmt->bindParam(':idSize', $prod_list['idSize']);
+                $stmt->bindParam(':idColor', $prod_list['idColor']);
+                $stmt->execute();
+                if ($stmt->rowCount() > 0) {
+                    array_push($array_update, $prod_list);
+                }
+                else {
+                    array_push($array_insert, $prod_list);
+                }
+            }
+
+            //Thêm vào danh sách sản phẩm chưa có
+            $stmt = $conn->prepare($query_insert_product_list);
+            foreach($array_insert as $prod_list_insert) {
+                $stmt->execute($prod_list_insert);
+            }
+            //Cập nhật danh sách sản phẩm
+            $stmt = $conn->prepare($query_update_product_list);
+            foreach($array_update as $prod_list_update) {
+                // $stmt->bindParam(':price', $prod_list_update['price']);
+                // $stmt->bindParam(':idProd', $prod_list_update['idProd']);
+                // $stmt->bindParam(':idSize', $prod_list_update['idSize']);
+                // $stmt->bindParam(':idColor', $prod_list_update['idColor']);
+                $stmt->execute($prod_list_update);
             }
             echo 'Đã nhập hàng thành công! Mã nhập hàng là '.$_POST['InputProduct']['id'];
             $conn->commit();

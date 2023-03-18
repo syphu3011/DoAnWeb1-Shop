@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost
--- Thời gian đã tạo: Th3 15, 2023 lúc 11:09 AM
+-- Thời gian đã tạo: Th3 18, 2023 lúc 07:14 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 8.2.0
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Cơ sở dữ liệu: `Shop`
 --
+CREATE DATABASE IF NOT EXISTS `Shop` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `Shop`;
 
 -- --------------------------------------------------------
 
@@ -134,23 +136,22 @@ CREATE TABLE `detail_import_coupon` (
   `id_color` varchar(7) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `id_size` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `amount` int(11) DEFAULT NULL,
-  `price_input` int(11) DEFAULT NULL,
-  `note` varchar(1000) DEFAULT NULL
+  `price_input` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `detail_import_coupon`
 --
 
-INSERT INTO `detail_import_coupon` (`id_import_coupon`, `id_product`, `id_color`, `id_size`, `amount`, `price_input`, `note`) VALUES
-('NHAP001', 'AO00000001', '#000000', 'AOS', 20, 280000, NULL),
-('NHAP001', 'AO00000001', '#000000', 'AOXL', 20, 280000, NULL),
-('NHAP001', 'AO00000002', '#ffffff', 'AOS', 20, 350000, NULL),
-('NHAP001', 'AO00000002', '#ffffff', 'AOXL', 20, 350000, NULL),
-('NHAP002', 'QU00000001', '#000000', 'QUS', 20, 500000, NULL),
-('NHAP002', 'QU00000001', '#000000', 'QUXL', 20, 500000, NULL),
-('NHAP002', 'QU00000002', '#ffffff', 'QUS', 20, 200000, NULL),
-('NHAP002', 'QU00000002', '#ffffff', 'QUXL', 20, 200000, NULL);
+INSERT INTO `detail_import_coupon` (`id_import_coupon`, `id_product`, `id_color`, `id_size`, `amount`, `price_input`) VALUES
+('NHAP001', 'AO00000001', '#000000', 'AOS', 20, 280000),
+('NHAP001', 'AO00000001', '#000000', 'AOXL', 20, 280000),
+('NHAP001', 'AO00000002', '#ffffff', 'AOS', 20, 350000),
+('NHAP001', 'AO00000002', '#ffffff', 'AOXL', 20, 350000),
+('NHAP002', 'QU00000001', '#000000', 'QUS', 20, 500000),
+('NHAP002', 'QU00000001', '#000000', 'QUXL', 20, 500000),
+('NHAP002', 'QU00000002', '#ffffff', 'QUS', 20, 200000),
+('NHAP002', 'QU00000002', '#ffffff', 'QUXL', 20, 200000);
 
 -- --------------------------------------------------------
 
@@ -255,16 +256,17 @@ INSERT INTO `image_product` (`id_product`, `link_image`, `name_image`) VALUES
 CREATE TABLE `import_coupon` (
   `id` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `date_init` datetime DEFAULT NULL,
-  `id_staff` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL
+  `id_staff` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `note` varchar(10000) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `import_coupon`
 --
 
-INSERT INTO `import_coupon` (`id`, `date_init`, `id_staff`) VALUES
-('NHAP001', '2023-02-11 00:00:00', 'NV001'),
-('NHAP002', '2023-02-11 00:00:00', 'NV001');
+INSERT INTO `import_coupon` (`id`, `date_init`, `id_staff`, `note`) VALUES
+('NHAP001', '2023-02-11 00:00:00', 'NV001', NULL),
+('NHAP002', '2023-02-11 00:00:00', 'NV001', NULL);
 
 -- --------------------------------------------------------
 
@@ -283,7 +285,9 @@ CREATE TABLE `input_country` (
 
 INSERT INTO `input_country` (`id`, `name`) VALUES
 ('ct001', 'Việt Nam'),
-('ct002', 'Trung Quốc');
+('ct002', 'Trung Quốc'),
+('ct003', 'Hàn Quốc'),
+('ct004', 'Nhật Bản');
 
 -- --------------------------------------------------------
 
@@ -328,6 +332,9 @@ INSERT INTO `product` (`id`, `name`, `madein`, `description`, `idstatus`) VALUES
 ('AO00000002', 'Áo sơ mi ', 'ct002', 'Áo sơ mi sọc', 'TT01'),
 ('AO00000003', 'áo thun bông', 'ct001', '', 'TT01'),
 ('AO00000004', 'vcl', 'ct002', 'vip vcl', 'TT02'),
+('AO00000005', 'áo thun bông 234', 'ct003', 'okok', 'TT01'),
+('AO00000006', 'áo thun bông 2345', 'ct003', 'okok', 'TT01'),
+('AO00000007', 'áo thun bông 23456', 'ct004', 'okok', 'TT01'),
 ('QU00000001', 'Quần tây', 'ct001', 'Quần tây dài', 'TT01'),
 ('QU00000002', 'Quần thun', 'ct002', 'Quần thun ngắn', 'TT01');
 
@@ -403,6 +410,11 @@ INSERT INTO `product_list_classify` (`id_product`, `id_classify`) VALUES
 ('AO00000002', 'AOSOMI'),
 ('AO00000003', 'AOSOMI'),
 ('AO00000004', 'AOSOMI'),
+('AO00000005', 'AOTHUN'),
+('AO00000006', 'AOSOMI'),
+('AO00000006', 'AOTHUN'),
+('AO00000007', 'AOSOMI'),
+('AO00000007', 'AOTHUN'),
 ('QU00000001', 'QUTAY'),
 ('QU00000002', 'QUTHUN');
 
