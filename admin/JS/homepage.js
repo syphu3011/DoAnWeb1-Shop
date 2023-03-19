@@ -109,6 +109,10 @@ function changeToPromote() {
   hideCurrent();
   appearDiv(document.getElementById("bgr-km"));
 }
+function changeToClassify(){
+  hideCurrent();
+  appearDiv(document.getElementById("background-classify"));
+}
 
 function changeToStats() {
   hideCurrent();
@@ -125,6 +129,7 @@ async function changeToProduct() {
   await fillProd();
   // fillType()
 }
+
 document.getElementById("orderr").onclick = function () {
   document.getElementById("content").style.display = "block";
   document.getElementById("div-thongso").style.display = "none";
@@ -175,7 +180,13 @@ document.getElementById("product").onclick = async function () {
   openCloseLeftBar();
   changeToProduct();
 };
+document.getElementById("classify").onclick= function(){
+  document.getElementById("content").style.display = "block";
+  document.getElementById("div-thongso").style.display = "none";
 
+  openCloseLeftBar();
+  changeToClassify();
+}
 document.getElementById("stats").onclick = function () {
   document.getElementById("content").style.display = "block";
   document.getElementById("div-thongso").style.display = "none";

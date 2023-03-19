@@ -234,8 +234,18 @@ option{
     margin-left: 10px;
     cursor: pointer;
     display: flex;
-    justify-content: center;
+    justify-content: center; 
     align-items: center;
+}
+.icon_find37{
+    height: 100%;
+    border-radius: 10px;
+    border: 1px solid;
+    width: 32px;
+    padding: 0 5px;
+    margin-left: 10px;
+    cursor: pointer;
+    display: flex;
 }
 .icon_find:hover {
     background-color: black;
@@ -247,6 +257,12 @@ option{
     height: 80%;
 }
 
+.icon_find37:hover {
+    background-color: black;
+}
+.icon_find37:hover .icon{
+    filter: invert(100%);
+}
 /* Bảng */
 
 .table1{
@@ -267,6 +283,17 @@ option{
 /* Div chứa thêm sửa */
 
 #dialog4{
+    background-color: rgb(128, 128, 128,0.4);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+#dialog33{
     background-color: rgb(128, 128, 128,0.4);
     position: fixed;
     top: 0;

@@ -523,4 +523,16 @@ renderTable2()
     // }
 
 
-document.getElementById("SuaKhuyenMai")
+// document.getElementById("SuaKhuyenMai")
+
+
+
+function OpenFilter13(){
+    document.getElementById("dialog13").style.display='flex'
+    document.getElementById('Section13').style.display='flex'
+ }
+ 
+ function CloseFilter13(){
+    document.getElementById("dialog13").style.display='none'
+    document.getElementById('Section13').style.display='none'
+ }
