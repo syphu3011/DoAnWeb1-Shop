@@ -1293,9 +1293,9 @@ let arr = {
   ],
 };
 let data = new Array();
-// if (localStorage.getItem("data") == null) {
-localStorage.setItem("data", JSON.stringify(arr));
-// }
+if (localStorage.getItem("data") == null) {
+  localStorage.setItem("data", JSON.stringify(arr));
+}
 // function testthoi() {
 //   document.getElementById("inp-firstname").value = "123";
 //   document.getElementById("inp-lastname").value = "123";
@@ -1321,19 +1321,19 @@ function get_data(cus) {
   //Ảnh sản phẩm
   data.image_product = cus.image_product;
 }
-var xhttp = new XMLHttpRequest();
-xhttp.onreadystatechange = function () {
-  if (this.readyState == 4 && this.status == 200) {
-    var response = JSON.parse(this.responseText); // lưu phản hồi vào biến cục bộ
-    // sử dụng biến response ngay tại đây
-    get_data(response);
-    create_Homepage(response);
-    // createHomepage();
-  }
-};
-xhttp.open("GET", "server/homepage.php", true);
-xhttp.send();
-console.log(data);
+// var xhttp = new XMLHttpRequest();
+// xhttp.onreadystatechange = function () {
+//   if (this.readyState == 4 && this.status == 200) {
+//     var response = JSON.parse(this.responseText); // lưu phản hồi vào biến cục bộ
+//     // sử dụng biến response ngay tại đây
+//     get_data(response);
+//     create_Homepage(response);
+//     // createHomepage();
+//   }
+// };
+// xhttp.open("GET", "server/homepage.php", true);
+// xhttp.send();
+// console.log(data);
 data = JSON.parse(localStorage.getItem("data"));
 
 function create_Homepage(data_res) {
