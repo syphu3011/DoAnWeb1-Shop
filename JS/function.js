@@ -1294,7 +1294,7 @@ let arr = {
 };
 let data = new Array();
 // if (localStorage.getItem("data") == null) {
-//   localStorage.setItem("data", JSON.stringify(arr));
+localStorage.setItem("data", JSON.stringify(arr));
 // }
 // function testthoi() {
 //   document.getElementById("inp-firstname").value = "123";
@@ -1306,7 +1306,7 @@ let data = new Array();
 //   document.getElementById("phone-mail-regis").value = "0395932776";
 // }
 function get_data(cus) {
-  //Loại sản ohẩm
+  //Loại sản phẩm
   data.largeClassify = cus.largeClassify;
   //Màu
   data.color = cus.color;
@@ -1318,6 +1318,8 @@ function get_data(cus) {
   data.product_in_stock = cus.product_in_stock;
   //Khuyến mãi
   data.promote = cus.promotion;
+  //Ảnh sản phẩm
+  data.image_product = cus.image_product;
 }
 var xhttp = new XMLHttpRequest();
 xhttp.onreadystatechange = function () {
@@ -1325,10 +1327,40 @@ xhttp.onreadystatechange = function () {
     var response = JSON.parse(this.responseText); // lưu phản hồi vào biến cục bộ
     // sử dụng biến response ngay tại đây
     get_data(response);
-    createHomepage();
+    create_Homepage(response);
+    // createHomepage();
   }
 };
 xhttp.open("GET", "server/homepage.php", true);
 xhttp.send();
 console.log(data);
-// data = JSON.parse(localStorage.getItem("data"));
+data = JSON.parse(localStorage.getItem("data"));
+
+function create_Homepage(data_res) {
+  data_res.largeClassify.forEach((element) => {
+    var str = "";
+    data_res.product.forEach((element_product) => {
+      str +=
+        `
+      <div>
+        ` +
+        element_product.name +
+        `
+      </div>
+      `;
+    });
+    // element.
+    document.getElementById("main").innerHTML +=
+      `<div>
+        <div class="main_name_class_product">` +
+      element.name +
+      `
+        </div>
+        <div class="main_list_product">
+        ` +
+      str +
+      `
+        </div>
+      </div>`;
+  });
+}

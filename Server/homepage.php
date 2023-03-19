@@ -34,13 +34,6 @@
     $stm=null;
     $data["size"]=$size;
     //
-    //Lấy dữ liệu giỏ hàng
-    $stm=$conn->prepare("SELECT * FROM `cart`");
-    $stm->execute();
-    $cart=$stm->fetchAll(PDO::FETCH_ASSOC);
-    $stm=null;
-    $data["cart"]=$cart;
-    //
     //Lấy dữ liệu sản phẩm
     $stm=$conn->prepare("SELECT * FROM `product`");
     $stm->execute();
@@ -69,12 +62,11 @@
     $stm=null;
     $data["receipt"]=$receipt;
     //
-    //Lấy dữ liệu nhân viên
-    // $stm=$conn->prepare("SELECT * FROM `staff`");
-    // $stm->execute();
-    // $staff=$stm->fetchAll(PDO::FETCH_ASSOC);
-    // $stm=null;
-    // $data["staff"]=$staff;
-    // header('Content-Type: application/json; charset=utf-8');
+    //Lấy dữ liệu hình ảnh sản phẩm
+    $stm=$conn->prepare("SELECT * FROM `image_product`");
+    $stm->execute();
+    $image_product=$stm->fetchAll(PDO::FETCH_ASSOC);
+    $stm=null;
+    $data["image_product"]=$image_product;
     echo json_encode($data);
 ?>
