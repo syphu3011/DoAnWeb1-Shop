@@ -7,15 +7,17 @@
 // let birthday = document.getElementById("birthday")
 // let btnsigup = document.getElementById("btn-regis")
 
+
+// Đăng ký đẩy thông tin lên server
 $(document).ready(function() {
 	$('#form-signup').submit(function(e) {
 		e.preventDefault();
 		// Gửi thông tin đăng ký lên server
         $.ajax({
-            url: 'dangky.php',
+            url: './Server/dangky.php',
             method: 'POST',
             data:{
-                id:'KH0001',
+                id:'KH00010',
                 name:firstName.value + ' ' + lastName.value,
                 dateinit: getCurrentDate(),
                 username: $('#inp-username').val(),
@@ -26,9 +28,9 @@ $(document).ready(function() {
             },
 			success: function(response) {
 				if (response === 'success') {
-					$('#result').html('Đăng ký thành công!');
+					alert('Đăng ký thành công!');
 				} else {
-					$('#result').html('Đăng ký thất bại!');
+					alert('Đăng ký thất bại! ' + response);
 				}
 			}
 		});
