@@ -207,9 +207,10 @@ button:hover .img-button{
 #statistics {
     position: relative;
     display: flex;
-    /* align-items: center; */
+    align-items: center;
     justify-content: center;
-    /* height: 80px; */
+    height: 80px;
+    margin-top: 10px;
 }
 #list-drop-down-choose-statistics {
     height: 400%;
