@@ -1851,28 +1851,18 @@ function amount(current, pricee) {
   return divAmou;
 }
 
-function calculated(price) {
-  price = price.toString();
-  let ar = new Array();
-  for (let i = 0; i < price.length; i++) {
-    if (i % 3 == 0 && i != 0) {
-      ar.push(".");
-    }
-    ar.push(price[price.length - i - 1]);
-  }
-  price = "";
-  for (let i = ar.length - 1; i >= 0; i--) {
-    price += ar[i];
-  }
-  return price;
-}
-document.getElementById("div-onClickProduct").onclick = function (e) {
-  if (e.target.matches("#div-onClickProduct")) {
-    showacc(document.getElementsByClassName("popUp-prod")[0], 0, 1200);
-    setTimeout(() => {
-      document.getElementById("div-onClickProduct").style.display = "";
-      isCTSP = false;
-    }, 400);
+// document.getElementById("div-onClickProduct").onclick = function (e) {
+//   if (e.target.matches("#div-onClickProduct")) {
+//     showacc(document.getElementsByClassName("popUp-prod")[0], 0, 1200);
+//     setTimeout(() => {
+//       document.getElementById("div-onClickProduct").style.display = "";
+//       isCTSP = false;
+//     }, 400);
+//   }
+// };
+document.getElementById("show_product").onclick = function (e) {
+  if (e.target.matches("#show_product")) {
+    document.getElementById("show_product").style.display = "";
   }
 };
 

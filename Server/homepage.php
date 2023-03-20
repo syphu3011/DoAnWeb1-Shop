@@ -68,5 +68,12 @@
     $image_product=$stm->fetchAll(PDO::FETCH_ASSOC);
     $stm=null;
     $data["image_product"]=$image_product;
+    //
+    //Lấy dữ danh sách sản phẩm
+    $stm=$conn->prepare("SELECT * FROM `product_list`");
+    $stm->execute();
+    $product_list=$stm->fetchAll(PDO::FETCH_ASSOC);
+    $stm=null;
+    $data["product_list"]=$product_list;
     echo json_encode($data);
 ?>
