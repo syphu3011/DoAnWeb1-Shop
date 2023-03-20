@@ -71,7 +71,6 @@
 	}
 
 // ? POST UPDATE SECTION
-// ! missing update images
 
 
 function updateDb($conn, $tableName, $id, $property, $value) {
@@ -99,7 +98,7 @@ function deleteDb($conn, $tableName, $id) {
 	}
 }
 
-// ! mising add, upload image
+// TODO mising add, upload image
 
 function createRow($conn, $tableName) {
 	try {
