@@ -6,6 +6,7 @@
     left join image_product on id = image_product.id_product 
     left join product_list_classify on id = product_list_classify.id_product 
     left join product_list on id = product_list.id_product 
+    where id_status = 'TT01'
     group by id
     
     ";
