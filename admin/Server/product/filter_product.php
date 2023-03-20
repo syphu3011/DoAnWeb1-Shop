@@ -7,7 +7,7 @@
                 left join image_product on id = image_product.id_product 
                 left join product_list_classify on id = product_list_classify.id_product 
                 left join product_list on id = product_list.id_product 
-                where product_list.price >= :min_price and product_list.price <= :max_price and product.madein = :made_in and product.id LIKE :id and product.name LIKE :name
+                where product_list.price >= :min_price and product_list.price <= :max_price and product.madein = :made_in and product.id LIKE :id and product.name LIKE :name and id_status = :id_status
                 group by id
             ";
             $stmt = $conn->prepare($query);
@@ -18,6 +18,7 @@
             $stmt -> bindParam(':made_in', $_POST['made_in']);
             $stmt -> bindParam(':min_price', $_POST['min_price']);
             $stmt -> bindParam(':max_price', $_POST['max_price']);
+            $stmt -> bindParam(':id_status', $_POST['id_status']);
             if ($stmt -> execute()) {
                 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 // Chuyển chuỗi các link ảnh và loại sản phẩm thành mảng

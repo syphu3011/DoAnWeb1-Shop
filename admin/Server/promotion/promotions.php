@@ -4,6 +4,7 @@
         $query_get_promotions = "
         SELECT *
         FROM promotion
+        WHERE id_status = 'TT10'
         ";
         $query_detail_promotions = "
         SELECT id_promotion,product.id, product.name, input_country.name made_in, GROUP_CONCAT(DISTINCT product_list_classify.id_classify SEPARATOR ',') classify
@@ -11,7 +12,9 @@
         LEFT JOIN product ON detail_promotion.id_product = product.id
         LEFT JOIN product_list_classify ON product.id = product_list_classify.id_product
         LEFT JOIN input_country ON input_country.id = madein
-        GROUP BY product.id
+        LEFT JOIN promotion ON id_promotion = promotion.id
+        WHERE promotion.id_status = 'TT10'
+        GROUP BY id_promotion, product.id
         ";
         $stmt = $conn->prepare($query_get_promotions);
         $response_array = new stdClass();

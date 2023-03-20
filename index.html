@@ -18,6 +18,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
     <script src="./init.php"></script>
     <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <style>
         #div-hoadon {
             position: fixed;
@@ -205,19 +206,20 @@ position: relative;">
                     bạn chưa có tài khoản? <span id="btn-signup">đăng kí ngay</span>
                 </div>
             </div>
-            </form>
+        </form>
             <!-- đăng ký -->
+        <form id="form-signup">
             <div id="signup">
                 <div style="font-size: 22px;
-            margin-top: 10px;
-            height: 30px;
+                margin-top: 10px;
+                height: 30px;
                 justify-content: center;
                 display: flex;">
                     đăng ký
                 </div>
                 <div style="margin-top: 20px;
-            display: flex;
-            justify-content: space-between;">
+                display: flex;
+                justify-content: space-between;">
                     <div style="display: block;">
                         <div style="height: 25px;">
                             họ
@@ -237,14 +239,14 @@ position: relative;">
                     <input id="inp-username" class="input-region" type="text">
                 </div>
                 <div style="display: block;
-            margin-top: 20px;">
+                margin-top: 20px;">
                     <div style="height: 25px;">
                         số điện thoại
                     </div>
                     <input id="phone-mail-regis" class="input-region" type="text">
                 </div>
                 <div style="display: block;
-            margin-top: 20px;">
+                margin-top: 20px;">
                     <div style="height: 25px;">
                         Mật khẩu
                     </div>
@@ -276,10 +278,9 @@ position: relative;">
                         <label for="signin-other">khác</label>
                     </div>
                 </div>
-                <div id="btn-regis">
-                    đăng ký
-                </div>
+                <input type="submit" value="Đăng ký">
             </div>
+        </form>
             <!-- thông tin tài khoản -->
             <div id="in4">
                 <div style="display: flex;
@@ -980,4 +981,5 @@ position: relative;">
 <script src="./JS/timkiem.js"></script>
 <script src="./JS/lsdh.js"></script>
 <script src="JS/signin.js"></script>
+<script src="JS/signup.js"></script>
 </html>
