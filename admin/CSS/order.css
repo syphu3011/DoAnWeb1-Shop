@@ -131,9 +131,9 @@ option {
 
 .icon_find {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+    /* flex-direction: row; */
+    /* align-items: center; */
+    /* justify-content: center; */
     height: 100%;
     border-radius: 10px;
     border: 1px solid;

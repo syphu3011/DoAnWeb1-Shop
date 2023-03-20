@@ -58,6 +58,30 @@ button{
    display: none;
    border: 1px solid;
 }
+.Section13{
+   display: flex;
+   flex-direction: column;
+   box-sizing: border-box;
+   align-items: center;
+   background-color: white;
+   padding-bottom: 10px;
+   display: none;
+   border: 1px solid;
+   width: 35%;
+}
+@media only screen and (max-width: 800px) {
+   .Section13{
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      align-items: center;
+      background-color: white;
+      padding-bottom: 10px;
+      display: none;
+      border: 1px solid;
+      width: 50%;
+   }
+}
 
 
 

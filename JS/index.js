@@ -197,224 +197,259 @@ function checkValidNameU(f_name, l_name) {
 //
 //
 //Đăng ký tài khoản
-btnsigup.onclick = function () {
-  let username = document.getElementById("inp-username");
-  let sex = "";
-  let s = document.getElementsByName("sex");
-  for (let i = 0; i < 3; i++) {
-    if (s[i].checked) {
-      sex = document.getElementById("update-in4").getElementsByTagName("label")[
-        i
-      ].textContent;
-    }
-  }
-  if (
-    checkValid(
-      firstName.value,
-      lastName.value,
-      username.value,
-      password_regis.value,
-      same_passwd.value,
-      number_phone.value,
-      birthday.value,
-      sex
-    )
-  ) {
-    if (checkValidNameU(firstName.value, lastName.value)) {
-      if (checkValidPhoneNumber(number_phone.value)) {
-        if (checkSamePassword(password_regis.value, same_passwd.value)) {
-          if (checkDate(birthday.value)) {
-            let customer = new Customer(
-              initId(),
-              firstName.value.trim() + " " + lastName.value.trim(),
-              number_phone.value.replace("+84", "0").trim(),
-              username.value.trim(),
-              password_regis.value,
-              sex,
-              birthday.value.split("-")[2] +
-                "/" +
-                birthday.value.split("-")[1] +
-                "/" +
-                birthday.value.split("-")[0]
-            );
-            if (checkConstraintRegis(customer) == true) {
-              data.customer.push(customer);
-              localStorage.setItem("data", JSON.stringify(data));
-              showacc(signup, 0, 1200);
-              setTimeout(() => {
-                signup.style.display = "";
-                account.style.display = "";
-                document.getElementById("noti").style.display = "flex";
-                document.getElementById("noti-noti").innerHTML =
-                  "Đăng ký thành công";
-                showacc(document.getElementById("noti-noti"), -500, 0);
-                document.getElementById("noti-noti").style.display = "flex";
-                setTimeout(() => {
-                  document.getElementById("noti").style.display = "";
-                  account.style.display = "flex";
-                  showacc(signin, -500, 0);
-                }, 700);
-              }, 450);
-            } else {
-              alert("Tài khoản đã tồn tại");
-            }
-          } else {
-            alert("Ngày sinh không hợp lệ");
-          }
-        } else {
-          alert("Bạn đã nhập 2 mật khẩu không giống nhau!");
-        }
-      } else {
-        alert("Số điện thoại không hợp lệ");
-      }
-    } else {
-      alert("Tên không được chứa kí tự đặc biệt hoặc chữ số");
-    }
-  } else {
-    alert("Không được bỏ trống bất cứ thông tin nào!");
-  }
-};
+// btnsigup.onclick = function () {
+//   let username = document.getElementById("inp-username");
+//   let sex = "";
+//   let s = document.getElementsByName("sex");
+//   for (let i = 0; i < 3; i++) {
+//     if (s[i].checked) {
+//       sex = document.getElementById("update-in4").getElementsByTagName("label")[
+//         i
+//       ].textContent;
+//     }
+//   }
+//   if (
+//     checkValid(
+//       firstName.value,
+//       lastName.value,
+//       username.value,
+//       password_regis.value,
+//       same_passwd.value,
+//       number_phone.value,
+//       birthday.value,
+//       sex
+//     )
+//   ) {
+//     if (checkValidNameU(firstName.value, lastName.value)) {
+//       if (checkValidPhoneNumber(number_phone.value)) {
+//         if (checkSamePassword(password_regis.value, same_passwd.value)) {
+//           if (checkDate(birthday.value)) {
+//             let customer = new Customer(
+//               initId(),
+//               firstName.value.trim() + " " + lastName.value.trim(),
+//               number_phone.value.replace("+84", "0").trim(),
+//               username.value.trim(),
+//               password_regis.value,
+//               sex,
+//               birthday.value.split("-")[2] +
+//                 "/" +
+//                 birthday.value.split("-")[1] +
+//                 "/" +
+//                 birthday.value.split("-")[0]
+//             );
+//             if (checkConstraintRegis(customer) == true) {
+//               data.customer.push(customer);
+//               localStorage.setItem("data", JSON.stringify(data));
+//               showacc(signup, 0, 1200);
+//               setTimeout(() => {
+//                 signup.style.display = "";
+//                 account.style.display = "";
+//                 document.getElementById("noti").style.display = "flex";
+//                 document.getElementById("noti-noti").innerHTML =
+//                   "Đăng ký thành công";
+//                 showacc(document.getElementById("noti-noti"), -500, 0);
+//                 document.getElementById("noti-noti").style.display = "flex";
+//                 setTimeout(() => {
+//                   document.getElementById("noti").style.display = "";
+//                   account.style.display = "flex";
+//                   showacc(signin, -500, 0);
+//                 }, 700);
+//               }, 450);
+//             } else {
+//               alert("Tài khoản đã tồn tại");
+//             }
+//           } else {
+//             alert("Ngày sinh không hợp lệ");
+//           }
+//         } else {
+//           alert("Bạn đã nhập 2 mật khẩu không giống nhau!");
+//         }
+//       } else {
+//         alert("Số điện thoại không hợp lệ");
+//       }
+//     } else {
+//       alert("Tên không được chứa kí tự đặc biệt hoặc chữ số");
+//     }
+//   } else {
+//     alert("Không được bỏ trống bất cứ thông tin nào!");
+//   }
+// };
 //
 //
 //
 //đăng nhập
-document
-  .getElementById("mailorphone")
-  .addEventListener("keypress", function (ev) {
-    if (ev.key === "Enter") {
-      login();
-    }
-  });
-document.getElementById("passwd").addEventListener("keypress", function (ev) {
-  if (ev.key === "Enter") {
-    login();
-  }
-});
+// document
+//   .getElementById("mailorphone")
+//   .addEventListener("keypress", function (ev) {
+//     if (ev.key === "Enter") {
+//       // login();
+//     }
+//   });
+// document.getElementById("passwd").addEventListener("keypress", function (ev) {
+//   if (ev.key === "Enter") {
+//     // login();
+//   }
+// });
 
-function login() {
-  if (mailorphone.value == "" || passwd.value == "") {
-    alert("vui lòng nhập đủ thông tin");
-  } else {
-    let login = false;
-    let users = new Array();
-    data.customer.forEach((element) => {
-      users.push(element);
-    });
-    data.staff.forEach((element) => {
-      users.push(element);
-    });
-    // console.log(arr_user);
-    for (let user of users) {
-      if (
-        user.username_customer == mailorphone.value ||
-        user.numberphone == mailorphone.value
-      ) {
-        if (user.password_customer == passwd.value) {
-          console.log("Đăng nhập thành công");
-          login = true;
-          return;
-        } else {
-          alert("Bạn đã nhập sai mật khẩu!");
-        }
-      }
-    }
-    if (login) {
-      alert("Đăng nhập thành công!");
-    }
-    // let lock = false;
-    // let isStaff = false;
-    // data.customer.forEach((element) => {
-    //   if (
-    //     (element.username == mailorphone.value ||
-    //       element.number_phone == mailorphone.value) &&
-    //     element.password == passwd.value
-    //   ) {
-    //     if (element.status.toLowerCase() == "đã khóa") {
-    //       lock = true;
-    //     } else {
-    //       username = element.username;
-    //       currentUser = element;
-    //     }
-    //     count = 1;
-    //   }
-    // });
-    // data.staff.forEach((element) => {
-    //   if (
-    //     (element.username == mailorphone.value ||
-    //       element.number_phone == mailorphone.value) &&
-    //     element.password == passwd.value
-    //   ) {
-    //     if (element.status.toLowerCase() == "đã khóa") {
-    //       lock = true;
-    //     } else {
-    //       isStaff = true;
-    //       username = element.username;
-    //       currentStaff = element;
-    //     }
-    //     count = 1;
-    //   }
-    // });
-    // if (count != 1) {
-    //   alert("Tài khoản hoặc mật khẩu không chính xác");
-    //   return;
-    // }
-    // console.log(currentUser);
-    // if (!lock) {
-    //   if (!isStaff) {
-    //     console.log("Bạn đang đăng nhập với vai trò khách hàng");
-    //     showacc(signin, 0, 1200);
-    //     setTimeout(() => {
-    //       signin.style.display = "";
-    //       account.style.display = "";
-    //       document.getElementById("noti").style.display = "flex";
-    //       document.getElementById("noti-noti").innerHTML =
-    //         "Đăng nhập thành công";
-    //       showacc(document.getElementById("noti-noti"), -500, 0);
-    //       document.getElementById("noti-noti").style.display = "flex";
-    //       setTimeout(() => {
-    //         document.getElementById("noti").style.display = "";
-    //       }, 700);
-    //     }, 450);
+// function login() {
+//   if (mailorphone.value == "" || passwd.value == "") {
+//     alert("vui lòng nhập đủ thông tin");
+//   } else {
+//     let login = false;
+//     let users = new Array();
+//     data.customer.forEach((element) => {
+//       users.push(element);
+//     });
+//     data.staff.forEach((element) => {
+//       users.push(element);
+//     });
+//     for (let user of users) {
+//       //kiểm tra tồn tại tài khoản
+//       if (
+//         user.username == mailorphone.value ||
+//         user.numberphone == mailorphone.value
+//       ) {
+//         //Kiểm tra tài khoản chính xác
+//         if (user.password == passwd.value) {
+//           //Kiểm tra trạng thái tài khoản
+//           if (user.id_status == "TT04" || user.id_status == "TT05") {
+//             console.log("Đăng nhập thành công");
+//             currentUser = user;
+//             login = true;
+//           } else {
+//             alert("Khoản của bạn hiện đang bị khóa!");
+//             return;
+//           }
+//         } else {
+//           alert("Bạn đã nhập sai mật khẩu!");
+//           return;
+//         }
+//       }
+//     }
+//     if (login) {
+//       //Đăng nhập vào khách hàng
+//       if (currentUser.id.indexOf("KH") != -1) {
+//         // alert("Đăng nhập thành công!");
+//         showacc(signin, 0, 1200);
+//         //Bảng thông báo
+//         setTimeout(() => {
+//           signin.style.display = "";
+//           account.style.display = "";
+//           document.getElementById("noti").style.display = "flex";
+//           document.getElementById("noti-noti").innerHTML =
+//             "Đăng nhập thành công";
+//           showacc(document.getElementById("noti-noti"), -500, 0);
+//           document.getElementById("noti-noti").style.display = "flex";
+//           setTimeout(() => {
+//             document.getElementById("noti").style.display = "";
+//           }, 700);
+//         }, 450);
+//       } else {
+//         //Đăng nhập vào nhân viên
+//         currentUser = null;
+//         console.log("Bạn đang đăng nhập với vai trò nhân viên");
+//         localStorage.setItem("currentStaff", JSON.stringify(currentUser));
+//         localStorage.setItem("checkLogin", true);
+//         window.location.href = "./admin/index.html";
+//       }
+//     } else {
+//       alert("Không tìm thấy tài khoản");
+//     }
+//     // let lock = false;
+//     // let isStaff = false;
+//     // data.customer.forEach((element) => {
+//     //   if (
+//     //     (element.username == mailorphone.value ||
+//     //       element.number_phone == mailorphone.value) &&
+//     //     element.password == passwd.value
+//     //   ) {
+//     //     if (element.status.toLowerCase() == "đã khóa") {
+//     //       lock = true;
+//     //     } else {
+//     //       username = element.username;
+//     //       currentUser = element;
+//     //     }
+//     //     count = 1;
+//     //   }
+//     // });
+//     // data.staff.forEach((element) => {
+//     //   if (
+//     //     (element.username == mailorphone.value ||
+//     //       element.number_phone == mailorphone.value) &&
+//     //     element.password == passwd.value
+//     //   ) {
+//     //     if (element.status.toLowerCase() == "đã khóa") {
+//     //       lock = true;
+//     //     } else {
+//     //       isStaff = true;
+//     //       username = element.username;
+//     //       currentStaff = element;
+//     //     }
+//     //     count = 1;
+//     //   }
+//     // });
+//     // if (count != 1) {
+//     //   alert("Tài khoản hoặc mật khẩu không chính xác");
+//     //   return;
+//     // }
+//     // console.log(currentUser);
+//     // if (!lock) {
+//     //   if (!isStaff) {
+//     //     console.log("Bạn đang đăng nhập với vai trò khách hàng");
+//     //     showacc(signin, 0, 1200);
+//     //     setTimeout(() => {
+//     //       signin.style.display = "";
+//     //       account.style.display = "";
+//     //       document.getElementById("noti").style.display = "flex";
+//     //       document.getElementById("noti-noti").innerHTML =
+//     //         "Đăng nhập thành công";
+//     //       showacc(document.getElementById("noti-noti"), -500, 0);
+//     //       document.getElementById("noti-noti").style.display = "flex";
+//     //       setTimeout(() => {
+//     //         document.getElementById("noti").style.display = "";
+//     //       }, 700);
+//     //     }, 450);
 
-    //     document.getElementById("name-in4").innerHTML = currentUser.name;
-    //     document.getElementById("update-name").value = currentUser.name;
+//     //     document.getElementById("name-in4").innerHTML = currentUser.name;
+//     //     document.getElementById("update-name").value = currentUser.name;
 
-    //     document.getElementById("update-contact").value =
-    //       currentUser.number_phone;
-    //     let birthday =
-    //       currentUser.birth_day.split("-")[2] +
-    //       "-" +
-    //       currentUser.birth_day.split("-")[1] +
-    //       "-" +
-    //       currentUser.birth_day.split("-")[0];
-    //     document.getElementById("update-birthday").value = birthday;
-    //     document.getElementById("birthday-in4").innerHTML = birthday;
-    //     document.getElementById("phone-in4").innerHTML =
-    //       currentUser.number_phone;
-    //     localStorage.setItem("currentIdUser", JSON.stringify(currentUser));
-    //     let se = document
-    //       .getElementById("update-in4")
-    //       .getElementsByTagName("label");
-    //     for (let i = 0; i < 3; i++) {
-    //       if (se[i].textContent == currentUser.sex) {
-    //         document.getElementsByName("sex")[i + 3].checked = true;
-    //       }
-    //     }
-    //   } else {
-    //     console.log("Bạn đang đăng nhập với vai trò nhân viên");
-    //     localStorage.setItem("currentStaff", JSON.stringify(currentStaff));
-    //     localStorage.setItem("checkLogin", true);
-    //     window.location.href = "admin/index.html";
-    //   }
-    //   checkOk = true;
-    // } else {
-    //   alert("Tài khoản hiện đang bị khóa");
-    // }
-  }
-}
-btnlogin.onclick = function () {
-  login();
-};
+//     //     document.getElementById("update-contact").value =
+//     //       currentUser.number_phone;
+//     //     let birthday =
+//     //       currentUser.birth_day.split("-")[2] +
+//     //       "-" +
+//     //       currentUser.birth_day.split("-")[1] +
+//     //       "-" +
+//     //       currentUser.birth_day.split("-")[0];
+//     //     document.getElementById("update-birthday").value = birthday;
+//     //     document.getElementById("birthday-in4").innerHTML = birthday;
+//     //     document.getElementById("phone-in4").innerHTML =
+//     //       currentUser.number_phone;
+//     //     localStorage.setItem("currentIdUser", JSON.stringify(currentUser));
+//     //     let se = document
+//     //       .getElementById("update-in4")
+//     //       .getElementsByTagName("label");
+//     //     for (let i = 0; i < 3; i++) {
+//     //       if (se[i].textContent == currentUser.sex) {
+//     //         document.getElementsByName("sex")[i + 3].checked = true;
+//     //       }
+//     //     }
+//     //   } else {
+//     //     console.log("Bạn đang đăng nhập với vai trò nhân viên");
+//     //     localStorage.setItem("currentStaff", JSON.stringify(currentStaff));
+//     //     localStorage.setItem("checkLogin", true);
+//     //     window.location.href = "admin/index.html";
+//     //   }
+//     //   checkOk = true;
+//     // } else {
+//     //   alert("Tài khoản hiện đang bị khóa");
+//     // }
+//   }
+// }
+
+// btnlogin.onclick = function () {
+//   // login();
+// };
 document.getElementById("hide-show").onclick = function () {
   if (document.getElementById("passwd").type == "password") {
     document.getElementById("passwd").type = "text";
@@ -616,14 +651,12 @@ function showFilter(list1, arr, id, list2, list3, select) {
 var itemstype = new Array();
 itemstype.push("tất cả");
 
-console.log(data.largeClassify);
 //
 //
 //
 //
 //
 //
-console.log(data);
 var itemsprice = document
   .getElementById("list-price")
   .getElementsByClassName("list-item");
@@ -1043,6 +1076,7 @@ document.getElementById("thanh-toan").onclick = function (e) {
   }
 };
 btnuser.onclick = function () {
+  document.getElementById("passwd").value = "";
   if (currentUser != null) {
     if (showuser.style.display == "") {
       uname.innerHTML = currentUser.name;
@@ -1125,11 +1159,16 @@ btnshowfilter.onclick = function () {
     }
   }
 };
+//Phần thông tin người dùng
 uname.onclick = function () {
   account.style.display = "flex";
   showacc(in4, -500, 0);
   document.getElementById("show-user").style.display = "";
-  document.getElementById("named").innerHTML = username;
+  document.getElementById("named").innerHTML = currentUser.name;
+  document.getElementById("name-in4").innerHTML = currentUser.name;
+  document.getElementById("phone-in4").innerHTML = currentUser.numberphone;
+  document.getElementById("birthday-in4").innerHTML =
+    currentUser.birthday.split(" ")[0];
 };
 document.getElementById("up-date").onclick = function () {
   account.style.display = "flex";

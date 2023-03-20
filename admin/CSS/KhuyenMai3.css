@@ -256,6 +256,18 @@ button{
    right: 0;
 } 
 
+#dialog13{
+   display: none;
+   justify-content: center;
+   align-items: center;
+   background-color: rgba(128, 128, 128, 0.5);
+   position: fixed;
+   top: 0;
+   bottom: 0;
+   left: 0;
+   right: 0;
+}
+
 #list-detail{
    display: flex;
    flex-direction: column;

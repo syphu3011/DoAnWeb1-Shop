@@ -882,18 +882,18 @@ document.getElementById("cancel").onclick = hideRemove;
 
 // Thêm loại
 document.getElementById("add_type").onclick = function() {
-    document.getElementById("add_type_pro").style.visibility = "visible";
-    OpenDialog();
+    document.getElementById("add_type_pro").style.displat = "flex";
+    OpenDialog33();
 };
 
 document.getElementById("accept").onclick = function() {
-    document.getElementById("add_type_pro").style.visibility = "hidden";
-    CloseDialog();
-    AddType();
+    document.getElementById("add_type_pro").style.display = "none";
+    CloseDialog33();
+    // AddType();
 };
 document.getElementById("close5").onclick = function() {
-    document.getElementById("add_type_pro").style.visibility = "hidden";
-    CloseDialog();
+    document.getElementById("add_type_pro").style.display = "none";
+    CloseDialog33();
 };
 // function initId123(type, name, index) {
 //     if (type == null || type == "" || name == null || name == "") return
@@ -1213,4 +1213,13 @@ function checkAmount(element, amountMin, amountMax) {
     }
     return false
 }
-    
+
+
+function OpenDialog33() {
+    document.getElementById("dialog33").style.display = "flex";
+}
+
+function CloseDialog33() {
+    document.getElementById("dialog33").style.display = "none";
+
+}
