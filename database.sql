@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost
--- Thời gian đã tạo: Th3 18, 2023 lúc 07:14 AM
+-- Thời gian đã tạo: Th3 20, 2023 lúc 08:20 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 8.2.0
 
@@ -484,18 +484,19 @@ CREATE TABLE `size` (
   `foot` int(11) DEFAULT NULL,
   `hand` int(11) DEFAULT NULL,
   `thigh` int(11) DEFAULT NULL,
-  `back` int(11) DEFAULT NULL
+  `back` int(11) DEFAULT NULL,
+  `id_status` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `size`
 --
 
-INSERT INTO `size` (`id`, `breast`, `waist`, `butt`, `foot`, `hand`, `thigh`, `back`) VALUES
-('AOS', 40, NULL, NULL, NULL, 60, NULL, 60),
-('AOXL', 60, NULL, NULL, NULL, 80, NULL, 80),
-('QUS', NULL, 27, 60, 70, NULL, 40, NULL),
-('QUXL', NULL, 30, 70, 80, NULL, 60, NULL);
+INSERT INTO `size` (`id`, `breast`, `waist`, `butt`, `foot`, `hand`, `thigh`, `back`, `id_status`) VALUES
+('AOS', 40, NULL, NULL, NULL, 60, NULL, 60, 'TT12'),
+('AOXL', 60, NULL, NULL, NULL, 80, NULL, 80, 'TT12'),
+('QUS', NULL, 27, 60, 70, NULL, 40, NULL, 'TT12'),
+('QUXL', NULL, 30, 70, 80, NULL, 60, NULL, 'TT12');
 
 -- --------------------------------------------------------
 
@@ -621,8 +622,8 @@ CREATE TABLE `status_promotion` (
 --
 
 INSERT INTO `status_promotion` (`id`, `name`) VALUES
-('TT10', 'Còn hạn'),
-('TT11', 'Hết hạn');
+('TT10', 'Bình thường'),
+('TT11', 'Đã xóa');
 
 -- --------------------------------------------------------
 
@@ -643,6 +644,25 @@ INSERT INTO `status_receipt` (`id`, `name`) VALUES
 ('TT09', 'Chưa xử lý'),
 ('TT08', 'Đã hủy'),
 ('TT07', 'Đã xác nhận');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `status_size`
+--
+
+CREATE TABLE `status_size` (
+  `id` varchar(10) NOT NULL,
+  `name` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `status_size`
+--
+
+INSERT INTO `status_size` (`id`, `name`) VALUES
+('TT12', 'Đang sử dụng'),
+('TT13', 'Ngưng sử dụng');
 
 -- --------------------------------------------------------
 
@@ -814,7 +834,8 @@ ALTER TABLE `receipt`
 -- Chỉ mục cho bảng `size`
 --
 ALTER TABLE `size`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_size_status` (`id_status`);
 
 --
 -- Chỉ mục cho bảng `staff`
@@ -866,6 +887,12 @@ ALTER TABLE `status_promotion`
 ALTER TABLE `status_receipt`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `NAME` (`name`);
+
+--
+-- Chỉ mục cho bảng `status_size`
+--
+ALTER TABLE `status_size`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Chỉ mục cho bảng `status_staff`
@@ -975,6 +1002,12 @@ ALTER TABLE `receipt`
   ADD CONSTRAINT `receipt_ibfk_1` FOREIGN KEY (`id_staff`) REFERENCES `staff` (`id`),
   ADD CONSTRAINT `receipt_ibfk_2` FOREIGN KEY (`id_customer`) REFERENCES `customer` (`id`),
   ADD CONSTRAINT `receipt_ibfk_3` FOREIGN KEY (`id_status`) REFERENCES `status_receipt` (`id`);
+
+--
+-- Các ràng buộc cho bảng `size`
+--
+ALTER TABLE `size`
+  ADD CONSTRAINT `fk_size_status` FOREIGN KEY (`id_status`) REFERENCES `status_size` (`id`);
 
 --
 -- Các ràng buộc cho bảng `staff`
