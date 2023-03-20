@@ -8,7 +8,8 @@
             WHERE 
             name LIKE :name and 
             begin_date >= :begin_date and 
-            finish_date <= :finish_date
+            finish_date <= :finish_date and
+            id_status = :id_status
             ";
             $query_detail_promotions = "
             SELECT product.id, product.name, input_country.name made_in, GROUP_CONCAT(DISTINCT product_list_classify.id_classify SEPARATOR ',') classify
@@ -16,8 +17,10 @@
             LEFT JOIN product ON detail_promotion.id_product = product.id
             LEFT JOIN product_list_classify ON product.id = product_list_classify.id_product
             LEFT JOIN input_country ON input_country.id = madein
-            WHERE detail_promotion.id_promotion = :id
-            GROUP BY product.id
+            LEFT JOIN promotion ON id_promotion = promotion.id
+            WHERE detail_promotion.id_promotion = :id and 
+            promotion.id_status = :id_status
+            GROUP BY id_promotion, product.id
             ";
             $query_get_latest = "
             SELECT MAX(finish_date) last
@@ -36,12 +39,14 @@
             $stmt->bindParam(':name', $data['filter_promotion']['name']);
             $stmt->bindParam(':begin_date', $data['filter_promotion']['begin_date']);
             $stmt->bindParam(':finish_date', $data['filter_promotion']['finish_date']);
+            $stmt->bindParam(':id_status', $data['filter_promotion']['id_status']);
             if ($stmt->execute()) {
                 $response_array->promotion = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 $detail_promotion = array();
                 $stmt = $conn->prepare($query_detail_promotions);
                 foreach($response_array->promotion as $promote) {
                     $stmt->bindParam(':id', $promote['id']);
+                    $stmt->bindParam(':id_status', $promote['id_status']);
                     $stmt->execute();
                     if ($stmt->rowCount() > 0) {
                         array_push($detail_promotion, $stmt->fetchAll(PDO::FETCH_ASSOC));
