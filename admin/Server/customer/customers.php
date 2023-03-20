@@ -1,6 +1,17 @@
 <?php
 	// ? GET SECTION
 	require_once('../../../init.php');
+
+	class Customers {
+		private $privilege;
+		public function get_privilege() {
+			return $this->privilege;
+		}
+		public function set_privilege($privilege) {
+			$this->privilege = $privilege;
+		}
+	}
+
 	function tableQueryAll($conn, $tableName) {
 		$query = "SELECT * FROM " . $tableName;
 		$query_statement = $conn->prepare($query);
@@ -45,7 +56,6 @@
 
 	// * request with parameter which based on id and username of customer
 	// * just handle one of two.
-	// ! need to change when reusing.
 	function reqWithPara($conn, $tableName) {
 		// echo $_GET["id"];
 		// echo gettype($_GET["id"]);
@@ -61,6 +71,8 @@
 	}
 
 // ? POST UPDATE SECTION
+// ! missing update images
+
 
 function updateDb($conn, $tableName, $id, $property, $value) {
 	try {
@@ -86,6 +98,8 @@ function deleteDb($conn, $tableName, $id) {
 		echo "Please specify correct id." . "</br>";
 	}
 }
+
+// ! mising add, upload image
 
 function createRow($conn, $tableName) {
 	try {
@@ -144,8 +158,6 @@ function createRow($conn, $tableName) {
 					updateDb($conn, $tableName, $_REQUEST["id"], "gender", $_REQUEST["address"] );
 				if (isset($_REQUEST["id_status"])) 
 					updateDb($conn, $tableName, $_REQUEST["id"], "id_status", $_REQUEST["address"] );
-				if (isset($_REQUEST["image"])) 
-					updateDb($conn, $tableName, $_REQUEST["id"], "image", $_REQUEST["image"] );
 			} else
 			if ($_REQUEST["action"] === "create") {
 				createRow($conn, $tableName);
