@@ -11,7 +11,7 @@
 
 	function tableQueryProperty($conn, $tableName, $property, $content) {
 		try {
-			$query = "SELECT * FROM " . $tableName . " WHERE " . $property . " = \"" . $content . "\"";
+			$query = "SELECT * FROM " . $tableName . " WHERE " . $property . " = '" . $content . "'";
 			// echo $query . "</br>";
 			$query_statement = $conn->prepare($query);
 			$query_statement->execute();
@@ -51,7 +51,7 @@
 		// echo gettype($_GET["id"]);
 		// echo $_GET["username_customer"];
 		$iterator_sample = array(
-			"id", "username_customer"
+			"id"
 		);
 		foreach ($iterator_sample as $index => $value) {
 			if (isset($_GET[$value])) {
@@ -105,7 +105,7 @@ function createRow($conn, $tableName) {
 		$query_statement->execute();
 	} catch (Exception $e) {
 		echo $e . "</br>";
-		// ! chua handle exception double phone number same type.
+		// TODO chua handle exception double phone number same type.
 	}
 }
 
@@ -133,18 +133,10 @@ function createRow($conn, $tableName) {
 			if ($_REQUEST["action"] === "update"){
 				if (isset($_REQUEST["name"]))
 					updateDb($conn, $tableName, $_REQUEST["id"], "name", $_REQUEST["name"] );
-				if (isset($_REQUEST["username_customer"])) 
-					updateDb($conn, $tableName, $_REQUEST["id"], "username_customer", $_REQUEST["username_customer"] );
-				if (isset($_REQUEST["password_customer"])) 
-					updateDb($conn, $tableName, $_REQUEST["id"], "password_customer", $_REQUEST["password_customer"] );
-				if (isset($_REQUEST["numberphone"])) 
-					updateDb($conn, $tableName, $_REQUEST["id"], "numberphone", $_REQUEST["numberphone"] );
-				if (isset($_REQUEST["address"])) 
-					updateDb($conn, $tableName, $_REQUEST["id"], "address", $_REQUEST["address"] );
-				if (isset($_REQUEST["gender"])) 
-					updateDb($conn, $tableName, $_REQUEST["id"], "gender", $_REQUEST["address"] );
-				if (isset($_REQUEST["id_status"])) 
-					updateDb($conn, $tableName, $_REQUEST["id"], "id_status", $_REQUEST["address"] );
+				if (isset($_REQUEST["variable1"])) 
+					updateDb($conn, $tableName, $_REQUEST["id"], "variable1", $_REQUEST["variable1"] );
+				if (isset($_REQUEST["variable2"])) 
+					updateDb($conn, $tableName, $_REQUEST["id"], "variable2", $_REQUEST["variable2"] );
 			} else
 			if ($_REQUEST["action"] === "create") {
 				createRow($conn, $tableName);
