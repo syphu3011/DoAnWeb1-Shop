@@ -3,133 +3,144 @@ button{
    background-color: white;
    cursor: pointer;
 }
-.KhuyenMai3{
+
+
+#KhuyenMai{
    display: flex;
-   flex-direction: column;  
    justify-content: center;
-   align-items: flex-start;
-   width: 800px;
-   padding: 10px;
+   flex-direction: column;
+   align-items: center;
+}
+.KhuyenMai3{
+   width: 80%;
+   display: flex;
+   flex-direction: column;
+
 }
 .Div1{
-   margin-left: 300px;
-   margin-bottom: 10px;
-   font-size: 20px;
-}
-.Div2{
-   margin-bottom: 30px;
-}
-.Div2 > input{
-   margin-left: 135px;
-   width: 600px;
-   border-radius: 30px;
-}
-.Div3{
-   margin-bottom: 30px;
-}
-.TenKhuyenMaiInput{
-   width: 250px;
-   border-radius: 20px;
-   margin-right: 50px;
-   margin-left: 10px;
-}
-.GiaGiamInput{
-   border-radius: 20px;
-   margin-left: 10px;
-   width: 200px;
-}
-.Div4{
-   display: flex;
-   flex-direction: row;
-   align-items: center;
-   margin-bottom: 30px;
-}
-.Div4Left{
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 30px;
+ }
+ .Div2{
    display: flex;
    flex-direction: column;
-   margin-left: 20px;
-   padding-top: 20px ;
-   width:30%;
-
-}
-
-.div4right{
-   display: flex;
-   flex-direction: row;
-   margin-left: 105px;
-   width: 20%;
-}
-.Div4  input {
-   border-radius: 20px;
-   margin-left: 21px;
-   width: 200px;
-}
-
-.Div4 p{
-   font-size: 16px;
-}
-.ThemSanPhamButton{
+   justify-content: flex-start;
+ }
+ .Div2 label{
    font-size: 12px;
-   width: 120px;
-   margin-top: 30px;
-   align-items: center;
-   border-radius: 5px;
-   transition: color 1s, background-color 1s;
-   cursor: pointer;
-}
-.ThemSanPhamButton:hover{
-   color: white;
-   background-color: black;
-}
-.Div5{
-   margin-bottom: 30px;
-   display: flex ;
-   justify-content: center;
-   align-items: center;
-}
+   width: 24%;
+ }
 
-.HinhChuThap{
-   width: 35px;
-   height: 35px;
-   cursor: pointer;
-   margin-left: 10px;
+.Div2 input{
+   width: 80%;
+   height: 30px;
+   border-radius: 10px;
+
 }
-.Div5Left{
-   margin-right: 100px;
-}
-.Div5Right{
+.Div2 div{
    display: flex;
-   flex-direction: column;
-   justify-content: center;
+   flex-direction: row;
+   justify-content: flex-start;
    align-items: center;
-   margin-left: 145px;
-}
-.Div5Right > div{
-   margin-top: 10px;
    margin-bottom: 10px;
 }
-.Div6{
-   margin-bottom: 30px;
-}
-.Div6 > input{
-   flex: 1;
-   margin-left: 70px;
-   border-radius: 20px;
-   width: 600px;
-   height: 100px;
-}
-.Div7 > button{
-   margin-left: 300px;
-   width: 170px;
-   height: 50px;
-   border-radius: 5px;
-   cursor: pointer;
-   transition: color 1s, background-color 1s;
-}
-.Div7 > button:hover{
-   color: white;
-   background-color: black;
-}
+ .Div4{
+   font-size: 12px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 30px;
+ }
+ .Div4Left{
+    display: flex;
+    flex-direction: column;
+    width:30%;
+ 
+ }
+ .div4right{
+    display: flex;
+    flex-direction: row;
+    margin-left: 235px;
+    width: 20%;
+ }
+ .Div4  input {
+    border-radius: 20px;
+    margin-left: 21px;
+    width: 200px;
+ }
+ 
+ .Div4 p{
+    font-size: 16px;
+ }
+ .ThemSanPhamButton{
+    font-size: 12px;
+    width: 120px;
+    align-items: center;
+    border-radius: 5px;
+    transition: color 1s, background-color 1s;
+    cursor: pointer;
+ }
+ .ThemSanPhamButton:hover{
+    color: white;
+    background-color: black;
+ }
+ .Div5{
+   font-size: 12px;
+    margin-bottom: 15px;
+    display: flex ;
+    justify-content: flex-start;
+    align-items: center;
+ }
+ 
+ .Div5Left{
+    margin-right: 100px;
+ }
+ .Div5Right{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 145px;
+ }
+ .Div5Right  div{
+    margin-top: 10px;
+    margin-bottom: 10px;
+ }
+ .label-img13{
+   width: 15%;
+ }
+ .Div6{
+    font-size: 12px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+ }
+ .Div6 textarea{
+    flex: 1;
+    margin-left: 70px;
+    border-radius: 20px;
+    width: 600px;
+    height: 100px;
+ }
+ .Div7{
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   margin: 10px 0;
+ }
+ .Div7 button{
+    width: 170px;
+    height: 50px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: color 1s, background-color 1s;
+ }
+ .Div7 > button:hover{
+    color: white;
+    background-color: black;
+ }
 #KhuyenMai1-Background, #KhuyenMai-Background{
    display: flex;
    justify-content: center;
@@ -255,18 +266,6 @@ button{
    left: 0;
    right: 0;
 } 
-
-#dialog13{
-   display: none;
-   justify-content: center;
-   align-items: center;
-   background-color: rgba(128, 128, 128, 0.5);
-   position: fixed;
-   top: 0;
-   bottom: 0;
-   left: 0;
-   right: 0;
-}
 
 #list-detail{
    display: flex;
