@@ -1426,19 +1426,34 @@ function click_Product(id) {
     if (xhr.readyState === XMLHttpRequest.DONE) {
       if (xhr.status === 200) {
         var response = JSON.parse(xhr.responseText);
+        console.log(response.data.image_product);
         if (response.success) {
           document.getElementById("show_product").style.display = "flex";
-          document.getElementById(
-            "show_product"
-          ).innerHTML = `<div class=sp_popup>
-      <div class="popup_left>
-        <img src=""/>
-      </div>
-    </div>`;
+          document.getElementById("show_product").innerHTML =
+            `<div class=sp_popup>
+            <div class="popup_left">
+              <img src="` +
+            response.data.image_product[0].link_image +
+            `"/>
+            <div style="height: 155px;display: block; overflow-x: hidden;">
+            <ul id="review_image">
+            </ul>
+            </div>
+            </div>
+          </div>`;
+          response.data.image_product.forEach((element) => {
+            document.getElementById("review_image").innerHTML +=
+              `
+            <li class="list_image_review">
+              <img src="` +
+              element.link_image +
+              `"/>
+            </li>
+            `;
+          });
         } else {
-          // Thông báo đăng nhập thất bại
-          document.getElementById("mailorphone").focus();
-          alert("Tên đăng nhập hoặc mật khẩu không chính xác!");
+          // Thông báo thất bại
+          alert("Không tìm thấy sản phẩm này!");
         }
       } else {
         // Thông báo lỗi nếu có
