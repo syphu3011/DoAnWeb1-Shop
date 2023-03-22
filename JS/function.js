@@ -1426,21 +1426,67 @@ function click_Product(id) {
     if (xhr.readyState === XMLHttpRequest.DONE) {
       if (xhr.status === 200) {
         var response = JSON.parse(xhr.responseText);
-        console.log(response.data.image_product);
+        console.log(response.data);
         if (response.success) {
+          //-data -status
+          //data: -image_product:
+          //        +id_product
+          //        +link_image
+          //        +nname_image
+          //      -product:
+          //        +description
+          //        +id
+          //        +idstatus
+          //        +madein
+          //        +name
           document.getElementById("show_product").style.display = "flex";
+          //
           document.getElementById("show_product").innerHTML =
             `<div class=sp_popup>
-            <div class="popup_left">
-              <img src="` +
+              <div class="popup_left">
+                <img id="img_show"style="
+                  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                " src="` +
             response.data.image_product[0].link_image +
             `"/>
-            <div style="height: 155px;display: block; overflow-x: hidden;">
-            <ul id="review_image">
-            </ul>
-            </div>
-            </div>
-          </div>`;
+                <div style="height:120px;
+                  display: block; overflow: hidden;box-sizing: border-box;">
+                  <ul id="review_image">
+                  </ul>
+                </div>
+              </div>
+              <div class="poup_right">
+                <label class="popup_name_product">` +
+            response.data.product[0].name +
+            `</label>
+                <div style="border: 1px solid gray;
+                  border-radius: 10px;
+                  ">
+                  <label style="padding: 10px;display: block;">
+                    ID sản phẩm: \t ` +
+            response.data.product[0].id +
+            `
+                  </label>
+                  <label style="padding: 10px;display: block;">
+                    Tên sản phẩm: \t ` +
+            response.data.product[0].name +
+            `
+                  </label>
+                  <label style="padding: 10px;display: block;">
+                    Xuất xứ: \t ` +
+            response.data.madein_product[0].name +
+            `
+                  </label>
+                </div>
+                <label style="padding: 10px;display: block;">
+                  Mô tả:
+                </label>       
+                <div>
+                  
+                </div>   
+              </div>
+            </div>`;
+          //
           response.data.image_product.forEach((element) => {
             document.getElementById("review_image").innerHTML +=
               `
@@ -1451,6 +1497,14 @@ function click_Product(id) {
             </li>
             `;
           });
+          //
+          let li_img = document.getElementsByClassName("list_image_review");
+          for (let i = 0; i < li_img.length; i++) {
+            li_img[i].onmouseenter = function () {
+              document.getElementById("img_show").src =
+                li_img[i].getElementsByTagName("img")[0].src;
+            };
+          }
         } else {
           // Thông báo thất bại
           alert("Không tìm thấy sản phẩm này!");

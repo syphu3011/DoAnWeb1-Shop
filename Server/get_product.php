@@ -10,13 +10,20 @@
     $stmt->execute();
     $product["product"]=$stmt->fetchAll(PDO::FETCH_ASSOC);
     if ($stmt->rowCount()>0){
+        $stmt=null;
         $status=true;
+        $id_country=$product["product"][0]["madein"];
         $sql="SELECT *  FROM image_product WHERE id_product= '$idproduct'";
         $stmt=$conn->prepare($sql);
         $stmt->execute();
         $product["image_product"]=$stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt=null;
+        $sql="SELECT *  FROM input_country WHERE id= '$id_country'";
+        $stmt=$conn->prepare($sql);
+        $stmt->execute();
+        $product["madein_product"]=$stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt=null;
     }
-    $stmt=null;
     // $response;
     $response = array(
             'success' => $status,
