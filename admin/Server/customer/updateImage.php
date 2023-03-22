@@ -1,4 +1,7 @@
 <?php
+// TODO https://www.youtube.com/watch?v=QF1eP9f-0EI
+// TODO reduce quality image later
+
 function updateImageInRow($conn, $tableName) {
 	echo "upload function";	
 	$nameInForm = "ImageToUpload";
@@ -27,7 +30,7 @@ function updateOnDb($conn, $tableName, $id, $property, $value) {
 function updateImage($conn){
 	if ($_SERVER['REQUEST_METHOD']==='POST') {
 		$target_folder = "./uploads/";
-		$target_dir = $target_folder . time() . basename($_FILES["fileToUpload"]["name"]);
+		$target_dir = $target_folder . uniqid(id) . basename($_FILES["fileToUpload"]["name"]);
 		$extenstion = strtolower(end(explode(".", $target_dir)));
 		
 		// showPropertyOfFILES();
@@ -41,4 +44,7 @@ function updateImage($conn){
 }
 
 updateImage($conn);
+
+
+
 ?>

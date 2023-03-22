@@ -13,47 +13,63 @@ let length21 = obj10.product.length
 
 function Themkhuyenmai() {
     document.getElementById("PageUp").innerHTML = `
-   <div id="KhuyenMai-Background" >
+    <div id="KhuyenMai-Background" >
          <div id="KhuyenMai" style="border-radius: 10px;">
             <div class="KhuyenMai3" >
                <div class="Div1">Thêm khuyến mãi</div>
-               <div class="Div2">ID <input id="id" type="text" readonly></div>
-               <div class="Div3">
-                  tên khuyến mãi <input id="tenkhuyenmai" class="TenKhuyenMaiInput" type="text">
-                  giá giảm <input id="giamgia" class="GiaGiamInput" type="text">
+               <div class="Div2">
+                     <div>
+                        <label for="idkm13">ID:</label> 
+                        <input id="idkm13" type="text" readonly>
+                     </div>
+                     <div>
+                        <label for="tenkhuyenmai">Tên khuyến mãi:</label>
+                        <input id="tenkhuyenmai"type="text">
+                     </div>
+                     <div>
+                        <label for="giamgia">Giá giảm</label>
+                        <input id="giamgia"  type="text">
+                     </div>
+                     <div>              
+                        <label for="">Giảm(%)</label>
+                        <input id="phantramgiam" type="text">
+                     </div>
                </div>
                <div class="Div4">
-                  <p>các sản phẩm</p> 
                   <div class="Div4Left">
-                     <div id="list-prod"></div>
-                     <button class="ThemSanPhamButton" onclick=themsanpham()>Thêm Sản Phẩm</button>
+                    <label for="">Các sản phẩm</label>
+                    <div id="list-prod"></div>
+                    <button class="ThemSanPhamButton" onclick=themsanpham()>Thêm Sản Phẩm</button>
                   </div>
                   <div class="div4right">
-                     giảm(%)
-                     <input id="phantramgiam" type="text">
+                    <div id="div-add-image2" class="div-add-image2">
+                        <label class ="label-img13"> Hình ảnh: </label>
+                        <img id="add-img-km" class="img" src="Image/add.png" onmouseover="switch_image(this)" onmouseout="switch_default(this)">
+                    </div>
                   </div>
                </div>
                <div class="Div5">
                     <div class="Div5Left">
                          <div>
                             <label for="">bắt đầu</label>
-                            <input type="date" id="batdau" name="birthday">
+                            <input type="date" id="batdau" name="batdau">
                         </div>
                     </div>
                     <div class="Div5Right">
                         <div>
                            <label for="">kết thúc</label>
-                           <input type="date" id="ketthuc" name="birthday">
+                           <input type="date" id="ketthuc" name="ketthuc">
                         </div>
                      </div>
                </div>
                <div class="Div6">
-                  nội dung <input id="noidung" type="text">
+                  <label for="noidung">Nội dung:</label>
+                  <textarea name="noidung" id="noidung"></textarea>
                </div>
-               <div class="Div7" style="margin-top: -20px;">
+               <div class="Div7">
                   <button onclick="themkhuyenmai()">Thêm khuyến mãi</button>
                </div>
-               </div>
+            </div>
          </div>
       </div>
       `
@@ -68,6 +84,84 @@ function Themkhuyenmai() {
         //     console.log("click")
         //     document.getElementById("btnaddimg").click()
         // }
+}
+function sua(x) {
+    document.getElementById("PageUp").innerHTML = `
+    <div id="KhuyenMai-Background" >
+    <div id="KhuyenMai" style="border-radius: 10px;">
+       <div class="KhuyenMai3" >
+          <div class="Div1">Thêm khuyến mãi</div>
+          <div class="Div2">
+                <div>
+                   <label for="idkm13">ID:</label> 
+                   <input id="idkm13" type="text" readonly>
+                </div>
+                <div>
+                   <label for="tenkhuyenmai">Tên khuyến mãi:</label>
+                   <input id="tenkhuyenmai"type="text">
+                </div>
+                <div>
+                   <label for="giamgia">Giá giảm</label>
+                   <input id="giamgia"  type="text">
+                </div>
+                <div>              
+                   <label for="">Giảm(%)</label>
+                   <input id="phantramgiam" type="text">
+                </div>
+          </div>
+          <div class="Div4">
+             <div class="Div4Left">
+               <label for="">Các sản phẩm</label>
+               <div id="list-prod"></div>
+               <button class="ThemSanPhamButton" onclick=suasanpham()>Thêm Sản Phẩm</button>
+             </div>
+             <div class="div4right">
+               <div id="div-add-image2" class="div-add-image2">
+                   <label class ="label-img13"> Hình ảnh: </label>
+                   <img id="add-img-km" class="img" src="Image/add.png" onmouseover="switch_image(this)" onmouseout="switch_default(this)">
+               </div>
+             </div>
+          </div>
+          <div class="Div5">
+               <div class="Div5Left">
+                    <div>
+                       <label for="">bắt đầu</label>
+                       <input type="date" id="batdau" name="batdau">
+                   </div>
+               </div>
+               <div class="Div5Right">
+                   <div>
+                      <label for="">kết thúc</label>
+                      <input type="date" id="ketthuc" name="ketthuc">
+                   </div>
+                </div>
+          </div>
+             <div class="Div6">
+                <label for="noidung">Nội dung:</label>
+                 <textarea name="noidung" id="noidung"></textarea>
+             </div>
+            <div class="Div7">
+                <button onclick="capnhat(` + x + `)">sửa khuyến mãi</button>
+            </div>
+       </div>
+    </div>
+ </div>
+ `
+    let UnDo = document.getElementById("KhuyenMai-Background");
+    UnDo.onclick = function(clk) {
+        if (clk.target.matches("#KhuyenMai-Background")) {
+            UnDo.remove();
+            arr2.splice(0, arr2.length)
+        }
+    }
+    document.getElementById("id").value = obj10.promote[x].id
+    document.getElementById("tenkhuyenmai").value = obj10.promote[x].name;
+    document.getElementById("giamgia").value = obj10.promote[x].discount_price;
+    document.getElementById("phantramgiam").value = obj10.promote[x].discount_percent;
+    document.getElementById("batdau").value = setDate(obj10.promote[x].date_begin)
+    document.getElementById("ketthuc").value = setDate(obj10.promote[x].date_end)
+    document.getElementById("noidung").value = obj10.promote[x].content;
+    ThemSPSua(x);
 }
 let arr1 = []
     // Thêm sản phẩm
@@ -291,69 +385,6 @@ function suakhuyenmai() {
         cell7.innerHTML = calculated(obj100.discount_price) + " VND";
         cell8.innerHTML = "<button onclick='sua(" + i + ")'>sửa</button>";
     }
-}
-
-function sua(x) {
-    document.getElementById("PageUp").innerHTML = `
-      <div id="KhuyenMai-Background" >
-            <div id="KhuyenMai" style="border-radius: 10px;">
-               <div class="KhuyenMai3" >
-                  <div class="Div1">Sửa khuyến mãi</div>
-                  <div class="Div2">ID <input id="id" type="text" readonly></div>
-                  <div class="Div3">
-                     tên khuyến mãi <input id="tenkhuyenmai" class="TenKhuyenMaiInput" type="text">
-                     giá giảm <input id="giamgia" class="GiaGiamInput" type="text">
-                  </div>
-                  <div class="Div4">
-                  <p>các sản phẩm</p> 
-                  <div class="Div4Left">
-                     <div id="list-prod"></div>
-                     <button class="ThemSanPhamButton" onclick=suasanpham()>Thêm Sản Phẩm</button>
-                  </div>
-                  <div class="div4right">
-                     giảm(%)
-                     <input id="phantramgiam" type="text">
-                  </div>
-               </div>
-               <div class="Div5">
-                    <div class="Div5Left">
-                         <div>
-                            <label for="">bắt đầu</label>
-                            <input type="date" id="batdau" name="birthday">
-                        </div>
-                    </div>
-                    <div class="Div5Right">
-                        <div>
-                           <label for="">kết thúc</label>
-                           <input type="date" id="ketthuc" name="birthday">
-                        </div>
-                     </div>
-               </div>
-                  <div class="Div6">
-                     nội dung <input id="noidung" type="text">
-                  </div>
-                  <div class="Div7" style="margin-top: -20px;">
-                     <button onclick="capnhat(` + x + `)">sửa khuyến mãi</button>
-                  </div>
-                  </div>
-            </div>
-         </div>
-         `
-    let UnDo = document.getElementById("KhuyenMai-Background");
-    UnDo.onclick = function(clk) {
-        if (clk.target.matches("#KhuyenMai-Background")) {
-            UnDo.remove();
-            arr2.splice(0, arr2.length)
-        }
-    }
-    document.getElementById("id").value = obj10.promote[x].id
-    document.getElementById("tenkhuyenmai").value = obj10.promote[x].name;
-    document.getElementById("giamgia").value = obj10.promote[x].discount_price;
-    document.getElementById("phantramgiam").value = obj10.promote[x].discount_percent;
-    document.getElementById("batdau").value = setDate(obj10.promote[x].date_begin)
-    document.getElementById("ketthuc").value = setDate(obj10.promote[x].date_end)
-    document.getElementById("noidung").value = obj10.promote[x].content;
-    ThemSPSua(x);
 }
 
 function ThemSPSua(x) {

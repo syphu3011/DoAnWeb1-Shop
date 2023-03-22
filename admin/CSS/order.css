@@ -184,7 +184,7 @@ option {
 .detail_order {
     display: flex;
     flex-direction: column;
-    justify-self: flex-start;
+    justify-content: flex-start;
     align-items: center;
     background-color: white;
     padding: 10px 10px;
