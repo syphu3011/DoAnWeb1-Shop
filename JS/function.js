@@ -1481,11 +1481,17 @@ function click_Product(id) {
                 <label style="padding: 10px;display: block;">
                   Mô tả:
                 </label>       
-                <div>
-                  
+                <div style="padding: 10px;display: block;">
+                  ` +
+            response.data.product[0].description +
+            `
                 </div>   
+                 <div>
+                  size
+                </div>
               </div>
             </div>`;
+          //
           //
           response.data.image_product.forEach((element) => {
             document.getElementById("review_image").innerHTML +=
