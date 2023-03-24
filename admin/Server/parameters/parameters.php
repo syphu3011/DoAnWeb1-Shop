@@ -18,16 +18,19 @@ if ($_SERVER['REQUEST_METHOD'] === "GET"){
 		foreach ($arrHeader as $key2 => $value2) {
 			if ($key === $value2) {
 				$getAll = False;
+				break;
 			}
 		}
+		if (!$getAll)
+			break;
 	}
 
 	if ($getAll) {
-		// ? http://localhost/doan/admin/Server/parameters/parameters.php
+		// ? http://localhost/doan/admin/Server/staff/staff.php
 		$arrFromDb = Table::tableQueryAll($conn, $tableName);
 		echo Table::jsonify($conn, $arrFromDb, $tableName);
 	} else {
-		// ? http://localhost/doan/admin/Server/parameters/parameters.php?variable2=22&variable1=19
+		// ? http://localhost/doan/admin/Server/staff/staff.php?gender=nam
 		$arrProperty = array();
 		$arrContent = array();
 		foreach ($_REQUEST as $key => $value) {
