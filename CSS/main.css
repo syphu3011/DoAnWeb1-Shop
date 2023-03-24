@@ -301,7 +301,8 @@ input[type="number"] {
   margin: 0;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
-.main_list_product_product:hover {
+.main_list_product_product:hover,
+.item_size:hover {
   background-color: black;
   color: white;
   transform: scale(1.1);
