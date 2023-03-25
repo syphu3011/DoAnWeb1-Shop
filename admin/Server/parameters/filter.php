@@ -5,11 +5,11 @@ require_once('../__class__/Table.php');
 require_once('../__class__/ReqHandling.php');
 
 
-$tableName = 'customer';
+$tableName = basename(dirname(__FILE__));
 
 header('Content-Type: application/json; charset=utf-8');
 if ($_SERVER['REQUEST_METHOD'] === "GET") {
-	// ? http://localhost/doan/admin/Server/customer/filter.php?username_customer=khaphi&address=HCM
+	// ? http://localhost/doan/admin/Server/parameters/filter.php?variable1=19
 	$keyArr = array();
 	$valArr = array();
 	foreach($_REQUEST as $key => $value) {

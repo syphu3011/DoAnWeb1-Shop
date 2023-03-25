@@ -55,7 +55,7 @@ class ReqHandling {
 			}
 			$query = "INSERT INTO " . $tableName . " (" . implode(",", $header) . ") VALUES ('" .
 				implode("','", $queryArr) . "');";
-			echo $query;
+			// echo $query;
 			$query_statement = $conn->prepare($query);
 			$query_statement->execute();
 		} catch (Exception $e) {
