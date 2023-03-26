@@ -24,9 +24,18 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 						$value, $_REQUEST[$value] 
 					);
 		} else
-		// ? http://localhost/doan/admin/Server/account/account.php?action=create&id=USR014&username=someoneyoulove&password=123123&privilege=admin&session&status=idle
+		// ? http://localhost/doan/admin/Server/account/account.php?action=create&username=someoneyoulove&password=123123&privilege=admin&session&status=idle
 		if ($_REQUEST["action"] === "create") {
-			ReqHandling::createRow($conn, $tableName);
+			
+			if (isset($_REQUEST["id"])) {
+				echo "You don't need to provide ID for creating new record. Id auto-increasing is available. ";
+				exit();
+			}
+
+			$maxIdAccount = Table::getMaxId($conn, 'account', 'id');
+			$_REQUEST["id"] = "USR" . strval(sprintf("%03d", $maxIdAccount+1));
+			ReqHandling::createRow($conn, 'account');
+
 		}
 	}
 } else
