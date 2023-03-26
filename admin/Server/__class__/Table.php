@@ -12,6 +12,13 @@ class Table {
 		return $query_statement->fetchAll(PDO::FETCH_ASSOC);
 	}
 	
+	public static function tableQueryTop($conn, $tableName, $propertyDate, $amount, $propertyToSelect) {
+		$query = "SELECT $propertyToSelect FROM $tableName ORDER BY $propertyDate DESC LIMIT $amount";
+		$query_statement = $conn->prepare($query);
+		$query_statement->execute();
+		return $query_statement->fetchAll(PDO::FETCH_ASSOC);
+	}
+
 	// * query 1 child table inner join with 
 	// * 1 parent tables on keys with SPECIFIC COLUMNS
 	// * child key and parent key are required
