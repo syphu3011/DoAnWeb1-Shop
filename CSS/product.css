@@ -363,7 +363,13 @@
   display: flex;
   align-items: center;
 }
-.item_size {
+#select_color {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+.item_size,
+.item_color {
   padding: 5px;
   cursor: pointer;
   margin: 5px;
@@ -371,9 +377,18 @@
   border: 1px solid black;
   color: black;
 }
+#list_color {
+  list-style: none;
+  display: flex;
+}
+#list_size {
+  list-style: none;
+  display: flex;
+}
 .item_color {
-  height: 30px;
-  width: 30px;
+  height: 15px;
+  width: 15px;
+  border-radius: 20px;
 }
 @media screen and (max-width: 1200px) {
   /* styles for small screens */

@@ -180,10 +180,16 @@ function click_Product(id) {
                 </div>   
                     <div id="select_size">
                         <label style="margin-right: 10px;">Size</label>
+                        <ul id="list_size">
+                        </ul>
                     </div>
                     <div id="select_color">
-                        <div class="item_color">
-                        </div>
+                      <label>Màu</label>
+                      <ul id="list_color">
+                      </ul>    
+                    </div>
+                    <div>
+                      <input type="submit">
                     </div>
                 </div>
             </div>`;
@@ -217,32 +223,37 @@ function click_Product(id) {
             };
           }
           //
-          function enter_image(li) {
-            for (let i = 0; i < li.length; i++) {
-              li[i].style.borderColor = "black";
-            }
-          }
+
           //inner size
-          for (let i = 0; i < response.data.attribute_product.length; i++) {
-            att = response.data.attribute_product[i];
-            //inner các button size
-            document.getElementById("select_size").innerHTML +=
-              `
-            <div class="item_size">
-            ` +
-              att.id_size.substring(3, att.id_size.length - 1) +
-              `
-            </div>
-            `;
-          }
-          let button_size = document.getElementsByClassName("item_size");
+
+          let size_isselect = response.data.attribute_product[0].id_size;
+          show_size(
+            response.data.attribute_product,
+            document.getElementById("list_size")
+          );
           //
+          //Hiển thị màu theo size
+          show_color(
+            response.data.attribute_product,
+            size_isselect,
+            document.getElementById("list_color")
+          );
+
+          //
+          let button_size = document.getElementsByClassName("item_size");
+
           button_size[0].style.borderColor = "red";
           for (let index = 0; index < button_size.length; index++) {
             // const element = array[index];
             button_size[index].onclick = function () {
+              size_isselect = button_size[index].id;
               enter_image(button_size);
               button_size[index].style.borderColor = "red";
+              show_color(
+                response.data.attribute_product,
+                size_isselect,
+                document.getElementById("list_color")
+              );
             };
           }
         } else {
@@ -259,3 +270,63 @@ function click_Product(id) {
   xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhr.send("id_product=" + id);
 }
+//
+function enter_image(li) {
+  for (let i = 0; i < li.length; i++) {
+    li[i].style.borderColor = "black";
+  }
+}
+//
+function show_color(attribute, id_size, inner_list_color) {
+  //  -attribute[]
+  //    +id_size
+  //    +pice
+  //    +id_color
+  //  -id_size: size_isselect
+  //  -inner_list_color: document.getElementById("list_color")
+  inner_list_color.innerHTML = "";
+  for (let i = 0; i < attribute.length; i++) {
+    att = attribute[i];
+    if (att.id_size == id_size) {
+      //inner các button size
+      inner_list_color.innerHTML +=
+        `
+            <li class="item_color" id="` +
+        att.id_color +
+        `">   
+            </li>
+            `;
+      document.getElementById(att.id_color).style.backgroundColor =
+        att.id_color;
+    }
+  }
+}
+function show_size(attribute, inner_list_size) {
+  //  -attribute[]
+  //    +id_size
+  //    +pice
+  //    +id_color
+  //  -inner_list_size: document.getElementById("list_size")
+  let arr_id_size = new Array();
+  for (let i = 0; i < attribute.length; i++) {
+    console.log(arr_id_size);
+
+    att = attribute[i];
+    let tmp =
+      `
+      <li class="item_size" id="` +
+      att.id_size +
+      `">
+            ` +
+      att.id_size.substring(3, att.id_size.length - 1) +
+      `
+      </li>
+      `;
+
+    if (arr_id_size.indexOf(att.id_size) == -1) {
+      inner_list_size.innerHTML += tmp;
+    }
+    arr_id_size.push(att.id_size);
+  }
+}
+// function

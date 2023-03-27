@@ -49,6 +49,14 @@ document
                     }, 700);
                   }, 450);
                   // alert("Đăng nhập thành công!");
+                  fill_infor(
+                    currentUser.name,
+                    currentUser.numberphone,
+                    currentUser.birthday,
+                    currentUser.gender,
+                    currentUser.password_customer,
+                    currentUser.image
+                  );
                 }
               } else {
                 // Thông báo đăng nhập thất bại
@@ -77,3 +85,4 @@ document
       alert("Tên đăng nhập không được bỏ trống");
     }
   });
+function fill_infor(name, number_phone, birth_day, gender) {}
