@@ -253,17 +253,13 @@
 }
 
 .nut-them-vao-gio {
-  display: flex;
+  width: 100%;
+  padding: 5px;
   border-radius: 20px;
   cursor: pointer;
   background-color: black;
   color: white;
   justify-content: center;
-  padding: 10px;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  left: 0;
 }
 
 .nut-them-vao-gio:hover {

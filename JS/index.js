@@ -1198,46 +1198,50 @@ document.getElementById("thaydoi-mk").onclick = function () {
 let isSearch = false;
 let isHomePage = false;
 document.getElementById("home-page").onclick = function () {
-  document.getElementById("selected-type").innerHTML = "Tất cả";
-  document.getElementById("selected-price").innerHTML = "Tất cả";
-  document.getElementById("selected-sale").innerHTML = "Tất cả";
-  if (document.getElementsByClassName("middle")[0].style.display == "flex") {
-    document.getElementsByClassName("middle")[0].style.display = "";
-    if (arrProduct.length > 0) {
-      if (document.getElementById("div-list") != null) {
-        document.getElementById("div-list").remove();
-      }
-      if (document.getElementById("page-number") != null) {
-        document.getElementById("page-number").remove();
-      }
-    }
-    if (document.getElementById("div-title") != null) {
-      document.getElementById("div-title").remove();
-    }
-    console.log(isSearch);
-  }
-  if (!isHomePage || isSearch) {
-    createHomepage();
-    isSearch = false;
-  }
-  let pos = document.documentElement.scrollTop;
-  let id = setInterval(function frame() {
-    if (pos <= 300) {
-      clearInterval(id);
-    } else {
-      pos -= 10;
-      document.documentElement.scrollTop = pos;
-    }
-  }, 1);
-
-  if (isSearch) {
-    isSearch = false;
-    c = 0;
-    if (document.getElementById("searc") != null) {
-      document.getElementById("searc").remove();
-    }
-  }
+  document.getElementById("main").innerHTML = "";
+  create_Homepage(data);
 };
+// document.getElementById("home-page").onclick = function () {
+//   document.getElementById("selected-type").innerHTML = "Tất cả";
+//   document.getElementById("selected-price").innerHTML = "Tất cả";
+//   document.getElementById("selected-sale").innerHTML = "Tất cả";
+//   if (document.getElementsByClassName("middle")[0].style.display == "flex") {
+//     document.getElementsByClassName("middle")[0].style.display = "";
+//     if (arrProduct.length > 0) {
+//       if (document.getElementById("div-list") != null) {
+//         document.getElementById("div-list").remove();
+//       }
+//       if (document.getElementById("page-number") != null) {
+//         document.getElementById("page-number").remove();
+//       }
+//     }
+//     if (document.getElementById("div-title") != null) {
+//       document.getElementById("div-title").remove();
+//     }
+//     console.log(isSearch);
+//   }
+//   if (!isHomePage || isSearch) {
+//     createHomepage();
+//     isSearch = false;
+//   }
+//   let pos = document.documentElement.scrollTop;
+//   let id = setInterval(function frame() {
+//     if (pos <= 300) {
+//       clearInterval(id);
+//     } else {
+//       pos -= 10;
+//       document.documentElement.scrollTop = pos;
+//     }
+//   }, 1);
+
+//   if (isSearch) {
+//     isSearch = false;
+//     c = 0;
+//     if (document.getElementById("searc") != null) {
+//       document.getElementById("searc").remove();
+//     }
+//   }
+// };
 let arrayPro = new Array();
 //
 //

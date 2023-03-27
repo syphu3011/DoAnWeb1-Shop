@@ -188,8 +188,31 @@ function click_Product(id) {
                       <ul id="list_color">
                       </ul>    
                     </div>
-                    <div>
-                      <input type="submit">
+                    <div style="display: flex;
+                      justify-content: space-between;
+                      padding: 10px"> 
+                      <div>
+                        <button>
+                        -
+                        </button>
+                        <input type="number">
+                        <button>
+                        +
+                        </button>
+                      </div>
+                      <div>
+                        giá:
+                        <label>
+                          10 Tỷ
+                        </label>
+                      </div>
+                    </div>
+                    <div style="
+                        display: flex;
+                        margin: 10px;
+                        justify-content: center;
+                    ">
+                      <input class="nut-them-vao-gio" type="submit" value="Thêm vào giỏ hàng">
                     </div>
                 </div>
             </div>`;
