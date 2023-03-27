@@ -1,5 +1,9 @@
 <?php
-    if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+    require_once("../../../init.php");
+    require_once('./same_function_product.php');
+    require_once('../same_function.php');
+    function update_promotion($action) {
+        if (check_privilege())
         try {
             require_once('../../../init.php');
             $conn->beginTransaction();
@@ -41,11 +45,11 @@
             $stmt->bindParam(':id_status', $data_promotion['id_status']);
             if ($stmt->execute()) {
                 $data_detail_promotion = $_POST["update_detail_promotion"];
+                $stmt = $conn->prepare($query_update_detail_promotion);
                 $stmt->bindParam(':id_promotion', $data_detail_promotion['id_promotion']);
                 $stmt->bindParam(':id_product', $data_detail_promotion['id_product']);
-                $stmt = $conn->prepare($query_update_detail_promotion);
                 if ($stmt->execute()) {
-                    $stmt = $conn->prepare($query_update_detail_promotion);
+                    $stmt = $conn->prepare($query_delete_detail_promotion);
                     $data_detail_promotion = $_POST["delete_detail_promotion"];
                     $stmt->bindParam(':id_promotion', $data_detail_promotion['id_promotion']);
                     $stmt->bindParam(':id_product', $data_detail_promotion['id_product']);
@@ -72,5 +76,11 @@
             echo 'Đã xảy ra lỗi!';
             $conn->rollBack();
         }
+    }
+    if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+        update_promotion('sua');
+    }
+    else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+        update_promotion('xoa');
     }
 ?>

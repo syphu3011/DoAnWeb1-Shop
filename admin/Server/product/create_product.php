@@ -6,13 +6,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES)) {
     try {
         $conn -> beginTransaction();
         // kiểm tra quyền 
-        $query = "
-        SELECT *
-        FROM privilege_list
-        WHERE id = :id
-        ";
-        $id_privilege = $_POST["user"]["privilege"];
-        if (check_privilege($query, $id_privilege, $conn)) {
+        $username = $_POST["user"]["username"];
+        if (check_privilege($username, $conn, 'them')) {
             //Khai báo các thuộc tính sản phẩm
             $id = $_POST["product"]["id"];
             $name = $_POST["product"]["name"];
