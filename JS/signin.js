@@ -50,6 +50,7 @@ document
                   }, 450);
                   // alert("Đăng nhập thành công!");
                   fill_infor(
+                    currentUser.id,
                     currentUser.name,
                     currentUser.numberphone,
                     currentUser.birthday,
@@ -85,4 +86,39 @@ document
       alert("Tên đăng nhập không được bỏ trống");
     }
   });
-function fill_infor(name, number_phone, birth_day, gender) {}
+function fill_infor(id,name, number_phone, birth_day, gender, password_customer) {
+  document.getElementById("update-name").value=name;
+  document.getElementById("update-contact").value=number_phone;
+  birth_day=birth_day.split(" ")[0];
+  document.getElementById("update-birthday").value=birth_day;
+  if(gender=="nam"){
+    document.getElementById("male").checked = true;
+  }
+  else 
+    if( gender== "nữ"){
+      document.getElementById("female").checked= true;
+    }
+    else{
+      document.getElementById("other").checked=true;
+    }
+  document.getElementById("save-update").onclick=function(){
+        $.ajax({
+          url:'./Server/capnhatthongtin.php',
+          method:'POST',
+          data:{
+            id: id,
+            name: name,
+            numberphone: number_phone,
+            birthday:birth_day,
+            gender: gender
+          },
+          success: function(response) {
+            if (response === 'success') {
+              alert('Cập nhật thành công!');
+            } else {
+              alert('Cập nhật thất bại! ' + response);
+            }
+          }
+        })
+  }
+}
