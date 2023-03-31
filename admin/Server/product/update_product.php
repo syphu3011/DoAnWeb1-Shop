@@ -1,37 +1,50 @@
 <?php
-    if ($_SERVER('REQUEST_METHOD') === 'PUT') {
-        require_once("../../../init.php");
-        require_once('./same_function_product.php');
+     require_once("../../../init.php");
+     require_once('./same_function_product.php');
+     require_once('../same_function.php');
+    function update_product($conn, $action) {
         try {
             // bắt đầu phiên
             $conn -> beginTransaction();
-            // Kiểm tra tên
-            if (!check_name($conn, $_POST["name"], $_POST["id"])) {
+            $name = $_POST["product"]["name"];
+            $id = $_POST["product"]["id"];
+            $made_in = $_POST["product"]["made_in"];
+            $description = $_POST["product"]["description"];
+            $status = $_POST["product"]["status"];
+            // Kiểm tra quyền
+            $username = $_POST["user"]["username"];
+            if (!check_name($conn, $name, $id)) {
                 die("Tên không được trùng lặp với các sản phẩm khác!");
-            };
-            check_input_country($conn, $_POST["made_in"]);
-            // thiết lập query
-            $query = "UPDATE product 
-            SET name = :name, madein = :made_in, description = :description, idstatus = :idstatus
-            WHERE id = :id";
-            $stmt = $conn -> prepare($query);
-            // thiết lập các biến prepare
-            $stmt -> bindParam(":name", $_POST["name"]);
-            $stmt -> bindParam(":made_in", $_POST["made_in"]);
-            $stmt -> bindParam(":description", $_POST["description"]);
-            $stmt -> bindParam(":idstatus", $_POST["status"]);
-            // thực thi query
-            if ($stmt -> execute()) {
-                $json_response = ["Trạng thái" => "thành công", "Thông báo" => "Dữ liệu đã được sửa"];
-                echo json_encode($json_response);
+            }
+            if (check_privilege($username, $conn, $action)) {
+                // hoàn tất giao dịch
+                check_input_country($conn, $made_in);
+                // thiết lập query
+                $query = "UPDATE product 
+                SET name = :name, madein = :made_in, description = :description, idstatus = :idstatus
+                WHERE id = :id";
+                $stmt = $conn -> prepare($query);
+                // thiết lập các biến prepare
+                $stmt -> bindParam(":name", $name);
+                $stmt -> bindParam(":made_in", $made_in);
+                $stmt -> bindParam(":description", $description);
+                $stmt -> bindParam(":idstatus", $status);
+                // thực thi query
+                if ($stmt -> execute()) {
+                    $json_response = ["Trạng thái" => "thành công", "Thông báo" => "Dữ liệu đã được sửa"];
+                    echo json_encode($json_response);
+                }
+                else {
+                    $json_response = ["Trạng thái" => "không thành công", "Thông báo" => "Dữ liệu không được sửa"];
+                    $conn -> rollBack();
+                    die(json_encode($json_response));
+                }
+                $conn -> commit();
             }
             else {
-                $json_response = ["Trạng thái" => "không thành công", "Thông báo" => "Dữ liệu không được sửa"];
+                echo 'Bạn chưa được cấp quyền!';
                 $conn -> rollBack();
-                die(json_encode($json_response));
             }
-            // hoàn tất giao dịch
-            $conn -> commit();
         }
         catch (Exception $e) {
             //giao dịch thất bại, rollback
@@ -39,5 +52,11 @@
             $json_response = ["Trạng thái" => "không thành công", "Thông báo" => "Dữ liệu không được sửa", "Lỗi người phát triển" => $e];
             die(json_encode($json_response));
         }
+    }
+    if ($_SERVER('REQUEST_METHOD') === 'PUT') {
+        update_product($conn,'sua');
+    }
+    else if ($_SERVER('REQUEST_METHOD') === 'DELETE') {
+        update_product($conn,'xoa');
     }
 ?>

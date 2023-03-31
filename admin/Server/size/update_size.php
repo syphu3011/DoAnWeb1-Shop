@@ -1,5 +1,6 @@
 <?php
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    function update_size() {
+
         try {
             require_once('../../../init.php');
             $conn->beginTransaction();
@@ -40,5 +41,8 @@
             echo 'Đã xảy ra lỗi!';
             $conn->rollBack();
         }
+    }
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        
     }
 ?>
