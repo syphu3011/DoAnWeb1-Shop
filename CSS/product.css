@@ -386,6 +386,9 @@
   width: 15px;
   border-radius: 20px;
 }
+#product_instock {
+  padding: 10px;
+}
 @media screen and (max-width: 1200px) {
   /* styles for small screens */
   #review_image {

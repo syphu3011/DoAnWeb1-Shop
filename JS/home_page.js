@@ -188,21 +188,25 @@ function click_Product(id) {
                       <ul id="list_color">
                       </ul>    
                     </div>
+                    <div>
+                      <label id="product_instock">
+                      </label>
+                    </div>
                     <div style="display: flex;
                       justify-content: space-between;
                       padding: 10px"> 
-                      <div>
-                        <button>
+                      <div style="margin-right: 10px;">
+                        <button id="button_decrease">
                         -
                         </button>
-                        <input type="number">
-                        <button>
+                        <input type="number" placeholder="1">
+                        <button id="button_increase">
                         +
                         </button>
                       </div>
                       <div>
                         giá:
-                        <label>
+                        <label id="price_amount">
                           10 Tỷ
                         </label>
                       </div>
@@ -266,6 +270,13 @@ function click_Product(id) {
           let button_size = document.getElementsByClassName("item_size");
 
           button_size[0].style.borderColor = "red";
+          console.log(response.data.attribute_product[0].id_size);
+          get_product_instock(
+            id,
+            response.data.attribute_product[0].id_size,
+            response.data.attribute_product[0].id_color,
+            1
+          );
           for (let index = 0; index < button_size.length; index++) {
             // const element = array[index];
             button_size[index].onclick = function () {
@@ -300,6 +311,7 @@ function enter_image(li) {
   }
 }
 //
+//Them cac button mau
 function show_color(attribute, id_size, inner_list_color) {
   //  -attribute[]
   //    +id_size
@@ -324,6 +336,7 @@ function show_color(attribute, id_size, inner_list_color) {
     }
   }
 }
+//Them cac button size
 function show_size(attribute, inner_list_size) {
   //  -attribute[]
   //    +id_size
@@ -332,7 +345,7 @@ function show_size(attribute, inner_list_size) {
   //  -inner_list_size: document.getElementById("list_size")
   let arr_id_size = new Array();
   for (let i = 0; i < attribute.length; i++) {
-    console.log(arr_id_size);
+    // console.log(arr_id_size);
 
     att = attribute[i];
     let tmp =
@@ -341,7 +354,7 @@ function show_size(attribute, inner_list_size) {
       att.id_size +
       `">
             ` +
-      att.id_size.substring(3, att.id_size.length - 1) +
+      att.id_size.slice(2) +
       `
       </li>
       `;
@@ -353,3 +366,45 @@ function show_size(attribute, inner_list_size) {
   }
 }
 // function
+function get_product_instock(id_product, id_size, id_color, amount) {
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      // Xử lý kết quả trả về từ server
+      //kiểm tra xem request được gửi đi đã thành công hay chưa
+      if (xhr.status === 200) {
+        var response = JSON.parse(xhr.responseText);
+        if (response.success) {
+          console.log("function get_product_instock");
+
+          console.log(response);
+          document.getElementById("product_instock").innerHTML =
+            "Sản phẩm khả dụng: " + response.data[0].amount;
+          document.getElementById("price_amount").innerHTML =
+            calculated(response.data[0].price_input * amount) + " VNĐ";
+        } else {
+          console.log("Truy vấn lỗi");
+        }
+      }
+    }
+  };
+  xhr.open("POST", "./Server/get_product_instock.php");
+  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhr.send(
+    "id_product=" + id_product + "&id_size=" + id_size + "&id_color=" + id_color
+  );
+}
+
+function onclick_amount() {
+  count = 1;
+  document.getElementById("button_increase").onclick = function () {
+    count++;
+  };
+  document.getElementById("button_decrease").onclick = function () {
+    if (count == 1) {
+      alert("Đã đạt số lượng tối thiểu");
+    } else {
+      count--;
+    }
+  };
+}
