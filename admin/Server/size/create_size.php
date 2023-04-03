@@ -3,7 +3,7 @@
         require_once('../../../init.php');
         require_once('../same_function.php');
         $username = $_POST["user"]["username"];
-        if (check_privilege($username,$conn,'them')) {
+        if (check_privilege($username,$conn,'them','size')) {
             try {
                 require_once('../../../init.php');
                 $conn->beginTransaction();
