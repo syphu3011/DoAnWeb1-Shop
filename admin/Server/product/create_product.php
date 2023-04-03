@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES)) {
         $conn -> beginTransaction();
         // kiểm tra quyền 
         $username = $_POST["user"]["username"];
-        if (check_privilege($username, $conn, 'them')) {
+        if (check_privilege($username, $conn, 'them','product')) {
             //Khai báo các thuộc tính sản phẩm
             $id = $_POST["product"]["id"];
             $name = $_POST["product"]["name"];
