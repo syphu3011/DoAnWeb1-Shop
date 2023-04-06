@@ -386,6 +386,10 @@
   width: 15px;
   border-radius: 20px;
 }
+.item_color:hover {
+  transition: transform 0.3s ease;
+  transform: scale(1.1);
+}
 #product_instock {
   padding: 10px;
 }

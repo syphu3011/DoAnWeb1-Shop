@@ -1,3 +1,5 @@
+let max_amount = 0;
+
 function get_data(res) {
   //Loại sản phẩm
   data.largeClassify = res.largeClassify;
@@ -199,7 +201,7 @@ function click_Product(id) {
                         <button id="button_decrease">
                         -
                         </button>
-                        <input type="number" placeholder="1">
+                        <input id="count_amount_product" type="number" placeholder="1">
                         <button id="button_increase">
                         +
                         </button>
@@ -268,19 +270,25 @@ function click_Product(id) {
 
           //
           let button_size = document.getElementsByClassName("item_size");
-
           button_size[0].style.borderColor = "red";
           console.log(response.data.attribute_product[0].id_size);
           get_product_instock(
             id,
             response.data.attribute_product[0].id_size,
-            response.data.attribute_product[0].id_color,
-            1
+            response.data.attribute_product[0].id_color
           );
+          // onclick;
+          document.getElementById("count_amount_product").value = 1;
+          onclick_amount(response.data.attribute_product[0].price);
           for (let index = 0; index < button_size.length; index++) {
             // const element = array[index];
             button_size[index].onclick = function () {
               size_isselect = button_size[index].id;
+              get_product_instock(
+                id,
+                size_isselect,
+                response.data.attribute_product[0].id_color
+              );
               enter_image(button_size);
               button_size[index].style.borderColor = "red";
               show_color(
@@ -366,7 +374,8 @@ function show_size(attribute, inner_list_size) {
   }
 }
 // function
-function get_product_instock(id_product, id_size, id_color, amount) {
+function get_product_instock(id_product, id_size, id_color) {
+  console.log(id_product, id_size, id_color);
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -375,13 +384,15 @@ function get_product_instock(id_product, id_size, id_color, amount) {
       if (xhr.status === 200) {
         var response = JSON.parse(xhr.responseText);
         if (response.success) {
-          console.log("function get_product_instock");
+          let amount = response.data[0].amount;
+          max_amount = amount;
+          // console.log("function get_product_instock");
 
-          console.log(response);
+          // console.log(response);
           document.getElementById("product_instock").innerHTML =
-            "Sản phẩm khả dụng: " + response.data[0].amount;
+            "Sản phẩm khả dụng: " + amount;
           document.getElementById("price_amount").innerHTML =
-            calculated(response.data[0].price_input * amount) + " VNĐ";
+            calculated(response.data[0].price_input) + " VNĐ";
         } else {
           console.log("Truy vấn lỗi");
         }
@@ -395,16 +406,44 @@ function get_product_instock(id_product, id_size, id_color, amount) {
   );
 }
 
-function onclick_amount() {
-  count = 1;
+function onclick_amount(price) {
+  let input_text = document.getElementById("count_amount_product");
+  let label_text = document.getElementById("price_amount");
   document.getElementById("button_increase").onclick = function () {
-    count++;
-  };
-  document.getElementById("button_decrease").onclick = function () {
-    if (count == 1) {
-      alert("Đã đạt số lượng tối thiểu");
+    let amount = input_text.value;
+    if (amount == max_amount) {
+      alert("Bạn đã chọn đến số lượng tối đa");
     } else {
-      count--;
+      amount++;
+      count_onclick(input_text, label_text, amount, price);
     }
   };
+  document.getElementById("button_decrease").onclick = function () {
+    let amount = input_text.value;
+    if (amount == 1) {
+      alert("Bạn đã chọn đến số lượng tối thiểu");
+    } else {
+      amount--;
+      count_onclick(input_text, label_text, amount, price);
+    }
+  };
+  document
+    .getElementById("count_amount_product")
+    .addEventListener("input", function () {
+      let amount = input_text.value;
+      if (amount <= 0) {
+        count_onclick(input_text, label_text, 1, price);
+      } else {
+        if (amount > max_amount) {
+          count_onclick(input_text, label_text, max_amount, price);
+        } else {
+          count_onclick(input_text, label_text, amount, price);
+        }
+      }
+    });
+}
+
+function count_onclick(input_text, label_text, amount, price) {
+  input_text.value = amount;
+  label_text.innerHTML = calculated(price * amount) + " VNĐ";
 }
