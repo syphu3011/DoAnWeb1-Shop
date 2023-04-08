@@ -1,6 +1,10 @@
 <?php
 class Table {
 
+	// * query all 
+	// * -------------------------------
+	// * $conn : connection from init.php
+	// * $tableName: targeted table name
 	public static function tableQueryAll($conn, $tableName) {
 		$query = "SELECT * FROM " . $tableName;
 		$query_statement = $conn->prepare($query);
@@ -8,7 +12,9 @@ class Table {
 		return $query_statement->fetchAll(PDO::FETCH_ASSOC);
 	}
 	
-	// * query 1 child table inner join with 1 parent tables on keys
+	// * query 1 child table inner join with 
+	// * 1 parent tables on keys with SPECIFIC COLUMNS
+	// * child key and parent key are required
 	public static function tableQueryCouple($conn, $childTable, $parentTable, $childkey, $parentkey, $column) {
 		$query = 
 			"SELECT $column FROM $childTable INNER JOIN $parentTable 
@@ -33,12 +39,35 @@ class Table {
 		return $query_statement->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	// * fetch all table properties
 	public static function describe($conn, $tableName) {
 		$query = $conn->prepare("DESCRIBE ". $tableName);
 		$query->execute();
 		return $query->fetchAll(PDO::FETCH_COLUMN);
 	}
 	
+	// * get max size of table
+	public static function getSizeTable($conn, $tableName) {
+		$query = $conn->prepare("SELECT COUNT(*) FROM ". $tableName);
+		$query->execute();
+		return $query->fetchColumn();
+	}
+	
+	// * get max id in table
+	public static function getMaxId($conn, $tableName, $property) {
+		$query = $conn->prepare("SELECT $property FROM $tableName");
+		$query->execute();
+		$max = 0;
+		foreach ($query->fetchAll(PDO::FETCH_COLUMN, 0) as $key => $value) {
+			preg_match_all('/\d+/', $value, $matches);
+			if ($matches[0][0] > $max)
+				$max = $matches[0][0];
+		};
+		return $max;
+	}
+
+
+	// * query one table with one condition
 	public static function tableQueryProperty($conn, $tableName, $property, $content) {
 		try {
 			$query = "SELECT * FROM " . $tableName . " WHERE " . $property . " = '" . $content . "'";
@@ -51,6 +80,9 @@ class Table {
 		return $query_statement->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	// * query one table with multiple properties and conditions
+	// * -----------------------------------------------------
+	// * 
 	public static function tableQueryMultipleProperty($conn, $tableName, $arrProperty, $arrContent) {
 		$query = "SELECT * FROM " . $tableName . " WHERE " ;
 		$arrLength = count($arrProperty);	
@@ -67,6 +99,11 @@ class Table {
 		return $query_statement->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	// * convert array list into json
+	// * -------------------------------------------------
+	// * $conn : connection from init.php
+	// * $arrFromDb : array fetch from database
+	// * $tableName : table name in database for jsonify		
 	public static function jsonify($conn, $arrFromDb, $tableName) {
 		$jsonItem = array();
 		$propertiesArray = self::describe($conn, $tableName);
@@ -82,6 +119,8 @@ class Table {
 		return json_encode($jsonItem, JSON_UNESCAPED_UNICODE);
 	}
 
+
+	// * merge two array from two table into one json
 	public static function jsonifyCouple($conn, $arrFromDb, $childTable, $parentTable) {
 		$jsonItem = array();
 		$propertiesArray = self::describe($conn, $childTable);
@@ -99,8 +138,10 @@ class Table {
 			);
 		}
 		return json_encode($jsonItem, JSON_UNESCAPED_UNICODE);
-	}
+	} 
 	
+	// * merge 3 array from two table into 1 json
+	// * 1 child table and 2 parent tables
 	public static function jsonifyTriple($conn, $arrFromDb, $childTable, $parentTable, $parentTable2) {
 		$jsonItem = array();
 		$propertiesArray = self::describe($conn, $childTable);
@@ -118,9 +159,9 @@ class Table {
 			$tempArray = array();
 			foreach ($propertiesArray as $index2 => $colName){	
 				if (!array_key_exists($colName, $tempArray))
-					$tempArray[$colName] = $record[$colName];
-					else
-					$tempArray[$colName. "2"] = $record[$colName];
+					$tempArray["$parentTable." . $colName] = $record[$colName];
+				else
+					$tempArray["$parentTable2." . $colName] = $record[$colName];
 
 			}
 			$jsonItem += array(

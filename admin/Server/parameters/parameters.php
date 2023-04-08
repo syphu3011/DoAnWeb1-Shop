@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 		// ? http://localhost/doan/admin/Server/parameters/parameters.php?id=TUOITEEN&variable1=19&variable2=22&action=update
 		if ($_REQUEST["action"] === "update"){
 			foreach($headerArr as $index => $value) 
-				if ($index !== 0 && isset($_REQUEST[$value]))
+				if (isset($_REQUEST[$value]))
 					ReqHandling::updateDb(
 						$conn, $tableName, $_REQUEST["id"], 
 						$value, $_REQUEST[$value] 
