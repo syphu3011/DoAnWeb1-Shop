@@ -44,4 +44,33 @@ if ($_SERVER['REQUEST_METHOD'] === "GET"){
 	}
 	
 }
+
+
+
+
+if ($_SERVER['REQUEST_METHOD'] === "POST") {
+	if (isset($_REQUEST["action"])){
+		if ($_REQUEST["action"] === "update"){
+			echo "Update is not supported.";
+		} else
+		// ? http://localhost/doan/admin/Server/receipt/receipt.php?action=create&date_init=2023-02-24 00:00:00&date_confirm=2023-02-24 00:00:00&note&id_staff=NV001&id_customer=KH001&id_status=TT07
+		if ($_REQUEST["action"] === "create") {
+			$maxId = Table::getMaxId($conn, $tableName, 'id');
+			$_REQUEST["id"] = "HD" . sprintf("%03d", strval($maxId+1));
+			ReqHandling::createRow($conn, $tableName);
+		}
+	}
+}
+
+
+
+// ? http://localhost/doan/admin/Server/receipt/receipt.php?id=TUOITEEN
+if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+	if (isset($_REQUEST["id"])) {
+		ReqHandling::deleteRow($conn, $tableName, $_REQUEST["id"]);
+		exit();
+	} else {
+		echo "Please specify your id for erasion." . "</br>" ;
+	}
+}
 ?>

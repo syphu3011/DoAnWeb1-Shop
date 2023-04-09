@@ -24,8 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 						$value, $_REQUEST[$value] 
 					);
 		} else
-		// ? http://localhost/doan/admin/Server/account/account.php?action=create&id=USR014&username=someoneyoulove&password=123123&privilege=admin&session&status=idle
+		// ? http://localhost/doan/admin/Server/account/account.php?action=create&username=someoneyoulove&password=123123&privilege=admin&session&status=idle
 		if ($_REQUEST["action"] === "create") {
+			$maxId = Table::getMaxId($conn, $tableName, 'id');
+			$_REQUEST["id"] = "USR" . sprintf("%03d", strval($maxId+1));
 			ReqHandling::createRow($conn, $tableName);
 		}
 	}
