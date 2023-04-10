@@ -5,8 +5,10 @@ require_once('../../../init.php');
 require_once('../__class__/Table.php');
 require_once('../__class__/ReqHandling.php');
 
+
+
 if ($_SERVER['REQUEST_METHOD'] === "GET") {
-	// ? 
+	// ? http://localhost/doan/admin/Server/receipt/receipt.php
 	echo Table::jsonifyTriple(
 		$conn, 
 		Table::tableQueryTriple(
@@ -29,8 +31,21 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") {
 			'*'
 			// * column for selection
 		), 
-		'receipt', 'customer', 'staff'
+		'receipt', 
+		'customer', 
+		'staff'
 	);
 }
 
+
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+	if ($_REQUEST["action"] == "update") {}
+	if ($_REQUEST["action"] == "create") {
+		if (isset($_REQUEST["id"])) {
+			echo "The id shouldn't be here.";
+			exit();
+		}
+	}
+}
 ?>
