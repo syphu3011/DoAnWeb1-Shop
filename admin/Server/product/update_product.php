@@ -16,7 +16,7 @@
             if (!check_name($conn, $name, $id)) {
                 die("Tên không được trùng lặp với các sản phẩm khác!");
             }
-            if (check_privilege($username, $conn, $action)) {
+            if (check_privilege($username, $conn, $action,'product')) {
                 // hoàn tất giao dịch
                 check_input_country($conn, $made_in);
                 // thiết lập query

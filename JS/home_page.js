@@ -1,3 +1,5 @@
+let max_amount = 0;
+
 function get_data(res) {
   //Loại sản phẩm
   data.largeClassify = res.largeClassify;
@@ -188,21 +190,25 @@ function click_Product(id) {
                       <ul id="list_color">
                       </ul>    
                     </div>
+                    <div>
+                      <label id="product_instock">
+                      </label>
+                    </div>
                     <div style="display: flex;
                       justify-content: space-between;
                       padding: 10px"> 
-                      <div>
-                        <button>
+                      <div style="margin-right: 10px;">
+                        <button id="button_decrease">
                         -
                         </button>
-                        <input type="number">
-                        <button>
+                        <input id="count_amount_product" type="number" placeholder="1">
+                        <button id="button_increase">
                         +
                         </button>
                       </div>
                       <div>
                         giá:
-                        <label>
+                        <label id="price_amount">
                           10 Tỷ
                         </label>
                       </div>
@@ -261,15 +267,49 @@ function click_Product(id) {
             size_isselect,
             document.getElementById("list_color")
           );
-
+          //
           //
           let button_size = document.getElementsByClassName("item_size");
+          console.log(response.data.attribute_product[0].id_size);
+          get_product_instock(
+            id,
+            response.data.attribute_product[0].id_size,
+            response.data.attribute_product[0].id_color
+          );
+          //
+          // console.log(btn_color.length);
 
+          // chon mau
+          // let btn_color = document.getElementsByClassName("item_color");
+          // console.log(btn_color.length);
+          // for (let i = 0; i < btn_color.length; i++) {
+          //   element = btn_color[i];
+          //   console.log(element.id);
+          //   element.onclick = function () {
+          //     element.style.borderColor = "red";
+          //     console.log(element.id);
+          //     get_product_instock(
+          //       id,
+          //       size_isselect,
+          //       response.data.attribute_product[0].id_color
+          //     );
+          //   };
+          // }
           button_size[0].style.borderColor = "red";
+
+          select_color(id, size_isselect, response.data.attribute_product[0]);
+          //Chon size
+          document.getElementById("count_amount_product").value = 1;
+          onclick_amount(response.data.attribute_product[0].price);
           for (let index = 0; index < button_size.length; index++) {
             // const element = array[index];
             button_size[index].onclick = function () {
               size_isselect = button_size[index].id;
+              get_product_instock(
+                id,
+                size_isselect,
+                response.data.attribute_product[0].id_color
+              );
               enter_image(button_size);
               button_size[index].style.borderColor = "red";
               show_color(
@@ -277,8 +317,18 @@ function click_Product(id) {
                 size_isselect,
                 document.getElementById("list_color")
               );
+              select_color(
+                id,
+                size_isselect,
+                response.data.attribute_product[0]
+              );
             };
           }
+          let nutthem = document.getElementsByClassName("nut-them-vao-gio")[0];
+
+          nutthem.onclick = function () {
+            addToCart();
+          };
         } else {
           // Thông báo thất bại
           alert("Không tìm thấy sản phẩm này!");
@@ -293,6 +343,22 @@ function click_Product(id) {
   xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhr.send("id_product=" + id);
 }
+//func chon mau
+function select_color(id, size_isselect, data) {
+  let btn_color = document.getElementsByClassName("item_color");
+  for (let i = 0; i < btn_color.length; i++) {
+    btn_color[i].onclick = function () {
+      //   //Chuyen tat ca nut ve mau den
+      console.log(btn_color[i]);
+      for (let j = 0; j < btn_color.length; j++) {
+        btn_color[j].style.borderColor = "black";
+      }
+      //   //Chuyển nút đang bấm về màu đỏ
+      btn_color[i].style.borderColor = "red";
+      get_product_instock(id, size_isselect, data.id_color);
+    };
+  }
+}
 //
 function enter_image(li) {
   for (let i = 0; i < li.length; i++) {
@@ -300,6 +366,7 @@ function enter_image(li) {
   }
 }
 //
+//Them cac button mau
 function show_color(attribute, id_size, inner_list_color) {
   //  -attribute[]
   //    +id_size
@@ -323,7 +390,9 @@ function show_color(attribute, id_size, inner_list_color) {
         att.id_color;
     }
   }
+  document.getElementsByClassName("item_color")[0].style.borderColor = "red";
 }
+//Them cac button size
 function show_size(attribute, inner_list_size) {
   //  -attribute[]
   //    +id_size
@@ -332,7 +401,7 @@ function show_size(attribute, inner_list_size) {
   //  -inner_list_size: document.getElementById("list_size")
   let arr_id_size = new Array();
   for (let i = 0; i < attribute.length; i++) {
-    console.log(arr_id_size);
+    // console.log(arr_id_size);
 
     att = attribute[i];
     let tmp =
@@ -341,7 +410,7 @@ function show_size(attribute, inner_list_size) {
       att.id_size +
       `">
             ` +
-      att.id_size.substring(3, att.id_size.length - 1) +
+      att.id_size.slice(2) +
       `
       </li>
       `;
@@ -353,3 +422,119 @@ function show_size(attribute, inner_list_size) {
   }
 }
 // function
+function get_product_instock(id_product, id_size, id_color) {
+  console.log(id_product, id_size, id_color);
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      // Xử lý kết quả trả về từ server
+      //kiểm tra xem request được gửi đi đã thành công hay chưa
+      if (xhr.status === 200) {
+        var response = JSON.parse(xhr.responseText);
+        if (response.success) {
+          let amount = response.data[0].amount;
+          max_amount = amount;
+          // console.log("function get_product_instock");
+
+          // console.log(response);
+          document.getElementById("product_instock").innerHTML =
+            "Sản phẩm khả dụng: " + amount;
+          document.getElementById("price_amount").innerHTML =
+            calculated(response.data[0].price_input) + " VNĐ";
+        } else {
+          console.log("Truy vấn lỗi");
+        }
+      }
+    }
+  };
+  xhr.open("POST", "./Server/get_product_instock.php");
+  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhr.send(
+    "id_product=" + id_product + "&id_size=" + id_size + "&id_color=" + id_color
+  );
+}
+
+function onclick_amount(price) {
+  let input_text = document.getElementById("count_amount_product");
+  let label_text = document.getElementById("price_amount");
+  document.getElementById("button_increase").onclick = function () {
+    let amount = input_text.value;
+    if (amount == max_amount) {
+      alert("Bạn đã chọn đến số lượng tối đa");
+    } else {
+      amount++;
+      count_onclick(input_text, label_text, amount, price);
+    }
+  };
+  document.getElementById("button_decrease").onclick = function () {
+    let amount = input_text.value;
+    if (amount == 1) {
+      alert("Bạn đã chọn đến số lượng tối thiểu");
+    } else {
+      amount--;
+      count_onclick(input_text, label_text, amount, price);
+    }
+  };
+  document
+    .getElementById("count_amount_product")
+    .addEventListener("input", function () {
+      let amount = input_text.value;
+      if (amount <= 0) {
+        count_onclick(input_text, label_text, 1, price);
+      } else {
+        if (amount > max_amount) {
+          count_onclick(input_text, label_text, max_amount, price);
+        } else {
+          count_onclick(input_text, label_text, amount, price);
+        }
+      }
+    });
+}
+
+function count_onclick(input_text, label_text, amount, price) {
+  input_text.value = amount;
+  label_text.innerHTML = calculated(price * amount) + " VNĐ";
+}
+function addToCart() {
+  if (currentUser != null) {
+    if (slkd > 0) {
+      if (checkCart(pro[0].id, currentUser.cart)) {
+        // let c = new Cart(pro[0].id, ids, count, tinhtongtien(count, pro[0].id, pro[0].price))
+        currentUser.cart.push(
+          new Cart(
+            pro[0].id,
+            ids,
+            count,
+            tinhtongtien(count, pro[0].id, pro[0].price)
+          )
+        );
+        localStorage.setItem("data", JSON.stringify(data));
+        showacc(document.getElementsByClassName("popUp-prod")[0], 0, 1200);
+        setTimeout(() => {
+          document.getElementById("div-onClickProduct").style.display = "";
+          isCTSP = false;
+          document.getElementById("noti").style.display = "flex";
+          document.getElementById("noti-noti").innerHTML = "đã thêm Thành công";
+          showacc(document.getElementById("noti-noti"), -500, 0);
+          document.getElementById("noti-noti").style.display = "flex";
+          setTimeout(() => {
+            document.getElementById("noti").style.display = "";
+          }, 700);
+        }, 400);
+      } else {
+        alert("sản phẩm đã được thêm, hãy chỉnh sửa trong giỏ hàng");
+      }
+    } else {
+      alert("Sản phẩm hiện đang hết hàng");
+    }
+  } else {
+    alert("Đăng nhập để tiếp tục");
+    showacc(document.getElementsByClassName("popUp-prod")[0], 0, 1200);
+    setTimeout(() => {
+      document.getElementById("div-onClickProduct").style.display = "";
+      isCTSP = false;
+      account.style.display = "flex";
+      showacc(signin, -500, 0);
+    }, 400);
+  }
+}

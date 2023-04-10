@@ -3,10 +3,10 @@
     $username_form = $_POST['username'];
     $password_form = $_POST['password'];
     //
-    $status=false;
+    $status = false;
     //Lấy dữ liệu từ Database
     require_once("../init.php");
-    $sql="SELECT *  FROM customer WHERE username_customer = '$username_form' AND password_customer= '$password_form'";
+    $sql="SELECT *  FROM `customer` WHERE `username_customer` = '$username_form' AND `password_customer`= '$password_form'";
     $stmt=$conn->prepare($sql);
     $stmt->execute();
     $user_account=$stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -14,7 +14,7 @@
         $status=true;
     }else{
         $stmt=null;
-        $sql="SELECT *  FROM staff WHERE username_staff = '$username_form' AND password_staff= '$password_form'";
+        $sql="SELECT *  FROM `staff` WHERE `username_staff` = '$username_form' AND `password_staff`= '$password_form'";
         $stmt=$conn->prepare($sql);
         $stmt->execute();
         $user_account=$stmt->fetchAll(PDO::FETCH_ASSOC);

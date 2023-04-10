@@ -385,6 +385,14 @@
   height: 15px;
   width: 15px;
   border-radius: 20px;
+  border: 1px solid black;
+}
+.item_color:hover {
+  transition: transform 0.3s ease;
+  transform: scale(1.1);
+}
+#product_instock {
+  padding: 10px;
 }
 @media screen and (max-width: 1200px) {
   /* styles for small screens */
