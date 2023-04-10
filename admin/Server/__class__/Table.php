@@ -149,20 +149,22 @@ class Table {
 		$arrParent2 = self::describe($conn, $parentTable2);
 
 		foreach ($arrParent as $key => $value) {
-			array_push($propertiesArray, $value);
+			array_push($propertiesArray, "$parentTable" . "." . $value);
 		}
 		foreach ($arrParent2 as $key => $value) {
-			array_push($propertiesArray, $value);
+			array_push($propertiesArray, "$parentTable2" . "." . $value);
 		}
 
 		foreach ($arrFromDb as $index => $record) {
 			$tempArray = array();
 			foreach ($propertiesArray as $index2 => $colName){	
-				if (!array_key_exists($colName, $tempArray))
-					$tempArray["$parentTable." . $colName] = $record[$colName];
-				else
-					$tempArray["$parentTable2." . $colName] = $record[$colName];
-
+				if (!array_key_exists($colName, $tempArray)) {
+						$explodeArr = explode('.', $colName);
+						if (isset($explodeArr[1]))
+							$tempArray[$colName] = $record[$explodeArr[1]];
+						else
+							$tempArray[$colName] = $record[$explodeArr[0]];
+					}
 			}
 			$jsonItem += array(
 				$index => $tempArray
