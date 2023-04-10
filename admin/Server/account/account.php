@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 		} else
 		// ? http://localhost/doan/admin/Server/account/account.php?action=create&username=someoneyoulove&password=123123&privilege=admin&session&status=idle
 		if ($_REQUEST["action"] === "create") {
+
 			
 			if (isset($_REQUEST["id"])) {
 				echo "You don't need to provide ID for creating new record. Id auto-increasing is available. ";
