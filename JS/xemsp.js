@@ -225,7 +225,4 @@ function evCTSP(slCoSan, ids) {
       alert("Số lượng sản phẩm đã đạt tối đa");
     }
   };
-  let nutthem = document.getElementsByClassName("nut-them-vao-gio")[0];
-
-  nutthem.onclick = function () {};
 }

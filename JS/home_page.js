@@ -267,17 +267,38 @@ function click_Product(id) {
             size_isselect,
             document.getElementById("list_color")
           );
-
+          //
           //
           let button_size = document.getElementsByClassName("item_size");
-          button_size[0].style.borderColor = "red";
           console.log(response.data.attribute_product[0].id_size);
           get_product_instock(
             id,
             response.data.attribute_product[0].id_size,
             response.data.attribute_product[0].id_color
           );
-          // onclick;
+          //
+          // console.log(btn_color.length);
+
+          // chon mau
+          // let btn_color = document.getElementsByClassName("item_color");
+          // console.log(btn_color.length);
+          // for (let i = 0; i < btn_color.length; i++) {
+          //   element = btn_color[i];
+          //   console.log(element.id);
+          //   element.onclick = function () {
+          //     element.style.borderColor = "red";
+          //     console.log(element.id);
+          //     get_product_instock(
+          //       id,
+          //       size_isselect,
+          //       response.data.attribute_product[0].id_color
+          //     );
+          //   };
+          // }
+          button_size[0].style.borderColor = "red";
+
+          select_color(id, size_isselect, response.data.attribute_product[0]);
+          //Chon size
           document.getElementById("count_amount_product").value = 1;
           onclick_amount(response.data.attribute_product[0].price);
           for (let index = 0; index < button_size.length; index++) {
@@ -296,8 +317,18 @@ function click_Product(id) {
                 size_isselect,
                 document.getElementById("list_color")
               );
+              select_color(
+                id,
+                size_isselect,
+                response.data.attribute_product[0]
+              );
             };
           }
+          let nutthem = document.getElementsByClassName("nut-them-vao-gio")[0];
+
+          nutthem.onclick = function () {
+            addToCart();
+          };
         } else {
           // Thông báo thất bại
           alert("Không tìm thấy sản phẩm này!");
@@ -311,6 +342,22 @@ function click_Product(id) {
   xhr.open("POST", "./Server/get_product.php");
   xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhr.send("id_product=" + id);
+}
+//func chon mau
+function select_color(id, size_isselect, data) {
+  let btn_color = document.getElementsByClassName("item_color");
+  for (let i = 0; i < btn_color.length; i++) {
+    btn_color[i].onclick = function () {
+      //   //Chuyen tat ca nut ve mau den
+      console.log(btn_color[i]);
+      for (let j = 0; j < btn_color.length; j++) {
+        btn_color[j].style.borderColor = "black";
+      }
+      //   //Chuyển nút đang bấm về màu đỏ
+      btn_color[i].style.borderColor = "red";
+      get_product_instock(id, size_isselect, data.id_color);
+    };
+  }
 }
 //
 function enter_image(li) {
@@ -343,6 +390,7 @@ function show_color(attribute, id_size, inner_list_color) {
         att.id_color;
     }
   }
+  document.getElementsByClassName("item_color")[0].style.borderColor = "red";
 }
 //Them cac button size
 function show_size(attribute, inner_list_size) {
@@ -487,8 +535,6 @@ function addToCart() {
       isCTSP = false;
       account.style.display = "flex";
       showacc(signin, -500, 0);
-      // productTag.style = ""
-      // document.getElementById("tagdivProduct").remove()
     }, 400);
   }
 }
