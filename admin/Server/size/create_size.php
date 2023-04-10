@@ -22,6 +22,7 @@
                 ";
                 $stmt = $conn->prepare($query_insert_size);
                 $data_size = $_POST["size"];
+                $id_status = 'TT12';
                 $stmt->bindParam(':id', $data_size['id']);
                 $stmt->bindParam(':breast', $data_size['breast']);
                 $stmt->bindParam(':waist', $data_size['waist']);
@@ -30,7 +31,7 @@
                 $stmt->bindParam(':hand', $data_size['hand']);
                 $stmt->bindParam(':thigh', $data_size['thigh']);
                 $stmt->bindParam(':back', $data_size['back']);
-                $stmt->bindParam(':id_status', 'TT12');
+                $stmt->bindParam(':id_status', $id_status);
                 if ($stmt->execute()) {
                     echo 'Đã thêm kích thước thành công';
                     $conn->commit();

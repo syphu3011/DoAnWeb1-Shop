@@ -1,6 +1,6 @@
 // let firstName = document.getElementById("inp-firstname")
 // let lastName = document.getElementById("inp-lastname")
-// let username = document.getElementById("inp-username")
+let username = document.getElementById("inp-username")
 // let number_phone = document.getElementById("phone-mail-regis")
 // let password_regis = document.getElementById("passwd-regis")
 // let same_passwd = document.getElementById("same-passwd")
@@ -10,8 +10,10 @@
 
 // Đăng ký đẩy thông tin lên server
 $(document).ready(function() {
+
 	$('#form-signup').submit(function(e) {
 		e.preventDefault();
+        if(Checkavai()==true){
 		// Gửi thông tin đăng ký lên server
         $.ajax({
             url: './Server/dangky.php',
@@ -28,12 +30,13 @@ $(document).ready(function() {
             },
 			success: function(response) {
 				if (response === 'success') {
-					alert('Đăng ký thành công!');
+                    notifition();
 				} else {
 					alert('Đăng ký thất bại! ' + response);
 				}
 			}
 		});
+    }
 	});
 });
 
@@ -163,3 +166,67 @@ document.getElementsByName("sex").forEach(e => {
 //         alert("Không được bỏ trống bất cứ thông tin nào!")
 //     }
 // }
+
+function notifition(){
+    showacc(signup, 0, 1200);
+              setTimeout(() => {
+                signup.style.display = "";
+                account.style.display = "";
+                document.getElementById("noti").style.display = "flex";
+                document.getElementById("noti-noti").innerHTML =
+                  "Đăng ký thành công";
+                showacc(document.getElementById("noti-noti"), -500, 0);
+                document.getElementById("noti-noti").style.display = "flex";
+                setTimeout(() => {
+                  document.getElementById("noti").style.display = "";
+                  account.style.display = "flex";
+                  showacc(signin, -500, 0);
+                }, 700);
+              }, 450);
+}
+function Checkavai(){
+    let flag=true
+    if (checkValid(
+                    firstName.value,
+                    lastName.value,
+                    username.value,
+                    password_regis.value,
+                    same_passwd.value,
+                    number_phone.value,
+                    birthday.value)) {
+                if (checkSamePassword(password_regis.value, same_passwd.value)) {
+                    if (checkDate(birthday.value)) {
+                        let customer = new Customer(
+                            initId(),
+                            firstName.value.trim() + " " + lastName.value.trim(),
+                            number_phone.value.trim(),
+                            username.value.trim(),
+                            password_regis.value,
+                            sex,
+                            birthday.value)
+                        if (checkConstraintRegis(customer) == true) {
+                            data.customer.push(customer)
+                            localStorage.setItem("data", JSON.stringify(data))
+                            showacc(signup, 0, 1200)
+                            setTimeout(() => {
+                                signup.style.display = ""
+                                account.style.display = ""
+                            }, 450);
+                        } else {
+                            alert("Tài khoản đã tồn tại")
+                            flag=false;
+                        }
+                    } else {
+                        alert("Ngày sinh không hợp lệ")
+                        flag=false;
+                    }
+                } else {
+                    alert("Bạn đã nhập 2 mật khẩu không giống nhau!")
+                    flag=false;
+                }
+            } else {
+                alert("Không được bỏ trống bất cứ thông tin nào!")
+                flag=false;
+            }
+            return flag
+}
