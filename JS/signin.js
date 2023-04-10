@@ -20,18 +20,11 @@ document
               console.log(response);
               //   test = response;
               if (response.success) {
+                console.log(response.data.id);
                 //Đăng nhập với vai trò nhân viên
-                if (response.data[0].id.indexOf("NV") != -1) {
-                  console.log("Bạn đang đăng nhập với vai trò nhân viên");
-                  localStorage.setItem(
-                    "currentStaff",
-                    JSON.stringify(currentUser)
-                  );
-                  localStorage.setItem("checkLogin", true);
-                  window.location.href = "./admin/index.html";
-                } else {
+                if (response.data.account.privilege.indexOf("customer") != -1) {
                   //Đăng nhập vào enduser
-                  currentUser = response.data[0];
+                  currentUser = response.data.customer;
                   //Ẩn giao diện đăng nhập
                   showacc(signin, 0, 1200);
                   // Thông báo đăng nhập thành công
@@ -58,6 +51,14 @@ document
                     currentUser.password_customer,
                     currentUser.image
                   );
+                } else {
+                  console.log("Bạn đang đăng nhập với vai trò nhân viên");
+                  localStorage.setItem(
+                    "currentStaff",
+                    JSON.stringify(currentUser)
+                  );
+                  localStorage.setItem("checkLogin", true);
+                  window.location.href = "./admin/index.html";
                 }
               } else {
                 // Thông báo đăng nhập thất bại
@@ -86,39 +87,43 @@ document
       alert("Tên đăng nhập không được bỏ trống");
     }
   });
-function fill_infor(id,name, number_phone, birth_day, gender, password_customer) {
-  document.getElementById("update-name").value=name;
-  document.getElementById("update-contact").value=number_phone;
-  birth_day=birth_day.split(" ")[0];
-  document.getElementById("update-birthday").value=birth_day;
-  if(gender=="nam"){
+function fill_infor(
+  id,
+  name,
+  number_phone,
+  birth_day,
+  gender,
+  password_customer
+) {
+  document.getElementById("update-name").value = name;
+  document.getElementById("update-contact").value = number_phone;
+  birth_day = birth_day.split(" ")[0];
+  document.getElementById("update-birthday").value = birth_day;
+  if (gender == "nam") {
     document.getElementById("male").checked = true;
+  } else if (gender == "nữ") {
+    document.getElementById("female").checked = true;
+  } else {
+    document.getElementById("other").checked = true;
   }
-  else 
-    if( gender== "nữ"){
-      document.getElementById("female").checked= true;
-    }
-    else{
-      document.getElementById("other").checked=true;
-    }
-  document.getElementById("save-update").onclick=function(){
-        $.ajax({
-          url:'./Server/capnhatthongtin.php',
-          method:'POST',
-          data:{
-            id: id,
-            name: name,
-            numberphone: number_phone,
-            birthday:birth_day,
-            gender: gender
-          },
-          success: function(response) {
-            if (response === 'success') {
-              alert('Cập nhật thành công!');
-            } else {
-              alert('Cập nhật thất bại! ' + response);
-            }
-          }
-        })
-  }
+  document.getElementById("save-update").onclick = function () {
+    $.ajax({
+      url: "./Server/capnhatthongtin.php",
+      method: "POST",
+      data: {
+        id: id,
+        name: name,
+        numberphone: number_phone,
+        birthday: birth_day,
+        gender: gender,
+      },
+      success: function (response) {
+        if (response === "success") {
+          alert("Cập nhật thành công!");
+        } else {
+          alert("Cập nhật thất bại! " + response);
+        }
+      },
+    });
+  };
 }
