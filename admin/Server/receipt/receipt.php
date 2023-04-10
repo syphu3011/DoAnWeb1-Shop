@@ -1,51 +1,47 @@
 <?php
-header('Content-Type: application/json; charset=utf-8');
-
 require_once('../../../init.php');
 require_once('../__class__/Table.php');
 require_once('../__class__/ReqHandling.php');
 
+$tableName = basename(dirname(__FILE__));
+$headerArr = Table::describe($conn, $tableName);
 
-
-if ($_SERVER['REQUEST_METHOD'] === "GET") {
-	// ? http://localhost/doan/admin/Server/receipt/receipt.php
-	echo Table::jsonifyTriple(
-		$conn, 
-		Table::tableQueryTriple(
-			$conn, 
-			// * connection
-			'receipt', 
-			// * child table
-			'customer',
-			// * parent table 1
-			'staff',
-			// * parent table 2
-			'id_customer',
-			// * foreign key 1 on child
-			'id_staff',
-			// * foreign key 2 on child
-			'id',
-			// * primary key 1 on parent table 1
-			'id',
-			// * primary key 2 on parent table 2
-			'*'
-			// * column for selection
-		), 
-		'receipt', 
-		'customer', 
-		'staff'
-	);
-}
+header('Content-Type: application/json; charset=utf-8');
 
 
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-	if ($_REQUEST["action"] == "update") {}
-	if ($_REQUEST["action"] == "create") {
-		if (isset($_REQUEST["id"])) {
-			echo "The id shouldn't be here.";
-			exit();
+if ($_SERVER['REQUEST_METHOD'] === "GET"){	
+	$getAll = True;
+	$arrHeader = Table::describe($conn, $tableName);
+
+	foreach ($_REQUEST as $key => $value) {
+		foreach ($arrHeader as $key2 => $value2) {
+			if ($key === $value2) {
+				$getAll = False;
+			}
 		}
 	}
+
+	if ($getAll) {
+		// ? http://localhost/doan/admin/Server/receipt/receipt.php
+		$arrFromDb = Table::tableQueryAll($conn, $tableName);
+		echo Table::jsonify($conn, $arrFromDb, $tableName);
+	} else {
+		// ? http://localhost/doan/admin/Server/receipt/receipt.php?date_confirm=2023-02-12 00:00:00
+		$arrProperty = array();
+		$arrContent = array();
+		foreach ($_REQUEST as $key => $value) {
+			array_push($arrProperty, $key);
+			array_push($arrContent, $value);
+		}
+		$arrFromDb = Table::tableQueryMultipleProperty(
+			$conn, 
+			$tableName,
+			$arrProperty,
+			$arrContent
+		);
+		echo Table::jsonify($conn, $arrFromDb, $tableName);
+	}
+	
 }
 ?>
