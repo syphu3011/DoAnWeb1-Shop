@@ -3,7 +3,6 @@
     $username = "root";
     $password = "";
     $dbname = "shop";
-
     try {
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         // Thiết lập chế độ lỗi PDO thành ngoại lệ
