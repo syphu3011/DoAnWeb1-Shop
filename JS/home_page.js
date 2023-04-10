@@ -447,3 +447,48 @@ function count_onclick(input_text, label_text, amount, price) {
   input_text.value = amount;
   label_text.innerHTML = calculated(price * amount) + " VNĐ";
 }
+function addToCart() {
+  if (currentUser != null) {
+    if (slkd > 0) {
+      if (checkCart(pro[0].id, currentUser.cart)) {
+        // let c = new Cart(pro[0].id, ids, count, tinhtongtien(count, pro[0].id, pro[0].price))
+        currentUser.cart.push(
+          new Cart(
+            pro[0].id,
+            ids,
+            count,
+            tinhtongtien(count, pro[0].id, pro[0].price)
+          )
+        );
+        localStorage.setItem("data", JSON.stringify(data));
+        showacc(document.getElementsByClassName("popUp-prod")[0], 0, 1200);
+        setTimeout(() => {
+          document.getElementById("div-onClickProduct").style.display = "";
+          isCTSP = false;
+          document.getElementById("noti").style.display = "flex";
+          document.getElementById("noti-noti").innerHTML = "đã thêm Thành công";
+          showacc(document.getElementById("noti-noti"), -500, 0);
+          document.getElementById("noti-noti").style.display = "flex";
+          setTimeout(() => {
+            document.getElementById("noti").style.display = "";
+          }, 700);
+        }, 400);
+      } else {
+        alert("sản phẩm đã được thêm, hãy chỉnh sửa trong giỏ hàng");
+      }
+    } else {
+      alert("Sản phẩm hiện đang hết hàng");
+    }
+  } else {
+    alert("Đăng nhập để tiếp tục");
+    showacc(document.getElementsByClassName("popUp-prod")[0], 0, 1200);
+    setTimeout(() => {
+      document.getElementById("div-onClickProduct").style.display = "";
+      isCTSP = false;
+      account.style.display = "flex";
+      showacc(signin, -500, 0);
+      // productTag.style = ""
+      // document.getElementById("tagdivProduct").remove()
+    }, 400);
+  }
+}
