@@ -51,38 +51,37 @@ if ($_SERVER['REQUEST_METHOD'] === "GET"){
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
 	if (isset($_REQUEST["action"])){
-		// ? http://localhost/doan/admin/Server/account/account.php?action=update&id=USR014&username=phideptraihehee&password=123123&privilege=sales&session&status=idle
+		// ? http://localhost/doan/admin/Server/account/account.php?action=update&id_user=USR014&username=phideptraihehee&password=123123&privilege=sales&session&status=active
 		if ($_REQUEST["action"] === "update"){
 			foreach($headerArr as $index => $value) 
 				if ($index !== 0 && isset($_REQUEST[$value]))
-					ReqHandling::updateDb(
-						$conn, $tableName, $_REQUEST["id"], 
-						$value, $_REQUEST[$value] 
+					ReqHandling::updateDbOnProperty(
+						$conn, $tableName, $value, $_REQUEST[$value], 'id_user', $_REQUEST["id_user"]
 					);
 		} else
 		// ? http://localhost/doan/admin/Server/account/account.php?action=create&username=someoneyoulove&password=123123&privilege=admin&session&status=idle
 		if ($_REQUEST["action"] === "create") {
 
 			
-			if (isset($_REQUEST["id"])) {
+			if (isset($_REQUEST["id_user"])) {
 				echo "You don't need to provide ID for creating new record. Id auto-increasing is available. ";
 				exit();
 			}
 
-			$maxIdAccount = Table::getMaxId($conn, 'account', 'id');
-			$_REQUEST["id"] = "USR" . strval(sprintf("%03d", $maxIdAccount+1));
+			$maxIdAccount = Table::getMaxId($conn, 'account', 'id_user');
+			$_REQUEST["id_user"] = "USR" . strval(sprintf("%03d", $maxIdAccount+1));
 			ReqHandling::createRow($conn, 'account');
 
 		}
 	}
 } else
-// ? http://localhost/doan/admin/Server/account/account.php?id=USR014
+// ? http://localhost/doan/admin/Server/account/account.php?id_user=USR014
 if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-	if (isset($_REQUEST["id"])) {
-		ReqHandling::deleteRow($conn, $tableName, $_REQUEST["id"]);
+	if (isset($_REQUEST["id_user"])) {
+		ReqHandling::deleteRowWithProperty($conn, $tableName, "id_user", $_REQUEST["id_user"]);
 		exit();
 	} else {
-		echo "Please specify your id for erasion." . "</br>" ;
+		echo "Please specify your id_user for erasion." . "</br>" ;
 	}
 }
 

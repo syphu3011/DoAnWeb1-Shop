@@ -71,25 +71,19 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
 			// * fetch all table properties on account & customer table 
 
-			if (!isset($_REQUEST["id"])) {
-				echo "Specify id for updating.";
-				exit();
-			}
-
 			$headerArrAccount = Table::describe($conn, 'account');
 			$headerArrCustomer = Table::describe($conn, 'staff');
 			
 			// * if "id" value in POST request start with USR, update the parent table (account table)
-			if (preg_match('/^USR/', $_REQUEST["id"])) 
+			if (isset($_REQUEST["id_user"]) && preg_match('/^USR/', $_REQUEST["id_user"])) 
 				foreach($headerArrAccount as $key => $value) 
 					if (isset($_REQUEST[$value]))
-						ReqHandling::updateDb(
-							$conn, 'account', $_REQUEST["id"], 
-							$value, $_REQUEST[$value] 
-						);
+					ReqHandling::updateDbOnProperty(
+						$conn, 'staff', $value, $_REQUEST[$value], 'id_user', $_REQUEST["id_user"]
+					);
 
 			// * if "id" value in POST request start with KH, update the child table (customer table)
-			if (preg_match('/^NV/', $_REQUEST["id"])) 
+			if (isset($_REQUEST["id"]) && preg_match('/^NV/', $_REQUEST["id"])) 
 				foreach($headerArrCustomer as $key => $value) 
 					if (isset($_REQUEST[$value]))
 						ReqHandling::updateDb(
@@ -105,16 +99,16 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
 		if ($_REQUEST["action"] === "create"){
 
-			if (isset($_REQUEST["id"])) {
+			if (isset($_REQUEST["id_user"]) || isset($_REQUEST["id"])) {
 				echo "You don't need to provide ID for creating new record. Id auto-increasing is available. ";
 				exit();
 			}
 
-			$maxIdAccount = Table::getMaxId($conn, 'account', 'id');
+			$maxIdAccount = Table::getMaxId($conn, 'account', 'id_user');
 			$maxIdCustomer = Table::getMaxId($conn, 'staff', 'id');
 
 			// * add new account id on REQUEST superglobal array
-			$_REQUEST["id"] = "USR" . strval(sprintf("%03d", $maxIdAccount+1));
+			$_REQUEST["id_user"] = "USR" . strval(sprintf("%03d", $maxIdAccount+1));
 			// * update account table first (update parent table)
 			ReqHandling::createRow($conn, 'account');
 			
@@ -147,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] === "PUT") {
 	ReqHandling::deleteRowWithProperty($conn, 'staff', 'id_user', $_REQUEST['id_user']);
 	
 	// * delete from parent table
-	ReqHandling::deleteRowWithProperty($conn, 'account', 'id', $_REQUEST['id']);
+	ReqHandling::deleteRowWithProperty($conn, 'account', 'id_user', $_REQUEST['id_user']);
 
 }
 
