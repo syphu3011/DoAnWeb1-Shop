@@ -26,11 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] === "GET"){
 	}
 
 	if ($getAll) {
-		// ? http://localhost/doan/admin/Server/parameters/parameters.php
+		// ? http://localhost/doan/admin/Server/staff/staff.php
 		$arrFromDb = Table::tableQueryAll($conn, $tableName);
 		echo Table::jsonify($conn, $arrFromDb, $tableName);
 	} else {
-		// ? http://localhost/doan/admin/Server/parameters/parameters.php?variable2=22&variable1=19
+		// ? http://localhost/doan/admin/Server/staff/staff.php?variable2=70&variable1=16
 		$arrProperty = array();
 		$arrContent = array();
 		foreach ($_REQUEST as $key => $value) {

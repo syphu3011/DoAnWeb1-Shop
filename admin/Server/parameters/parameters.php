@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === "GET"){
 		$arrFromDb = Table::tableQueryAll($conn, $tableName);
 		echo Table::jsonify($conn, $arrFromDb, $tableName);
 	} else {
-		// ? http://localhost/doan/admin/Server/staff/staff.php?gender=nam
+		// ? http://localhost/doan/admin/Server/staff/staff.php
 		$arrProperty = array();
 		$arrContent = array();
 		foreach ($_REQUEST as $key => $value) {
