@@ -529,9 +529,9 @@ function addToCart() {
     }
   } else {
     alert("Đăng nhập để tiếp tục");
-    showacc(document.getElementsByClassName("popUp-prod")[0], 0, 1200);
+    showacc(document.getElementsByClassName("sp_popup")[0], 0, 1200);
     setTimeout(() => {
-      document.getElementById("div-onClickProduct").style.display = "";
+      document.getElementById("show_product").style.display = "";
       isCTSP = false;
       account.style.display = "flex";
       showacc(signin, -500, 0);

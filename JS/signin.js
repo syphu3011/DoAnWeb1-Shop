@@ -20,11 +20,12 @@ document
               console.log(response);
               //   test = response;
               if (response.success) {
-                console.log(response.data.id);
+                console.log(response.data);
                 //Đăng nhập với vai trò nhân viên
                 if (response.data.account.privilege.indexOf("customer") != -1) {
                   //Đăng nhập vào enduser
                   currentUser = response.data.customer;
+                  localStorage.setItem("ID", response.data.customer.id);
                   //Ẩn giao diện đăng nhập
                   showacc(signin, 0, 1200);
                   // Thông báo đăng nhập thành công

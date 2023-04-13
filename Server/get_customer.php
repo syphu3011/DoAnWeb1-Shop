@@ -1,53 +1,28 @@
 <?php
+    //Request từ server
     require_once("../init.php");
-
-    function get_account($username, $password, &$status) {
-        global $conn;
-        $sql = "SELECT * FROM `account` WHERE `username` = ? AND `password`= ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$username, $password]);
-        $user_account = $stmt->fetch(PDO::FETCH_ASSOC);
-        $status = $stmt->rowCount() > 0;
-        $stmt = null;
-        return $user_account;
-    }
-    function get_customer($iduser) {
-        global $conn;
-        $sql = "SELECT * FROM `customer` WHERE `id_user` = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$iduser]);
-        $customer_account = $stmt->fetch(PDO::FETCH_ASSOC);
-        $status = $stmt->rowCount() > 0;
-        $stmt = null;
-        return $customer_account;
-    }
-    function get_staff($iduser) {
-        global $conn;
-        $sql = "SELECT * FROM `staff` WHERE `id_user` = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$iduser]);
-        $staff_account = $stmt->fetch(PDO::FETCH_ASSOC);
-        $status = $stmt->rowCount() > 0;
-        $stmt = null;
-        return $staff_account;
-    }
-
+    //
+    require_once("CRUD.php");
     // Kiểm tra nếu người dùng đã gửi dữ liệu POST
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Lấy dữ liệu từ biểu mẫu
         $username_form = trim($_POST['username']);
         $password_form = trim($_POST['password']);
-
         // Kiểm tra nếu username và password được gửi lên
         if (!empty($username_form) && !empty($password_form)) {
+            //Trang thai kiem tra tai khoan
             $status = false;
             //Lấy dữ liệu từ Database
-            $data["account"] = get_account($username_form, $password_form, $status);
-            $id_user=$data["account"]["id"];
-            if ($id_user=="customer"){
-                $data["customer"] = get_customer($id_user);
-            }else{
-                $data["staff"] = get_staff($id_user);
+            $rs_account = new CRUD();
+            //Tai khoan
+            $data["account"] = $rs_account->read_data_account($conn, $username_form, $password_form, $status);
+            $id_user=$data["account"]["id_user"];
+            $is_user=$data["account"]["privilege"];
+            //Tai khoan dang nhap la tai khoan khach hang
+            if ($is_user=="customer"){
+                $data["customer"] = $rs_account->read_data_customer($conn, $id_user);
+            }else{//Tai khoan dang nhap la tai khoan admin
+                $data["staff"] = $rs_account->read_data_staff($conn, $id_user);
             }
             // $response;
             $response = array(
