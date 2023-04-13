@@ -59,7 +59,7 @@
             return $result;
         }
         public function read_product_listByProductId($conn, $idproduct) {
-            $sql="SELECT id_size, price, id_color FROM product_list WHERE id_product= :idproduct";
+            $sql="SELECT id_size, price, id_color FROM product_list WHERE id_product = :idproduct";
             $stmt=$conn->prepare($sql);
             $stmt->bindParam(":idproduct", $idproduct);
             $stmt->execute();
@@ -67,17 +67,46 @@
             $stmt = null;
             return $result;
         }
-
+        //Hoa don
+        // public function read_data_receiptById($conn, $id)
+        // {
+        //     $sql = "SELECT * FROM receipt WHERE id_customer = ?";
+        //     $stmt = $conn->prepare($sql);
+        //     $stmt->execute([$id]);
+        //     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        //     $stmt = null;
+        //     return $result;
+        // }
         public function read_data_receiptById($conn, $id)
         {
-            # code...
-            $sql = "SELECT * FROM `receipt` WHERE `id_customer`= :id";
+            $sql = "SELECT 
+                    receipt.id, 
+                    SUM(detail_receipt.amount*detail_receipt.price) as Tong, 
+                    status_receipt.name AS name_status,
+                    receipt.date_init,
+                    receipt.date_confirm
+                FROM 
+                    detail_receipt, receipt, status_receipt 
+                WHERE 
+                        detail_receipt.id_receipt = receipt.id
+                    AND status_receipt.id = receipt.id_status
+                    AND receipt.id_customer = ? ;";
             $stmt = $conn->prepare($sql);
-            $stmt = bindParam(":id",$id);
-            $stmt -> excute();
+            $stmt -> execute([$id]);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $stmt = null;
             return $result;
         }
+        public function read_data_detail_receiptById($conn, $id)
+        {
+            $sql = "SELECT * FROM receipt WHERE id_customer = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$id]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
+
+
     }
 ?>

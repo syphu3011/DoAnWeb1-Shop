@@ -423,7 +423,7 @@ function show_size(attribute, inner_list_size) {
 }
 // function
 function get_product_instock(id_product, id_size, id_color) {
-  console.log(id_product, id_size, id_color);
+  // console.log(id_product, id_size, id_color);/
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {

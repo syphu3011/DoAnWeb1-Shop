@@ -1,57 +1,91 @@
+function getDataFromServer(url, data, callback) {
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", url);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        const response = JSON.parse(xhr.responseText);
+        console.log(response);
+        callback(response);
+      } else {
+        console.error("Error:", xhr.status);
+      }
+    }
+  };
+  xhr.send(JSON.stringify(data));
+}
+
 document.getElementById("ls-dh").onclick = function () {
+  var data_to_send = { id_customer: currentUser.id };
+  getDataFromServer(
+    "./Server/get_receipt.php",
+    data_to_send,
+    function (response) {
+      if (response.success) {
+        // xử lý dữ liệu ở đây
+        data_respone = response.data;
+        show_receipt(data_respone);
+      } else {
+        // xử lý lỗi ở đây
+        console.log(response.error);
+      }
+    }
+  );
+};
+function show_receipt(data_respone) {
   document.getElementById("bang-lsmh").innerHTML = "";
   document.getElementById("show-user").style.display = "";
   document.getElementById("ten-kh").innerHTML =
     "Khách hàng: " + currentUser.name;
-
-  let index = 0;
-  data.receipt.forEach((element) => {
-    if (element.idCustomer == currentUser.id) {
-      index++;
-      let ngayXN = "Chưa xác nhận";
-      let trigia = 0;
-      if (element.date_confirm != "") {
-        ngayXN = element.date_confirm;
-      }
-      element.list_prod.forEach((e) => {
-        trigia += parseInt(e.price);
-      });
-      document.getElementById("bang-lsmh").innerHTML +=
-        `<td class="maDH">` +
-        element.id +
-        `</td>
-    <td>
-        ` +
-        element.status +
-        `
-    </td>
-    <td>
-        ` +
-        calculated(trigia) +
-        ` VND
-    </td>
-    <td>
-        ` +
-        element.address +
-        `
-    </td>
-    <td>
-        ` +
-        element.date_init +
-        `
-    </td>
-    <td>
-        ` +
-        ngayXN +
-        `
-    </td>`;
+  let receipt = data_respone.receipt;
+  for (let i = 0; i < receipt.length; i++) {
+    //
+    let element = receipt[i];
+    console.log(element);
+    let ngayXN = "Chưa xác nhận";
+    if (element.date_confirm != "") {
+      ngayXN = element.date_confirm;
     }
-  });
+    // element.list_prod.forEach((e) => {
+    //   trigia += parseInt(e.price);
+    // });
+    document.getElementById("bang-lsmh").innerHTML +=
+      `<td class="maDH">` +
+      element.id +
+      `</td>
+    <td>
+        ` +
+      element.name_status +
+      `
+    </td>
+    <td>
+        ` +
+      calculated(element.Tong) +
+      ` VND
+    </td>
+    <td>
+        ` +
+      element.address +
+      `
+    </td>
+    <td>
+        ` +
+      element.date_init +
+      `
+    </td>
+    <td>
+        ` +
+      ngayXN +
+      `
+    </td>`;
+  }
+
   let madh = document.getElementsByClassName("maDH");
   for (let i = 0; i < madh.length; i++) {
     madh[i].onclick = function () {
       console.log(madh[i].textContent);
-      data.receipt.forEach((element) => {
+      receipt.forEach((element) => {
         if (element.id.indexOf(madh[i].textContent) != -1) {
           CTDH(element);
           document.getElementById("div-ls-muahang").style.display = "";
@@ -61,7 +95,7 @@ document.getElementById("ls-dh").onclick = function () {
       });
     };
   }
-  if (index > 0) {
+  if (receipt.length > 0) {
     document.getElementById("div-ls-muahang").style.display = "flex";
     showacc(document.getElementById("ls-muahang"), -500, 0);
   } else {
@@ -78,8 +112,7 @@ document.getElementById("ls-dh").onclick = function () {
       }, 1200);
     });
   }
-};
-
+}
 function CTDH(sp) {
   console.log(sp);
   // src.length = 0
@@ -174,3 +207,5 @@ document.getElementById("div-ctdh").onclick = function (e) {
     }
   }
 };
+document.getElementById("mailorphone").value = "syphu";
+document.getElementById("passwd").value = "123123";
