@@ -1,21 +1,3 @@
-function getDataFromServer(url, data, callback) {
-  const xhr = new XMLHttpRequest();
-  xhr.open("POST", url);
-  xhr.setRequestHeader("Content-Type", "application/json");
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4) {
-      if (xhr.status === 200) {
-        const response = JSON.parse(xhr.responseText);
-        console.log(response);
-        callback(response);
-      } else {
-        console.error("Error:", xhr.status);
-      }
-    }
-  };
-  xhr.send(JSON.stringify(data));
-}
-
 document.getElementById("ls-dh").onclick = function () {
   var data_to_send = { id_customer: currentUser.id };
   getDataFromServer(
@@ -51,7 +33,9 @@ function show_receipt(data_respone) {
     //   trigia += parseInt(e.price);
     // });
     document.getElementById("bang-lsmh").innerHTML +=
-      `<td class="maDH">` +
+      `<td class="maDH" id="` +
+      element.id +
+      `">` +
       element.id +
       `</td>
     <td>
@@ -84,15 +68,16 @@ function show_receipt(data_respone) {
   let madh = document.getElementsByClassName("maDH");
   for (let i = 0; i < madh.length; i++) {
     madh[i].onclick = function () {
-      console.log(madh[i].textContent);
-      receipt.forEach((element) => {
-        if (element.id.indexOf(madh[i].textContent) != -1) {
-          CTDH(element);
-          document.getElementById("div-ls-muahang").style.display = "";
-          document.getElementById("div-ctdh").style.display = "flex";
-          showacc(document.getElementById("ctdh"), -500, 0);
-        }
-      });
+      // console.log(madh[i].id);
+      // console.log(madh[i].textContent);
+      // receipt.forEach((element) => {
+      //   if (element.id.indexOf(madh[i].textContent) != -1) {
+      CTDH(madh[i].id);
+      //     document.getElementById("div-ls-muahang").style.display = "";
+      //     document.getElementById("div-ctdh").style.display = "flex";
+      //     showacc(document.getElementById("ctdh"), -500, 0);
+      //   }
+      // });
     };
   }
   if (receipt.length > 0) {
@@ -113,7 +98,13 @@ function show_receipt(data_respone) {
     });
   }
 }
-function CTDH(sp) {
+//Chi tiet
+function CTDH(id_hd) {
+  getDataFromServer(
+    "./Server/get_detail_receipt.php",
+    { id_receipt: id_hd },
+    function (params) {}
+  );
   console.log(sp);
   // src.length = 0
   // pro.length = 0

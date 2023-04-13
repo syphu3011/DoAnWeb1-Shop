@@ -79,6 +79,23 @@ function calculated(price) {
   }
   return price;
 }
+function getDataFromServer(url, data, callback) {
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", url);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        const response = JSON.parse(xhr.responseText);
+        console.log(response);
+        callback(response);
+      } else {
+        console.error("Error:", xhr.status);
+      }
+    }
+  };
+  xhr.send(JSON.stringify(data));
+}
 let arr = {
   product: [
     {
