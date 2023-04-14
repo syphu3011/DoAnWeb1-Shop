@@ -99,7 +99,20 @@
         }
         public function read_data_detail_receiptById($conn, $id)
         {
-            $sql = "SELECT * FROM receipt WHERE id_customer = ?";
+            $sql = "SELECT 
+                        id_size, 
+                        id_color, 
+                        id_product, 
+                        amount, price, 
+                        (amount*price) AS Tong
+                    FROM 
+                        detail_receipt, receipt, status_receipt 
+                    WHERE 
+                            detail_receipt.id_receipt = ? 
+                        AND 
+                            receipt.id=detail_receipt.id_receipt
+                        AND 
+                            receipt.id_status = status_receipt.id";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$id]);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);

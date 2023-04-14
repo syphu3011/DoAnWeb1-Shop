@@ -72,10 +72,10 @@ function show_receipt(data_respone) {
       // console.log(madh[i].textContent);
       // receipt.forEach((element) => {
       //   if (element.id.indexOf(madh[i].textContent) != -1) {
-      CTDH(madh[i].id);
-      //     document.getElementById("div-ls-muahang").style.display = "";
-      //     document.getElementById("div-ctdh").style.display = "flex";
-      //     showacc(document.getElementById("ctdh"), -500, 0);
+      CTDH(madh[i].id, data_respone.receipt[i].name_status);
+      document.getElementById("div-ls-muahang").style.display = "";
+      document.getElementById("div-ctdh").style.display = "flex";
+      showacc(document.getElementById("ctdh"), -500, 0);
       //   }
       // });
     };
@@ -99,81 +99,87 @@ function show_receipt(data_respone) {
   }
 }
 //Chi tiet
-function CTDH(id_hd) {
+function CTDH(id_hd, status) {
   getDataFromServer(
     "./Server/get_detail_receipt.php",
     { id_receipt: id_hd },
-    function (params) {}
-  );
-  console.log(sp);
-  // src.length = 0
-  // pro.length = 0
-  document.getElementById("ctdh-dssp").innerHTML = "";
-  document.getElementById("maDh").innerHTML = "Số hoá đơn: " + sp.id;
-  document.getElementById("ttdh").innerHTML = "Trạng thái: " + sp.status;
-  document.getElementById("ngayDh").innerHTML =
-    "Ngày đơn hàng: " + sp.date_init;
-  let tongdh = 0;
-  for (let i = 0; i < sp.list_prod.length; i++) {
-    tongdh += parseInt(sp.list_prod[i].price);
-    // src.length = 0
-    pro.length = 0;
-    KM.length = 0;
-    getKM(sp.list_prod[i].idProd);
-    getPro(sp.list_prod[i].idProd);
-    let tien = "";
-    if (KM.length != 0) {
-      tien +=
-        `<del>
-            ` +
-        calculated(pro[0].price * sp.list_prod[i].amount) +
-        `
-            </del>
-            <div>
-                ` +
-        calculated(sp.list_prod[i].price) +
-        ` VND
-            </div>`;
-    } else {
-      tien +=
-        `<div>
-            ` +
-        calculated(sp.list_prod[i].price) +
-        ` VND
-        </div>`;
+    function (response) {
+      console.log(response);
+      sp = response;
+      document.getElementById("ctdh-dssp").innerHTML = "";
+      document.getElementById("maDh").innerHTML = "Số hoá đơn: " + id_hd;
+      document.getElementById("ttdh").innerHTML = "Trạng thái: " + status;
     }
-    let sl = "Số lượng: " + sp.list_prod[i].amount;
-    document.getElementById("ctdh-dssp").innerHTML +=
-      `<div class="ctdh-sp">
-                <div>
-                    <img src="Image/SANPHAM/` +
-      pro[0].images[0] +
-      `" alt="">
-                </div>
-                <div style="display: block;">
-                    <div>
-                        ` +
-      pro[0].name +
-      `
-                    </div>
-                    <div style="display: flex;">
-                    <div style="margin: 5px 0">
-                        Giá:
-                    </div> ` +
-      tien +
-      `
-                    </div>
-                <div>
-                    ` +
-      sl +
-      `
-                </div>
-            </div>
-        
-        `;
-  }
-  document.getElementById("tongtrigia").innerHTML =
-    "Tổng giá trị: " + calculated(tongdh) + " VND";
+  );
+  // console.log(sp);
+  // // src.length = 0
+  // // pro.length = 0
+  // document.getElementById("ctdh-dssp").innerHTML = "";
+  // document.getElementById("maDh").innerHTML = "Số hoá đơn: " + sp.id;
+  // document.getElementById("ttdh").innerHTML = "Trạng thái: " + sp.status;
+  // document.getElementById("ngayDh").innerHTML =
+  //   "Ngày đơn hàng: " + sp.date_init;
+  // let tongdh = 0;
+  // for (let i = 0; i < sp.list_prod.length; i++) {
+  //   tongdh += parseInt(sp.list_prod[i].price);
+  //   // src.length = 0
+  //   pro.length = 0;
+  //   KM.length = 0;
+  //   getKM(sp.list_prod[i].idProd);
+  //   getPro(sp.list_prod[i].idProd);
+  //   let tien = "";
+  //   if (KM.length != 0) {
+  //     tien +=
+  //       `<del>
+  //           ` +
+  //       calculated(pro[0].price * sp.list_prod[i].amount) +
+  //       `
+  //           </del>
+  //           <div>
+  //               ` +
+  //       calculated(sp.list_prod[i].price) +
+  //       ` VND
+  //           </div>`;
+  //   } else {
+  //     tien +=
+  //       `<div>
+  //           ` +
+  //       calculated(sp.list_prod[i].price) +
+  //       ` VND
+  //       </div>`;
+  //   }
+  //   let sl = "Số lượng: " + sp.list_prod[i].amount;
+  //   document.getElementById("ctdh-dssp").innerHTML +=
+  //     `<div class="ctdh-sp">
+  //               <div>
+  //                   <img src="Image/SANPHAM/` +
+  //     pro[0].images[0] +
+  //     `" alt="">
+  //               </div>
+  //               <div style="display: block;">
+  //                   <div>
+  //                       ` +
+  //     pro[0].name +
+  //     `
+  //                   </div>
+  //                   <div style="display: flex;">
+  //                   <div style="margin: 5px 0">
+  //                       Giá:
+  //                   </div> ` +
+  //     tien +
+  //     `
+  //                   </div>
+  //               <div>
+  //                   ` +
+  //     sl +
+  //     `
+  //               </div>
+  //           </div>
+
+  //       `;
+  // }
+  // document.getElementById("tongtrigia").innerHTML =
+  //   "Tổng giá trị: " + calculated(tongdh) + " VND";
 }
 document.getElementById("div-ls-muahang").onclick = function (e) {
   if (e.target.matches("#div-ls-muahang")) {
