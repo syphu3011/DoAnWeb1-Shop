@@ -255,6 +255,7 @@ function click_Product(response) {
                       </div>
                       <div>
                         giá:
+                        <del id="del_price">
                         <label id="price_amount">
                           10 Tỷ
                         </label>
@@ -358,7 +359,7 @@ function click_Product(response) {
     select_color(
       response.data.product[0].id,
       size_isselect,
-      response.data.attribute_product[0]
+      response.data.attribute_product[0].id_color
     );
     //Chon size
     document.getElementById("count_amount_product").value = 1;
@@ -393,7 +394,7 @@ function click_Product(response) {
         select_color(
           response.data.product[0].id,
           size_isselect,
-          response.data.attribute_product[0].id
+          response.data.attribute_product[0].id_color
         );
       };
     }
@@ -428,7 +429,18 @@ function select_color(id, size_isselect, data) {
       }
       //   //Chuyển nút đang bấm về màu đỏ
       btn_color[i].style.borderColor = "red";
-      get_product_instock(id, size_isselect, data.id_color);
+      getDataFromServer(
+        "./Server/get_product_instock.php",
+        {
+          id_product: id,
+          id_size: size_isselect,
+          id_color: data,
+        },
+        function (response) {
+          get_product_instock(response);
+        }
+      );
+      // get_product_instock(id, size_isselect, data.id_color);
     };
   }
 }
