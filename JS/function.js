@@ -79,7 +79,17 @@ function calculated(price) {
   }
   return price;
 }
+function format_date(params) {
+  return (
+    params.split(" ")[0].split("-")[2] +
+    "-" +
+    params.split(" ")[0].split("-")[1] +
+    "-" +
+    params.split(" ")[0].split("-")[0]
+  );
+}
 function getDataFromServer(url, data, callback) {
+  console.log(data);
   const xhr = new XMLHttpRequest();
   xhr.open("POST", url);
   xhr.setRequestHeader("Content-Type", "application/json");
@@ -95,6 +105,32 @@ function getDataFromServer(url, data, callback) {
     }
   };
   xhr.send(JSON.stringify(data));
+}
+function compareDates(dateStr1, dateStr2) {
+  var date1 = new Date(Date.parse(dateStr1));
+  var date2 = new Date(Date.parse(dateStr2));
+
+  if (date1 <= date2) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function get_currentDate() {
+  function formatNumber(number) {
+    return number < 10 ? "0" + number : number;
+  }
+  var today = new Date();
+  var hour = formatNumber(today.getHours());
+  var minute = formatNumber(today.getMinutes());
+  var second = formatNumber(today.getSeconds());
+  var dd = formatNumber(today.getDate());
+  var mm = formatNumber(today.getMonth() + 1);
+  var yyyy = today.getFullYear();
+
+  today = yyyy + "-" + mm + "-" + dd + " " + hour + ":" + minute + ":" + second;
+  return today;
 }
 let arr = {
   product: [
@@ -1324,9 +1360,9 @@ let arr = {
   ],
 };
 let data = new Array();
-if (localStorage.getItem("data") == null) {
-  localStorage.setItem("data", JSON.stringify(arr));
-}
+// if (localStorage.getItem("data") == null) {
+//   localStorage.setItem("data", JSON.stringify(arr));
+// }
 // function testthoi() {
 //   document.getElementById("inp-firstname").value = "123";
 //   document.getElementById("inp-lastname").value = "123";

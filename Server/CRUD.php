@@ -28,7 +28,37 @@
             $stmt = null;
             return $result;
         }
-
+        //Phan loai san pham
+        public function read_data_large_classify($conn)
+        {
+            # code...
+            $sql="SELECT * FROM classify WHERE id_big_classify is NULL";
+            $stmt=$conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
+        
+        //Loai san pham
+        public function read_data_mini_classifyById($conn, $id)
+        {
+            # code...
+            $sql="SELECT * 
+                    FROM classify
+                    WHERE id_big_classify = ?";
+            $stmt=$conn->prepare($sql);
+            $stmt->execute([$id]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
+        //Mau
+        public function read_data_color($conn)
+        {
+            # code...
+            // $sql = "SELECT "
+        }
         //San pham
         public function read_productById($conn, $id) {
             $sql="SELECT * FROM product WHERE id = :id";
@@ -39,11 +69,27 @@
             $stmt = null;
             return $result;
         }
+        public function read_data_product($conn) {
+            $sql="SELECT * FROM product";
+            $stmt=$conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
 
         public function read_image_productByProductId($conn, $idproduct) {
             $sql="SELECT link_image, name_image FROM image_product WHERE id_product= :idproduct";
             $stmt=$conn->prepare($sql);
             $stmt->bindParam(":idproduct", $idproduct);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
+        public function read_data_image_product($conn) {
+            $sql="SELECT * FROM image_product";
+            $stmt=$conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $stmt = null;
@@ -64,6 +110,44 @@
             $stmt->bindParam(":idproduct", $idproduct);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
+        public function read_data_product_list($conn) {
+            $sql="SELECT * FROM product_list";
+            $stmt=$conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
+        //Khuyen mai
+        public function read_data_promotion($conn)
+        {
+            # code...
+            $sql = "SELECT 
+                        promotion.id, 
+                        promotion.content, 
+                        promotion.name, 
+                        promotion.discount_price, 		
+                        promotion.discount_percent, 
+                        promotion.begin_date,
+                        promotion.finish_date,
+                        detail_promotion.id_product,
+                        status_promotion.name,
+                        product_list.price
+                    FROM 
+                        promotion, 
+                        detail_promotion,
+                        status_promotion,
+                        product_list
+                    WHERE 
+                        promotion.id = detail_promotion.id_promotion
+                        AND promotion.id_status = status_promotion.id
+                        AND detail_promotion.id_product = product_list.id_product";
+            $stmt = $conn -> prepare($sql);
+            $stmt -> execute();
+            $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
             $stmt = null;
             return $result;
         }
@@ -119,7 +203,19 @@
             $stmt = null;
             return $result;
         }
-
-
+        //San pham trong kho
+        public function read_data_product_in_stockById($conn, $id_product, $id_size, $id_color)
+        {
+            # code...
+            $sql="SELECT pis.amount, pis.price_input FROM product_in_stock pis 
+                    where id_product = ? and
+                        id_size = ? and
+                        id_color = ? ";
+            $stmt=$conn->prepare($sql);
+            $stmt->execute([$id_product, $id_size, $id_color]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
     }
 ?>
