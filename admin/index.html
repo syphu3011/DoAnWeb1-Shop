@@ -20,6 +20,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
     <script src="../JS/jquery-3.6.4.min.js"></script>
+    <script src="../JS/moment-with-locales.js"></script>
+    <script src="../JS/lodash.js"></script>
 
     <style>
         #div-thongso {
@@ -143,7 +145,7 @@
                 <div class="Middle">
                     <div class="SearchBox">
                         <input id="text-search" class="SearchBar" type="text" placeholder="Search">
-                        <img class="SearchIcon" src="Image/icon_search.png" onclick=searchCustomer()>
+                        <img class="SearchIcon" src="Image/icon_search.png" onclick=filterCusWithParameters()>
                         <img class="SearchIcon" src="Image/Filter@3x.png" onclick=OpenFilter()>
                     </div>
 
@@ -183,35 +185,35 @@
                             <button onclick=ClosePopupOpen()>Không</button>
                         </div>
                     </div> -->
-                    <div class="Section" id="Section">
+                    <div class="Section" id="filter-customer-box">
                         <div class="name-filter">Bộ lọc</div>
                         <div class="find_all" id="find-head">
                             <label class="text_find">tìm theo</label>
-                            <select class="btn_select" id="sl-all">
+                            <select class="btn_select" id="filter-property-customer">
                                 <option value="all">Tất cả</option>
-                                <option value="ID">ID</option>
-                                <option value="Name">Tên</option>
-                                <option value="Username">username</option>
-                                <option value="NumberPhone">số điện thoại</option>
+                                <option value="id">ID</option>
+                                <option value="name">Tên</option>
+                                <option value="username">username</option>
+                                <option value="numberphone">số điện thoại</option>
                             </select>
                         </div>
                         <div class="find_all">
-                            <label class="text_find" for="birth-day">ngày sinh</label>
-                            <input id="birth-day" class="btn_select" type="date" name="birthday">
+                            <label class="text_find">ngày sinh</label>
+                            <input id="filter-birthday-customer" class="btn_select" type="date">
                         </div>
                         <div class="find_all">
-                            <label class="text_find" for="date-init">ngày tạo</label>
-                            <input id="date-init" class="btn_select" type="date" name="birthday">
+                            <label class="text_find">ngày tạo</label>
+                            <input id="filter-date-created-customer" class="btn_select" type="date">
                         </div>
                         <div class="find_all">
                             <label class="text_find">trạng thái</label>
-                            <select class="btn_select" id="sl-status">
+                            <select class="btn_select" id="filter-status-customer">
                                 <option value="all">Tất cả</option>
-                                <option value="Đã khóa">Đã khóa</option>
-                                <option value="Đang hoạt động">Còn hoạt động</option>
+                                <option value="idle">Đã khóa</option>
+                                <option value="active">Còn hoạt động</option>
                             </select>
                         </div>
-                        <button onclick=CloseFilter() style="margin-top: 10px;">Xác nhận</button>
+                        <button onclick=filterCusWithParameters() style="margin-top: 10px;">Xác nhận</button>
                     </div>
                     <div class="Section" id="detail-customer-open">
                         <div id="detail-customer-header"></div>
