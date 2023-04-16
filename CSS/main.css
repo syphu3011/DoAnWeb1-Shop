@@ -339,6 +339,8 @@ input[type="number"] {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   display: none;
 }
-.del_price {
+.del_price,#del_price {
   font-size: 10px;
+  color: red;
+  font-family: 'Times New Roman', Times, serif;
 }

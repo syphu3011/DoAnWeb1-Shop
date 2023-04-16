@@ -19,7 +19,7 @@ function get_data(res) {
   data.product_list = res.product_list;
 }
 getDataFromServer("./Server/homepage.php", "", function (response) {
-  console.log("Data from homepage.php: ", response);
+  // console.log("Data from homepage.php: ", response);
   create_Homepage(response);
 });
 // var xhttp = new XMLHttpRequest();
@@ -118,13 +118,13 @@ function create_Homepage(data_res) {
         </ul>
       </div>`;
   });
-  console.log(data_res.promotion);
+  // console.log(data_res.promotion);
   for (let i = 0; i < data_res.promotion.length; i++) {
     let tmp = data_res.promotion[i];
 
     if (compareDates(get_currentDate(), tmp.finish_date)) {
       let id = "stamp_" + tmp.id_product;
-      console.log(id);
+      // console.log(id);
 
       document.getElementById(id).innerHTML = tmp.content;
       document.getElementById(id).style.display = "block";
@@ -162,7 +162,7 @@ function click_Product(response) {
   //   if (xhr.readyState === XMLHttpRequest.DONE) {
   //     if (xhr.status === 200) {
   //       var response = JSON.parse(xhr.responseText);
-  console.log(response.data);
+  console.log("respone form click product: ", response.data);
   if (response.success) {
     //-data -status
     //data: -image_product:
@@ -256,6 +256,7 @@ function click_Product(response) {
                       <div>
                         giá:
                         <del id="del_price">
+                        </del>
                         <label id="price_amount">
                           10 Tỷ
                         </label>
@@ -508,6 +509,7 @@ function show_size(attribute, inner_list_size) {
 }
 // function
 function get_product_instock(response) {
+  // console
   // console.log(id_product, id_size, id_color);/
   // var xhr = new XMLHttpRequest();
   // xhr.onreadystatechange = function () {
@@ -517,15 +519,28 @@ function get_product_instock(response) {
   // if (xhr.status === 200) {
   // var response = JSON.parse(xhr.responseText);
   if (response.success) {
-    let amount = response.data[0].amount;
+    let data_respone =response.data[0]
+    let amount = data_respone.amount;
     max_amount = amount;
     // console.log("function get_product_instock");
 
-    // console.log(response);
+    console.log("data from get product instock", response);
     document.getElementById("product_instock").innerHTML =
       "Sản phẩm khả dụng: " + amount;
-    document.getElementById("price_amount").innerHTML =
-      calculated(response.data[0].price_input) + " VNĐ";
+      if (data_respone.content==null){
+        document.getElementById("price_amount").innerHTML =
+      calculated(data_respone.price_input) + " VNĐ";
+      }else{
+        document.getElementById("price_amount").innerHTML =calculated(
+          price_from_dis(data_respone.price_input, data_respone.discount_percent, data_respone.discount_price)
+        ) + " VND";
+        document.getElementById("del_price").innerHTML =
+      calculated(data_respone.price_input) + " VNĐ";
+      }
+    
+      // calculated(
+      //     price_from_dis(tmp.price, tmp.discount_percent, tmp.discount_price)
+        // ) + " VND";
   } else {
     console.log("Truy vấn lỗi");
   }
