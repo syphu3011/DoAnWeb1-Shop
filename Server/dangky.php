@@ -2,15 +2,13 @@
     require_once('../init.php');
     require_once('./CRUDtaikhoan.php');
     $crud = new CRUDtaikhoan();
-    $id=$_POST['id'];
     $name=$_POST['name'];
-    $dateinit=date('Y-m-d H:i:s');
+    // $dateinit=date('Y-m-d H:i:s');
     $username=$_POST['username'];
     $password=$_POST['password'];
     $birthday=$_POST['birthday'];
     $numberphone=$_POST['numberphone'];
     $gender=$_POST['gender'];
-    $id_status="TT04";
 //     $sql= "
 //     INSERT INTO customer(id,name,date_init,username_customer,password_customer
 //     ,birthday,numberphone,gender,id_status) 
@@ -41,7 +39,7 @@
 //         // Trả về lỗi nếu có
 //         echo "Error: " . $sql . "<br>" . $stmt->error;
 //     }
-    $result = $crud->insertUser($conn,$id,$name,$dateinit,$username,$password,$birthday
-    ,$numberphone,$gender,$id_status);
+    $result = $crud->insert_data($conn,$username,$password,$name,$birthday
+    ,$numberphone,$gender);
     echo $result;
 ?>

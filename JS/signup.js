@@ -13,15 +13,13 @@ $(document).ready(function() {
 
 	$('#form-signup').submit(function(e) {
 		e.preventDefault();
-        if(Checkavai()==true){
+        // if(Checkavai()==true){
 		// Gửi thông tin đăng ký lên server
         $.ajax({
             url: './Server/dangky.php',
             method: 'POST',
             data:{
-                id:'KH00010',
                 name:firstName.value + ' ' + lastName.value,
-                dateinit: getCurrentDate(),
                 username: $('#inp-username').val(),
                 password: password_regis.value,
                 birthday: birthday.value,
@@ -36,7 +34,7 @@ $(document).ready(function() {
 				}
 			}
 		});
-    }
+    // }
 	});
 });
 
