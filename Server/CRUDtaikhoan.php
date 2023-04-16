@@ -3,7 +3,7 @@ class CRUDtaikhoan
 {
     function insert_data($conn, $username, $password,$name,
     $birthday,$numberphone, $gender) {
-        $privilege= "custommer";
+        $privilege= "customer";
         $status="active";
         // Insert into account table
         $sql_account = "INSERT INTO account (username, password, 
