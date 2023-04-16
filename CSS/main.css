@@ -312,6 +312,7 @@ input[type="number"] {
   padding: 40px;
 }
 .main_list_product_product {
+  position: relative;
   transition: transform 0.3s ease;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border: 1px solid black;
@@ -328,4 +329,16 @@ input[type="number"] {
   border-top: 1px solid black;
   justify-content: center;
   align-items: center;
+}
+.promo_stamp {
+  font-size: 12px;
+  padding: 5px;
+  position: absolute;
+  color: white;
+  background-color: black;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: none;
+}
+.del_price {
+  font-size: 10px;
 }

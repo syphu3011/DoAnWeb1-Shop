@@ -1,7 +1,9 @@
 <?php
-    $idproduct=$_POST['id_product'];
+    // $idproduct=$_POST['id_product'];
     require_once("../init.php");
     require_once("CRUD.php");
+    $data_send = json_decode(file_get_contents('php://input'), true);
+    $idproduct = $data_send["id_product"];
     $result = new CRUD();
     $status = false;
 
