@@ -297,7 +297,7 @@
         public function check_sdt($con, $sdt)
         {
             # code...
-             $sql="SELECT COUNT(id) count 
+             $sql="SELECT *
              from customer 
              where customer.numberphone=?;";
             $stmt=$conn->prepare($sql);
@@ -309,7 +309,7 @@
         public function check_username($con, $username)
         {
             # code...
-             $sql="SELECT COUNT(account.username) count 
+             $sql="SELECT *
              from account 
              where account.username=?;";
             $stmt=$conn->prepare($sql);
