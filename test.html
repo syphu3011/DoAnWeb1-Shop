@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="slider" style="max-width: 90%; margin-top: 30px"></div>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        // Tạo một UiSlider với range: true để tạo input có hai đầu kéo
+        var slider = document.getElementById("slider");
+
+        noUiSlider.create(slider, {
+          start: [0, 100000000],
+          connect: true,
+          range: {
+            min: 0,
+            max: 1000000,
+          },
+        });
+
+        // Sự kiện update
+        slider.noUiSlider.on("update", function (values, handle) {
+          // Lấy giá trị của input
+          console.log(values[0]);
+          console.log(values[1]);
+          // $('#minamounts').val(values[0]);
+          // $('#maxamounts').val(values[1]);
+        });
+      });
+    </script>
+  </body>
+</html>

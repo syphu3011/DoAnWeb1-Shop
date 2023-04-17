@@ -240,16 +240,80 @@
             $sql="SELECT product_in_stock.amount, product_in_stock.price_input , 
                         promotion.content,
                         promotion.discount_price,
-                        promotion.discount_percent
-                    FROM product_in_stock, promotion, detail_promotion
+                        promotion.discount_percent,
+                        product_list.price
+                    FROM 
+                        product_in_stock, 
+                        promotion, 
+                        detail_promotion,
+                        product_list
                     where product_in_stock.id_product = ? and
                         product_in_stock.id_size = ? and
                         product_in_stock.id_color = ? AND
-                        product_in_stock.id_product = ? AND
+                        product_list.id_product = product_in_stock.id_product AND
                         detail_promotion.id_product=product_in_stock.id_product AND
                         promotion.id=detail_promotion.id_promotion";
             $stmt=$conn->prepare($sql);
-            $stmt->execute([$id_product, $id_size, $id_color, $id_product]);
+            $stmt->execute([$id_product, $id_size, $id_color]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
+        //San pham trong gio hang
+        public function read_data_cartById($conn, $id_kh)
+        {
+            # code...
+            $sql="SELECT * FROM cart WHERE cart.id_customer = ?";
+            $stmt=$conn->prepare($sql);
+            $stmt->execute([$id_kh]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
+        public function check_cartById($conn, $id_kh, $id_product)
+        {
+            # code...
+            $sql="SELECT * 
+                FROM cart 
+                WHERE cart.id_customer = ?
+                AND cart.id_product = ? ";
+            $stmt=$conn->prepare($sql);
+            $stmt->execute([$id_kh, $id_product]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
+        public function insert_data_to_cartById($conn, $id_kh, $id_product)
+        {
+            # code...
+            $sql="INSERT INTO cart (id_customer, id_product, id_color, id_size, amount, price) 
+                VALUES ( ?, ?, ?, ?, ?, ?);";
+            $stmt=$conn->prepare($sql);
+            $stmt->execute([$id_kh, $id_product]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
+        public function check_sdt($con, $sdt)
+        {
+            # code...
+             $sql="SELECT COUNT(id) count 
+             from customer 
+             where customer.numberphone=?;";
+            $stmt=$conn->prepare($sql);
+            $stmt->execute([$sdt]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
+        public function check_username($con, $username)
+        {
+            # code...
+             $sql="SELECT COUNT(account.username) count 
+             from account 
+             where account.username=?;";
+            $stmt=$conn->prepare($sql);
+            $stmt->execute([$username]);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $stmt = null;
             return $result;
