@@ -20,6 +20,7 @@
         $response = [
             "success" => false,
             "error" => "No data found",
+            "data" => $data
         ];
     }
     echo json_encode($response);

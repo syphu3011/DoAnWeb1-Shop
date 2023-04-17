@@ -306,6 +306,7 @@ function click_Product(response) {
     //inner size
 
     let size_isselect = response.data.attribute_product[0].id_size;
+    let color_isselect = response.data.attribute_product[0].id_color;
     show_size(
       response.data.attribute_product,
       document.getElementById("list_size")
@@ -320,7 +321,7 @@ function click_Product(response) {
     //
     //
     let button_size = document.getElementsByClassName("item_size");
-    console.log(response.data.product);
+    // console.log(response.data.product);
     getDataFromServer(
       "./Server/get_product_instock.php",
       {
@@ -358,11 +359,7 @@ function click_Product(response) {
     // }
     button_size[0].style.borderColor = "red";
 
-    select_color(
-      response.data.product[0].id,
-      size_isselect,
-      response.data.attribute_product[0].id_color
-    );
+    select_color(response.data.product[0].id, size_isselect, color_isselect);
     //Chon size
     document.getElementById("count_amount_product").value = 1;
     onclick_amount(response.data.promotion[0]);
@@ -375,7 +372,7 @@ function click_Product(response) {
           {
             id_product: response.data.product[0].id,
             id_size: size_isselect,
-            id_color: response.data.attribute_product[0].id_color,
+            id_color: color_isselect,
           },
           function (response) {
             get_product_instock(response);
@@ -396,16 +393,44 @@ function click_Product(response) {
         select_color(
           response.data.product[0].id,
           size_isselect,
-          response.data.attribute_product[0].id_color
+          color_isselect
         );
       };
     }
     let nutthem = document.getElementsByClassName("nut-them-vao-gio")[0];
 
     nutthem.onclick = function () {
-      console.log(size_isselect);
+      console.log(size_isselect, color_isselect);
       // addToCart(response.data.product[0].id);
     };
+    function select_color(id, size_isselect) {
+      let btn_color = document.getElementsByClassName("item_color");
+      for (let i = 0; i < btn_color.length; i++) {
+        btn_color[i].onclick = function () {
+          //   //Chuyen tat ca nut ve mau den
+          color_isselect = btn_color[i].id;
+          console.log(id, size_isselect, color_isselect);
+
+          for (let j = 0; j < btn_color.length; j++) {
+            btn_color[j].style.borderColor = "black";
+          }
+          //   //Chuyển nút đang bấm về màu đỏ
+          btn_color[i].style.borderColor = "red";
+          getDataFromServer(
+            "./Server/get_product_instock.php",
+            {
+              id_product: id,
+              id_size: size_isselect,
+              id_color: color_isselect,
+            },
+            function (response) {
+              get_product_instock(response);
+            }
+          );
+          // get_product_instock(id, size_isselect, data.id_color);
+        };
+      }
+    }
   } else {
     // Thông báo thất bại
     alert("Không tìm thấy sản phẩm này!");
@@ -421,32 +446,7 @@ function click_Product(response) {
   // xhr.send("id_product=" + id);
 }
 //func chon mau
-function select_color(id, size_isselect, data) {
-  let btn_color = document.getElementsByClassName("item_color");
-  for (let i = 0; i < btn_color.length; i++) {
-    btn_color[i].onclick = function () {
-      //   //Chuyen tat ca nut ve mau den
-      console.log(btn_color[i]);
-      for (let j = 0; j < btn_color.length; j++) {
-        btn_color[j].style.borderColor = "black";
-      }
-      //   //Chuyển nút đang bấm về màu đỏ
-      btn_color[i].style.borderColor = "red";
-      getDataFromServer(
-        "./Server/get_product_instock.php",
-        {
-          id_product: id,
-          id_size: size_isselect,
-          id_color: data,
-        },
-        function (response) {
-          get_product_instock(response);
-        }
-      );
-      // get_product_instock(id, size_isselect, data.id_color);
-    };
-  }
-}
+
 //
 function enter_image(li) {
   for (let i = 0; i < li.length; i++) {
