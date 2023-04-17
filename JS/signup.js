@@ -15,26 +15,31 @@ $(document).ready(function() {
 		e.preventDefault();
         // if(Checkavai()==true){
 		// Gửi thông tin đăng ký lên server
-        $.ajax({
-            url: './Server/dangky.php',
-            method: 'POST',
-            data:{
-                name:firstName.value + ' ' + lastName.value,
-                username: $('#inp-username').val(),
-                password: password_regis.value,
-                birthday: birthday.value,
-                numberphone: number_phone.value,
-                gender: sex
-            },
-			success: function(response) {
-				if (response === 'success') {
-                    notifition();
-				} else {
-					alert('Đăng ký thất bại! ' + response);
-				}
-			}
-		});
-    // }
+        if(Checkavai()==true){
+            $.ajax({
+                url: './admin/Server/customer/customer.php?action=create',
+                method: 'POST',
+                dataType:'json',
+                data:{
+                    username: $('#inp-username').val(),
+                    password: password_regis.value,
+                    privilege: 'customer',
+                    session: '',
+                    status: 'active',
+                    name:firstName.value + ' ' + lastName.value,
+                    birthday: birthday.value,
+                    numberphone: number_phone.value,
+                    gender: sex
+                },
+                success: function(response) {
+                    console.log(response);
+                    },
+                error: function(xhr, status, error) {    
+                        console.log(error);
+                        notifition();
+                    }    
+            });
+        }
 	});
 });
 
@@ -85,14 +90,14 @@ function checkValid(firstName, lastName, username, password, same_password, numb
     return true
 }
 
-function checkConstraintRegis(customer) {
-    for (element of data.customer) {
-        if (element.username == customer.username || element.number_phone == customer.number_phone) {
-            return false
-        }
-    }
-    return true
-}
+// function checkConstraintRegis(customer) {
+//     for (element of data.customer) {
+//         if (element.username == customer.username || element.number_phone == customer.number_phone) {
+//             return false
+//         }
+//     }
+//     return true
+// }
 
 function checkSamePassword(password, same_password) {
     if (password == same_password) {
@@ -101,14 +106,6 @@ function checkSamePassword(password, same_password) {
     return false
 }
 
-function initId() {
-    if (data.customer.length == 0) {
-        return "KH0001"
-    }
-    let number = parseInt(data.customer[data.customer.length - 1].id.replace("KH", ""))
-    let newId = "KH" + String(number + 1).padStart(4, "0")
-    return newId
-}
 
 function checkDate(birthday) {
     if (parseInt(birthday.split("-")[0]) < 1900 || parseInt(birthday.split("-")[0]) > 2017) {
@@ -122,49 +119,6 @@ document.getElementsByName("sex").forEach(e => {
         sex = e.value
     }
 })
-// btnsigup.onclick = function() {
-
-//     let username = document.getElementById("inp-username")
-//     if (checkValid(
-//             firstName.value,
-//             lastName.value,
-//             username.value,
-//             password_regis.value,
-//             same_passwd.value,
-//             number_phone.value,
-//             birthday.value)) {
-//         if (checkSamePassword(password_regis.value, same_passwd.value)) {
-//             if (checkDate(birthday.value)) {
-//                 let customer = new Customer(
-//                     initId(),
-//                     firstName.value.trim() + " " + lastName.value.trim(),
-//                     number_phone.value.trim(),
-//                     username.value.trim(),
-//                     password_regis.value,
-//                     sex,
-//                     birthday.value)
-//                 if (checkConstraintRegis(customer) == true) {
-//                     data.customer.push(customer)
-//                     localStorage.setItem("data", JSON.stringify(data))
-//                     showacc(signup, 0, 1200)
-//                     setTimeout(() => {
-//                         signup.style.display = ""
-//                         account.style.display = ""
-//                     }, 450);
-//                 } else {
-//                     alert("Tài khoản đã tồn tại")
-//                 }
-//             } else {
-//                 alert("Ngày sinh không hợp lệ")
-//             }
-//         } else {
-//             alert("Bạn đã nhập 2 mật khẩu không giống nhau!")
-//         }
-//     } else {
-//         alert("Không được bỏ trống bất cứ thông tin nào!")
-//     }
-// }
-
 function notifition(){
     showacc(signup, 0, 1200);
               setTimeout(() => {
@@ -195,25 +149,22 @@ function Checkavai(){
                 if (checkSamePassword(password_regis.value, same_passwd.value)) {
                     if (checkDate(birthday.value)) {
                         let customer = new Customer(
-                            initId(),
                             firstName.value.trim() + " " + lastName.value.trim(),
                             number_phone.value.trim(),
                             username.value.trim(),
                             password_regis.value,
                             sex,
                             birthday.value)
-                        if (checkConstraintRegis(customer) == true) {
-                            data.customer.push(customer)
-                            localStorage.setItem("data", JSON.stringify(data))
-                            showacc(signup, 0, 1200)
-                            setTimeout(() => {
-                                signup.style.display = ""
-                                account.style.display = ""
-                            }, 450);
-                        } else {
-                            alert("Tài khoản đã tồn tại")
-                            flag=false;
-                        }
+                        // if (checkConstraintRegis(customer) == true) {
+                        //     showacc(signup, 0, 1200)
+                        //     setTimeout(() => {
+                        //         signup.style.display = ""
+                        //         account.style.display = ""
+                        //     }, 450);
+                        // } else {
+                        //     alert("Tài khoản đã tồn tại")
+                        //     flag=false;
+                        // }
                     } else {
                         alert("Ngày sinh không hợp lệ")
                         flag=false;
