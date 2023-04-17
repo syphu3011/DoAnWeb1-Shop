@@ -294,29 +294,30 @@
             $stmt = null;
             return $result;
         }
-        public function check_sdt($con, $sdt)
+        public function check_account($conn, $sdt, $username)
         {
             # code...
-             $sql="SELECT *
-             from customer 
-             where customer.numberphone=?;";
+            $sql="SELECT * 
+                FROM customer, account 
+                WHERE customer.numberphone=? 
+                AND account.username=?";
             $stmt=$conn->prepare($sql);
-            $stmt->execute([$sdt]);
+            $stmt->execute([$sdt, $username]);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $stmt = null;
             return $result;
         }
-        public function check_username($con, $username)
-        {
-            # code...
-             $sql="SELECT *
-             from account 
-             where account.username=?;";
-            $stmt=$conn->prepare($sql);
-            $stmt->execute([$username]);
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $stmt = null;
-            return $result;
-        }
+        // public function check_username($conn, $username)
+        // {
+        //     # code...
+        //      $sql="SELECT username
+        //      from account 
+        //      where account.username = ? ";
+        //     $stmt=$conn->prepare($sql);
+        //     $stmt->execute([$username]);
+        //     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        //     $stmt = null;
+        //     return $result;
+        // }
     }
 ?>

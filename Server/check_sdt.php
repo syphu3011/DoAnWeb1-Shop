@@ -2,9 +2,9 @@
 require_once('../init.php');
 require_once('CRUD.php');
 $data_send = json_decode(file_get_contents('php://input'), true);
-$sdt = $data_send["numberphone"];
+// $sdt = $data_send["numberphone"];
 $result = new CRUD();
-$data = $result -> check_sdt($conn, $sdt);
+$data = $result -> check_sdt($conn, $data_send["numberphone"]);
 if (count($data) > 0) {
     $response = array(
         'success' => true,

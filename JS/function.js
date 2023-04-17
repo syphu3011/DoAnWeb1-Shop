@@ -1364,12 +1364,12 @@ let data = new Array();
 // if (localStorage.getItem("data") == null) {
 //   localStorage.setItem("data", JSON.stringify(arr));
 // }
-// function testthoi() {
-//   document.getElementById("inp-firstname").value = "123";
-//   document.getElementById("inp-lastname").value = "123";
-//   document.getElementById("inp-username").value = "123";
-//   document.getElementById("passwd-regis").value = "123";
-//   document.getElementById("same-passwd").value = "123";
-//   document.getElementById("birthday").value = "2002-10-10";
-//   document.getElementById("phone-mail-regis").value = "0395932776";
-// }
+function testthoi() {
+  document.getElementById("inp-firstname").value = "123";
+  document.getElementById("inp-lastname").value = "123";
+  document.getElementById("inp-username").value = "123";
+  document.getElementById("passwd-regis").value = "123";
+  document.getElementById("same-passwd").value = "123";
+  document.getElementById("birthday").value = "2002-10-10";
+  document.getElementById("phone-mail-regis").value = "0395932776";
+}
