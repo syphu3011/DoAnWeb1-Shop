@@ -21,6 +21,7 @@
         $product["image_product"] = $result->read_image_productByProductId($conn, $idproduct);
         $product["madein_product"] = $result->read_input_countryById($conn, $id_country);
         $product["attribute_product"] = $result->read_product_listByProductId($conn, $idproduct);
+        $product["promotion"]=$result->read_data_promotionById($conn, $idproduct);
     }
 
     $response = array(

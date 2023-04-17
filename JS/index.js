@@ -1588,13 +1588,14 @@ let isCTSP = false;
 
 let sizeProduct = new Array();
 
-function checkCart(id, cart) {
-  for (let i = 0; i < cart.length; i++) {
-    if (cart[i].idProd == id) {
-      return false;
+function checkCart(iduser, id_product) {
+  getDataFromServer(
+    "./Server/get_data_cart.php",
+    { idkh: iduser, idpro: id_product },
+    function (respone) {
+      return respone.success;
     }
-  }
-  return true;
+  );
 }
 
 function selectImage(
