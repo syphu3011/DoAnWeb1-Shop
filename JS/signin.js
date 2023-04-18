@@ -20,12 +20,12 @@ document
               console.log(response);
               //   test = response;
               if (response.success) {
-                console.log(response.data);
+                // console.log(response.data);
                 //Đăng nhập với vai trò nhân viên
                 if (response.data.account.privilege.indexOf("customer") != -1) {
                   //Đăng nhập vào enduser
-                  currentUser = response.data.customer.id;
-                  localStorage.setItem("ID", response.data.customer.id);
+                  currentUser = response.data.customer;
+                  // localStorage.setItem("ID", response.data.customer.id);
                   //Ẩn giao diện đăng nhập
                   showacc(signin, 0, 1200);
                   // Thông báo đăng nhập thành công
@@ -110,21 +110,21 @@ function fill_infor(
     $.ajax({
       url: "./admin/Server/customer/customer.php?action=update",
       method: "POST",
-      dataType:'json',
+      dataType: "json",
       data: {
         id: id,
         name: name,
         numberphone: number_phone,
         birthday: birth_day,
-        gender: gender
+        gender: gender,
         // password: password_customer
       },
-			success: function(response) {
-          console.log(response);
-        },
-      error: function(xhr, status, error) {    
-          console.log(error);
-        }    
+      success: function (response) {
+        console.log(response);
+      },
+      error: function (xhr, status, error) {
+        console.log(error);
+      },
     });
   };
 }

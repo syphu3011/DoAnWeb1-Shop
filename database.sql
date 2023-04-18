@@ -292,7 +292,7 @@ CREATE TABLE `image_product` (
 --
 
 INSERT INTO `image_product` (`id_product`, `link_image`, `name_image`) VALUES
-('AO00000001', 'Link hỏi Phú', NULL),
+('AO00000001', './admin/image/ao-thun-nu-local-brand-dep-davies.jpeg', NULL),
 ('AO00000002', 'Link hỏi Phú', NULL),
 ('AO00000003', '0button.png', NULL),
 ('AO00000003', '1car.png', NULL),

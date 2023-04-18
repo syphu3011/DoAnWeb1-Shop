@@ -400,8 +400,20 @@ function click_Product(response) {
     let nutthem = document.getElementsByClassName("nut-them-vao-gio")[0];
 
     nutthem.onclick = function () {
-      console.log(size_isselect, color_isselect);
-      // addToCart(response.data.product[0].id);
+      console.log(response);
+
+      let user = currentUser;
+      let amount = document.getElementById("count_amount_product").value;
+      let id_product = response.data.product[0].id;
+      let price =
+        amount *
+        price_from_dis(
+          response.data.promotion[0].price,
+          response.data.promotion[0].discount_percent,
+          response.data.promotion[0].discount_price
+        );
+
+      addToCart(user, id_product, color_isselect, size_isselect, amount, price);
     };
     function select_color(id, size_isselect) {
       let btn_color = document.getElementsByClassName("item_color");
@@ -654,38 +666,94 @@ function count_onclick(
   label_del_price.innerHTML = calculated(sale * amount) + " VNĐ";
   label_text.innerHTML = calculated(price * amount) + " VNĐ";
 }
-function addToCart(id_product) {
+function addToCart(
+  user,
+  id_product,
+  color_isselect,
+  size_isselect,
+  amount,
+  price
+) {
   if (currentUser != null) {
-    if (!checkCart(currentUser.id, id_product)) {
-      // let c = new Cart(pro[0].id, ids, count, tinhtongtien(count, pro[0].id, pro[0].price))
-      // currentUser.cart.push(
-      //   new Cart(
-      //     pro[0].id,
-      //     ids,
-      //     count,
-      //     tinhtongtien(count, pro[0].id, pro[0].price)
-      //   )
-      // );
-      // localStorage.setItem("data", JSON.stringify(data));
-      getDataFromServer("./Server/insert_to_cart.php", {
-        idkh: currentUser.id,
-        idsp: id_product,
-      });
-      showacc(document.getElementsByClassName("sp_popup")[0], 0, 1200);
-      setTimeout(() => {
-        document.getElementById("show_product").style.display = "";
-        isCTSP = false;
-        document.getElementById("noti").style.display = "flex";
-        document.getElementById("noti-noti").innerHTML = "đã thêm Thành công";
-        showacc(document.getElementById("noti-noti"), -500, 0);
-        document.getElementById("noti-noti").style.display = "flex";
-        setTimeout(() => {
-          document.getElementById("noti").style.display = "";
-        }, 700);
-      }, 400);
-    } else {
-      alert("sản phẩm đã được thêm, hãy chỉnh sửa trong giỏ hàng");
-    }
+    id_user = user.id;
+    getDataFromServer(
+      "./Server/get_data_cart.php",
+      { idkh: id_user, idpro: id_product },
+      function (respone) {
+        // return respone.success;
+        if (!respone.success) {
+          getDataFromServer(
+            "./Server/insert_to_cart.php",
+            {
+              idkh: currentUser.id,
+              idsp: id_product,
+              idm: color_isselect,
+              ids: size_isselect,
+              amount: amount,
+              price: price,
+            },
+            function (respone) {
+              console.log(respone);
+            }
+          );
+          showacc(document.getElementsByClassName("sp_popup")[0], 0, 1200);
+          setTimeout(() => {
+            document.getElementById("show_product").style.display = "";
+            isCTSP = false;
+            document.getElementById("noti").style.display = "flex";
+            document.getElementById("noti-noti").innerHTML =
+              "đã thêm Thành công";
+            showacc(document.getElementById("noti-noti"), -500, 0);
+            document.getElementById("noti-noti").style.display = "flex";
+            setTimeout(() => {
+              document.getElementById("noti").style.display = "";
+            }, 700);
+          }, 400);
+        } else {
+          alert("sản phẩm đã được thêm, hãy chỉnh sửa trong giỏ hàng");
+        }
+      }
+    );
+    // if (!checkCart(currentUser.id, id_product)) {
+    // let c = new Cart(pro[0].id, ids, count, tinhtongtien(count, pro[0].id, pro[0].price))
+    // currentUser.cart.push(
+    //   new Cart(
+    //     pro[0].id,
+    //     ids,
+    //     count,
+    //     tinhtongtien(count, pro[0].id, pro[0].price)
+    //   )
+    // );
+    // localStorage.setItem("data", JSON.stringify(data));
+    // getDataFromServer(
+    //   "./Server/insert_to_cart.php",
+    //   {
+    //     idkh: currentUser.id,
+    //     idsp: id_product,
+    //     idm: color_isselect,
+    //     ids: size_isselect,
+    //     amount: amount,
+    //     price: price,
+    //   },
+    //   function (respone) {
+    //     console.log(respone);
+    //   }
+    // );
+    // showacc(document.getElementsByClassName("sp_popup")[0], 0, 1200);
+    // setTimeout(() => {
+    //   document.getElementById("show_product").style.display = "";
+    //   isCTSP = false;
+    //   document.getElementById("noti").style.display = "flex";
+    //   document.getElementById("noti-noti").innerHTML = "đã thêm Thành công";
+    //   showacc(document.getElementById("noti-noti"), -500, 0);
+    //   document.getElementById("noti-noti").style.display = "flex";
+    //   setTimeout(() => {
+    //     document.getElementById("noti").style.display = "";
+    //   }, 700);
+    // }, 400);
+    // } else {
+    //   alert("sản phẩm đã được thêm, hãy chỉnh sửa trong giỏ hàng");
+    // }
   } else {
     alert("Đăng nhập để tiếp tục");
     showacc(document.getElementsByClassName("sp_popup")[0], 0, 1200);

@@ -90,7 +90,7 @@ function format_date(params) {
   );
 }
 function getDataFromServer(url, data, callback) {
-  console.log(data);
+  // console.log(data);
   const xhr = new XMLHttpRequest();
   xhr.open("POST", url);
   xhr.setRequestHeader("Content-Type", "application/json");
@@ -98,7 +98,7 @@ function getDataFromServer(url, data, callback) {
     if (xhr.readyState === 4) {
       if (xhr.status === 200) {
         const response = JSON.parse(xhr.responseText);
-        console.log(response);
+        // console.log(response);
         callback(response);
       } else {
         console.error("Error:", xhr.status);

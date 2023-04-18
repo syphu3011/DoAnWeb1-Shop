@@ -263,7 +263,9 @@
         public function read_data_cartById($conn, $id_kh)
         {
             # code...
-            $sql="SELECT * FROM cart WHERE cart.id_customer = ?";
+            $sql="SELECT * 
+            FROM cart 
+            WHERE cart.id_customer = ?";
             $stmt=$conn->prepare($sql);
             $stmt->execute([$id_kh]);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -283,13 +285,13 @@
             $stmt = null;
             return $result;
         }
-        public function insert_data_to_cartById($conn, $id_kh, $id_product)
+        public function insert_data_to_cartById($conn, $id_kh, $id_product, $id_color, $id_size, $amount, $price)
         {
             # code...
             $sql="INSERT INTO cart (id_customer, id_product, id_color, id_size, amount, price) 
                 VALUES ( ?, ?, ?, ?, ?, ?);";
             $stmt=$conn->prepare($sql);
-            $stmt->execute([$id_kh, $id_product]);
+            $stmt->execute([$id_kh, $id_product, $id_color, $id_size, $amount, $price]);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $stmt = null;
             return $result;
