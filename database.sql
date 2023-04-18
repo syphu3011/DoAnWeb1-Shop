@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 11, 2023 at 01:40 PM
+-- Generation Time: Apr 19, 2023 at 03:37 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `shop`
 --
-CREATE Database shop;
-use shop;
 
 -- --------------------------------------------------------
 
@@ -33,6 +31,7 @@ CREATE TABLE `account` (
   `id_user` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `password` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `date_created` datetime DEFAULT NULL,
   `privilege` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `session` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `status` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
@@ -42,19 +41,22 @@ CREATE TABLE `account` (
 -- Dumping data for table `account`
 --
 
-INSERT INTO `account` (`id_user`, `username`, `password`, `privilege`, `session`, `status`) VALUES
-('USR001', 'admin2', '123123', 'admin', '', 'active'),
-('USR002', 'admin1', '123123', 'admin', '', 'active'),
-('USR003', 'syphu', '123123', 'customer', '', 'active'),
-('USR004', 'khaphi', '123123', 'customer', '', 'active'),
-('USR005', 'minhthao', '123123', 'customer', '', 'active'),
-('USR006', 'congmenh', '123123', 'customer', '', 'active'),
-('USR007', 'manager1', '123123', 'manager', '', 'active'),
-('USR008', 'manager2', '123123', 'manager', '', 'active'),
-('USR009', 'phu', '123123', 'sales', '', 'active'),
-('USR010', 'phi', '123123', 'sales', '', 'active'),
-('USR011', 'thao', '123123', 'sales', '', 'active'),
-('USR012', 'menh', '123123', 'sales', '', 'active');
+INSERT INTO `account` (`id_user`, `username`, `password`, `date_created`, `privilege`, `session`, `status`) VALUES
+('USR001', 'admin2', '123123', '2023-04-18 16:11:15', 'admin', '', 'active'),
+('USR002', 'admin1', '123123', '2023-04-18 16:11:43', 'admin', '', 'active'),
+('USR003', 'syphu', '123123', '2023-04-18 16:11:01', 'customer', '', 'active'),
+('USR004', 'khaphi', '123123', '2023-04-18 16:11:19', 'customer', '', 'idle'),
+('USR005', 'minhthao', '123123', '2023-04-18 16:16:08', 'customer', '', 'active'),
+('USR006', 'congmenh', '123123', '2023-04-18 16:16:06', 'customer', '', 'active'),
+('USR007', 'manager1', '123123', '2023-04-18 16:16:00', 'manager', '', 'active'),
+('USR008', 'manager2', '123123', '2023-04-18 16:15:58', 'manager', '', 'active'),
+('USR009', 'phuu', '123123', '2023-04-18 16:15:56', 'sales', '', 'active'),
+('USR010', 'phii', '123123', '2023-04-18 16:15:53', 'sales', '', 'active'),
+('USR011', 'thao', '123123', '2023-04-18 16:15:47', 'sales', '', 'active'),
+('USR012', 'menh', '123123', '2023-04-18 16:15:45', 'sales', '', 'active'),
+('USR014', 'phideptraihehee', '123123', '2023-04-18 16:15:36', 'sales', '', 'active'),
+('USR016', 'admin3', '123123', '2023-04-18 16:11:12', 'admin', '', 'active'),
+('USR017', 'someoneyoulove', '123123', '2023-04-18 16:11:11', 'admin', '', 'idle');
 
 -- --------------------------------------------------------
 
@@ -537,6 +539,7 @@ CREATE TABLE `receipt` (
   `id` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `date_init` datetime NOT NULL,
   `date_confirm` datetime DEFAULT NULL,
+  `address` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `note` varchar(1000) DEFAULT NULL,
   `id_staff` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `id_customer` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
@@ -547,10 +550,10 @@ CREATE TABLE `receipt` (
 -- Dumping data for table `receipt`
 --
 
-INSERT INTO `receipt` (`id`, `date_init`, `date_confirm`, `note`, `id_staff`, `id_customer`, `id_status`) VALUES
-('HD000', '2023-02-12 00:00:00', '2023-02-12 00:00:00', NULL, 'NV001', 'KH001', 'TT07'),
-('HD001', '2023-02-12 00:00:00', NULL, NULL, 'NV002', 'KH002', 'TT09'),
-('HD002', '2023-02-12 00:00:00', '2023-02-12 00:00:00', NULL, 'NV003', 'KH004', 'TT08');
+INSERT INTO `receipt` (`id`, `date_init`, `date_confirm`, `address`, `note`, `id_staff`, `id_customer`, `id_status`) VALUES
+('HD000', '2023-02-12 00:00:00', '2023-02-12 00:00:00', '84/177 Phan Văn Trị, P.2, Q.5, TP.HCM', NULL, 'NV001', 'KH001', 'TT07'),
+('HD001', '2023-02-12 00:00:00', '2023-02-12 00:00:00', '84/173 Phan Văn Trị, P.2, Q.5, TP.HCM', NULL, 'NV002', 'KH002', 'TT09'),
+('HD002', '2023-02-12 00:00:00', '2023-02-12 00:00:00', '84/170 Phan Văn Trị, P.2, Q.5, TP.HCM', NULL, 'NV003', 'KH004', 'TT08');
 
 -- --------------------------------------------------------
 
@@ -605,7 +608,8 @@ INSERT INTO `staff` (`id`, `name`, `birthday`, `gender`, `phone`, `address`, `no
 ('NV001', 'Sỹ Phú', '2002-11-30 00:00:00', 'nam', '828049515', 'HCM', NULL, 'USR009'),
 ('NV002', 'Khả Phi', '2002-06-28 00:00:00', 'nam', '828049516', 'HCM', NULL, 'USR010'),
 ('NV003', 'Cỏng Mềnh', '2002-02-18 00:00:00', 'nam', '828049517', 'Đồng Nai', NULL, 'USR012'),
-('NV004', 'Minh Thao', '2002-07-29 00:00:00', 'nam', '828049518', 'Long AN', NULL, 'USR011');
+('NV004', 'Minh Thao', '2002-07-29 00:00:00', 'nam', '828049518', 'Long AN', NULL, 'USR011'),
+('NV005', 'Sy Phi', '2002-11-30 00:00:00', 'nam', '828049515', 'HCM', '', 'USR016');
 
 -- --------------------------------------------------------
 
