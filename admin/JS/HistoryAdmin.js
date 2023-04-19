@@ -1,5 +1,5 @@
 let obj222 = JSON.parse(localStorage.getItem("data"))
-AddColumn()
+// AddColumn()
 function AddColumn(){
     let tagtable =document.getElementById("table-admin")
     let lengt= obj222.history.length

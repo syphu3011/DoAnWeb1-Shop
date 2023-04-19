@@ -54,9 +54,7 @@ async function getCustomers() {
 
       selectedCustomer = customer;
 
-      document.getElementById("detail-customer-header").innerHTML = `
-            Chi tiết khách hàng
-            `;
+      $("#detail-customer-header").html(`Chi tiết khách hàng`) ;
       document.getElementById("detail-customer-content").innerHTML = `
               <div id="customer-detail-id">ID tài khoản: ${customer.id}</div>
               <div id="customer-detail-name">Tên người dùng: ${customer.name}</div>
@@ -467,10 +465,10 @@ function saveNewCustomer(id) {
     name: 'Lang Thang',
     gender: 'nam',
     birthday: '2002-06-28 00:00:00',
+    date_created: '2023-04-18 16:11:15',
     privilege: 'customer',
     numberphone: '394142899',
     status: 'active',
-    birthday: '2002-11-30 00:00:00',
     address: 'HCM'
   }
     // image: '',

@@ -1,11 +1,11 @@
 // if (localStorage.getItem("checkLogin") == "true") {
 
-let current_staff = JSON.parse(localStorage.getItem("currentStaff"));
+// let current_staff = JSON.parse(localStorage.getItem("currentStaff"));
 
 //
 //test
 let d = JSON.parse(localStorage.getItem("data"));
-current_staff = d.staff[2];
+// current_staff = d.staff[2];
 
 let contentDiv = document.getElementById("content");
 let left_bar = document.getElementById("back-left-bar");
@@ -22,7 +22,7 @@ img_ham.onclick = function () {
 };
 let back_account = document.getElementById("back-border-account");
 let name_staff = document.getElementById("name-staff");
-name_staff.innerHTML = current_staff.name;
+// name_staff.innerHTML = current_staff.name;
 back_account.onclick = function () {
   window.location.href = "../index.html";
 };

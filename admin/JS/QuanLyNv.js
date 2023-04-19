@@ -1,5 +1,5 @@
 let objk = JSON.parse(localStorage.getItem("data"))
-var arrNhanVien = objk.staff
+// var arrNhanVien = objk.staff
 
 function writeToLocalStorage(arr) {
     let setlocal = JSON.stringify(arr)
@@ -462,4 +462,4 @@ function kiemtrangaysinh() {
         document.getElementById("ngaysinh_err").innerHTML = "chưa nhập ngày sinh";
     } else document.getElementById("ngaysinh_err").innerHTML = "";
 }
-renderTable1()
+// renderTable1()
