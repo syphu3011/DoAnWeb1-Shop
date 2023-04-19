@@ -313,33 +313,71 @@ function createCart(data_respone) {
     //   getProInStock(currentUser.cart[i].idProd);
     //   getKM(currentUser.cart[i].idProd);
     // }
-    // console.log(prInStock);
+    // console.log("function createCart: ", data_respone[0].att.length);
     showacc(document.getElementById("tranggiohang"), -500, 0);
     // setTimeout(() => {
     document.getElementById("hienthigiohang").style.display = "flex";
     // }, 400);
     for (let i = 0; i < data_respone.length; i++) {
       //   let s = "Image/SANPHAM/" + pro[i].images[0];
-      let str = "";
-      if (sizeP[i] != null) {
-        sizeP[i].forEach((element) => {
-          if (element.id == currentUser.cart[i].idSize) {
-            str +=
-              ` <div class="size" style="border-color: red;">
-                   ` +
-              element.name +
-              `
-                            </div>`;
-          } else {
-            str +=
-              ` <div class="size">
-                   ` +
-              element.name +
-              `
-                            </div>`;
-          }
-        });
+      let line_product = data_respone[i];
+      let inner_size = "";
+      console.log(line_product.att);
+      for (let j = 0; j < line_product.att.length; j++) {
+        let element = line_product.att[j];
+        if (element.id_size == line_product.id_size) {
+          inner_size +=
+            ` <div class="size" style="border-color: red;">
+                         ` +
+            element.id_size +
+            `
+                                  </div>`;
+        } else {
+          inner_size +=
+            ` <div class="size">
+                         ` +
+            element.id_size +
+            `
+                                  </div>`;
+        }
       }
+      let inner_color = "";
+      console.log(line_product.att);
+      for (let j = 0; j < line_product.att.length; j++) {
+        let element = line_product.att[j];
+        if (element.id_color == line_product.id_color) {
+          inner_color +=
+            ` <div class="cart_color" style="border-color: red;">
+                         ` +
+            element.id_color +
+            `
+                                  </div>`;
+        } else {
+          inner_color +=
+            ` <div class="cart_color">
+                         ` +
+            element.id_color +
+            `
+                                  </div>`;
+        }
+      }
+      //   sizeP[i].forEach((element) => {
+      //     if (element.id == currentUser.cart[i].idSize) {
+      //       inner_size +=
+      //         ` <div class="size" style="border-color: red;">
+      //                ` +
+      //         element.name +
+      //         `
+      //                         </div>`;
+      //     } else {
+      //       inner_size +=
+      //         ` <div class="size">
+      //                ` +
+      //         element.name +
+      //         `
+      //                         </div>`;
+      //     }
+      //   });
       //   let pr = 0;
       //   prInStock.forEach((e) => {
       //     if (
@@ -403,7 +441,12 @@ function createCart(data_respone) {
                     </td>
                     <td>
                     <div class="chon-size">` +
-        str +
+        inner_size +
+        `</div>
+                    </td>
+                    <td>
+                    <div class="chon-mau">` +
+        inner_color +
         `</div>
                     </td>
                     <td class="ton-tien">

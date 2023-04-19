@@ -179,7 +179,7 @@ input[type="number"] {
 #tranggiohang {
   background-color: white;
   border-radius: 20px;
-  margin: 40px;
+  /* margin: 40px; */
   max-height: 700px;
 }
 
@@ -200,7 +200,7 @@ input[type="number"] {
   /* border-bottom: 1px solid gray; */
   text-align: left;
   /* grid-template-columns: 100px 1fr 1fr 1fr 1fr 1fr 40px; */
-  grid-template-columns: 100px 200px 1fr 80px 100px 1fr 40px;
+  grid-template-columns: 100px 200px 1fr 80px 100px 1fr 1fr 40px;
 }
 
 .table-giohang td {
@@ -238,6 +238,12 @@ input[type="number"] {
   justify-content: space-between;
 }
 
+.cart_color {
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+  border: 1px solid gray;
+}
 .size {
   padding: 5px;
   cursor: pointer;
@@ -246,7 +252,7 @@ input[type="number"] {
 
 .ten-cot {
   display: grid;
-  grid-template-columns: 100px 200px 1fr 80px 100px 1fr 50px;
+  grid-template-columns: 100px 200px 1fr 80px 100px 1fr 1fr 50px;
   height: 25px;
   margin: 0 20px;
   font-size: 16px;
@@ -339,8 +345,13 @@ input[type="number"] {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   display: none;
 }
-.del_price,#del_price {
+.del_price,
+#del_price {
   font-size: 10px;
   color: red;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
+}
+.chon-mau {
+  display: flex;
+  justify-content: space-between;
 }
