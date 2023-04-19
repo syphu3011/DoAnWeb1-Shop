@@ -4,8 +4,16 @@
 
 //
 //test
+<<<<<<< HEAD
+let d = JSON.parse(localStorage.getItem("currentStaff"));
+current_staff = d;
+=======
 let d = JSON.parse(localStorage.getItem("data"));
 // current_staff = d.staff[2];
+<<<<<<< Updated upstream
+=======
+>>>>>>> 9e2b8ae5a6949539a95eccf3e0845addde664086
+>>>>>>> Stashed changes
 
 let contentDiv = document.getElementById("content");
 let left_bar = document.getElementById("back-left-bar");
