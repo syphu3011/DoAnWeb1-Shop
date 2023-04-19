@@ -9,7 +9,7 @@ let arrRemove = []
 let detaill = []
 let importList = []
 let data = JSON.parse(localStorage.getItem('data'))
-let inp_prod = data.input_product
+// let inp_prod = data.input_product
 let checkClickOutsideDetail = false
 
 function getCurrentDate() {

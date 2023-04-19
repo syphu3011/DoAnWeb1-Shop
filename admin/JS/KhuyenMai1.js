@@ -8,8 +8,8 @@ function writeToLocalStorage(ar) {
 
 
 let obj10 = JSON.parse(localStorage.getItem("data"))
-let length11 = obj10.promote.length
-let length21 = obj10.product.length
+// let length11 = obj10.promote.length
+// let length21 = obj10.product.length
 
 function Themkhuyenmai() {
     document.getElementById("PageUp").innerHTML = `
@@ -545,7 +545,7 @@ function GetClasify(id) {
 
 // thêm ảnh
 let imgLinkChange = ""
-renderTable2()
+// renderTable2()
     // document.getElementById("btnaddimg").onclick = function() {
     //     let chooseImg = document.getElementById("btnaddimg")
     //     console.log("./Image/avt/" + chooseImg.value.replace("C:\\fakepath\\", ""))

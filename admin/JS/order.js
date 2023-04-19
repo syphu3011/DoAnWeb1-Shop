@@ -8,11 +8,11 @@ function writeToLocalStorage(arr) {
 // let objk = JSON.parse(JSON.stringify(data))
 // localStorage.setItem("data", JSON.stringify(data))
 let obj12 = JSON.parse(localStorage.getItem("data"))
-let length1 = obj12.receipt.length
-let length2 = obj12.prodInStock.length
-let length3 = obj12.product.length
-let length4 = obj12.customer.length
-console.log(obj12)
+// let length1 = obj12.receipt.length
+// let length2 = obj12.prodInStock.length
+// let length3 = obj12.product.length
+// let length4 = obj12.customer.length
+// console.log(obj12)
 document.getElementById("date-init-first").value="1971-01-01"
 document.getElementById("date-init-last").value=CurrentDate()
 document.getElementById("date-confirm-first").value = "1971-01-01"
@@ -766,4 +766,4 @@ function GetTotal(x) {
 }
 
 
-timtheokhoang()
+// timtheokhoang()

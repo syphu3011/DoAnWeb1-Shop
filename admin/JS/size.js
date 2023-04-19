@@ -5,7 +5,7 @@ function writeToLocalStorage(arr) {
 
 
 let objs = JSON.parse(localStorage.getItem("data"))
-let arrKT = objs.size
+// let arrKT = objs.size
 
 
 
@@ -644,4 +644,4 @@ function xacNhanSuaQuan(){
     
 }
 
-huy()   
+// huy()   
