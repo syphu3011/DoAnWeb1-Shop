@@ -55,7 +55,7 @@ document
                   console.log("Bạn đang đăng nhập với vai trò nhân viên");
                   localStorage.setItem(
                     "currentStaff",
-                    JSON.stringify(currentUser)
+                    JSON.stringify(response.data.staff)
                   );
                   localStorage.setItem("checkLogin", true);
                   window.location.href = "./admin/index.html";
