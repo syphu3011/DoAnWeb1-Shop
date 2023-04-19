@@ -53,6 +53,17 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 	if (isset($_REQUEST["action"])){
 		// ? http://localhost/doan/admin/Server/account/account.php?action=update&id_user=USR014&username=phideptraihehee&password=123123&privilege=sales&session&status=active
 		if ($_REQUEST["action"] === "update"){
+			
+			date_default_timezone_set('Asia/Ho_Chi_Minh');
+			$today = gmdate('Y-m-d H:i:s', time());
+			// * Y : year with 4 digits
+			// * y : year with 2 digits
+			// * m : month with 2 digits
+			// * M : month with name
+			// * H : format 24h
+			// * h : format 12h
+			$_REQUEST["date_created"] = $today;
+
 			foreach($headerArr as $index => $value) 
 				if ($index !== 0 && isset($_REQUEST[$value]))
 					ReqHandling::updateDbOnProperty(
@@ -70,6 +81,16 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
 			$maxIdAccount = Table::getMaxId($conn, 'account', 'id_user');
 			$_REQUEST["id_user"] = "USR" . strval(sprintf("%03d", $maxIdAccount+1));
+
+			date_default_timezone_set('Asia/Ho_Chi_Minh');
+			$today = gmdate('Y-m-d H:i:s', time());
+			// * Y : year with 4 digits
+			// * y : year with 2 digits
+			// * m : month with 2 digits
+			// * M : month with name
+			// * H : format 24h
+			// * h : format 12h
+			$_REQUEST["date_created"] = $today;
 			ReqHandling::createRow($conn, 'account');
 
 		}

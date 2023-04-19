@@ -1,0 +1,978 @@
+{
+	"info": {
+		"_postman_id": "0509886c-ce57-4b43-a07f-ee8e27a6e891",
+		"name": "web-2-requests-Phi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21420500"
+	},
+	"item": [
+		{
+			"name": "customers",
+			"item": [
+				{
+					"name": "VIEW",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/customer/customer.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"customer",
+								"customer.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/customer/customer.php?action=update&name=cicada4&id=KH004",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"customer",
+								"customer.php"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "update"
+								},
+								{
+									"key": "name",
+									"value": "cicada4"
+								},
+								{
+									"key": "id",
+									"value": "KH004"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/customer/customer.php?username=cicada2&password=cicada3303&action=create&privilege=sales&status=active&name=Lang Thang&birthday=2002-11-30 00:00:00&numberphone=394142891&address=HCM&gender=nam",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"customer",
+								"customer.php"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "cicada2"
+								},
+								{
+									"key": "password",
+									"value": "cicada3303"
+								},
+								{
+									"key": "action",
+									"value": "create"
+								},
+								{
+									"key": "privilege",
+									"value": "sales"
+								},
+								{
+									"key": "status",
+									"value": "active"
+								},
+								{
+									"key": "name",
+									"value": "Lang Thang"
+								},
+								{
+									"key": "birthday",
+									"value": "2002-11-30 00:00:00"
+								},
+								{
+									"key": "numberphone",
+									"value": "394142891"
+								},
+								{
+									"key": "address",
+									"value": "HCM"
+								},
+								{
+									"key": "gender",
+									"value": "nam"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DEL",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/customer/customer.php?id_user=USR015",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"customer",
+								"customer.php"
+							],
+							"query": [
+								{
+									"key": "id_user",
+									"value": "USR015"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "parameters",
+			"item": [
+				{
+					"name": "GET all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/parameters/parameters.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"parameters",
+								"parameters.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET multiple",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/parameters/parameters.php?variable2=70&variable1=16",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"parameters",
+								"parameters.php"
+							],
+							"query": [
+								{
+									"key": "variable2",
+									"value": "70"
+								},
+								{
+									"key": "variable1",
+									"value": "16"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/parameters/parameters.php?id=TUOIKH&variable1=16&variable2=80&action=update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"parameters",
+								"parameters.php"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "TUOIKH"
+								},
+								{
+									"key": "variable1",
+									"value": "16"
+								},
+								{
+									"key": "variable2",
+									"value": "80"
+								},
+								{
+									"key": "action",
+									"value": "update"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/parameters/parameters.php?id=TUOITEEN&variable1=19&variable2=21&action=create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"parameters",
+								"parameters.php"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "TUOITEEN"
+								},
+								{
+									"key": "variable1",
+									"value": "19"
+								},
+								{
+									"key": "variable2",
+									"value": "21"
+								},
+								{
+									"key": "action",
+									"value": "create"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DEL",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/parameters/parameters.php?id=TUOITEEN",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"parameters",
+								"parameters.php"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "TUOITEEN"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "account",
+			"item": [
+				{
+					"name": "GET account",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/account/account.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"account",
+								"account.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET specific",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/account/account.php?username=syphu",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"account",
+								"account.php"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "syphu"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/account/account.php?action=create&username=someoneyoulove&password=123123&privilege=admin&session&status=idle",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"account",
+								"account.php"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "create"
+								},
+								{
+									"key": "username",
+									"value": "someoneyoulove"
+								},
+								{
+									"key": "password",
+									"value": "123123"
+								},
+								{
+									"key": "privilege",
+									"value": "admin"
+								},
+								{
+									"key": "session",
+									"value": null
+								},
+								{
+									"key": "status",
+									"value": "idle"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/account/account.php?action=update&id_user=USR014&username=phideptraihehee&password=123123&privilege=sales&session&status=active",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"account",
+								"account.php"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "update"
+								},
+								{
+									"key": "id_user",
+									"value": "USR014"
+								},
+								{
+									"key": "username",
+									"value": "phideptraihehee"
+								},
+								{
+									"key": "password",
+									"value": "123123"
+								},
+								{
+									"key": "privilege",
+									"value": "sales"
+								},
+								{
+									"key": "session",
+									"value": null
+								},
+								{
+									"key": "status",
+									"value": "active"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DEL account",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/account/account.php?id=USR013",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"account",
+								"account.php"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "USR013"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "receipt",
+			"item": [
+				{
+					"name": "view-all-detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/receipt/receiptDetail.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"receipt",
+								"receiptDetail.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/receipt/receipt.php?date_confirm=2023-02-12 00:00:00",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"receipt",
+								"receipt.php"
+							],
+							"query": [
+								{
+									"key": "date_confirm",
+									"value": "2023-02-12 00:00:00"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view-all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/receipt/receipt.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"receipt",
+								"receipt.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/receipt/receipt.php?action=create&date_init=2023-02-24 00:00:00&date_confirm=2023-02-24 00:00:00&note&id_staff=NV001&id_customer=KH001&id_status=TT07",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"receipt",
+								"receipt.php"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "create"
+								},
+								{
+									"key": "date_init",
+									"value": "2023-02-24 00:00:00"
+								},
+								{
+									"key": "date_confirm",
+									"value": "2023-02-24 00:00:00"
+								},
+								{
+									"key": "note",
+									"value": null
+								},
+								{
+									"key": "id_staff",
+									"value": "NV001"
+								},
+								{
+									"key": "id_customer",
+									"value": "KH001"
+								},
+								{
+									"key": "id_status",
+									"value": "TT07"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/receipt/receipt.php?action=create&date_init=2023-02-24 00:00:00&date_confirm=2023-02-24 00:00:00&note&id_staff=NV001&id_customer=KH001&id_status=TT07",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"receipt",
+								"receipt.php"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "create"
+								},
+								{
+									"key": "date_init",
+									"value": "2023-02-24 00:00:00"
+								},
+								{
+									"key": "date_confirm",
+									"value": "2023-02-24 00:00:00"
+								},
+								{
+									"key": "note",
+									"value": null
+								},
+								{
+									"key": "id_staff",
+									"value": "NV001"
+								},
+								{
+									"key": "id_customer",
+									"value": "KH001"
+								},
+								{
+									"key": "id_status",
+									"value": "TT07"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "event",
+			"item": [
+				{
+					"name": "view-all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/event/event.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"event",
+								"event.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view-lastest",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/event/event.php?amount=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"event",
+								"event.php"
+							],
+							"query": [
+								{
+									"key": "amount",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/event/event.php?detail=Add new account - USR007&severity=harmless&type=add&actor=admin2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"event",
+								"event.php"
+							],
+							"query": [
+								{
+									"key": "detail",
+									"value": "Add new account - USR007"
+								},
+								{
+									"key": "severity",
+									"value": "harmless"
+								},
+								{
+									"key": "type",
+									"value": "add"
+								},
+								{
+									"key": "actor",
+									"value": "admin2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "staff",
+			"item": [
+				{
+					"name": "view-all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/staff/staff.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"staff",
+								"staff.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/staff/staff.php?gender=nam",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"staff",
+								"staff.php"
+							],
+							"query": [
+								{
+									"key": "gender",
+									"value": "nam"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/staff/staff.php?action=create&username=admin3&password=123123&privilege=admin&session&status=active&name=Sỹ Phú&birthday=2002-11-30 00:00:00&gender=nam&phone=828049515&address=HCM",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"staff",
+								"staff.php"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "create"
+								},
+								{
+									"key": "username",
+									"value": "admin3"
+								},
+								{
+									"key": "password",
+									"value": "123123"
+								},
+								{
+									"key": "privilege",
+									"value": "admin"
+								},
+								{
+									"key": "session",
+									"value": null
+								},
+								{
+									"key": "status",
+									"value": "active"
+								},
+								{
+									"key": "name",
+									"value": "Sỹ Phú"
+								},
+								{
+									"key": "birthday",
+									"value": "2002-11-30 00:00:00"
+								},
+								{
+									"key": "gender",
+									"value": "nam"
+								},
+								{
+									"key": "phone",
+									"value": "828049515"
+								},
+								{
+									"key": "address",
+									"value": "HCM"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/staff/staff.php?action=update&id=USR013&password=11223344",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"staff",
+								"staff.php"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "update"
+								},
+								{
+									"key": "id",
+									"value": "USR013"
+								},
+								{
+									"key": "password",
+									"value": "11223344"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DEL",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/staff/staff.php?id=USR015",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"staff",
+								"staff.php"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "USR015"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
