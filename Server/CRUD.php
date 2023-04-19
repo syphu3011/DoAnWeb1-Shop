@@ -105,10 +105,12 @@
             return $result;
         }
         public function read_product_listByProductId($conn, $idproduct) {
-            $sql="SELECT id_size, price, id_color FROM product_list WHERE id_product = :idproduct";
+            $sql="SELECT id_size, price, id_color 
+            FROM product_list 
+            WHERE id_product = ?";
             $stmt=$conn->prepare($sql);
-            $stmt->bindParam(":idproduct", $idproduct);
-            $stmt->execute();
+            // $stmt->bindParam(":idproduct", $idproduct);
+            $stmt->execute([$idproduct]);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $stmt = null;
             return $result;
@@ -263,9 +265,26 @@
         public function read_data_cartById($conn, $id_kh)
         {
             # code...
-            $sql="SELECT * 
-            FROM cart 
-            WHERE cart.id_customer = ?";
+            $sql="SELECT 
+                    cart.id_product,
+                    product.name, 
+                    image_product.link_image,
+                    product_in_stock.amount as amount_in_stock,
+                    product_list.price as cost,
+                    cart.id_color, 
+                    cart.id_size,
+                    cart.amount,
+                    cart.price
+                FROM cart, product, 
+                    image_product, product_in_stock,
+                    product_list
+                WHERE cart.id_customer= ?
+                    AND cart.id_product=product.id
+                    AND image_product.id_product=cart.id_product
+                    AND product_in_stock.id_product=cart.id_product
+                    AND product_in_stock.id_size = cart.id_size
+                    AND product_in_stock.id_color = cart.id_color
+                    AND product_list.id_product=cart.id_product";
             $stmt=$conn->prepare($sql);
             $stmt->execute([$id_kh]);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);

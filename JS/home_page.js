@@ -163,7 +163,7 @@ function click_Product(response) {
   //   if (xhr.readyState === XMLHttpRequest.DONE) {
   //     if (xhr.status === 200) {
   //       var response = JSON.parse(xhr.responseText);
-  // console.log("respone form click product: ", response.data);
+  console.log("respone form click product: ", response.data);
   if (response.success) {
     //-data -status
     //data: -image_product:

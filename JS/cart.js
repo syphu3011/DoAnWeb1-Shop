@@ -51,130 +51,6 @@ function getKM(idProd) {
   });
 }
 
-function createCart(data_respone) {
-  if (data_respone.length > 0) {
-    // pro.length = 0;
-    // sizeP.length = 0;
-    // prInStock.length = 0;
-    // KM.length = 0;
-    // for (let i = 0; i < currentUser.cart.length; i++) {
-    //   getPro(currentUser.cart[i].idProd);
-    //   getSize(currentUser.cart[i].idSize);
-    //   getProInStock(currentUser.cart[i].idProd);
-    //   getKM(currentUser.cart[i].idProd);
-    // }
-    // console.log(prInStock);
-    showacc(document.getElementById("tranggiohang"), -500, 0);
-    // setTimeout(() => {
-    document.getElementById("hienthigiohang").style.display = "flex";
-    // }, 400);
-    for (let i = 0; i < currentUser.cart.length; i++) {
-      let s = "Image/SANPHAM/" + pro[i].images[0];
-      let str = "";
-      if (sizeP[i] != null) {
-        sizeP[i].forEach((element) => {
-          if (element.id == currentUser.cart[i].idSize) {
-            str +=
-              ` <div class="size" style="border-color: red;">
-                   ` +
-              element.name +
-              `
-                            </div>`;
-          } else {
-            str +=
-              ` <div class="size">
-                   ` +
-              element.name +
-              `
-                            </div>`;
-          }
-        });
-      }
-      let pr = 0;
-      prInStock.forEach((e) => {
-        if (
-          currentUser.cart[i].idProd == e.idProd &&
-          currentUser.cart[i].idSize == e.idSize
-        ) {
-          pr = e.amount;
-        }
-      });
-      if (pr == 0) {
-        currentUser.cart[i].amount = 0;
-        currentUser.cart[i].price = 0;
-        localStorage.setItem("data", JSON.stringify(data));
-      }
-
-      document.getElementsByClassName("table-giohang")[0].innerHTML +=
-        `<tr>
-                    <td>
-                        <img src="` +
-        s +
-        `" alt="">
-                    </td>
-                    <td>
-                        <div>
-                            ` +
-        pro[i].name +
-        `
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            ` +
-        calculated(pro[i].price) +
-        ` VND
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <div class="chon-soluong">
-                                <div class="giam">
-                                    -
-                                </div>
-                                <div class="hien-sl">
-                                    ` +
-        currentUser.cart[i].amount +
-        `
-                                </div>
-                                <div class="tang">
-                                    +
-                                </div>
-                            </div>
-                            <div style="color: gray;
-                                padding: 5px;
-                                line-height: 1.5;
-                                font-size: 10px">
-                                có  <span>` +
-        pr +
-        ` </span>sản phẩm có sẵn
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                    <div class="chon-size">` +
-        str +
-        `</div>
-                    </td>
-                    <td class="ton-tien">
-                        ` +
-        calculated(currentUser.cart[i].price) +
-        ` VND
-                    </td>
-                    <td>
-                        <div class="xoa-sp">
-                            Xoá
-                        </div>
-                        <input class="checkboxIncart" type="checkbox" name="" id="">
-                    </td>
-                </tr>`;
-    }
-    sukien();
-  } else {
-    alert("Giỏ hàng đang trống");
-  }
-}
-
 function tinhtongtien(count, id, cost) {
   for (let i = 0; i < KM.length; i++) {
     if (KM[i].idProd == id) {
@@ -406,8 +282,8 @@ btncart.onclick = function () {
       "./Server/get_cart_byID.php",
       { idkh: currentUser.id },
       function (respone) {
-        createCart(respone);
-        // console.log(respone);
+        createCart(respone.data.product);
+        console.log(respone);
       }
     );
     // createCart();
@@ -423,6 +299,131 @@ btncart.onclick = function () {
     showacc(signin, -500, 0);
   }
 };
+function createCart(data_respone) {
+  //   console.log(data_respone);
+
+  if (data_respone.length > 0) {
+    // pro.length = 0;
+    // sizeP.length = 0;
+    // prInStock.length = 0;
+    // KM.length = 0;
+    // for (let i = 0; i < currentUser.cart.length; i++) {
+    //   getPro(currentUser.cart[i].idProd);
+    //   getSize(currentUser.cart[i].idSize);
+    //   getProInStock(currentUser.cart[i].idProd);
+    //   getKM(currentUser.cart[i].idProd);
+    // }
+    // console.log(prInStock);
+    showacc(document.getElementById("tranggiohang"), -500, 0);
+    // setTimeout(() => {
+    document.getElementById("hienthigiohang").style.display = "flex";
+    // }, 400);
+    for (let i = 0; i < data_respone.length; i++) {
+      //   let s = "Image/SANPHAM/" + pro[i].images[0];
+      let str = "";
+      if (sizeP[i] != null) {
+        sizeP[i].forEach((element) => {
+          if (element.id == currentUser.cart[i].idSize) {
+            str +=
+              ` <div class="size" style="border-color: red;">
+                   ` +
+              element.name +
+              `
+                            </div>`;
+          } else {
+            str +=
+              ` <div class="size">
+                   ` +
+              element.name +
+              `
+                            </div>`;
+          }
+        });
+      }
+      //   let pr = 0;
+      //   prInStock.forEach((e) => {
+      //     if (
+      //       currentUser.cart[i].idProd == e.idProd &&
+      //       currentUser.cart[i].idSize == e.idSize
+      //     ) {
+      //       pr = e.amount;
+      //     }
+      //   });
+      //   if (pr == 0) {
+      //     currentUser.cart[i].amount = 0;
+      //     currentUser.cart[i].price = 0;
+      //     localStorage.setItem("data", JSON.stringify(data));
+      //   }
+
+      document.getElementsByClassName("table-giohang")[0].innerHTML +=
+        `<tr>
+                    <td>
+                        <img src="` +
+        data_respone[i].link_image +
+        `" alt="">
+                    </td>
+                    <td>
+                        <div>
+                            ` +
+        data_respone[i].name +
+        `
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            ` +
+        calculated(data_respone[i].price) +
+        ` VND
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <div class="chon-soluong">
+                                <div class="giam">
+                                    -
+                                </div>
+                                <div class="hien-sl">
+                                    ` +
+        data_respone[i].amount +
+        `
+                                </div>
+                                <div class="tang">
+                                    +
+                                </div>
+                            </div>
+                            <div style="color: gray;
+                                padding: 5px;
+                                line-height: 1.5;
+                                font-size: 10px">
+                                có  <span>` +
+        data_respone[i].amount_in_stock +
+        ` </span>sản phẩm có sẵn
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                    <div class="chon-size">` +
+        str +
+        `</div>
+                    </td>
+                    <td class="ton-tien">
+                        ` +
+        calculated(data_respone[i].price) +
+        ` VND
+                    </td>
+                    <td>
+                        <div class="xoa-sp">
+                            Xoá
+                        </div>
+                        <input class="checkboxIncart" type="checkbox" name="" id="">
+                    </td>
+                </tr>`;
+    }
+    sukien();
+  } else {
+    alert("Giỏ hàng đang trống");
+  }
+}
 document.getElementById("hienthigiohang").onclick = function (e) {
   if (e.target.matches("#hienthigiohang")) {
     showacc(document.getElementById("tranggiohang"), 0, 1200);
