@@ -54,6 +54,16 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
 			$headerArrAccount = Table::describe($conn, 'account');
 			$headerArrCustomer = Table::describe($conn, 'customer');
+
+			date_default_timezone_set('Asia/Ho_Chi_Minh');
+			$today = gmdate('Y-m-d H:i:s', time());
+			// * Y : year with 4 digits
+			// * y : year with 2 digits
+			// * m : month with 2 digits
+			// * M : month with name
+			// * H : format 24h
+			// * h : format 12h
+			$_REQUEST["date_created"] = $today;
 			
 			// * if "id" value in POST request start with USR, update the parent table (account table)
 			if (isset($_REQUEST["id_user"]) && preg_match('/^USR/', $_REQUEST["id_user"])) 
