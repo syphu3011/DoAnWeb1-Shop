@@ -1,8 +1,9 @@
 // * UI rendering function
 
-let readyToPostNewCustomer = false;
+let readyToSubmit = false;
 let sizeOfTable = 0;
 let selectedCustomer = {};
+let wantToDeleteCustomer = [];
 
 function clearTable() {
   let table = document.getElementById("myTable");
@@ -39,23 +40,20 @@ async function getCustomers() {
     let cell8 = row.insertCell(8);
     cell0.innerHTML = customer.id;
     cell1.innerHTML = customer.id_user;
-    cell2.innerHTML = "Not done yet";
+    cell2.innerHTML = customer.date_created;
     cell3.innerHTML = customer.name;
     cell4.innerHTML = customer.username;
     cell5.innerHTML = customer.password;
     cell6.innerHTML = customer.privilege;
     cell7.innerHTML = `<button id="button-customer-status-${customer.id}">${customer.status}</button>`;
-    cell8.innerHTML = `<button id="button-customer-detail-${customer.id}">Chi tiết</button>`;
-    document.getElementById(
-      "button-customer-detail-" + customer.id
-    ).onclick = function () {
-      document.getElementById("dialog").style.display = "flex";
-      document.getElementById("detail-customer-open").style.display = "flex";
-
+    cell8.innerHTML = `<button id="button-customer-detail-${customer.id}-${customer.id_user}">Chi tiết</button>`;
+    $("#button-customer-detail-" + customer.id + '-' + customer.id_user).on("click", function () {
+      $("#dialog").css("display", "flex");
+      $("#detail-customer-open").css("display", "flex");
       selectedCustomer = customer;
 
       $("#detail-customer-header").html(`Chi tiết khách hàng`) ;
-      document.getElementById("detail-customer-content").innerHTML = `
+      $("#detail-customer-content").html(`
               <div id="customer-detail-id">ID tài khoản: ${customer.id}</div>
               <div id="customer-detail-name">Tên người dùng: ${customer.name}</div>
               <div id="customer-detail-date-join">Ngày tham gia: None</div>
@@ -63,13 +61,13 @@ async function getCustomers() {
               <div id="customer-detail-gender">Giới tính: ${customer.gender}</div>
               <div id="customer-detail-numberphone">Số điện thoại: ${customer.numberphone}</div>
               <div id="customer-detail-privilege">Quyền: ${customer.privilege}</div>
-            `;
-      document.getElementById("btn-detail-edit-customer-group").innerHTML = `
-            <button id="save-but-${customer.id}" style="display:none" onclick=saveCustomerDetail(this.id)>Lưu lại</button>
-            <button id="edit-but-${customer.id}" onclick=renderEditCustomerDetail(this.id)>Chỉnh sửa</button>
+            `);
+      $("#btn-detail-edit-customer-group").html(`
+            <button id="save-but-${customer.id}-${customer.id_user}" style="display:none" onclick=saveCustomerDetail(this.id)>Lưu lại</button>
+            <button id="edit-but-${customer.id}-${customer.id_user}" onclick=renderEditCustomerDetail(this.id)>Chỉnh sửa</button>
             <button id="canc-but-${customer.id}" onclick=closeCustomerPopupDetail(this.id)>Thoát</button>
-            `;
-    };
+            `);
+    });
   });
 
   bindStatusButList()
@@ -77,6 +75,7 @@ async function getCustomers() {
 }
 
 function bindStatusButList() {
+  // ! chưa có chỉnh trạng thái
   let statusButList = document.querySelectorAll('[id^=button-customer-status-]')
   statusButList.forEach((button) => {
     button.onclick = function () {
@@ -89,44 +88,89 @@ function bindStatusButList() {
 }
 
 function saveCustomerDetail(idButton) {
+  // ! ready to save password condition ? => toggle save button on
   let splitIdButton = idButton.split("-");
   let customerId = splitIdButton[2];
+  let accountId = splitIdButton[3];
   temp = selectedCustomer;
-  selectedCustomer = {
+  let customer = {
     action: 'update',
-    address: document.getElementById("customer-address").value,
-    birthday: document.getElementById("customer-birthday").value,
-    gender: document.getElementById("customer-gender").value,
-    id: temp.id,
-    id_user: temp.id_user,
-    image: temp.image,
-    name: document.getElementById("customer-name").value,
-    numberphone: document.getElementById("customer-numberphone").value,
-    password: temp.password,
-    privilege: document.getElementById("customer-privilege").value,
-    session: temp.session,
-    status: temp.status,
-    username: temp.username,
+    id: customerId,
+    name: $("#edit-customer-name").val(),
+    birthday: $("#edit-customer-birthday").val(),
+    numberphone: $("#edit-customer-numberphone").val(),
+    image: '',
+    address: $("#edit-customer-address").val(),
+    gender: $("#edit-customer-gender").val()
   };
-  console.log("This information will be update to the server");
-  console.log(selectedCustomer);
-  postToServer(url, data)
-    .then(dataResponse => {
-      console.log('Post successfull.')
-      console.log(dataResponse)
-    })
-    .catch(error => {
-      console.log(error)
-    })
-  // ! chưa request được
+  let account = {
+    action: 'update',
+    id_user: accountId,
+    username: $("#edit-customer-username").val(),
+    password: $("#edit-customer-password").val(),
+    date_created: '',
+    privilege: $("#edit-customer-privilege").val(),
+    session: '',
+    status: 'active'
+  };
+  let url = '/doan/admin/Server/customer/customer.php';
+  for (var prop in account)
+    if (Object.prototype.hasOwnProperty.call(account, prop)) {
+      if ([undefined, ""].includes(account[prop])) {
+        delete account[prop];
+        continue;
+      }
+      if (!['id_user', 'password'].includes(prop)) 
+        account[prop] = account[prop].toLowerCase();
+    }
+  for (var prop in customer)
+    if (Object.prototype.hasOwnProperty.call(customer, prop)) {
+      if ([undefined, ""].includes(customer[prop])) {
+        delete customer[prop];
+        continue;
+      }
+      if (!['id'].includes(prop)) 
+        customer[prop] = customer[prop].toLowerCase();
+    }
+  
+  for (var prop in selectedCustomer) {
+    if (Object.prototype.hasOwnProperty.call(account, prop) && !['id_user'].includes(prop))
+      if ([undefined].includes(account[prop]) || account[prop] === selectedCustomer[prop]) {
+        delete account[prop];
+      }
+  }
+  for (var prop in selectedCustomer) {
+    if (Object.prototype.hasOwnProperty.call(customer, prop) && !['id'].includes(prop))
+      if ([undefined].includes(customer[prop]) || customer[prop] === selectedCustomer[prop]) {
+        delete customer[prop];
+      }
+  }
+
+  console.clear();
+  // console.log(customer);
+  // console.log(account);
+  // console.log(selectedCustomer);
+  $.post(url, account, (data, status) => {});
+  $.post(url, customer, (data, status) => {});
+  closeCustomerPopupDetail();
+  // ! chua co thong bao update thanh cong
 }
 
 
 function renderEditCustomerDetail(idButton) {
   // * lấy id button cho vui thôi chứ có làm gì đâu
 
+  console.log(idButton);
+  $(`#${idButton}`).css("display", "none");
+
+  // let tempSplit = idButton.split("-");
+  // let idSaveBut = `save-but-${tempSplit[2]}-${tempSplit[3]}`;
+  // console.log(idSaveBut);
+
+  // ! chưa có làm mờ nút save
   // ! chưa có upload ảnh
-  document.getElementById("detail-customer-content").innerHTML = `
+  // ! chưa cảnh báo trùng sđt
+  $("#detail-customer-content").html(`
     <div style="display: flex; flex-direction: row;">
     <div style="display: flex; flex-direction: column;">
       <img width="100" height="100" src="https://picsum.photos/100/100/?blur" alt="" width="500" height="600">
@@ -136,48 +180,109 @@ function renderEditCustomerDetail(idButton) {
       <div style="display:inline-block;">ID tài khoản: ${selectedCustomer.id}</div>
       <div style="display:inline-block;">Ngày tham gia: Chưa có</div>
           <label for="">Tên người dùng:</label>
-      <input style="display:inline-block;" type="text" id="customer-name" value="${selectedCustomer.name}">
+      <input style="display:inline-block;" type="text" id="edit-customer-name" value="${selectedCustomer.name}">
           <label for="">Giới tính:</label>
-      <select style="display:inline-block;" id="customer-gender">
+      <select style="display:inline-block;" id="edit-customer-gender">
           <option value="Nam">Nam</option>
           <option value="Nữ">Nữ</option>
           <option value="Khác">Khác</option>
       </select>
           <label for="">Ngày sinh:</label>
-      <input style="display:inline-block;" type="date" id="customer-birthday">
+      <input style="display:inline-block;" type="date" id="edit-customer-birthday">
           <label for="">Quyền:</label>
-      <select id="customer-privilege">
+      <select id="edit-customer-privilege">
           <option value="customer">customer</option>
       </select>
     </form>
     <form style="display: flex; flex-direction: column; align-items:center; padding-left: 1rem; padding-bottom: 1rem;">
           <label for="">Tên đăng nhập:</label>
-      <input type="text" id="customer-address" value="${selectedCustomer.username}">
+      <input type="text" id="edit-customer-username" value="${selectedCustomer.username}">
+      <div id="edit-warn-username-cus-box"></div>
           <label for="">Mật khẩu mới:</label>
-      <input type="text" id="customer-address" value="">
+      <input type="password" id="edit-customer-password" value="">
+      <div id="edit-warn-password-cus-box"></div>
           <label for="">Nhập lại mật khẩu mới:</label>
-      <input type="text" id="customer-address" value="">
-
+      <input type="password" id="edit-customer-password-again" value="">
+      <div id="edit-warn-password-again-cus-box"></div>
           <label for="">Địa chỉ:</label>
-      <input type="text" id="customer-address" value="${selectedCustomer.address}">
+      <input type="text" id="edit-customer-address" value="${selectedCustomer.address}">
           <label for="">Số điện thoại:</label>
-      <input type="text" id="customer-numberphone" value="${selectedCustomer.numberphone}">
+      <input type="text" id="edit-customer-numberphone" value="${selectedCustomer.numberphone}">
           
     </form>
     </div>
-    `;
-  document.getElementById(`save-but-${selectedCustomer.id}`).style.display = "inline-block";
+    `);
+  $(`#save-but-${selectedCustomer.id}-${selectedCustomer.id_user}`).css("display", "inline-block");
+  bindEditNotiIntoBox();
+  // ! chưa ẩn hiện nút save khi edit
+}
+
+function bindEditNotiIntoBox() {
+  let warnUsernameDiv = $("#edit-warn-username-cus-box")
+  let warnPasswordDiv = $("#edit-warn-password-cus-box")
+  let warnPasswordAgainDiv = $("#edit-warn-password-again-cus-box")
+  let usernameBox = $("#edit-customer-username")
+  let passwordBox = $("#edit-customer-password")
+  let passwordAgainBox = $("#edit-customer-password-again")
+  usernameBox.on('input', function (e) {
+    let inputValue = e.target.value;
+    if (inputValue.length > 12) {
+      warnUsernameDiv.css("display", "block");
+      warnUsernameDiv.html(`--> quá dài`);
+      readyToSubmit = false;
+    } else if (inputValue.length > 3 || inputValue.length == 0){
+      warnUsernameDiv.css("display", "none");
+      readyToSubmit = true;
+    } else {
+      warnUsernameDiv.css("display", "block");
+      warnUsernameDiv.html(`--> quá ngắn`);
+      readyToSubmit = false;
+    }
+  })
+  passwordBox.on('input', function (e) {
+    let inputValue = e.target.value;
+    console.log(inputValue)
+    if (inputValue.length > 12) {
+      warnPasswordDiv.css("display", "block");
+      warnPasswordDiv.html(`--> quá dài`);
+      readyToSubmit = false;
+    } else 
+    if (inputValue.length > 3 || inputValue.length == 0) {
+      warnPasswordDiv.css("display", "none");
+      readyToSubmit = true;
+    } else {
+      warnPasswordDiv.css("display", "block");
+      warnPasswordDiv.html(`--> quá ngắn`);
+      readyToSubmit = false;
+    }
+  })
+  passwordAgainBox.on('input', function (e) {
+    let inputValue = e.target.value;
+    let previousInputValue = passwordBox.val();
+    if (inputValue !== previousInputValue) {
+      warnPasswordAgainDiv.css("display", "block");
+      warnPasswordAgainDiv.html(`--> không trùng mk`);
+      readyToSubmit = false;
+    } else {
+      warnPasswordAgainDiv.css("display", "none");
+      readyToSubmit = true;
+    }
+  })
+
 }
 
 function renderAddNewCusInterface() {
-  readyToPostNewCustomer = false;
-  document.getElementById("dialog").style.display = "flex";
-  document.getElementById("add-new-cus-box").style.display = "flex";
-  document.getElementById("add-new-cus-box-content").style.display = "flex";
+  readyToSubmit = false;
+  // * GUI * //
+  $("#dialog").css("display", "flex");
+  $("#add-new-cus-box").css("display", "flex");
+  $("#add-new-cus-box-content").css("display", "flex");
+  // * GUI * //
   console.log(sizeOfTable)
   let expectedId = "KH" + String(sizeOfTable+1).padStart(3, '0');
   // ! chưa có upload ảnh
-  document.getElementById("add-new-cus-box-content").innerHTML = `
+  // ! chưa cảnh báo trùng sđt
+  $("#add-new-cus-box-content").html(`
   <div style="display: flex; flex-direction: row; padding: 1rem;">
       <div style="display: flex; flex-direction: column; padding-left: 1rem; padding-top: 1rem;">
         <img width="100" height="100" src="https://picsum.photos/200" alt="" width="500" height="600">
@@ -218,67 +323,69 @@ function renderAddNewCusInterface() {
             
       </form>
   </div>
-  `;
+  `);
 
-  document.getElementById("btn-detail-add-customer-group").innerHTML = `
-  <button style="width:30rem;" id="save-but-add-${expectedId}" onclick=saveNewCustomer(this.id)>Thêm</button>
-  <button style="margin-left: 2rem;" id="canc-but-add" onclick=closeAddCustomer(this.id)>Thoát</button>
-  `;
-  document.getElementById("btn-detail-add-customer-group").style.display = "block";
-  document.getElementById("btn-detail-add-customer-group").style.paddingBottom = "1rem";
+  $("#btn-detail-add-customer-group").html(`
+    <button style="width:30rem;" id="save-but-add-${expectedId}" onclick=saveNewCustomer(this.id)>Thêm</button>
+    <button style="margin-left: 2rem;" id="canc-but-add" onclick=closeAddCustomer(this.id)>Thoát</button>
+  `);
+  $("#btn-detail-add-customer-group").css("display", "block");
+  $("#btn-detail-add-customer-group").css("padding-bottom", "1rem");
 
+  // ! chưa ẩn hiện nút save khi add
   bindNotiIntoBox();
   
 }
 
 function bindNotiIntoBox() {
-  let warnUsernameDiv = document.getElementById("warn-username-cus-box")
-  let warnPasswordDiv = document.getElementById("warn-password-cus-box")
-  let warnPasswordAgainDiv = document.getElementById("warn-password-again-cus-box")
-  let usernameBox = document.getElementById("customer-username")
-  let passwordBox = document.getElementById("customer-password")
-  let passwordAgainBox = document.getElementById("customer-password-again")
-  usernameBox.addEventListener('input', function (e) {
+  let warnUsernameDiv = $("#warn-username-cus-box")
+  let warnPasswordDiv = $("#warn-password-cus-box")
+  let warnPasswordAgainDiv = $("#warn-password-again-cus-box")
+  let usernameBox = $("#customer-username")
+  let passwordBox = $("#customer-password")
+  let passwordAgainBox = $("#customer-password-again")
+  usernameBox.on('input', function (e) {
     let inputValue = e.target.value;
     if (inputValue.length > 12) {
-      warnUsernameDiv.style.display = 'block';
-      warnUsernameDiv.innerHTML = `--> quá dài`;
-      readyToPostNewCustomer = false;
+      warnUsernameDiv.css("display", "block");
+      warnUsernameDiv.html(`--> quá dài`);
+      readyToSubmit = false;
     } else if (inputValue.length > 3 || inputValue.length == 0){
-      warnUsernameDiv.style.display = 'none';
-      readyToPostNewCustomer = true;
+      warnUsernameDiv.css("display", "none");
+      readyToSubmit = true;
     } else {
-      warnUsernameDiv.style.display = 'block';
-      warnUsernameDiv.innerHTML = `--> quá ngắn`;
-      readyToPostNewCustomer = false;
+      warnUsernameDiv.css("display", "block");
+      warnUsernameDiv.html(`--> quá ngắn`);
+      readyToSubmit = false;
     }
   })
-  passwordBox.addEventListener('input', function (e) {
+  passwordBox.on('input', function (e) {
     let inputValue = e.target.value;
+    console.log(inputValue)
     if (inputValue.length > 12) {
-      warnPasswordDiv.style.display = 'block';
-      warnPasswordDiv.innerHTML = `--> quá dài`;
-      readyToPostNewCustomer = false;
+      warnPasswordDiv.css("display", "block");
+      warnPasswordDiv.html(`--> quá dài`);
+      readyToSubmit = false;
     } else 
     if (inputValue.length > 3 || inputValue.length == 0) {
-      warnPasswordDiv.style.display = 'none';
-      readyToPostNewCustomer = true;
+      warnPasswordDiv.css("display", "none");
+      readyToSubmit = true;
     } else {
-      warnPasswordDiv.style.display = 'block';
-      warnPasswordDiv.innerHTML = `--> quá ngắn`;
-      readyToPostNewCustomer = false;
+      warnPasswordDiv.css("display", "block");
+      warnPasswordDiv.html(`--> quá ngắn`);
+      readyToSubmit = false;
     }
   })
-  passwordAgainBox.addEventListener('input', function (e) {
+  passwordAgainBox.on('input', function (e) {
     let inputValue = e.target.value;
-    let previousInputValue = passwordBox.value;
+    let previousInputValue = passwordBox.val();
     if (inputValue !== previousInputValue) {
-      warnPasswordAgainDiv.style.display = "block";
-      warnPasswordAgainDiv.innerHTML = `--> không trùng mk`;
-      readyToPostNewCustomer = false;
+      warnPasswordAgainDiv.css("display", "block");
+      warnPasswordAgainDiv.html(`--> không trùng mk`);
+      readyToSubmit = false;
     } else {
-      warnPasswordAgainDiv.style.display = "none";
-      readyToPostNewCustomer = true;
+      warnPasswordAgainDiv.css("display", "none");
+      readyToSubmit = true;
     }
   })
 
@@ -320,30 +427,30 @@ async function renderDeleteCus() {
     let cell9 = row.insertCell(9);
     cell0.innerHTML = customer.id;
     cell1.innerHTML = customer.id_user;
-    cell2.innerHTML = "Not done yet";
+    cell2.innerHTML = customer.date_created;
     cell3.innerHTML = customer.name;
     cell4.innerHTML = customer.username;
     cell5.innerHTML = customer.password;
     cell6.innerHTML = customer.privilege;
     cell7.innerHTML = `<button id="button-customer-status-${customer.id}">${customer.status}</button>`;
-    cell8.innerHTML = `<button id="button-customer-detail-${customer.id}">Chi tiết</button>`;
+    cell8.innerHTML = `<button id="button-customer-detail-${customer.id}-${customer.id_user}">Chi tiết</button>`;
     cell9.innerHTML = `
-    <button id="button-customer-delete-no-${customer.id}">Xóa X</button>
-    <button id="button-customer-delete-yes-${customer.id}" style="display:none;">Xóa V</button>
+    <button id="button-customer-delete-no-${customer.id}-${customer.id_user}">Xóa X</button>
+    <button id="button-customer-delete-yes-${customer.id}-${customer.id_user}" style="display:none;">Xóa V</button>
     `
     // * detail but action
-    document.getElementById(
-      "button-customer-detail-" + customer.id
-    ).onclick = function () {
-      document.getElementById("dialog").style.display = "flex";
-      document.getElementById("detail-customer-open").style.display = "flex";
+    $(
+      "#button-customer-detail-" + customer.id + '-' + customer.id_user
+    ).on("click", function () {
+      $("#dialog").css("display", "flex");
+      $("#detail-customer-open").css("display", "flex");
 
       selectedCustomer = customer;
 
-      document.getElementById("detail-customer-header").innerHTML = `
+      $("#detail-customer-header").html(`
             Chi tiết khách hàng
-            `;
-      document.getElementById("detail-customer-content").innerHTML = `
+            `);
+      $("#detail-customer-content").html(`
               <div id="customer-detail-id">ID tài khoản: ${customer.id}</div>
               <div id="customer-detail-name">Tên người dùng: ${customer.name}</div>
               <div id="customer-detail-date-join">Ngày tham gia: None</div>
@@ -351,38 +458,38 @@ async function renderDeleteCus() {
               <div id="customer-detail-gender">Giới tính: ${customer.gender}</div>
               <div id="customer-detail-numberphone">Số điện thoại: ${customer.numberphone}</div>
               <div id="customer-detail-privilege">Quyền: ${customer.privilege}</div>
-            `;
-      document.getElementById("btn-detail-edit-customer-group").innerHTML = `
-            <button id="save-but-${customer.id}" style="display:none;" onclick=saveCustomerDetail(this.id)>Lưu lại</button>
-            <button id="edit-but-${customer.id}" onclick=renderEditCustomerDetail(this.id)>Chỉnh sửa</button>
+            `);
+      $("#btn-detail-edit-customer-group").html(`
             <button id="canc-but-${customer.id}" onclick=closeCustomerPopupDetail(this.id)>Thoát</button>
-            `;
-    };
+            `);
+    });
 
     // * delete but action
-    let delButCus = document.getElementById("button-customer-delete-no-" + customer.id)
-    let delButCusYes = document.getElementById("button-customer-delete-yes-" + customer.id)
-    delButCusYes.style.visibility = 'block';
-    delButCus.onclick = function () {
-      delButCus.style.display = 'none';
-      delButCusYes.style.display = 'block';
-    }
-    delButCusYes.onclick = function () {
-      delButCus.style.display = 'block';
-      delButCusYes.style.display = 'none';
-    }
+    let delButCus = $("#button-customer-delete-no-" + customer.id + "-" + customer.id_user)
+    let delButCusYes = $("#button-customer-delete-yes-" + customer.id + "-" + customer.id_user)
+    delButCusYes.css("display", "none");
+    delButCus.on("click", function () {
+      delButCus.css("display", "none");
+      delButCusYes.css("display", "block");
+      toggleDeleteUp(this.id);
+    })
+    delButCusYes.on("click", function () {
+      delButCus.css("display", "block");
+      delButCusYes.css("display", "none");
+      toggleDeleteDown(this.id);
+    })
   });
   renderDelButs()
   bindStatusButList()
 }
 
 function renderDelButs() {
-  let headButGroupDelCus = document.getElementById("HeadButton1")
-  headButGroupDelCus.innerHTML = `
+  let headButGroupDelCus = $("#HeadButton1");
+  headButGroupDelCus.html(`
   <button class="btn-left" onclick=delSelCus()>Xóa</button>
   <button class="btn-left" onclick=resetAllDelCusNo()>Reset</button>
   <button class="btn-left" onclick=foldDelTable()>Thoát</button>
-  `
+  `)
 }
 
 function resetAllDelCusNo() {
@@ -394,24 +501,93 @@ function resetAllDelCusNo() {
   noNode.forEach((noItem) => {
     noItem.style.display = 'block'
   })
+  wantToDeleteCustomer = [];
+}
+
+function toggleDeleteUp(id) {
+  console.clear();
+  id = id.split("-")[4] + "-" + id.split("-")[5]
+  wantToDeleteCustomer.push(id);
+}
+
+function toggleDeleteDown(id) {
+  console.clear();
+  id = id.split("-")[4] + "-" + id.split("-")[5]
+  wantToDeleteCustomer.splice(
+    wantToDeleteCustomer.indexOf(id),
+    1
+  )
 }
 
 function delSelCus() {
+  // ! chua xac nhan xoa
+  // ! nếu list rỗng thì ẩn nút delete
+  $("#dialog").css("display", "flex");
+  $("#confirm-box").css("display", "flex");
+  $("#confirm-box").html(`
+    <div style="margin-top: 1rem;">Chắc chắn muốn xóa ${wantToDeleteCustomer.length}?</div>
+    <div style="display:flex; margin-bottom: 1rem;">
+      <button id="confirm-box-but-yes">Yes</button>
+      <button id="confirm-box-but-no">No</button>
+    </div>
+  `)
+  $("#confirm-box").css("padding", "1rem");
+  $("#confirm-box-but-no").css("margin-left", "1rem");
+  $("#confirm-box-but-yes").on("click", function () {
+    performDelPut();
+    $("#confirm-box").html(`
+      <div>Đã xóa thành công</div>
+      <button id="confirm-box-ok">OK</button>
+    `);
+    $("#confirm-box-ok").on("click", function () {
+      $("#dialog").css("display", "none");
+      $("#confirm-box").css("display", "none");
+    })
+    renderDeleteCus();
+  });
+  $("#confirm-box-but-no").on("click", function () {
+    $("#dialog").css("display", "none");
+    $("#confirm-box").css("display", "none");
+  })
+  
 
+  resetAllDelCusNo();
 }
 
-function renderDelTable() {
+function performDelPut() {
+  wantToDeleteCustomer.forEach(item => {
+    let idToDelete = item.split("-")[1];
+    $.ajax({
+      url: '/doan/admin/Server/customer/customer.php',
+      type: 'PUT',
+      dataType: "json",
+      data: {
+        "id_user": `${idToDelete}`
+      },
+      success: function(msg) {
+        console.log(msg);
+      },
+      error: function(msg) {
+        console.log(msg)
+      }
+    });
+  })
+  // ! chua request dc
+}
 
+function renderDelConfirmation() {
+  let numberOfRow = wantToDeleteCustomer.length;
+  // ! no notification for successful erasion.
 }
 
 function foldDelTable() {
-  let headButGroupDelCus = document.getElementById("HeadButton1")
-  headButGroupDelCus.innerHTML = `
+  let headButGroupDelCus = $("#HeadButton1")
+  headButGroupDelCus.html(`
   <button class="btn-left" onclick=renderAddNewCusInterface()>Thêm khách hàng</button>
   <button class="btn-left" onclick=renderDeleteCus()>Xóa khách hàng</button>
   <button class="btn-left" onclick=getCustomers()>Làm mới</button>
-  `
-  document.getElementById("myTable").innerHTML = `
+  `);
+  $("#myTable").html(`
   <tr class="first-row">
     <th>id khách hàng</th>
     <th>id tài khoản</th>
@@ -423,87 +599,68 @@ function foldDelTable() {
     <th>trạng thái</th>
     <th>chi tiết</th>
   </tr>
-  `
-  getCustomers()
+  `);
+  wantToDeleteCustomer = [];
+  getCustomers();
 }
 
 function searchCustomer() {
-  let searchBox = document.getElementById("text-search");
-  if (searchBox.value === "")
+  let searchBox = $("#text-search");
+  if (searchBox.val() === "")
     console.log("Vui lòng điền keyword cần tìm kiếm.");
   // ! chưa có tìm kiếm
 }
 
 function closeCustomerPopupDetail() {
-  document.getElementById("detail-customer-open").style.display = "none";
-  document.getElementById("dialog").style.display = "none";
+  $("#detail-customer-open").css("display", "none");
+  $("#dialog").css("display", "none");
 }
 
 
 function saveNewCustomer(id) {
-  // if (!readyToPostNewCustomer)
-  //   return
-  
-  // let data = {
-  //   action: 'create',
-  //   username: document.getElementById("customer-username").value,
-  //   password: document.getElementById("customer-password").value,
-  //   name: document.getElementById("customer-name").value,
-  //   gender: document.getElementById("customer-gender").value,
-  //   birthday: document.getElementById("customer-birthday").value,
-  //   privilege: document.getElementById("customer-privilege").value,
-  //   numberphone: document.getElementById("customer-numberphone").value,
-  //   image: '',
-  //   date_created: '',
-  //   address: document.getElementById("customer-address").value
-  // }
-  let url = '/doan/admin/Server/customer/customer.php';
+  if (!readyToSubmit)
+    return
+  // ! Chưa insert được hình ảnh
+  // ! Chưa có session mới
   let data = {
     action: 'create',
-    username: 'cicada5',
-    password: 'cicada3303',
-    name: 'Lang Thang',
-    gender: 'nam',
-    birthday: '2002-06-28 00:00:00',
-    date_created: '2023-04-18 16:11:15',
-    privilege: 'customer',
-    numberphone: '394142899',
+    username: $("#customer-username").val(),
+    password: $("#customer-password").val(),
+    name: $("#customer-name").val(),
+    gender: $("#customer-gender").val(),
+    birthday: $("#customer-birthday").val(),
+    date_created: '',
+    privilege: $("#customer-privilege").val(),
+    numberphone: $("#customer-numberphone").val(),
+    image: '',
     status: 'active',
-    address: 'HCM'
+    address: $("#customer-address").val(),
+    session: ''
   }
-    // image: '',
-    // date_created: '',
-    // address: document.getElementById("customer-address").value
-  data.gender = data.gender.toLowerCase()
-  console.log(data)
-  postToServer(url, data)
-    .then(dataResponse => {
-      console.log('Post successfull.')
-      console.log(dataResponse)
-    })
-    .catch(error => {
-      console.log(error)
-    })
-  // ! chưa request được
-}
-
-async function postToServer(url, data) {
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  })
-  return response;
+  let url = '/doan/admin/Server/customer/customer.php';
+  data.name = data.name.toLowerCase();
+  data.username = data.username.toLowerCase();
+  data.gender = data.gender.toLowerCase();
+  $.post(url, data, (data, status) => {
+    console.clear();
+    // ! chua co thông báo thêm người dùng mới
+    console.log("Saved new customer.");
+    readyToSubmit = false;
+    // * GUI * //
+    $("#dialog").css("display", "none");
+    $("#add-new-cus-box").css("display", "none");
+    $("#add-new-cus-box-content").css("display", "none");
+    // * GUI * //
+  });
 }
 
 function closeAddCustomer() {
-  document.getElementById("add-new-cus-box").style.display = "none";
-  document.getElementById("dialog").style.display = "none";
+  $("#add-new-cus-box").css("display", "none")
+  $("#dialog").css("display", "none");
 }
 
+// ? CODE CỦA PHÚ TRỞ VỀ SAU
+// ? CODE CỦA PHÚ TRỞ VỀ SAU
 // ? CODE CỦA PHÚ TRỞ VỀ SAU
 
 function SearchALLK() {
