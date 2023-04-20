@@ -328,6 +328,45 @@
             $stmt = null;
             return $result;
         }
+        // cap nhat gio hang
+        public function update_cartById($conn, $username, $product_in_cart)
+        {
+            # code...
+            foreach ($product_in_cart as $key) {
+                # code...
+                $sql="UPDATE cart 
+                        SET id_color = ?,
+                            id_size = ?,
+                            amount = ?,
+                            price = ? 
+                        WHERE 
+                            id_customer = ? AND id_product = ?";
+                $stmt=$conn->prepare($sql);
+                $stmt->execute([
+                    $key["id_color"],
+                    $key["id_size"],
+                    $key["amount"],
+                    $key["price"],
+                    $username,
+                    $key["id_product"]]);
+                $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $stmt = null;
+            }
+            return $result;
+        }
+        // xoa san pham trong gio 
+        public function delete_product_in_cartById($conn, $username, $id_product)
+        {
+            # code...
+            $sql="DELETE FROM cart
+                WHERE cart.id_customer = ? 
+                AND cart.id_product = ?";
+            $stmt=$conn->prepare($sql);
+            $stmt->execute([$username, $id_product]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
         // public function check_username($conn, $username)
         // {
         //     # code...

@@ -1,11 +1,21 @@
 let checkLogin = false;
 
-function Cart(idProd, idSize, id_color, amount, price) {
-  this.idProd = idProd;
+function Cart(
+  id_product = null,
+  id_size = null,
+  id_color = null,
+  amount = null,
+  price = null,
+  cost = null,
+  price_sale = null
+) {
+  this.id_product = id_product;
   this.amount = amount;
-  this.idSize = idSize;
+  this.id_size = id_size;
   this.id_color = id_color;
   this.price = price;
+  this.cost = cost;
+  this.price_sale = price_sale;
 }
 
 function Customer(

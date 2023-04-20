@@ -239,10 +239,11 @@ input[type="number"] {
 }
 
 .cart_color {
-  height: 40px;
-  width: 40px;
+  height: 30px;
+  width: 30px;
   cursor: pointer;
   border: 1px solid gray;
+  border-radius: 20px;
 }
 .size {
   padding: 5px;
