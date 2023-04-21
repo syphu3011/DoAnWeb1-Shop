@@ -116,11 +116,13 @@
 }
 
 #div-thanhtoan {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
     /* height: 550px; */
     padding: 20px;
     border-radius: 20px;
     background-color: white;
-    margin-right: -20px;
+    /* margin-right: -20px; */
 }
 
 /* #thanhtoan-sp {
@@ -200,7 +202,7 @@ input[type="number"] {
     /* border-bottom: 1px solid gray; */
     text-align: left;
     /* grid-template-columns: 100px 1fr 1fr 1fr 1fr 1fr 40px; */
-    grid-template-columns: 100px 200px 1fr 80px 100px 1fr 1fr 60px;
+    grid-template-columns: 100px 200px 1fr 80px 100px 1fr 1fr 80px;
 }
 
 .table-giohang td {
@@ -225,8 +227,11 @@ input[type="number"] {
 }
 
 .xoa-sp {
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 20px;
     cursor: pointer;
-    padding: 5px 0;
+    padding: 5px;
 }
 
 .xoa-sp:hover {
@@ -253,7 +258,7 @@ input[type="number"] {
 
 .ten-cot {
     display: grid;
-    grid-template-columns: 100px 200px 1fr 80px 100px 1fr 1fr 60px;
+    grid-template-columns: 100px 200px 1fr 80px 100px 1fr 1fr 80px;
     height: 25px;
     margin: 0 20px;
     font-size: 16px;
@@ -355,4 +360,40 @@ input[type="number"] {
 .chon-mau {
     display: flex;
     justify-content: space-between;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.title {
+    font-size: 50px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.left-container {
+    flex-basis: 50%;
+    background-color: #f2f2f2;
+    padding: 50px;
+}
+
+.right-container {
+    flex-basis: 50%;
+    background-color: #e5e5e5;
+    padding: 50px;
+}
+
+.list-container {
+    margin-top: 20px;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.list-item-container {
+    margin-bottom: 10px;
 }

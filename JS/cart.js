@@ -187,60 +187,91 @@ function sukien(data_product) {
         };
     }
     let btnCheckBox = document.getElementsByClassName("checkboxIncart");
+    function total_price_onclick() {
+        let product_is_select = new Array();
+        let tongthanhtoan = 0;
+        for (let i = 0; i < btnCheckBox.length; i++) {
+            if (btnCheckBox[i].checked) {
+                product_is_select.push(product_in_cart[i].id_product);
+                tongthanhtoan += product_in_cart[i].price;
+            }
+        }
+        console.log(product_is_select);
+        return {
+            totalprice: tongthanhtoan,
+            product_is_selected: product_is_select,
+        };
+    }
     for (let i = 0; i < btnCheckBox.length; i++) {
         btnCheckBox[i].onclick = function () {
             if (btnCheckBox[i].checked) {
-                console.log(currentUser.cart[i].price);
-                tongtien += currentUser.cart[i].amount * pro[i].price;
+                document.getElementsByClassName("checkbox-label ")[
+                    i
+                ].style.color = "red";
+                // tongthanhtoan += product_in_cart[i].price;
+                document.getElementById("tongthanhtoan").innerHTML =
+                    calculated(total_price_onclick().totalprice) + " VNĐ";
             } else {
-                console.log(currentUser.cart[i].price);
-                tongtien -= currentUser.cart[i].amount * pro[i].price;
+                document.getElementsByClassName("checkbox-label ")[
+                    i
+                ].style.color = "black";
+                document.getElementById("tongthanhtoan").innerHTML =
+                    calculated(total_price_onclick().totalprice) + " VNĐ";
             }
-            document.getElementById("tongthanhtoan").textContent =
-                calculated(tongtien) + " VND";
+            //     document.getElementsByClassName("checkbox-label ")[i].style.color =
+            //         "red";
+            //     // if (btnCheckBox[i].checked) {
+            //     console.log("click");
+            //     //     tongtien += currentUser.cart[i].amount * pro[i].price;
+            //     // } else {
+            //     //     console.log(currentUser.cart[i].price);
+            //     //     tongtien -= currentUser.cart[i].amount * pro[i].price;
+            //     // }
+            //     // document.getElementById("tongthanhtoan").textContent =
+            //     //     calculated(tongtien) + " VND";
         };
     }
     document.getElementById("nut-thanhtoan").onclick = function () {
-        let isCheck = new Array();
-        for (let i = 0; i < btnCheckBox.length; i++) {
-            if (btnCheckBox[i].checked) {
-                isCheck.push(currentUser.cart[i]);
-            }
-        }
-        if (isCheck.length == 0) {
+        // let isCheck = new Array();
+        // for (let i = 0; i < btnCheckBox.length; i++) {
+        //     if (btnCheckBox[i].checked) {
+        //         isCheck.push(currentUser.cart[i]);
+        //     }
+        // }
+        if (total_price_onclick().product_is_selected.length == 0) {
             alert("Vui lòng chọn sản phẩm thanh toán");
         } else {
             // checkConHang(isCheck)
-            if (checkConHang(isCheck)) {
-                showacc(document.getElementById("tranggiohang"), 0, 1200);
+            // if (checkConHang(isCheck)) {
+            showacc(document.getElementById("tranggiohang"), 0, 1200);
+            setTimeout(() => {
+                // while (
+                //     document.getElementsByClassName("table-giohang")[0].rows
+                //         .length > 0
+                // ) {
+                //     document
+                //         .getElementsByClassName("table-giohang")[0]
+                //         .deleteRow(0);
+                // }
+                console.log(product_in_cart);
+
+                ttGioHang(total_price_onclick());
+
+                document.getElementsByClassName("table-giohang")[0].innerHTML =
+                    "";
+                document.getElementById("hienthigiohang").style.display = "";
                 setTimeout(() => {
-                    while (
-                        document.getElementsByClassName("table-giohang")[0].rows
-                            .length > 0
-                    ) {
-                        document
-                            .getElementsByClassName("table-giohang")[0]
-                            .deleteRow(0);
-                    }
-                    document.getElementById("hienthigiohang").style.display =
-                        "";
-                    ttGioHang(isCheck);
-                    setTimeout(() => {
-                        tongtien = 0;
-                        document.getElementById("tongthanhtoan").textContent =
-                            calculated(tongtien) + " VND";
-                        document.getElementById("thanh-toan").style.display =
-                            "flex";
-                        showacc(
-                            document.getElementById("div-thanhtoan"),
-                            -500,
-                            0
-                        );
-                    }, 400);
+                    tongtien = 0;
+                    document.getElementById("tongthanhtoan").textContent =
+                        calculated(tongtien) + " VND";
+                    document.getElementById("thanh-toan").style.display =
+                        "flex";
+                    showacc(document.getElementById("div-thanhtoan"), -500, 0);
                 }, 400);
-            } else {
-                alert("Sản phẩm đã hết hàng");
-            }
+            }, 400);
+            // } else {
+            //     alert("Sản phẩm đã hết hàng");
+            // }
         }
     };
     // let doiSize = document.getElementsByClassName("size")
@@ -653,7 +684,10 @@ function createCart(data_respone) {
                 ` VND
                         </div>
                     </td>
-                    <td>
+                    <td style="    text-align: center;
+                                    display: flex;
+                                    justify-content: space-evenly;
+                                    flex-direction: column;">
                         <div class="xoa-sp">
                             Xoá
                         </div>
@@ -671,20 +705,24 @@ function createCart(data_respone) {
         alert("Giỏ hàng đang trống");
     }
 }
+function update_cart() {
+    getDataFromServer(
+        "./Server/update_cart.php",
+        {
+            id_customer: currentUser.id,
+            product_in_cart: product_in_cart,
+        },
+        function (respone) {
+            console.log(respone);
+        }
+    );
+}
 document.getElementById("hienthigiohang").onclick = function (e) {
     if (e.target.matches("#hienthigiohang")) {
-        getDataFromServer(
-            "./Server/update_cart.php",
-            {
-                id_customer: currentUser.id,
-                product_in_cart: product_in_cart,
-            },
-            function (respone) {
-                console.log(respone);
-            }
-        );
+        update_cart();
         showacc(document.getElementById("tranggiohang"), 0, 1200);
         setTimeout(() => {
+            document.getElementById("tongthanhtoan").innerHTML = 0;
             document.getElementsByClassName("table-giohang")[0].innerHTML = "";
             document.getElementById("hienthigiohang").style.display = "";
         }, 400);
