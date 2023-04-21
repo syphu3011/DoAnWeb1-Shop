@@ -128,13 +128,37 @@ function sukien(data_product) {
     for (let i = 0; i < btnXoa.length; i++) {
         btnXoa[i].onclick = function () {
             getDataFromServer(
-                "./Server/get_cart_byID.php",
-                { idkh: currentUser.id },
+                "./Server/delete_product_in_cart.php",
+                {
+                    id_customer: currentUser.id,
+                    id_product: product_in_cart[i].id_product,
+                },
                 function (respone) {
-                    createCart(respone.data.product);
-                    console.log(respone);
+                    create_cart_from_server();
+
+                    showacc(document.getElementById("tranggiohang"), 0, 1500);
+                    setTimeout(() => {
+                        document.getElementsByClassName(
+                            "table-giohang"
+                        )[0].innerHTML = "";
+                        document.getElementById(
+                            "hienthigiohang"
+                        ).style.display = "";
+                    }, 400);
+
+                    //     console.log(respone);
+                    //     getDataFromServer(
+                    //         "./Server/get_cart_byID.php",
+                    //         { idkh: currentUser.id },
+                    //         function (respone) {
+                    //             createCart(respone.data.product);
+                    //             console.log(respone);
+                    //         }
+                    //     );
                 }
             );
+
+            // console.log(product_in_cart[i].id);
             // while (
             //     document.getElementsByClassName("table-giohang")[0].rows
             //         .length > 0
@@ -324,12 +348,12 @@ function sukien(data_product) {
             if (product_in_cart[i].amount > 1) {
                 product_in_cart[i].amount--;
                 console.log(product_in_cart[i].price_sale);
-                // document.getElementsByClassName("hien-sl")[i].textContent =
-                //     product_in_cart[i].amount;
+                document.getElementsByClassName("hien-sl")[i].textContent =
+                    product_in_cart[i].amount;
                 product_in_cart[i].price =
                     product_in_cart[i].price_sale * product_in_cart[i].amount;
-                document.getElementsByClassName("ton-tien")[i].textContent =
-                    calculated(product_in_cart[i].price) + " VNĐ";
+                // document.getElementsByClassName("ton-tien")[i].textContent =
+                //     calculated(product_in_cart[i].price) + " VNĐ";
                 fill_price_in_cart();
             } else {
                 alert("Đã đạt số lượng tối thiểu");
@@ -413,16 +437,16 @@ function sukien(data_product) {
 }
 btncart.onclick = function () {
     if (currentUser != null) {
-        getDataFromServer(
-            "./Server/get_cart_byID.php",
-            { idkh: currentUser.id },
-            function (respone) {
-                createCart(respone.data.product);
-                console.log(respone);
-            }
-        );
+        create_cart_from_server();
+        // getDataFromServer(
+        //     "./Server/get_cart_byID.php",
+        //     { idkh: currentUser.id },
+        //     function (respone) {
+        //         createCart(respone.data.product);
+        //         // console.log(respone);
+        //     }
+        // );
         // createCart();
-
         // if (currentUser.cart.length > 0) {
         //     createCart()
         // } else {
@@ -435,6 +459,20 @@ btncart.onclick = function () {
     }
 };
 var product_in_cart = [];
+function create_cart_from_server() {
+    getDataFromServer(
+        "./Server/get_cart_byID.php",
+        { idkh: currentUser.id },
+        function (respone) {
+            if (respone.success) {
+                createCart(respone.data.product);
+            } else {
+                alert("Chưa có sản phẩm nào trong giỏ hàng");
+            }
+            console.log(respone);
+        }
+    );
+}
 function createCart(data_respone) {
     document.getElementsByClassName("table-giohang")[0].innerHTML = "";
     // document.getElementById("hienthigiohang").style.display = "";
@@ -619,7 +657,12 @@ function createCart(data_respone) {
                         <div class="xoa-sp">
                             Xoá
                         </div>
-                        <input class="checkboxIncart" type="checkbox" name="" id="">
+                        <label for="checkbox_` +
+                product.id_product +
+                `" class="checkbox-label">Chọn</label>
+                        <input id="checkbox_` +
+                product.id_product +
+                `" class="checkboxIncart" type="checkbox" name="" id="">
                     </td>
                 </tr>`;
         }

@@ -1,853 +1,1050 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="CSS/header.css" />
+        <link rel="stylesheet" href="CSS/filter.css" />
+        <link rel="stylesheet" href="CSS/poster.css" />
+        <link rel="stylesheet" href="CSS/product.css" />
+        <link rel="stylesheet" href="CSS/footer.css" />
+        <link rel="stylesheet" href="CSS/account.css" />
+        <link rel="stylesheet" href="CSS/middle.css" />
+        <link rel="stylesheet" href="CSS/main.css" />
+        <link rel="stylesheet" href="CSS/js.css" />
+        <link rel="stylesheet" href="CSS/cart.css" />
+        <link rel="stylesheet" href="CSS/lsMuaHang.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Bungee&display=swap"
+            rel="stylesheet"
+        />
+        <script src="./init.php"></script>
+        <title>Document</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <style>
+            input {
+                outline: none;
+            }
+            #div-hoadon {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(128, 128, 128, 0.4);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
 
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="CSS/header.css">
-    <link rel="stylesheet" href="CSS/filter.css">
-    <link rel="stylesheet" href="CSS/poster.css">
-    <link rel="stylesheet" href="CSS/product.css">
-    <link rel="stylesheet" href="CSS/footer.css">
-    <link rel="stylesheet" href="CSS/account.css">
-    <link rel="stylesheet" href="CSS/middle.css">
-    <link rel="stylesheet" href="CSS/main.css">
-    <link rel="stylesheet" href="CSS/js.css">
-    <link rel="stylesheet" href="CSS/cart.css">
-    <link rel="stylesheet" href="CSS/lsMuaHang.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
-    <script src="./init.php"></script>
-    <title>Document</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <style>
-        input{
-            outline: none;
-        }
-        #div-hoadon {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(128, 128, 128, 0.4);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+            #hoa-don {
+                background-color: white;
+                border-radius: 20px;
+                height: 650px;
+                overflow: hidden;
+                box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            }
 
-        #hoa-don {
-            background-color: white;
-            border-radius: 20px;
-            height: 650px;
-            overflow: hidden;
-            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-        }
+            #ten-bang p {
+                text-align: center;
+                font-size: 22px;
+                padding: 0px;
+                position: relative;
+                margin-top: 10px;
+                margin-bottom: 5px;
+            }
 
-        #ten-bang p {
-            text-align: center;
-            font-size: 22px;
-            padding: 0px;
-            position: relative;
-            margin-top: 10px;
-            margin-bottom: 5px;
-        }
+            #table-hoadon {
+                border-collapse: collapse;
+                width: 100%;
+            }
 
-        #table-hoadon {
-            border-collapse: collapse;
-            width: 100%;
-        }
+            #table-hoadon tr td {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
 
-        #table-hoadon tr td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
+            #table-hoadon tbody tr {
+                height: 100px;
+            }
 
-        #table-hoadon tbody tr {
-            height: 100px;
-        }
+            #bang {
+                overflow-y: scroll;
+                height: 550px;
+                width: 1000px;
+                margin-right: -20px;
+                margin: 10px 30px;
+                box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            }
 
-        #bang {
-            overflow-y: scroll;
-            height: 550px;
-            width: 1000px;
-            margin-right: -20px;
-            margin: 10px 30px;
-            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-        }
+            .anh-sp {
+                width: 100px;
+                height: 100px;
+            }
 
-        .anh-sp {
-            width: 100px;
-            height: 100px;
-        }
+            #ngay-tong-tien {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                width: 100%;
+                margin-left: 30px;
+                margin-bottom: 10px;
+            }
 
-        #ngay-tong-tien {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: flex-start;
-            width: 100%;
-            margin-left: 30px;
-            margin-bottom: 10px;
-        }
+            #ngay-hd,
+            #tongtien {
+                /* position: absolute; */
+                /* bottom: 10px; */
+                font-size: 12px;
+                margin-bottom: 10px;
+                /* left: 30px; */
+            }
 
-        #ngay-hd,
-        #tongtien {
-            /* position: absolute; */
-            /* bottom: 10px; */
-            font-size: 12px;
-            margin-bottom: 10px;
-            /* left: 30px; */
-        }
+            .list-list {
+                list-style: none;
+                padding: 0 10px;
+                margin: 0;
+                max-height: 200px;
+                margin-right: -25px;
+                overflow-y: scroll;
+            }
+        </style>
+    </head>
 
-        .list-list {
-            list-style: none;
-            padding: 0 10px;
-            margin: 0;
-            max-height: 200px;
-            margin-right: -25px;
-            overflow-y: scroll;
-        }
-    </style>
-</head>
-
-<body style="font-family: 'Bungee', cursive;
-position: relative;">
-    <div id="noti">
-        <div id="noti-noti">
-            <div>
-                đã thêm vào giỏ hàng
+    <body style="font-family: 'Bungee', cursive; position: relative">
+        <div id="noti">
+            <div id="noti-noti">
+                <div>đã thêm vào giỏ hàng</div>
             </div>
         </div>
-    </div>
-    <div id="thanh-toan">
-        <div id="div-thanhtoan">
-            <div style="font-size: 22px;
-            display: flex;
-            justify-content: center;
-            position: relative;">
-                <div>
-                    Trang thanh toán
+        <div id="thanh-toan">
+            <div id="div-thanhtoan">
+                <div
+                    style="
+                        font-size: 22px;
+                        display: flex;
+                        justify-content: center;
+                        position: relative;
+                    "
+                >
+                    <div>Trang thanh toán</div>
                 </div>
-            </div>
-            <div style="display: block;
-            border-bottom: 1px solid gray;
-            padding-bottom: 20px;">
-                <div style="padding: 10px;">
-                    Địa chỉ nhận hàng
+                <div
+                    style="
+                        display: block;
+                        border-bottom: 1px solid gray;
+                        padding-bottom: 20px;
+                    "
+                >
+                    <div style="padding: 10px">Địa chỉ nhận hàng</div>
+                    <input
+                        id="inp-dc"
+                        style="
+                            margin-left: 10px;
+                            padding: 5px 10px;
+                            outline: none;
+                            border-radius: 20px;
+                            width: 500px;
+                        "
+                        type="text"
+                        placeholder="Mời bạn nhập địa chỉ nhận hàng"
+                    />
                 </div>
-                <input id="inp-dc" style="margin-left: 10px;
-                padding: 5px 10px;
-                outline: none;
-                border-radius: 20px;
-                width: 500px;" type="text" placeholder="Mời bạn nhập địa chỉ nhận hàng">
-            </div>
-            <div id="thanhtoan-sp">
-
-            </div>
-            <!-- <div id="dathang">
+                <div id="thanhtoan-sp"></div>
+                <!-- <div id="dathang">
 
             </div> -->
-        </div>
-        <div>
-
-        </div>
-    </div>
-    <!-- tài khoản -->
-    <div id="account">
-        <div style="display: flex;
-        flex-direction: column;
-        justify-content: center;">
-            <!-- nút thoát -->
-            <div id="exit-log">
-                <img style="height: 30px;
-            object-fit: scale-down;" src="Image/exit.png" alt="">
             </div>
-            <!-- đăng nhập -->
-            <form id="form_login" action="" method="post">
-                <div id="signin">
-                <div style="line-height: 30px;
-                font-size: 22px;
-                display: block;
-                margin-top: 20px;
-                text-align: center;">đăng nhập</div>
-                <div style="text-align: left;
-                    margin-top: 20px;
-                    font-size: 15px;
-                    color: rgba(0, 0, 0, 0.7);">
-                    Tên đăng nhập hoặc số điện thoại
+            <div></div>
+        </div>
+        <!-- tài khoản -->
+        <div id="account">
+            <div
+                style="
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                "
+            >
+                <!-- nút thoát -->
+                <div id="exit-log">
+                    <img
+                        style="height: 30px; object-fit: scale-down"
+                        src="Image/exit.png"
+                        alt=""
+                    />
                 </div>
-                <input id="mailorphone" class="input-region" type="text">
-                <div style="text-align: left;
-                    margin-top: 20px;
-                    font-size: 15px;
-                    color: rgba(0, 0, 0, 0.7);">
-                    mật khẩu
-                </div>
-                <div style="display: flex;">
-                    <input id="passwd" class="input-region" type="password">
-                    <div id="hide-show" style="padding: 0 5px;
-                    height: 30px;
-                    cursor: pointer;
-                    margin-left: 10px;" name="show">
-                        <img id="img-hideshow" style="height: 30px;
-                        margin-top: 10px;" src="Image/hidden.png" alt="">
-                    </div>
-                </div>
-                <div id="forgot-pass">quên mật khẩu?</div>
-                <!-- <div id="btn-login">
+                <!-- đăng nhập -->
+                <form id="form_login" action="" method="post">
+                    <div id="signin">
+                        <div
+                            style="
+                                line-height: 30px;
+                                font-size: 22px;
+                                display: block;
+                                margin-top: 20px;
+                                text-align: center;
+                            "
+                        >
+                            đăng nhập
+                        </div>
+                        <div
+                            style="
+                                text-align: left;
+                                margin-top: 20px;
+                                font-size: 15px;
+                                color: rgba(0, 0, 0, 0.7);
+                            "
+                        >
+                            Tên đăng nhập hoặc số điện thoại
+                        </div>
+                        <input
+                            id="mailorphone"
+                            class="input-region"
+                            type="text"
+                        />
+                        <div
+                            style="
+                                text-align: left;
+                                margin-top: 20px;
+                                font-size: 15px;
+                                color: rgba(0, 0, 0, 0.7);
+                            "
+                        >
+                            mật khẩu
+                        </div>
+                        <div style="display: flex">
+                            <input
+                                id="passwd"
+                                class="input-region"
+                                type="password"
+                            />
+                            <div
+                                id="hide-show"
+                                style="
+                                    padding: 0 5px;
+                                    height: 30px;
+                                    cursor: pointer;
+                                    margin-left: 10px;
+                                "
+                                name="show"
+                            >
+                                <img
+                                    id="img-hideshow"
+                                    style="height: 30px; margin-top: 10px"
+                                    src="Image/hidden.png"
+                                    alt=""
+                                />
+                            </div>
+                        </div>
+                        <div id="forgot-pass">quên mật khẩu?</div>
+                        <!-- <div id="btn-login">
                     đăng nhập
                 </div> -->
-                <button id="btn-login" type="submit">
-                    Đăng nhập
-                </button>
-                <div style="line-height: 30px;
-                font-size: 15px;
-                display: block;
-                margin-top: 20px;
-                text-align: center;">
-                    bạn chưa có tài khoản? <span id="btn-signup">đăng kí ngay</span>
-                </div>
-            </div>
-        </form>
-            <!-- đăng ký -->
-        <form id="form-signup">
-            <div id="signup">
-                <div style="font-size: 22px;
-                margin-top: 10px;
-                height: 30px;
-                justify-content: center;
-                display: flex;">
-                    đăng ký
-                </div>
-                <div style="margin-top: 20px;
-                display: flex;
-                justify-content: space-between;">
-                    <div style="display: block;">
-                        <div style="height: 25px;">
-                            họ
+                        <button id="btn-login" type="submit">Đăng nhập</button>
+                        <div
+                            style="
+                                line-height: 30px;
+                                font-size: 15px;
+                                display: block;
+                                margin-top: 20px;
+                                text-align: center;
+                            "
+                        >
+                            bạn chưa có tài khoản?
+                            <span id="btn-signup">đăng kí ngay</span>
                         </div>
-                        <input id="inp-firstname" type="text">
                     </div>
-                    <div style="display: block;">
-                        <div style="height: 25px;">
-                            tên
+                </form>
+                <!-- đăng ký -->
+                <form id="form-signup">
+                    <div id="signup">
+                        <div
+                            style="
+                                font-size: 22px;
+                                margin-top: 10px;
+                                height: 30px;
+                                justify-content: center;
+                                display: flex;
+                            "
+                        >
+                            đăng ký
                         </div>
-                        <input id="inp-lastname" type="text">
-                    </div>
-                </div>
-                <div style="display: block;
-                margin-top: 20px;">
-                    <div style="height: 25px;">Tên đăng nhập</div>
-                    <input id="inp-username" class="input-region" type="text">
-                </div>
-                <div style="display: block;
-                margin-top: 20px;">
-                    <div style="height: 25px;">
-                        số điện thoại
-                    </div>
-                    <input id="phone-mail-regis" class="input-region" type="text">
-                </div>
-                <div style="display: block;
-                margin-top: 20px;">
-                    <div style="height: 25px;">
-                        Mật khẩu
-                    </div>
-                    <input id="passwd-regis" class="input-region" type="password">
-                </div>
-                <div style="display: block;
-            margin-top: 20px;">
-                    <div style="height: 25px;">
-                        xác nhận mật khẩu
-                    </div>
-                    <input id="same-passwd" class="input-region" type="password">
-                </div>
-                <div style="height: 40px;">
-                    Ngày sinh
-                    <input type="date" id="birthday">
-                </div>
-                <div style="text-align: left;
-                        margin-top: 20px;
-                        font-size: 15px;
-                        line-height: 20px;
-                        display: flex;">
-                    <div style="margin-right: 30px;">giới tính</div>
-                    <div>
-                        <input id="signin-male" type="radio" name="sex" value="nam">
-                        <label for="signin-male">Nam</label>
-                        <input id="signin-female" type="radio" name="sex" value="nữ">
-                        <label for="signin-female">Nữ</label>
-                        <input id="signin-other" type="radio" name="sex" value="khác">
-                        <label for="signin-other">khác</label>
-                    </div>
-                </div>
-                <input type="submit" value="Đăng ký">
-            </div>
-        </form>
-            <!-- thông tin tài khoản -->
-            <div id="in4">
-                <div style="display: flex;
-            justify-content: center;
-            font-size: 22px;
-            margin-top: 20px;">xin chào, &#160;<b id="named">admin</b></div>
-                <div style="display: flex;
-            padding: 50px 0px;
-            ">
-                    <img style="height: 200px;" src="Image/avt/User_light@3x.png" alt="">
-                    <div style="display: block;
-                    font-size: 15px;
-                padding-left: 10px;">
-                        <div style="padding: 10px 0;">
-                            tên: &#160;<span id="name-in4">tên</span>
-                        </div>
-                        <div style="padding: 10px 0;">
-                            ngày sinh: &#160;<span id="birthday-in4">ngày sinh</span>
-                        </div>
-                        <div style="padding: 10px 0;">
-                            số điện thoại: &#160;<span style="text-align: center;" id="phone-in4">sđt</span>
-                        </div>
-
-                    </div>
-                </div>
-                <div id="btn-update"> sửa thông tin <img style="transform: rotate(-90deg);
-            margin-left: 10px;
-            height: 10px;" src="Image/icon-show.png" alt=""></div>
-            </div>
-            <!-- cập nhật thông tin -->
-            <div id="update-in4">
-                <div style="display: flex;
-                        justify-content: center;
-                        margin-top: 20px;
-                        font-size: 22px;">
-                    cập nhật thông tin
-                </div>
-                <div style="display: flex;
-                margin: 10px;">
-                    <div>
-                        <div>
-                            <div style="text-align: left;
-                            margin-top: 20px;
-                            font-size: 15px;
-                            margin-right: 40px;
-                            color: rgba(0, 0, 0, 0.7);">
-                                <div>
-                                    Tên
-                                </div>
-                                <input id="update-name" class="inp-name" type="text">
+                        <div
+                            style="
+                                margin-top: 20px;
+                                display: flex;
+                                justify-content: space-between;
+                            "
+                        >
+                            <div style="display: block">
+                                <div style="height: 25px">họ</div>
+                                <input id="inp-firstname" type="text" />
+                            </div>
+                            <div style="display: block">
+                                <div style="height: 25px">tên</div>
+                                <input id="inp-lastname" type="text" />
                             </div>
                         </div>
-                        <div>
-                            <div style="text-align: left;
-                    margin-top: 20px;
-                    font-size: 15px;
-                    margin-right: 40px;
-                    color: rgba(0, 0, 0, 0.7);">
-                                số điện thoại
-                            </div>
-                            <input class="inp-name" id="update-contact" style="margin-right: 40px;
-                            border: none;
-                            border-bottom: 1px solid gray;
-                            outline: none;
-                            width: 310px;" type="text">
+                        <div style="display: block; margin-top: 20px">
+                            <div style="height: 25px">Tên đăng nhập</div>
+                            <input
+                                id="inp-username"
+                                class="input-region"
+                                type="text"
+                            />
                         </div>
-                        <div style="text-align: left;
-                            margin-top: 20px;
-                            font-size: 15px;
-                            color: rgba(0, 0, 0, 0.7);
-                            display: flex;">
-                            <div style="margin-right: 20px;
-                                line-height: 30px;">
-                                ngày sinh
-                            </div>
-                            <input id="update-birthday" class="birthday" type="date">
+                        <div style="display: block; margin-top: 20px">
+                            <div style="height: 25px">số điện thoại</div>
+                            <input
+                                id="phone-mail-regis"
+                                class="input-region"
+                                type="text"
+                            />
                         </div>
-                        <div style="text-align: left;
-                        margin-top: 20px;
-                        font-size: 15px;
-                        line-height: 20px;
-                        color: rgba(0, 0, 0, 0.7);
-                        display: flex;">
-                            <div style="margin-right: 20px;">giới tính</div>
+                        <div style="display: block; margin-top: 20px">
+                            <div style="height: 25px">Mật khẩu</div>
+                            <input
+                                id="passwd-regis"
+                                class="input-region"
+                                type="password"
+                            />
+                        </div>
+                        <div style="display: block; margin-top: 20px">
+                            <div style="height: 25px">xác nhận mật khẩu</div>
+                            <input
+                                id="same-passwd"
+                                class="input-region"
+                                type="password"
+                            />
+                        </div>
+                        <div style="height: 40px">
+                            Ngày sinh
+                            <input type="date" id="birthday" />
+                        </div>
+                        <div
+                            style="
+                                text-align: left;
+                                margin-top: 20px;
+                                font-size: 15px;
+                                line-height: 20px;
+                                display: flex;
+                            "
+                        >
+                            <div style="margin-right: 30px">giới tính</div>
                             <div>
-                                <input id="male" type="radio" name="sex">
-                                <label for="male">Nam</label>
-                                <input id="female" type="radio" name="sex">
-                                <label for="female">Nữ</label>
-                                <input id="other" type="radio" name="sex">
-                                <label for="other">Khác</label>
+                                <input
+                                    id="signin-male"
+                                    type="radio"
+                                    name="sex"
+                                    value="nam"
+                                />
+                                <label for="signin-male">Nam</label>
+                                <input
+                                    id="signin-female"
+                                    type="radio"
+                                    name="sex"
+                                    value="nữ"
+                                />
+                                <label for="signin-female">Nữ</label>
+                                <input
+                                    id="signin-other"
+                                    type="radio"
+                                    name="sex"
+                                    value="khác"
+                                />
+                                <label for="signin-other">khác</label>
                             </div>
                         </div>
-                        <div style="text-align: left;
+                        <input type="submit" value="Đăng ký" />
+                    </div>
+                </form>
+                <!-- thông tin tài khoản -->
+                <div id="in4">
+                    <div
+                        style="
+                            display: flex;
+                            justify-content: center;
+                            font-size: 22px;
+                            margin-top: 20px;
+                        "
+                    >
+                        xin chào, &#160;<b id="named">admin</b>
+                    </div>
+                    <div style="display: flex; padding: 50px 0px">
+                        <img
+                            style="height: 200px"
+                            src="Image/avt/User_light@3x.png"
+                            alt=""
+                        />
+                        <div
+                            style="
+                                display: block;
+                                font-size: 15px;
+                                padding-left: 10px;
+                            "
+                        >
+                            <div style="padding: 10px 0">
+                                tên: &#160;<span id="name-in4">tên</span>
+                            </div>
+                            <div style="padding: 10px 0">
+                                ngày sinh: &#160;<span id="birthday-in4"
+                                    >ngày sinh</span
+                                >
+                            </div>
+                            <div style="padding: 10px 0">
+                                số điện thoại: &#160;<span
+                                    style="text-align: center"
+                                    id="phone-in4"
+                                    >sđt</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <div id="btn-update">
+                        sửa thông tin
+                        <img
+                            style="
+                                transform: rotate(-90deg);
+                                margin-left: 10px;
+                                height: 10px;
+                            "
+                            src="Image/icon-show.png"
+                            alt=""
+                        />
+                    </div>
+                </div>
+                <!-- cập nhật thông tin -->
+                <div id="update-in4">
+                    <div
+                        style="
+                            display: flex;
+                            justify-content: center;
+                            margin-top: 20px;
+                            font-size: 22px;
+                        "
+                    >
+                        cập nhật thông tin
+                    </div>
+                    <div style="display: flex; margin: 10px">
+                        <div>
+                            <div>
+                                <div
+                                    style="
+                                        text-align: left;
+                                        margin-top: 20px;
+                                        font-size: 15px;
+                                        margin-right: 40px;
+                                        color: rgba(0, 0, 0, 0.7);
+                                    "
+                                >
+                                    <div>Tên</div>
+                                    <input
+                                        id="update-name"
+                                        class="inp-name"
+                                        type="text"
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    style="
+                                        text-align: left;
+                                        margin-top: 20px;
+                                        font-size: 15px;
+                                        margin-right: 40px;
+                                        color: rgba(0, 0, 0, 0.7);
+                                    "
+                                >
+                                    số điện thoại
+                                </div>
+                                <input
+                                    class="inp-name"
+                                    id="update-contact"
+                                    style="
+                                        margin-right: 40px;
+                                        border: none;
+                                        border-bottom: 1px solid gray;
+                                        outline: none;
+                                        width: 310px;
+                                    "
+                                    type="text"
+                                />
+                            </div>
+                            <div
+                                style="
+                                    text-align: left;
+                                    margin-top: 20px;
+                                    font-size: 15px;
+                                    color: rgba(0, 0, 0, 0.7);
+                                    display: flex;
+                                "
+                            >
+                                <div
+                                    style="
+                                        margin-right: 20px;
+                                        line-height: 30px;
+                                    "
+                                >
+                                    ngày sinh
+                                </div>
+                                <input
+                                    id="update-birthday"
+                                    class="birthday"
+                                    type="date"
+                                />
+                            </div>
+                            <div
+                                style="
+                                    text-align: left;
+                                    margin-top: 20px;
+                                    font-size: 15px;
+                                    line-height: 20px;
+                                    color: rgba(0, 0, 0, 0.7);
+                                    display: flex;
+                                "
+                            >
+                                <div style="margin-right: 20px">giới tính</div>
+                                <div>
+                                    <input id="male" type="radio" name="sex" />
+                                    <label for="male">Nam</label>
+                                    <input
+                                        id="female"
+                                        type="radio"
+                                        name="sex"
+                                    />
+                                    <label for="female">Nữ</label>
+                                    <input id="other" type="radio" name="sex" />
+                                    <label for="other">Khác</label>
+                                </div>
+                            </div>
+                            <div
+                                style="
+                                    text-align: left;
+                                    margin-top: 20px;
+                                    font-size: 15px;
+                                    color: rgba(0, 0, 0, 0.7);
+                                "
+                            >
+                                <div style="display: flex">
+                                    <div
+                                        style="
+                                            margin-right: 20px;
+                                            line-height: 30px;
+                                        "
+                                    >
+                                        Đổi mật khẩu
+                                    </div>
+                                    <div id="thaydoi-mk">Thay đổi</div>
+                                </div>
+                                <div id="nhapthaydoi">
+                                    <div
+                                        style="
+                                            display: flex;
+                                            justify-content: space-between;
+                                            margin-top: 10px;
+                                            height: 28px;
+                                        "
+                                    >
+                                        <div>mật khẩu cũ</div>
+                                        <input
+                                            style="
+                                                /* margin-right: 40px; */
+                                                border: none;
+                                                border-bottom: 1px solid gray;
+                                                outline: none;
+                                                width: 180px;
+                                            "
+                                            type="text"
+                                            id="mkht"
+                                        />
+                                    </div>
+                                    <div
+                                        style="
+                                            display: flex;
+                                            justify-content: space-between;
+                                            margin-top: 10px;
+                                            height: 28px;
+                                        "
+                                    >
+                                        <div>mật khẩu mới</div>
+                                        <input
+                                            style="
+                                                /* margin-right: 40px; */
+                                                border: none;
+                                                border-bottom: 1px solid gray;
+                                                outline: none;
+                                                width: 180px;
+                                            "
+                                            type="text"
+                                            id="mkm"
+                                        />
+                                    </div>
+                                    <div
+                                        style="
+                                            display: flex;
+                                            justify-content: space-between;
+                                            margin-top: 10px;
+                                            height: 28px;
+                                        "
+                                    >
+                                        <div style="width: 230px">
+                                            nhập lại mật khẩu mới
+                                        </div>
+                                        <input
+                                            style="
+                                                /* margin-right: 40px; */
+                                                border: none;
+                                                border-bottom: 1px solid gray;
+                                                outline: none;
+                                                width: 180px;
+                                            "
+                                            type="text"
+                                            id="xnmkm"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            style="
+                                margin-top: 50px;
+                                display: flex;
+                                flex-direction: column;
+                            "
+                        >
+                            <img
+                                id="img-current-customer"
+                                style="
+                                    height: 100px;
+                                    width: 100px;
+                                    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                                    border: 1px solid gray;
+                                    margin-bottom: 10px;
+                                "
+                                src="Image/avt/User_light@3x.png"
+                                alt=""
+                            />
+                            <div id="btn-addimg">thêm ảnh</div>
+                            <input
+                                type="file"
+                                id="choose-img"
+                                style="display: none"
+                                accept="image/*"
+                            />
+                        </div>
+                    </div>
+                    <div
+                        style="
+                            display: flex;
+                            margin: 20px;
+                            line-height: 20px;
+                            justify-content: center;
+                        "
+                    >
+                        <div id="save-update">cập nhật</div>
+                    </div>
+                </div>
+                <div id="setnewpass">
+                    <div
+                        style="
+                            margin-top: 20px;
+                            font-size: 22px;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        Tìm tài khoản của bạn
+                    </div>
+                    <div
+                        style="
+                            text-align: left;
                             margin-top: 20px;
                             font-size: 15px;
                             color: rgba(0, 0, 0, 0.7);
-                            ">
-                            <div style="display: flex;">
-                                <div style="margin-right: 20px;
-                                line-height: 30px;">
-                                    Đổi mật khẩu
-                                </div>
-                                <div id="thaydoi-mk">
-                                    Thay đổi
-                                </div>
-                            </div>
-                            <div id="nhapthaydoi">
-                                <div style="display: flex;
-                                justify-content: space-between;
-                                margin-top: 10px;
-                                height: 28px;
-                                ">
-                                    <div>
-                                        mật khẩu cũ
-                                    </div>
-                                    <input style="
-                                    /* margin-right: 40px; */
-                            border: none;
-                            border-bottom: 1px solid gray;
-                            outline: none;
-                            width: 180px;
-                            " type="text" id="mkht">
-                                </div>
-                                <div style="display: flex;
-                                justify-content: space-between;
-                                margin-top: 10px;
-                                height: 28px;
-
-                                ">
-                                    <div>
-                                        mật khẩu mới
-                                    </div>
-                                    <input style="
-                                    /* margin-right: 40px; */
-                            border: none;
-                            border-bottom: 1px solid gray;
-                            outline: none;
-                            width: 180px;
-                            " type="text" id="mkm">
-                                </div>
-                                <div style="display: flex;
-                                justify-content: space-between;
-                                margin-top: 10px;
-                                height: 28px;
-                                ">
-                                    <div style="
-                            width: 230px;
-                                    ">
-                                        nhập lại mật khẩu mới
-                                    </div>
-                                    <input style="
-                                    /* margin-right: 40px; */
-                            border: none;
-                            border-bottom: 1px solid gray;
-                            outline: none;
-                            width: 180px;
-                            " type="text" id="xnmkm">
-                                </div>
-                            </div>
-                        </div>
+                        "
+                    >
+                        Tên đăng nhập hoặc số điện thoại tài khoản
                     </div>
-
-                    <div style="margin-top: 50px;display: flex; flex-direction: column;">
-                        <img id="img-current-customer" style="height: 100px; width: 100px;
-                            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-                            border: 1px solid gray;margin-bottom: 10px;" src="Image/avt/User_light@3x.png" alt="">
-                        <div id="btn-addimg">
-                            thêm ảnh
-                        </div>
-                        <input type="file" id="choose-img" style="display:none" accept="image/*">
+                    <input class="input-region" type="text" name="" value="" />
+                    <div
+                        style="
+                            display: flex;
+                            justify-content: center;
+                            margin-top: 20px;
+                        "
+                    >
+                        <div id="btn-getotp">lấy OTP</div>
                     </div>
                 </div>
-                <div style="display: flex;
-                        margin: 20px;
-                        line-height: 20px;
-                        justify-content: center;">
-                    <div id="save-update">
-                        cập nhật
-                    </div>
-                </div>
-            </div>
-            <div id="setnewpass">
-                <div style="margin-top: 20px;
-                font-size: 22px;
-                display: flex;
-                justify-content: center;">
-                    Tìm tài khoản của bạn
-                </div>
-                <div style="text-align: left;
-                margin-top: 20px;
-                font-size: 15px;
-                color: rgba(0, 0, 0, 0.7);
-                ">
-                    Tên đăng nhập hoặc số điện thoại tài khoản
-                </div>
-                <input class="input-region" type="text" name="" value="">
-                <div style="display: flex;
-                justify-content: center;
-                margin-top: 20px;">
-                    <div id="btn-getotp">
-                        lấy OTP
-                    </div>
-                </div>
-            </div>
-            <div id="otpcode">
-
+                <div id="otpcode"></div>
             </div>
         </div>
-    </div>
-    <div id="div-ls-muahang">
-        <div id="ls-muahang">
-            <div style="
-            background-color: lightpink;
-            font-size: 22px;
-            margin: 10px 20px;
-            border-radius: 20px;
-            padding: 10px;
-            ">
-                Lịch sử mua hàng
-            </div>
-            <div id="ten-kh">
-                Khách hàng:
-            </div>
-            <div style="margin: 10px 20px;
-            overflow: hidden;">
-                <div class="grid-table">
-                    <div>
-                        Số hoá đơn
-                    </div>
-                    <div>
-                        Trạng thái
-                    </div>
-                    <div>
-                        Trị giá
-                    </div>
-                    <div>
-                        Địa chỉ nhận
-                    </div>
-                    <div>
-                        Ngày mua
-                    </div>
-                    <div>
-                        Ngày xác nhận
-                    </div>
+        <div id="div-ls-muahang">
+            <div id="ls-muahang">
+                <div
+                    style="
+                        background-color: lightpink;
+                        font-size: 22px;
+                        margin: 10px 20px;
+                        border-radius: 20px;
+                        padding: 10px;
+                    "
+                >
+                    Lịch sử mua hàng
                 </div>
+                <div id="ten-kh">Khách hàng:</div>
+                <div style="margin: 10px 20px; overflow: hidden">
+                    <div class="grid-table">
+                        <div>Số hoá đơn</div>
+                        <div>Trạng thái</div>
+                        <div>Trị giá</div>
+                        <div>Địa chỉ nhận</div>
+                        <div>Ngày mua</div>
+                        <div>Ngày xác nhận</div>
+                    </div>
 
-                <div id="div-bang-lsmh">
-                    <table id="bang-lsmh">
-                    </table>
+                    <div id="div-bang-lsmh">
+                        <table id="bang-lsmh"></table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="div-ctdh">
-        <div id="ctdh">
-            <div>
-                <div id="maDh">
-                    Mã đơn hàng
-                </div>
-                <div style="display: flex;
-                justify-content: space-between;
-                border-bottom: 1px solid rgba(128, 128, 128, 0.4);
-                ">
-                    <div id="ttdh">
-                        Trạng thái
-                    </div>
-                    <div id="ngayDh">
-                        20/11
-                    </div>
-                </div>
-            </div>
-            <div id="ctdh-dssp">
-                <div class="ctdh-sp">
-                </div>
-            </div>
-            <div id="tongtrigia">
-                Tổng trị giá
-            </div>
-        </div>
-    </div>
-    <div id="show_product">
-
-    </div>
-    <div id="productTag">
-        <div id="productTagq" style="display: flex;
-        flex-direction: column;
-        justify-content: center;">
-            <div id="onclick-product">
-
-            </div>
-        </div>
-    </div>
-    <div id="div-cart">
-
-    </div>
-    </div>
-    <!-- header -->
-    <div class="header">
-        <div id="logo">
-            <img style="height: 80px; margin: 20px -50px 10px 10px;" src="Image/logo (1).png" alt="">
-            <img style="height: 40px; margin-bottom: 10px;" src="Image/logo 2.png" alt="">
-        </div>
-        <div id="show-filter">
-            <img style="height: 20px; transform: rotate(-90deg); padding: 5px;" src="Image/show-icon.png" alt="">
-        </div>
-
-        <div class="bar">
-            <div id="home-page">
-                Trang chủ
-            </div>
-            <div id="choose-product-men">
-                nam
-            </div>
-            <div id="choose-product-women">
-                nữ
-            </div>
-        </div>
-        <div style="padding: 35px 40px 0 30px; display: flex; align-items: center;">
-            <div id="setting-admin">
-                <img style="height: 28px;" src="Image/icons8-settings-100.png" alt="">
-            </div>
-            <div id="cart">
-                <img style="height: 35px;" src="Image/icon-cart.png" alt="">
-            </div>
-            <div id="show-cart">
-                <img style="height: 250px;
-                padding: 40px 5px;
-                position: relative;
-                display: block;" id="img-emtycart" src="Image/empty-cart.jpeg" alt="">
-                <div style="display: block;
-                text-align: center;
-                top: 50px;
-                width: 100%;
-                position: absolute;">
-                    chưa có sản phẩm
-                </div>
-            </div>
-            <div id="user">
-                <img style="height: 30px;" src="Image/user.png" alt="">
-            </div>
-            <div id="show-user">
+        <div id="div-ctdh">
+            <div id="ctdh">
                 <div>
-                    <div id="name">
-                        tài khoản 001
-                    </div>
-                    <div id="up-date">
-                        Cập nhật thông tin
-                        <img style="height: 25px;" src="Image/udate/Refresh@3x.png" alt="">
-                    </div>
-                    <div id="ls-dh">
-                        Lịch sử mua hàng
-                        <img style="height: 25px;" src="Image/icons8-order-history-90.png" alt="">
-                    </div>
-                    <div id="log-out">
-                        đăng xuất
-                        <img style="height: 25px;" src="Image/log-out.png" alt="">
+                    <div id="maDh">Mã đơn hàng</div>
+                    <div
+                        style="
+                            display: flex;
+                            justify-content: space-between;
+                            border-bottom: 1px solid rgba(128, 128, 128, 0.4);
+                        "
+                    >
+                        <div id="ttdh">Trạng thái</div>
+                        <div id="ngayDh">20/11</div>
                     </div>
                 </div>
+                <div id="ctdh-dssp">
+                    <div class="ctdh-sp"></div>
+                </div>
+                <div id="tongtrigia">Tổng trị giá</div>
+            </div>
+        </div>
+        <div id="show_product"></div>
+        <div id="productTag">
+            <div
+                id="productTagq"
+                style="
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                "
+            >
+                <div id="onclick-product"></div>
+            </div>
+        </div>
+        <div id="div-cart"></div>
+        <!-- header -->
+        <div class="header">
+            <div id="logo">
+                <img
+                    style="height: 80px; margin: 20px -50px 10px 10px"
+                    src="Image/logo (1).png"
+                    alt=""
+                />
+                <img
+                    style="height: 40px; margin-bottom: 10px"
+                    src="Image/logo 2.png"
+                    alt=""
+                />
+            </div>
+            <div id="show-filter">
+                <img
+                    style="
+                        height: 20px;
+                        transform: rotate(-90deg);
+                        padding: 5px;
+                    "
+                    src="Image/show-icon.png"
+                    alt=""
+                />
             </div>
 
-            <input id="inp-search" type="text" placeholder="Bạn đang tìm gì...">
-            <img id="btn-search" src="Image/look.png" alt="">
-        </div>
-        <div id="product">
-            <label style="height: 30px; display: block; margin: 0 40px; border-bottom: 1px solid gray;" for="">
-                Sản Phẩm
-            </label>
-            <div id="list-pro">
+            <div class="bar">
+                <div id="home-page">Trang chủ</div>
+                <div id="choose-product-men">nam</div>
+                <div id="choose-product-women">nữ</div>
+            </div>
+            <div
+                style="
+                    padding: 35px 40px 0 30px;
+                    display: flex;
+                    align-items: center;
+                "
+            >
+                <div id="setting-admin">
+                    <img
+                        style="height: 28px"
+                        src="Image/icons8-settings-100.png"
+                        alt=""
+                    />
+                </div>
+                <div id="cart">
+                    <img
+                        style="height: 35px"
+                        src="Image/icon-cart.png"
+                        alt=""
+                    />
+                </div>
+                <div id="show-cart">
+                    <img
+                        style="
+                            height: 250px;
+                            padding: 40px 5px;
+                            position: relative;
+                            display: block;
+                        "
+                        id="img-emtycart"
+                        src="Image/empty-cart.jpeg"
+                        alt=""
+                    />
+                    <div
+                        style="
+                            display: block;
+                            text-align: center;
+                            top: 50px;
+                            width: 100%;
+                            position: absolute;
+                        "
+                    >
+                        chưa có sản phẩm
+                    </div>
+                </div>
+                <div id="user">
+                    <img style="height: 30px" src="Image/user.png" alt="" />
+                </div>
+                <div id="show-user">
+                    <div>
+                        <div id="name">tài khoản 001</div>
+                        <div id="up-date">
+                            Cập nhật thông tin
+                            <img
+                                style="height: 25px"
+                                src="Image/udate/Refresh@3x.png"
+                                alt=""
+                            />
+                        </div>
+                        <div id="ls-dh">
+                            Lịch sử mua hàng
+                            <img
+                                style="height: 25px"
+                                src="Image/icons8-order-history-90.png"
+                                alt=""
+                            />
+                        </div>
+                        <div id="log-out">
+                            đăng xuất
+                            <img
+                                style="height: 25px"
+                                src="Image/log-out.png"
+                                alt=""
+                            />
+                        </div>
+                    </div>
+                </div>
 
+                <input
+                    id="inp-search"
+                    type="text"
+                    placeholder="Bạn đang tìm gì..."
+                />
+                <img id="btn-search" src="Image/look.png" alt="" />
+            </div>
+            <div id="product">
+                <label
+                    style="
+                        height: 30px;
+                        display: block;
+                        margin: 0 40px;
+                        border-bottom: 1px solid gray;
+                    "
+                    for=""
+                >
+                    Sản Phẩm
+                </label>
+                <div id="list-pro"></div>
             </div>
         </div>
-    </div>
-    <div id="filter-bar">
-        <div class="type">
-            <label for="">loại</label>
-            <div id="show-type">
-                <div id="selected-type" class="list">
-                    tất cả
+        <div id="filter-bar">
+            <div class="type">
+                <label for="">loại</label>
+                <div id="show-type">
+                    <div id="selected-type" class="list">tất cả</div>
+                    <img
+                        style="height: 10px; margin: 10px 5px; right: 10px"
+                        src="Image/icon-show.png"
+                        alt=""
+                    />
                 </div>
-                <img style="height: 10px; margin: 10px 5px; right: 10px;" src="Image/icon-show.png" alt="">
-            </div>
-            <div id="list-type">
-                <ul style="list-style: none; 
-                padding: 0 10px; 
-                margin: 0; 
-                height: 200px; 
-                margin-right: -25px; 
-                overflow-y: scroll;">
-                    <li class="list-item">
-                        tất cả
-                    </li>
-                    <li class="list-item">
-                        Áo khoác bomber
-                    </li>
-                    <li class="list-item">
-                        Áo khoác gió thể thao
-                    </li>
-                    <li class="list-item">
-                        Áo khoác da
-                    </li>
-                    <li class="list-item">
-                        vest
-                    </li>
-                    <li class="list-item">
-                        Áo hoodie
-                    </li>
-                    <li class="list-item">
-                        Quần Jeans
-                    </li>
-                    <li class="list-item">
-                        Quần Tây
-                    </li>
-                    <li class="list-item">
-                        Quần Kaki
-                    </li>
-                    <li class="list-item">
-                        Quần Baggy
-                    </li>
-                    <li class="list-item">
-                        Quần thể thao
-                    </li>
-                    <li class="list-item">
-                        Quần short
-                    </li>
-                    <li class="list-item">
-                        Quần túi hộp
-                    </li>
-                    <li class="list-item">
-                        áo croptop
-                    </li>
-                    <li class="list-item">
-                        áo sơ mi
-                        <!-- <img src="admin/Image/ao-croptop-nu-sign.jpeg" alt=""> -->
-                    </li>
-                </ul>
-                <div style="display: flex; justify-content: center;">
-                    <img src="Image/icon-show.png" alt="">
+                <div id="list-type">
+                    <ul
+                        style="
+                            list-style: none;
+                            padding: 0 10px;
+                            margin: 0;
+                            height: 200px;
+                            margin-right: -25px;
+                            overflow-y: scroll;
+                        "
+                    >
+                        <li class="list-item">tất cả</li>
+                        <li class="list-item">Áo khoác bomber</li>
+                        <li class="list-item">Áo khoác gió thể thao</li>
+                        <li class="list-item">Áo khoác da</li>
+                        <li class="list-item">vest</li>
+                        <li class="list-item">Áo hoodie</li>
+                        <li class="list-item">Quần Jeans</li>
+                        <li class="list-item">Quần Tây</li>
+                        <li class="list-item">Quần Kaki</li>
+                        <li class="list-item">Quần Baggy</li>
+                        <li class="list-item">Quần thể thao</li>
+                        <li class="list-item">Quần short</li>
+                        <li class="list-item">Quần túi hộp</li>
+                        <li class="list-item">áo croptop</li>
+                        <li class="list-item">
+                            áo sơ mi
+                            <!-- <img src="admin/Image/ao-croptop-nu-sign.jpeg" alt=""> -->
+                        </li>
+                    </ul>
+                    <div style="display: flex; justify-content: center">
+                        <img src="Image/icon-show.png" alt="" />
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="price">
-            <label for="">giá</label>
-            <div id="show-price">
-                <div id="selected-price" class="list">
-                    tất cả
+            <div class="price">
+                <label for="">giá</label>
+                <div id="show-price">
+                    <div id="selected-price" class="list">tất cả</div>
+                    <img
+                        style="
+                            height: 10px;
+                            margin: 10px 5px;
+                            right: 10px;
+                            position: absolute;
+                        "
+                        style="height: 10px"
+                        src="Image/icon-show.png"
+                        alt=""
+                    />
                 </div>
-                <img style="height: 10px; margin: 10px 5px; right: 10px; position: absolute;" style="height: 10px;"
-                    src="Image/icon-show.png" alt="">
-            </div>
-            <div id="list-price">
-                <ul
-                    style="list-style: none; padding: 0 10px; margin: 0; height: 200px; margin-right: -25px; overflow-y: scroll;">
-                    <li class="list-item">
-                        tất cả
-                    </li>
-                    <li class="list-item">
-                        dưới 100.000 VNĐ
-                    </li>
-                    <li class="list-item">
-                        từ 100.000 - 300.000 VNĐ
-                    </li>
-                    <li class="list-item">
-                        từ 300.000 - 500.000 VNĐ
-                    </li>
-                    <li class="list-item">
-                        từ 500.000 - 700.000 VNĐ
-                    </li>
-                    <li class="list-item">
-                        từ 700.000 - 900.000 VNĐ
-                    </li>
-                    <li class="list-item">
-                        từ 900.000 - 1.200.000 VNĐ
-                    </li>
-                    <li class="list-item">
-                        từ 1.200.000 - 1.500.000 VNĐ
-                    </li>
-                    <li class="list-item">
-                        trên 1.500.000 VNĐ
-                    </li>
-                </ul>
-                <div style="display: flex; justify-content: center;">
-                    <img src="Image/icon-show.png" alt="">
+                <div id="list-price">
+                    <ul
+                        style="
+                            list-style: none;
+                            padding: 0 10px;
+                            margin: 0;
+                            height: 200px;
+                            margin-right: -25px;
+                            overflow-y: scroll;
+                        "
+                    >
+                        <li class="list-item">tất cả</li>
+                        <li class="list-item">dưới 100.000 VNĐ</li>
+                        <li class="list-item">từ 100.000 - 300.000 VNĐ</li>
+                        <li class="list-item">từ 300.000 - 500.000 VNĐ</li>
+                        <li class="list-item">từ 500.000 - 700.000 VNĐ</li>
+                        <li class="list-item">từ 700.000 - 900.000 VNĐ</li>
+                        <li class="list-item">từ 900.000 - 1.200.000 VNĐ</li>
+                        <li class="list-item">từ 1.200.000 - 1.500.000 VNĐ</li>
+                        <li class="list-item">trên 1.500.000 VNĐ</li>
+                    </ul>
+                    <div style="display: flex; justify-content: center">
+                        <img src="Image/icon-show.png" alt="" />
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="sale">
-            <label for="">khuyến mãi</label>
-            <div id="show-sale">
-                <div id="selected-sale" class="list">
-                    tất cả
+            <div class="sale">
+                <label for="">khuyến mãi</label>
+                <div id="show-sale">
+                    <div id="selected-sale" class="list">tất cả</div>
+                    <img
+                        style="
+                            height: 10px;
+                            margin: 10px 5px;
+                            right: 10px;
+                            position: absolute;
+                        "
+                        style="height: 10px"
+                        src="Image/icon-show.png"
+                        alt=""
+                    />
                 </div>
-                <img style="height: 10px; margin: 10px 5px; right: 10px; position: absolute;" style="height: 10px;"
-                    src="Image/icon-show.png" alt="">
-            </div>
-            <div id="list-sale">
-                <ul
-                    style="list-style: none; padding: 0 10px; margin: 0; height: 200px; margin-right: -25px; overflow-y: scroll;">
-                    <li class="list-item">
-                        tất cả
-                    </li>
-                    <li class="list-item">
-                        giảm 15%
-                    </li>
-                    <li class="list-item">
-                        giảm 20%
-                    </li>
-                    <li class="list-item">
-                        giảm 25%
-                    </li>
-                    <li class="list-item">
-                        giảm 30%
-                    </li>
-                    <li class="list-item">
-                        giảm 35%
-                    </li>
-                    <li class="list-item">
-                        giảm 40%
-                    </li>
-                    <li class="list-item">
-                        giảm 45%
-                    </li>
-                    <li class="list-item">
-                        giảm 50%
-                    </li>
-                    <li class="list-item">
-                        giảm 55%
-                    </li>
-                    <li class="list-item">
-                        giảm 60%
-                    </li>
-                    <li class="list-item">
-                        giảm 65%
-                    </li>
-                    <li class="list-item">
-                        giảm 70%
-                    </li>
-                    <li class="list-item">
-                        giảm 75%
-                    </li>
-                </ul>
-                <div style="display: flex; justify-content: center;">
-                    <img src="Image/icon-show.png" alt="">
+                <div id="list-sale">
+                    <ul
+                        style="
+                            list-style: none;
+                            padding: 0 10px;
+                            margin: 0;
+                            height: 200px;
+                            margin-right: -25px;
+                            overflow-y: scroll;
+                        "
+                    >
+                        <li class="list-item">tất cả</li>
+                        <li class="list-item">giảm 15%</li>
+                        <li class="list-item">giảm 20%</li>
+                        <li class="list-item">giảm 25%</li>
+                        <li class="list-item">giảm 30%</li>
+                        <li class="list-item">giảm 35%</li>
+                        <li class="list-item">giảm 40%</li>
+                        <li class="list-item">giảm 45%</li>
+                        <li class="list-item">giảm 50%</li>
+                        <li class="list-item">giảm 55%</li>
+                        <li class="list-item">giảm 60%</li>
+                        <li class="list-item">giảm 65%</li>
+                        <li class="list-item">giảm 70%</li>
+                        <li class="list-item">giảm 75%</li>
+                    </ul>
+                    <div style="display: flex; justify-content: center">
+                        <img src="Image/icon-show.png" alt="" />
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- poster -->
-    <div id="poster">
-        <div id="marquee-poster" style="width: 100%; display: flex; justify-content: space-between;">
-            <img id="ps1" class="image-poster" src="Image/poster/poster.png" alt="">
-            <img id="ps2" class="image-poster" src="Image/poster/img_banner_watch_women.jpeg" alt="">
+        <!-- poster -->
+        <div id="poster">
+            <div
+                id="marquee-poster"
+                style="
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                "
+            >
+                <img
+                    id="ps1"
+                    class="image-poster"
+                    src="Image/poster/poster.png"
+                    alt=""
+                />
+                <img
+                    id="ps2"
+                    class="image-poster"
+                    src="Image/poster/img_banner_watch_women.jpeg"
+                    alt=""
+                />
+            </div>
         </div>
-    </div>
-    <div id="main">
-
-    </div>
-    <div id="ds-tim">
-
-    </div>
-    <!-- <div id="search-div"></div> -->
-    <div class="middle">
-        <!-- <div id="left" class="left">
+        <div id="main"></div>
+        <div id="ds-tim"></div>
+        <!-- <div id="search-div"></div> -->
+        <div class="middle">
+            <!-- <div id="left" class="left">
             <div class="filter-left">
                 <p style="font-size: 15px;"> </p>
             </div>
@@ -859,133 +1056,106 @@ position: relative;">
                 <img style="height: 20px;" src="Image/icon-plus.png" alt="">
             </div>
         </div> -->
-        <div id="space-product">
-
+            <div id="space-product"></div>
         </div>
-    </div>
-    <div>
-
-    </div>
-    <div id="footer">
-        <div class="profile">
-            <div>
-                <p class="title-footer">
-                    Về Blak-kie
-                </p>
-                <p class="para">
-                    This is a long text
-                </p>
-            </div>
-            <div>
-                <p class="title-footer">
-                    Địa chỉ
-                </p>
-                <p class="para">
-                    273 An Dương Vương, phường 13, quận 5, TP Hồ Chí Minh
-                </p>
-            </div>
-            <div>
-                <p class="title-footer">
-                    Hỗ trợ khách hàng
-                </p>
-                <a href="">
-                    hướng dẫn đặt hàng
-                </a>
-                <a href="">
-                    chính sách và quy định
-                </a>
-                <a href="">
-                    Thông tin sở hữu
-                </a>
-            </div>
-            <div class="footer-contact">
-                <p class="title-footer">
-                    Liên hệ
-                </p>
+        <div></div>
+        <div id="footer">
+            <div class="profile">
                 <div>
-                    <img style="height: 12px; margin-right: 5px;" src="Image/icon-phone.png" alt="" srcset="">
-                    <p style="display: inline;">
-                        0394142823
+                    <p class="title-footer">Về Blak-kie</p>
+                    <p class="para">This is a long text</p>
+                </div>
+                <div>
+                    <p class="title-footer">Địa chỉ</p>
+                    <p class="para">
+                        273 An Dương Vương, phường 13, quận 5, TP Hồ Chí Minh
                     </p>
                 </div>
                 <div>
-                    <img style="height: 12px; margin-right: 5px;" src="Image/icon-mail.png" alt="">
-                    <p style="display: inline;">
-                        blakkie@gmail.com
-                    </p>
+                    <p class="title-footer">Hỗ trợ khách hàng</p>
+                    <a href=""> hướng dẫn đặt hàng </a>
+                    <a href=""> chính sách và quy định </a>
+                    <a href=""> Thông tin sở hữu </a>
                 </div>
-                <label style="display: block; margin-top: 20px; font-size: 16px;" for="">
-                    follow us
-                </label>
-                <img class="icon-contact" src="Image/icon-fb.png" alt="">
-                <img class="icon-contact" src="Image/icon-ins.png" alt="">
-                <img class="icon-contact" src="Image/icon-tw.png" alt="">
+                <div class="footer-contact">
+                    <p class="title-footer">Liên hệ</p>
+                    <div>
+                        <img
+                            style="height: 12px; margin-right: 5px"
+                            src="Image/icon-phone.png"
+                            alt=""
+                            srcset=""
+                        />
+                        <p style="display: inline">0394142823</p>
+                    </div>
+                    <div>
+                        <img
+                            style="height: 12px; margin-right: 5px"
+                            src="Image/icon-mail.png"
+                            alt=""
+                        />
+                        <p style="display: inline">blakkie@gmail.com</p>
+                    </div>
+                    <label
+                        style="
+                            display: block;
+                            margin-top: 20px;
+                            font-size: 16px;
+                        "
+                        for=""
+                    >
+                        follow us
+                    </label>
+                    <img class="icon-contact" src="Image/icon-fb.png" alt="" />
+                    <img class="icon-contact" src="Image/icon-ins.png" alt="" />
+                    <img class="icon-contact" src="Image/icon-tw.png" alt="" />
+                </div>
+            </div>
+            <div id="copyright">Copyright © 2022 by nhóm P.M.T.A</div>
+        </div>
+
+        <div id="hienthigiohang">
+            <div id="tranggiohang">
+                <div class="giohang">Giỏ hàng</div>
+                <div class="ten-cot">
+                    <div></div>
+                    <div>Tên sản phẩm</div>
+                    <div>Giá</div>
+                    <div>Sl</div>
+                    <div>Size</div>
+                    <div>Màu</div>
+                    <div>Thành tiền</div>
+                    <div></div>
+                </div>
+                <div class="div-giohang">
+                    <table class="table-giohang"></table>
+                </div>
+                <div
+                    style="
+                        box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+                        display: flex;
+                        margin: 10px;
+                        padding: 10px;
+                        align-items: center;
+                        border-radius: 20px;
+                        justify-content: space-between;
+                        font-size: 20px;
+                    "
+                >
+                    <div>Tổng tiền: <span id="tongthanhtoan">0 VND</span></div>
+                    <div id="nut-thanhtoan">Thanh toán</div>
+                </div>
             </div>
         </div>
-        <div id="copyright">
-            Copyright © 2022 by nhóm P.M.T.A
-        </div>
-    </div>
-
-
-    <div id="hienthigiohang">
-        <div id="tranggiohang">
-            <div class="giohang">
-                Giỏ hàng
-            </div>
-            <div class="ten-cot">
-                <div></div>
-                <div>
-                    Tên sản phẩm
-                </div>
-                <div>
-                    Giá
-                </div>
-                <div>
-                    Sl
-                </div>
-                <div>
-                    Size
-                </div>
-                <div>
-                    Màu
-                </div>
-                <div>
-                    Thành tiền
-                </div>
-                <div></div>
-            </div>
-            <div class="div-giohang">
-                <table class="table-giohang">
-
-                </table>
-            </div>
-            <div style="
-            box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
-            display: flex;
-            margin: 10px;
-            padding: 10px;
-            border-radius: 20px;
-            justify-content: space-between;
-            font-size: 20px;">
-                <div>
-                    Tổng tiền: <span id="tongthanhtoan">0 VND</span>
-                </div>
-                <div id="nut-thanhtoan">
-                    Thanh toán
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-<!-- <script src="init.js"></script> -->
-<script src="./JS/function.js" defer></script>
-<script src="./JS/home_page.js" defer></script>
-<script src="./JS/index.js" defer></script>
-<script src="./JS/cart.js" defer></script>
-<script src="./JS/xemsp.js" defer></script>
-<script src="./JS/timkiem.js" defer></script>
-<script src="./JS/lsdh.js" defer></script>
-<script src="./JS/signin.js" defer></script>
-<script src="./JS/signup.js" defer></script>
+    </body>
+    <!-- <script src="init.js"></script> -->
+    <script src="./JS/function.js" defer></script>
+    <script src="./JS/home_page.js" defer></script>
+    <script src="./JS/index.js" defer></script>
+    <script src="./JS/cart.js" defer></script>
+    <script src="./JS/xemsp.js" defer></script>
+    <script src="./JS/timkiem.js" defer></script>
+    <script src="./JS/lsdh.js" defer></script>
+    <script src="./JS/signin.js" defer></script>
+    <script src="./JS/signup.js" defer></script>
 </html>

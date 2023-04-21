@@ -3,3 +3,21 @@
     font-family: "Times New Roman", Times, serif;
     color: red;
 }
+/* Ẩn checkbox */
+.checkboxIncart {
+    display: none;
+}
+
+/* Thiết lập kiểu của vùng nhấp nháy khi nhấn vào label */
+.checkbox-label {
+    cursor: pointer;
+    color: black;
+    text-decoration: none;
+    border-bottom: 1px dotted black;
+}
+
+/* Thiết lập kiểu của vùng nhấn nháy khi checkbox được chọn */
+.checkboxIncart:checked + .checkbox-label {
+    color: red;
+    border-color: red;
+}
