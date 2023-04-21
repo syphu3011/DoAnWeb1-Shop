@@ -11,40 +11,53 @@ header('Content-Type: application/json; charset=utf-8');
 
 
 if ($_SERVER['REQUEST_METHOD'] === "GET"){	
-	$getAll = True;
-	$arrHeader = Table::describe($conn, $tableName);
+	$staHeader = Table::describe($conn, "staff");
+	$accHeader = Table::describe($conn, "account");
+	$condition = "1=1";
 
-	foreach ($_REQUEST as $key => $value) {
-		foreach ($arrHeader as $key2 => $value2) {
-			if ($key === $value2) {
-				$getAll = False;
-				break;
-			}
-		}
-		if (!$getAll)
-			break;
+	foreach($_GET as $key => $value) {
+		if (in_array($key, $staHeader))
+			$condition .= " AND staff.$key = '$value'";
+		if (in_array($key, $accHeader))
+			$condition .= " AND account.$key = '$value'";
 	}
 
-	if ($getAll) {
-		// ? http://localhost/doan/admin/Server/staff/staff.php
-		$arrFromDb = Table::tableQueryAll($conn, $tableName);
-		echo Table::jsonify($conn, $arrFromDb, $tableName);
-	} else {
-		// ? http://localhost/doan/admin/Server/staff/staff.php?variable2=70&variable1=16
-		$arrProperty = array();
-		$arrContent = array();
-		foreach ($_REQUEST as $key => $value) {
-			array_push($arrProperty, $key);
-			array_push($arrContent, $value);
+	if ($condition === "1=1" && isset($_GET['search'])) {
+		$toSearch = $_GET['search'];
+		$condition = "";
+		foreach($staHeader as $key => $value) {
+			$condition .= " OR staff.$value = '$toSearch'";
 		}
-		$arrFromDb = Table::tableQueryMultipleProperty(
+		foreach($accHeader as $key => $value) {
+			$condition .= " OR account.$value = '$toSearch'";
+		}
+		$condition = substr($condition, 4);
+	}
+
+	// echo $condition;
+
+	// ? http://localhost/doan/admin/Server/staff/staff.php
+	echo Table::jsonifyCouple(
+		$conn, 
+		Table::tableQueryCouple(
+			// * connection
 			$conn, 
-			$tableName,
-			$arrProperty,
-			$arrContent
-		);
-		echo Table::jsonify($conn, $arrFromDb, $tableName);
-	}
+			// * childtable
+			"staff", 
+			// * parenttable
+			"account", 
+			// * foreign key on child
+			"id_user",
+			// * foreign key on parent
+			"id_user",
+			// * column to select
+			"*",
+			// * condition to select
+			$condition
+			// "staff.id="NV001""
+		), 
+		"staff", "account"
+	);
 	
 }
 
