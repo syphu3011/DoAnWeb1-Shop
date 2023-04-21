@@ -706,7 +706,7 @@ btnprodw.onmouseleave = function () {
 
 btnprodm.onmouseenter = function () {
     prod.style.display = "block";
-    createListType("na");
+    createListType("nam");
     showuser.style.display = "";
     showcart.style.display = "";
     offlist();
@@ -726,119 +726,119 @@ let isProductShow = false;
 //
 //
 function createListType(sex) {
-    let sp = document.createElement("div");
-    sp.id = "sanpham";
-    //
-    for (let i = 0; i < data.largeClassify.length; i++) {
-        let div = document.createElement("div");
-        div.style.borderRight = "1px solid gray";
-        div.style.height = "250px";
-        div.style.padding = "0 20% 5px 20px";
-        div.style.margin = "10px";
-        let divType = document.createElement("div");
-        divType.style.fontSize = "18px";
-        divType.style.marginTop = "20px";
-        divType.style.color = "black";
-        divType.appendChild(
-            document.createTextNode(data.largeClassify[i].name)
-        );
-        div.appendChild(divType);
-        let ul = document.createElement("ul");
-        ul.style.padding = "0";
-        ul.style.listStyle = "none";
-        div.appendChild(ul);
-        for (let j = 0; j < data.largeClassify[i].miniClassify.length; j++) {
-            if (
-                data.largeClassify[i].miniClassify[j].id.indexOf(
-                    sex.toUpperCase()
-                ) != -1
-            ) {
-                let li = document.createElement("li");
-                li.className = "list-item";
-                li.onclick = function () {
-                    document.getElementsByClassName("middle")[0].style.display =
-                        "flex";
-                    if (isHomePage) {
-                        isProductShow = true;
-                        isHomePage = false;
-                        if (document.getElementById("div-main") != null) {
-                            document.getElementById("div-main").remove();
-                        }
-                    } else if (isProductShow) {
-                        if (arrProduct.length > 0) {
-                            if (
-                                document.getElementById("page-number") != null
-                            ) {
-                                document.getElementById("page-number").remove();
-                            }
-                            if (document.getElementById("div-list")) {
-                                document.getElementById("div-list").remove();
-                            }
-                        }
-                        if (document.getElementById("div-title") != null) {
-                            document.getElementById("div-title").remove();
-                        }
-                    } else if (isSearch) {
-                        isProductShow = true;
-                        isHomePage = false;
-                        isSearch = false;
-                        if (document.getElementById("searc") != null) {
-                            document.getElementById("searc").remove();
-                        }
-                    }
-                    currentPage = 1;
-                    pathImage.length = 0;
-                    arrProduct.length = 0;
-                    let pos = document.documentElement.scrollTop;
-                    let id = setInterval(function frame() {
-                        if (pos <= 300) {
-                            clearInterval(id);
-                            createPageProduct(
-                                spaceProduct,
-                                data.largeClassify[i].name +
-                                    " - " +
-                                    data.largeClassify[i].miniClassify[j].name,
-                                data.largeClassify[i].miniClassify[j].id,
-                                12
-                            );
-                            if (data.largeClassify[i].id == "PK") {
-                                if (arrProduct.length > 0) {
-                                    document.getElementById(
-                                        "list-product"
-                                    ).style.gridTemplateColumns =
-                                        "1fr 1fr 1fr 1fr";
-                                }
-                                document.getElementById(
-                                    "space-product"
-                                ).style.width = "100%";
-                            }
-                        } else {
-                            pos -= 10;
-                            document.documentElement.scrollTop = pos;
-                        }
-                    }, 1);
-                };
-                li.appendChild(
-                    document.createTextNode(
-                        data.largeClassify[i].miniClassify[j].name
-                    )
-                );
-                ul.appendChild(li);
-            }
-        }
-        sp.appendChild(div);
-    }
-    prod.appendChild(sp);
-    prod.onmouseenter = function () {
-        prod.style.display = "block";
-        createListType(sex);
-    };
-    prod.onmouseleave = function () {
-        prod.style.display = "";
-        if (document.getElementById("sanpham") != null) {
-            document.getElementById("sanpham").remove();
-        }
-    };
+    // let sp = document.createElement("div");
+    // sp.id = "sanpham";
+    // //
+    // for (let i = 0; i < data.largeClassify.length; i++) {
+    //     let div = document.createElement("div");
+    //     div.style.borderRight = "1px solid gray";
+    //     div.style.height = "250px";
+    //     div.style.padding = "0 20% 5px 20px";
+    //     div.style.margin = "10px";
+    //     let divType = document.createElement("div");
+    //     divType.style.fontSize = "18px";
+    //     divType.style.marginTop = "20px";
+    //     divType.style.color = "black";
+    //     divType.appendChild(
+    //         document.createTextNode(data.largeClassify[i].name)
+    //     );
+    //     div.appendChild(divType);
+    //     let ul = document.createElement("ul");
+    //     ul.style.padding = "0";
+    //     ul.style.listStyle = "none";
+    //     div.appendChild(ul);
+    //     for (let j = 0; j < data.largeClassify[i].miniClassify.length; j++) {
+    //         if (
+    //             data.largeClassify[i].miniClassify[j].id.indexOf(
+    //                 sex.toUpperCase()
+    //             ) != -1
+    //         ) {
+    //             let li = document.createElement("li");
+    //             li.className = "list-item";
+    //             li.onclick = function () {
+    //                 document.getElementsByClassName("middle")[0].style.display =
+    //                     "flex";
+    //                 if (isHomePage) {
+    //                     isProductShow = true;
+    //                     isHomePage = false;
+    //                     if (document.getElementById("div-main") != null) {
+    //                         document.getElementById("div-main").remove();
+    //                     }
+    //                 } else if (isProductShow) {
+    //                     if (arrProduct.length > 0) {
+    //                         if (
+    //                             document.getElementById("page-number") != null
+    //                         ) {
+    //                             document.getElementById("page-number").remove();
+    //                         }
+    //                         if (document.getElementById("div-list")) {
+    //                             document.getElementById("div-list").remove();
+    //                         }
+    //                     }
+    //                     if (document.getElementById("div-title") != null) {
+    //                         document.getElementById("div-title").remove();
+    //                     }
+    //                 } else if (isSearch) {
+    //                     isProductShow = true;
+    //                     isHomePage = false;
+    //                     isSearch = false;
+    //                     if (document.getElementById("searc") != null) {
+    //                         document.getElementById("searc").remove();
+    //                     }
+    //                 }
+    //                 currentPage = 1;
+    //                 pathImage.length = 0;
+    //                 arrProduct.length = 0;
+    //                 let pos = document.documentElement.scrollTop;
+    //                 let id = setInterval(function frame() {
+    //                     if (pos <= 300) {
+    //                         clearInterval(id);
+    //                         createPageProduct(
+    //                             spaceProduct,
+    //                             data.largeClassify[i].name +
+    //                                 " - " +
+    //                                 data.largeClassify[i].miniClassify[j].name,
+    //                             data.largeClassify[i].miniClassify[j].id,
+    //                             12
+    //                         );
+    //                         if (data.largeClassify[i].id == "PK") {
+    //                             if (arrProduct.length > 0) {
+    //                                 document.getElementById(
+    //                                     "list-product"
+    //                                 ).style.gridTemplateColumns =
+    //                                     "1fr 1fr 1fr 1fr";
+    //                             }
+    //                             document.getElementById(
+    //                                 "space-product"
+    //                             ).style.width = "100%";
+    //                         }
+    //                     } else {
+    //                         pos -= 10;
+    //                         document.documentElement.scrollTop = pos;
+    //                     }
+    //                 }, 1);
+    //             };
+    //             li.appendChild(
+    //                 document.createTextNode(
+    //                     data.largeClassify[i].miniClassify[j].name
+    //                 )
+    //             );
+    //             ul.appendChild(li);
+    //         }
+    //     }
+    //     sp.appendChild(div);
+    // }
+    // prod.appendChild(sp);
+    // prod.onmouseenter = function () {
+    //     prod.style.display = "block";
+    //     createListType(sex);
+    // };
+    // prod.onmouseleave = function () {
+    //     prod.style.display = "";
+    //     if (document.getElementById("sanpham") != null) {
+    //         document.getElementById("sanpham").remove();
+    //     }
+    // };
 }
 
 function pushAmount(value) {
