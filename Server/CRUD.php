@@ -41,6 +41,7 @@
         }
         
         //Loai san pham
+        
         public function read_data_mini_classifyById($conn, $id)
         {
             # code...

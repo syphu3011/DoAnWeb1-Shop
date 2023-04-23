@@ -60,7 +60,12 @@ let password_regis = document.getElementById("passwd-regis");
 let same_passwd = document.getElementById("same-passwd");
 let birthday = document.getElementById("birthday");
 let btnsigup = document.getElementById("btn-regis");
-
+document.getElementById("product").onmouseenter = function () {
+    document.getElementById("product").style.display = "block";
+};
+document.getElementById("product").onmouseleave = function () {
+    document.getElementById("product").style.display = "";
+};
 function getCurrentDate() {
     function formatNumber(number) {
         return number < 10 ? "0" + number : number;
@@ -699,9 +704,6 @@ btnprodw.onmouseenter = function () {
 };
 btnprodw.onmouseleave = function () {
     prod.style.display = "";
-    if (document.getElementById("sanpham") != null) {
-        document.getElementById("sanpham").remove();
-    }
 };
 
 btnprodm.onmouseenter = function () {
@@ -713,9 +715,6 @@ btnprodm.onmouseenter = function () {
 };
 btnprodm.onmouseleave = function () {
     prod.style.display = "";
-    if (document.getElementById("sanpham") != null) {
-        document.getElementById("sanpham").remove();
-    }
 };
 
 let isProductShow = false;
@@ -726,6 +725,7 @@ let isProductShow = false;
 //
 //
 function createListType(sex) {
+    document.getElementById("")
     // let sp = document.createElement("div");
     // sp.id = "sanpham";
     // //

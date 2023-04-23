@@ -61,8 +61,8 @@
 #choose-product-women,
 #choose-product-men,
 #home-page {
-    padding: 0 10px;
-    margin: 0 20px;
+    padding: 0 30px;
+    /* margin: 0 20px; */
     height: 40px;
     font-size: 16px;
     line-height: 40px;

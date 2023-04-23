@@ -397,3 +397,24 @@ input[type="number"] {
 .list-item-container {
     margin-bottom: 10px;
 }
+.button_show_more {
+    font-family: "Bungee", cursive;
+    color: #ffffff;
+    padding: 10px 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border: none;
+    text-align: center;
+    /* text-decoration: none; */
+    /* display: inline-block; */
+    font-size: 16px;
+    /* margin: 20px; */
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: lightpink;
+    transition: transform 0.3s ease-in-out;
+}
+
+.button_show_more:hover {
+    transform: scale(1.1);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}

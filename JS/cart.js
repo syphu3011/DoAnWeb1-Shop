@@ -386,6 +386,8 @@ function sukien(data_product) {
                 // document.getElementsByClassName("ton-tien")[i].textContent =
                 //     calculated(product_in_cart[i].price) + " VNĐ";
                 fill_price_in_cart();
+                document.getElementById("tongthanhtoan").textContent =
+                    calculated(total_price_onclick().totalprice) + " VND";
             } else {
                 alert("Đã đạt số lượng tối thiểu");
             }
@@ -404,8 +406,8 @@ function sukien(data_product) {
             //       }
             //       document.getElementsByClassName("ton-tien")[i].textContent =
             //         calculated(currentUser.cart[i].price) + " VND";
-            //       document.getElementById("tongthanhtoan").textContent =
-            //         calculated(tongtien) + " VND";
+                //   document.getElementById("tongthanhtoan").textContent =
+                //     calculated(total_price_onclick().totalprice) + " VND";
             //     } else {
             //       alert("Đã đạt số lượng tối thiểu");
             //     }
@@ -434,6 +436,8 @@ function sukien(data_product) {
                 document.getElementsByClassName("hien-sl")[i].textContent =
                     product_in_cart[i].amount;
                 fill_price_in_cart();
+                document.getElementById("tongthanhtoan").textContent =
+                    calculated(total_price_onclick().totalprice) + " VND";
             } else {
                 alert("Đã đạt số lượng tối đa");
             }
