@@ -50,7 +50,10 @@ function create_Homepage(data_res) {
         for (let k = 0; k < data_product.length; k++) {
             if (count_i == 5) {
                 break;
-            } else if (data_product[k].id.indexOf(element.id) != -1) {
+            } else if (
+                data_product[k].id.indexOf(element.id) != -1 &&
+                data_product[k].idstatus == "TT01"
+            ) {
                 count_i++;
                 let link_image = "";
                 let price_product = "";

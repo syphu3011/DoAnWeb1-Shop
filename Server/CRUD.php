@@ -70,6 +70,29 @@
             $stmt = null;
             return $result;
         }
+        public function read_productByIdClassify($conn, $gender, $id_classify) {
+            $sql="SELECT 
+                product_list_classify.id_product, 
+                product.name, 
+                product_list.price
+            FROM 
+                product_list_classify, 
+                product, 
+                product_list,
+                classify
+            WHERE product_list_classify.id_classify=classify.id
+                AND product_list_classify.id_product=product.id
+                AND product.idstatus=`TT01`
+                AND product_list.id_product = product_list_classify.id_product
+                AND classify.gender = ?
+                AND classify.id = ?
+                    ";
+            $stmt=$conn->prepare($sql);
+            $stmt->execute([$gender, $id_classify]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
         public function read_data_product($conn) {
             $sql="SELECT * FROM product";
             $stmt=$conn->prepare($sql);

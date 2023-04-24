@@ -396,6 +396,11 @@ input[type="number"] {
 
 .list-item-container {
     margin-bottom: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.list-item-container:hover {
+    color: red;
 }
 .button_show_more {
     font-family: "Bungee", cursive;

@@ -60,11 +60,13 @@ let password_regis = document.getElementById("passwd-regis");
 let same_passwd = document.getElementById("same-passwd");
 let birthday = document.getElementById("birthday");
 let btnsigup = document.getElementById("btn-regis");
+let mouse_enter_gender_product = "";
 document.getElementById("product").onmouseenter = function () {
     document.getElementById("product").style.display = "block";
 };
 document.getElementById("product").onmouseleave = function () {
     document.getElementById("product").style.display = "";
+    mouse_enter_gender_product = "";
 };
 function getCurrentDate() {
     function formatNumber(number) {
@@ -699,22 +701,27 @@ btnprodw.onmouseenter = function () {
     prod.style.display = "block";
     offlist();
     createListType("nu");
+    mouse_enter_gender_product = "nữ";
     showuser.style.display = "";
     showcart.style.display = "";
 };
 btnprodw.onmouseleave = function () {
     prod.style.display = "";
+    mouse_enter_gender_product = "";
 };
 
 btnprodm.onmouseenter = function () {
     prod.style.display = "block";
     createListType("nam");
+    mouse_enter_gender_product = "nam";
+
     showuser.style.display = "";
     showcart.style.display = "";
     offlist();
 };
 btnprodm.onmouseleave = function () {
     prod.style.display = "";
+    mouse_enter_gender_product = "";
 };
 
 let isProductShow = false;
@@ -724,8 +731,24 @@ let isProductShow = false;
 //
 //
 //
-function createListType(sex) {
-    document.getElementById("")
+function createListType(gender) {
+    // document.getElementById("")
+    for (let i = 0; i < data.largeClassify.length; i++) {
+        let largeClassify = data.largeClassify[i];
+        document.getElementsByClassName("ul_list_container")[i].innerHTML = "";
+        for (let j = 0; j < largeClassify.miniClassify.length; j++) {
+            let miniClassify = largeClassify.miniClassify[j];
+            document.getElementsByClassName("ul_list_container")[i].innerHTML +=
+                `<li id="` +
+                miniClassify.id +
+                `" class="list-item-container">
+                                        ` +
+                miniClassify.name +
+                `
+                                    </li>`;
+        }
+    }
+    choice_type_product(gender);
     // let sp = document.createElement("div");
     // sp.id = "sanpham";
     // //
@@ -840,7 +863,25 @@ function createListType(sex) {
     //     }
     // };
 }
+function choice_type_product(gender) {
+    let classify = document.getElementsByClassName("list-item-container");
+    for (let i = 0; i < classify.length; i++) {
+        classify[i].onclick = function () {
+            console.log(gender);
 
+            getDataFromServer(
+                "./Server/list_product_by_classify.php",
+                {
+                    id_classify: classify[i].id,
+                    gender: gender,
+                },
+                function (respone) {
+                    console.log(respone);
+                }
+            );
+        };
+    }
+}
 function pushAmount(value) {
     inStock.push(value);
 }
@@ -1061,57 +1102,6 @@ function ttGioHang(thanhtoansp) {
     // };
 }
 
-function updateSize(index, cur, text) {
-    console.log(cur.idProd, cur.idSize);
-    let isSelected = 0;
-    let ar = new Array();
-    let div = document.createElement("div");
-    div.style.display = "flex";
-    div.style.marginTop = "0px";
-    div.style.textAlign = "center";
-    let arrBut = new Array();
-    data.size.forEach((el) => {
-        if (el.id.indexOf(cur.idSize[0]) != -1) {
-            let btnSize = document.createElement("div");
-            arrBut.push(btnSize);
-            btnSize.style.padding = "5px";
-            btnSize.style.paddingTop = "0px";
-            btnSize.style.width = "15px";
-            btnSize.style.textAlign = "center";
-            btnSize.style.cursor = "pointer";
-            btnSize.style.border = "2px solid gray";
-            btnSize.style.margin = "5px";
-            btnSize.style.marginTop = "0px";
-            btnSize.appendChild(document.createTextNode(el.name));
-            ar.push(el);
-            div.appendChild(btnSize);
-        }
-    });
-    for (let i = 0; i < ar.length; i++) {
-        arrBut[i].onclick = function () {
-            console.log("log");
-            arrBut[isSelected].style.borderColor = "gray";
-            arrBut[i].style.borderColor = "red";
-            cur.idSize = ar[i].id;
-            let total_amount = 0;
-            data.prodInStock.forEach((e) => {
-                if (cur.idSize == e.idSize && cur.idProd == e.idProd) {
-                    total_amount += parseInt(e.amount);
-                }
-            });
-            text.textContent = total_amount + " sản phẩm có sẵn";
-            inStock[i].amount = total_amount;
-            localStorage.setItem("data", JSON.stringify(data));
-            isSelected = i;
-        };
-        if (cur.idSize == ar[i].id) {
-            arrBut[isSelected].style.borderColor = "gray";
-            arrBut[i].style.borderColor = "red";
-            isSelected = i;
-        }
-    }
-    return div;
-}
 document.getElementById("back-btn").onclick = function () {
     back_to_cart();
 };
