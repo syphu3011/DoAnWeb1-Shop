@@ -1,5 +1,10 @@
 // * UI rendering function
 
+// ! chưa hash mật khẩu
+// ! chưa có lọc rồi xóa
+// ! ready to save password condition ? => toggle save button on
+
+
 let readyToSubmit = false;
 let sizeOfTable = 0;
 let selectedCustomer = {};
@@ -20,12 +25,13 @@ async function getCustomerData(key, value) {
   }
 }
 
+
 async function getCustomers() {
   let table = document.getElementById("myTable");
   let customers = await getCustomerData();
   clearTable();
-  console.log("Show customer list: ")
-  console.log(customers);
+  // console.log("Show customer list: ")
+  // console.log(customers);
   sizeOfTable = customers.length;
   customers.forEach((customer) => {
     let row = table.insertRow();
@@ -45,7 +51,7 @@ async function getCustomers() {
     cell4.innerHTML = customer.username;
     cell5.innerHTML = customer.password;
     cell6.innerHTML = customer.privilege;
-    cell7.innerHTML = `<button id="button-customer-status-${customer.id}">${customer.status}</button>`;
+    cell7.innerHTML = `<button id="button-customer-status-${customer.id}-${customer.id_user}">${customer.status}</button>`;
     cell8.innerHTML = `<button id="button-customer-detail-${customer.id}-${customer.id_user}">Chi tiết</button>`;
     $("#button-customer-detail-" + customer.id + '-' + customer.id_user).on("click", function () {
       $("#dialog").css("display", "flex");
@@ -75,20 +81,45 @@ async function getCustomers() {
 }
 
 function bindStatusButList() {
-  // ! chưa có chỉnh trạng thái
   let statusButList = document.querySelectorAll('[id^=button-customer-status-]')
   statusButList.forEach((button) => {
-    button.onclick = function () {
-      if (button.innerHTML === `active`)
+    button.onclick = async function () {
+      let url = '/doan/admin/Server/customer/customer.php';
+      if (button.innerHTML === `active`) {
         button.innerHTML = `idle`
-      else
+        let splitIdButton = button.id.split("-");
+        let customerId = splitIdButton[3];
+        let accountId = splitIdButton[4];
+        let customer = {
+          action: 'update',
+          id: customerId,
+          id_user: accountId,
+          status: 'idle'
+        }
+        $.post(url, customer, (data, status) => {});
+        // ! chưa có báo lõi
+        getCustomers();
+      }
+      else {
         button.innerHTML = `active`
+        let splitIdButton = button.id.split("-");
+        let customerId = splitIdButton[3];
+        let accountId = splitIdButton[4];
+        let customer = {
+          action: 'update',
+          id: customerId,
+          id_user: accountId,
+          status: 'active'
+        }
+        $.post(url, customer, (data, status) => {});
+        // ! chưa có báo lõi
+        getCustomers();
+      }
     }
   })
 }
 
 function saveCustomerDetail(idButton) {
-  // ! ready to save password condition ? => toggle save button on
   let splitIdButton = idButton.split("-");
   let customerId = splitIdButton[2];
   let accountId = splitIdButton[3];
@@ -146,7 +177,6 @@ function saveCustomerDetail(idButton) {
       }
   }
 
-  console.clear();
   // console.log(customer);
   // console.log(account);
   // console.log(selectedCustomer);
@@ -271,6 +301,17 @@ function bindEditNotiIntoBox() {
 
 }
 
+// * add image instruction function
+
+function rgbToHex(r, g, b) {
+  return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+function componentToHex(c) {
+  var hex = c.toString(16);
+  return hex.length == 1 ? '0' + hex : hex;
+}
+
 function renderAddNewCusInterface() {
   readyToSubmit = false;
   // * GUI * //
@@ -284,10 +325,10 @@ function renderAddNewCusInterface() {
   // ! chưa cảnh báo trùng sđt
   $("#add-new-cus-box-content").html(`
   <div style="display: flex; flex-direction: row; padding: 1rem;">
-      <div style="display: flex; flex-direction: column; padding-left: 1rem; padding-top: 1rem;">
-        <img width="100" height="100" src="https://picsum.photos/200" alt="" width="500" height="600">
+      <form id="cus-add-img-form" method="post" style="display: flex; flex-direction: column; padding-left: 1rem; padding-top: 1rem;">
+        <input type="file" name="cus-add-img" id="cus-add-img">
         <button style="margin-top: 1rem;" type="submit">Upload</button>
-      </div>
+      </form>
       <form style="display: flex; flex-direction: column; align-items:center; padding-left: 1rem; padding-bottom: 1rem;">
         <div id="id-new-account">ID tài khoản: ${expectedId}</div>
         <div>Ngày tham gia: Chưa có</div>
@@ -325,6 +366,48 @@ function renderAddNewCusInterface() {
   </div>
   `);
 
+  let customerImgAddform = document.getElementById('cus-add-img-form');
+  customerImgAddform.addEventListener('submit', function (event){
+    event.preventDefault();
+    let formData = new FormData(customerImgAddform);
+    let imageFile = formData.get('cus-add-img');
+    let image = new Image();
+    image.onload = function() {
+      let canvas = document.createElement('canvas');
+      let maxDimension = Math.max(image.width, image.height);
+      let scale = 200 / maxDimension;
+      canvas.width = image.width * scale;
+      canvas.height = image.height * scale;
+      let context = canvas.getContext('2d');
+      context.drawImage(image, 0, 0);
+      let imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+      let hexData = '';
+      for (var i = 0; i < imageData.data.length; i += 4) {
+        let r = imageData.data[i];
+        let g = imageData.data[i + 1];
+        let b = imageData.data[i + 2];
+        hexData += rgbToHex(r, g, b);
+      }
+      var postData = _.assign({
+        'action': 'update',
+        'image': hexData
+      });
+      console.log(postData);
+      $.ajax({
+        url: 'server.php',
+        method: 'POST',
+        data: postData,
+        success: function(response) {
+          console.log(response);
+        },
+        error: function(xhr, status, error) {
+          console.log(error);
+        }
+      });
+    };
+    image.src = URL.createObjectURL(imageFile);
+  });
+
   $("#btn-detail-add-customer-group").html(`
     <button style="width:30rem;" id="save-but-add-${expectedId}" onclick=saveNewCustomer(this.id)>Thêm</button>
     <button style="margin-left: 2rem;" id="canc-but-add" onclick=closeAddCustomer(this.id)>Thoát</button>
@@ -333,6 +416,8 @@ function renderAddNewCusInterface() {
   $("#btn-detail-add-customer-group").css("padding-bottom", "1rem");
 
   // ! chưa ẩn hiện nút save khi add
+  // ! chưa thông báo thêm thành công
+  // ! chưa có thông báo khi thêm thất bại
   bindNotiIntoBox();
   
 }
@@ -410,8 +495,8 @@ async function renderDeleteCus() {
   `
 
   let customers = await getCustomerData();
-  console.log("Delete list: ")
-  console.log(customers);
+  // console.log("Delete list: ")
+  // console.log(customers);
   sizeOfTable = customers.length;
   customers.forEach((customer) => {
     let row = table.insertRow();
@@ -432,7 +517,7 @@ async function renderDeleteCus() {
     cell4.innerHTML = customer.username;
     cell5.innerHTML = customer.password;
     cell6.innerHTML = customer.privilege;
-    cell7.innerHTML = `<button id="button-customer-status-${customer.id}">${customer.status}</button>`;
+    cell7.innerHTML = `<button id="button-customer-status-${customer.id}-${customer.id_user}">${customer.status}</button>`;
     cell8.innerHTML = `<button id="button-customer-detail-${customer.id}-${customer.id_user}">Chi tiết</button>`;
     cell9.innerHTML = `
     <button id="button-customer-delete-no-${customer.id}-${customer.id_user}">Xóa X</button>
@@ -505,13 +590,11 @@ function resetAllDelCusNo() {
 }
 
 function toggleDeleteUp(id) {
-  console.clear();
   id = id.split("-")[4] + "-" + id.split("-")[5]
   wantToDeleteCustomer.push(id);
 }
 
 function toggleDeleteDown(id) {
-  console.clear();
   id = id.split("-")[4] + "-" + id.split("-")[5]
   wantToDeleteCustomer.splice(
     wantToDeleteCustomer.indexOf(id),
@@ -533,18 +616,7 @@ function delSelCus() {
   `)
   $("#confirm-box").css("padding", "1rem");
   $("#confirm-box-but-no").css("margin-left", "1rem");
-  $("#confirm-box-but-yes").on("click", function () {
-    performDelPut();
-    $("#confirm-box").html(`
-      <div>Đã xóa thành công</div>
-      <button id="confirm-box-ok">OK</button>
-    `);
-    $("#confirm-box-ok").on("click", function () {
-      $("#dialog").css("display", "none");
-      $("#confirm-box").css("display", "none");
-    })
-    renderDeleteCus();
-  });
+  $("#confirm-box-but-yes").on("click", performDelPut());
   $("#confirm-box-but-no").on("click", function () {
     $("#dialog").css("display", "none");
     $("#confirm-box").css("display", "none");
@@ -554,16 +626,16 @@ function delSelCus() {
   resetAllDelCusNo();
 }
 
-function performDelPut() {
+async function performDelPut() {
   wantToDeleteCustomer.forEach(item => {
     let idToDelete = item.split("-")[1];
     $.ajax({
-      url: '/doan/admin/Server/customer/customer.php',
+      url: 'http://localhost/doan/admin/Server/customer/customer.php',
       type: 'PUT',
       dataType: "json",
-      data: {
+      data: JSON.stringify({
         "id_user": `${idToDelete}`
-      },
+      }),
       success: function(msg) {
         console.log(msg);
       },
@@ -571,8 +643,34 @@ function performDelPut() {
         console.log(msg)
       }
     });
+    
+    // * alternative choice for PUT request
+    fetch('http://localhost/doan/admin/Server/customer/customer.php', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "id_user": `${idToDelete}`
+      })
+    })
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error => {
+      console.error(error);
+    });
+
   })
-  // ! chua request dc
+  $("#confirm-box").html(`
+    <div>Đã xóa thành công</div>
+    <button id="confirm-box-ok">OK</button>
+  `);
+  $("#confirm-box-ok").on("click", function () {
+    $("#dialog").css("display", "none");
+    $("#confirm-box").css("display", "none");
+  });
+  renderDeleteCus();
 }
 
 function renderDelConfirmation() {
@@ -604,11 +702,106 @@ function foldDelTable() {
   getCustomers();
 }
 
-function searchCustomer() {
-  let searchBox = $("#text-search");
-  if (searchBox.val() === "")
-    console.log("Vui lòng điền keyword cần tìm kiếm.");
+// * return type: string
+// * return when "Invalid date": ""
+function legacyDate(date) {
+  var dateMomentObject = moment(date).format('YYYY-MM-DD HH:mm:ss');
+  if (dateMomentObject === "Invalid date")
+    return undefined;
+  else
+    return dateMomentObject;
+}
+
+function filterCusWithParameters () {
   // ! chưa có tìm kiếm
+  $("#dialog").css("display", "none");
+  $("#filter-customer-box").css("display", "none");
+  let searchBox = $("#text-search").val();
+  let propertyCus = $("#filter-property-customer").val();
+  let birthdayCus = $("#filter-birthday-customer").val();
+  let dateCreatedCus = $("#filter-date-created-customer").val();
+  let statusCus = $("#filter-status-customer").val();
+  console.log(propertyCus);
+  console.log(birthdayCus);
+  console.log(dateCreatedCus);
+  console.log(statusCus);
+  let data = {};
+  clearTable();
+  data.id = propertyCus === "id" ? searchBox : undefined;
+  data.name = propertyCus === "name" ? searchBox : undefined;
+  data.username = propertyCus === "username" ? searchBox : undefined;
+  data.numberphone = propertyCus === "numberphone" ? searchBox : undefined;
+  data.birthday = legacyDate(birthdayCus);
+  data.date_created = legacyDate(dateCreatedCus);
+  data.status = statusCus === "all" ? undefined : statusCus;
+  data = _.omitBy(data, _.isUndefined);
+
+  if (Object.keys(data).length === 0) {
+    data = {
+      search: searchBox
+    }
+  }
+
+  // console.log(data);
+  $.ajax({
+    method: "GET",
+    url: "http://localhost/doan/admin/Server/customer/customer.php",
+    data: data,
+    success: function (customers) {
+      console.log(customers);
+      sizeOfTable = customers.length;
+      let table = document.getElementById("myTable");
+      customers.forEach((customer) => {
+        let row = table.insertRow();
+        let cell0 = row.insertCell(0);
+        let cell1 = row.insertCell(1);
+        let cell2 = row.insertCell(2);
+        let cell3 = row.insertCell(3);
+        let cell4 = row.insertCell(4);
+        let cell5 = row.insertCell(5);
+        let cell6 = row.insertCell(6);
+        let cell7 = row.insertCell(7);
+        let cell8 = row.insertCell(8);
+        cell0.innerHTML = customer.id;
+        cell1.innerHTML = customer.id_user;
+        cell2.innerHTML = customer.date_created;
+        cell3.innerHTML = customer.name;
+        cell4.innerHTML = customer.username;
+        cell5.innerHTML = customer.password;
+        cell6.innerHTML = customer.privilege;
+        cell7.innerHTML = `<button id="button-customer-status-${customer.id}-${customer.id_user}">${customer.status}</button>`;
+        cell8.innerHTML = `<button id="button-customer-detail-${customer.id}-${customer.id_user}">Chi tiết</button>`;
+        $("#button-customer-detail-" + customer.id + '-' + customer.id_user).on("click", function () {
+          $("#dialog").css("display", "flex");
+          $("#detail-customer-open").css("display", "flex");
+          selectedCustomer = customer;
+    
+          $("#detail-customer-header").html(`Chi tiết khách hàng`) ;
+          $("#detail-customer-content").html(`
+                  <div id="customer-detail-id">ID tài khoản: ${customer.id}</div>
+                  <div id="customer-detail-name">Tên người dùng: ${customer.name}</div>
+                  <div id="customer-detail-date-join">Ngày tham gia: None</div>
+                  <div id="customer-detail-birthday">Ngày sinh: ${customer.birthday}</div>
+                  <div id="customer-detail-gender">Giới tính: ${customer.gender}</div>
+                  <div id="customer-detail-numberphone">Số điện thoại: ${customer.numberphone}</div>
+                  <div id="customer-detail-privilege">Quyền: ${customer.privilege}</div>
+                `);
+          $("#btn-detail-edit-customer-group").html(`
+                <button id="save-but-${customer.id}-${customer.id_user}" style="display:none" onclick=saveCustomerDetail(this.id)>Lưu lại</button>
+                <button id="edit-but-${customer.id}-${customer.id_user}" onclick=renderEditCustomerDetail(this.id)>Chỉnh sửa</button>
+                <button id="canc-but-${customer.id}" onclick=closeCustomerPopupDetail(this.id)>Thoát</button>
+                `);
+        });
+      });
+      bindStatusButList();
+      console.log("rendered table")
+    },
+    error: function (res) {
+      console.log(res);
+    }
+  })
+
+
 }
 
 function closeCustomerPopupDetail() {
@@ -642,7 +835,6 @@ function saveNewCustomer(id) {
   data.username = data.username.toLowerCase();
   data.gender = data.gender.toLowerCase();
   $.post(url, data, (data, status) => {
-    console.clear();
     // ! chua co thông báo thêm người dùng mới
     console.log("Saved new customer.");
     readyToSubmit = false;
@@ -659,422 +851,420 @@ function closeAddCustomer() {
   $("#dialog").css("display", "none");
 }
 
-// ? CODE CỦA PHÚ TRỞ VỀ SAU
-// ? CODE CỦA PHÚ TRỞ VỀ SAU
-// ? CODE CỦA PHÚ TRỞ VỀ SAU
-
-function SearchALLK() {
-  let findall = document.getElementById("sl-all").value.toLowerCase();
-  let string1 = document
-    .getElementById("text-search")
-    .value.trim()
-    .toLowerCase();
-  if (findall == "all") {
-    return FindAllK(string1);
-  } else if (findall == "id") {
-    return FindIDK(string1);
-  } else if (findall == "name") {
-    return FindNameK(string1);
-  } else if (findall == "username") {
-    return FindUsernameK(string1);
-  } else {
-    return FindNumberPhoneK(string1);
-  }
-}
-
-function SearchInitK() {
-  var init = document.getElementById("date-init").value;
-  if (init == "") {
-    return FindAllK("");
-  } else {
-    console.log(getDateK(init));
-    return FindDateInitK(getDateK(init));
-  }
-}
-
-function SearchStatusK() {
-  let findstatus = document.getElementById("sl-status").value.toLowerCase();
-  if (findstatus == "all") {
-    return FindAllK("");
-  } else {
-    return FindStatusK(findstatus);
-  }
-}
-
-function SearchBirdayK() {
-  var birth = document.getElementById("birth-day").value;
-  if (birth == "") {
-    return FindAllK("");
-  } else {
-    console.log(getDateK(birth));
-    return FindBirthdayK(getDateK(birth));
-  }
-}
-
-function FindIDK(tring) {
-  let array = [];
-  for (let i = 0; i < length0; i++) {
-    if (obj1.customer[i].id.toLowerCase().indexOf(tring) != -1) {
-      array.push(i);
-    }
-  }
-  return array;
-}
-function FindNameK(tring) {
-  let array = [];
-  for (let i = 0; i < length0; i++) {
-    if (obj1.customer[i].name.toLowerCase().indexOf(tring) != -1) {
-      array.push(i);
-    }
-  }
-  return array;
-}
-function FindUsernameK(tring) {
-  let array = [];
-  for (let i = 0; i < length0; i++) {
-    if (obj1.customer[i].username.toLowerCase().indexOf(tring) != -1) {
-      array.push(i);
-    }
-  }
-  return array;
-}
-
-function getDateK(date) {
-  let newdate =
-    date.split("-")[2] + "/" + date.split("-")[1] + "/" + date.split("-")[0];
-  return newdate;
-}
-
-function FindBirthdayK(tring) {
-  let array = [];
-  for (let i = 0; i < length0; i++) {
-    if (obj1.customer[i].birth_day.indexOf(tring) != -1) {
-      array.push(i);
-    }
-  }
-  return array;
-}
-function FindDateInitK(tring) {
-  let array = [];
-  for (let i = 0; i < length0; i++) {
-    if (obj1.customer[i].date_init.indexOf(tring) != -1) {
-      array.push(i);
-    }
-  }
-  return array;
-}
-
-function FindNumberPhoneK(tring) {
-  let array = [];
-  for (let i = 0; i < length0; i++) {
-    if (obj1.customer[i].number_phone.indexOf(tring) != -1) {
-      array.push(i);
-    }
-  }
-  return array;
-}
-
-function FindStatusK(tring) {
-  let array = [];
-  for (let i = 0; i < length0; i++) {
-    if (obj1.customer[i].status.toLowerCase().indexOf(tring) != -1) {
-      array.push(i);
-    }
-  }
-  return array;
-}
-function FindAllK(tring) {
-  let array = [];
-  for (let i = 0; i < length0; i++) {
-    if (
-      obj1.customer[i].id.toLowerCase().indexOf(tring) != -1 ||
-      obj1.customer[i].name.toLowerCase().indexOf(tring) != -1 ||
-      obj1.customer[i].username.toLowerCase().indexOf(tring) != -1 ||
-      obj1.customer[i].number_phone.toLowerCase().indexOf(tring) != -1 ||
-      obj1.customer[i].status.toLowerCase().indexOf(tring) != -1 ||
-      obj1.customer[i].birth_day.indexOf(tring) != -1 ||
-      obj1.customer[i].date_init.indexOf(tring) != -1
-    ) {
-      array.push(i);
-    }
-  }
-  return array;
-}
-
-function CompareArrK(ar1, ar2) {
-  let array = [];
-  for (let i = 0; i < ar1.length; i++) {
-    for (let j = 0; j < ar2.length; j++) {
-      if (ar2[j] == ar1[i]) {
-        array.push(ar1[i]);
-      }
-    }
-  }
-  return array;
-}
-
-// Lấy Checkbox
-function SetCheckboxK(id) {
-  if (id.checked) {
-    arr.push(id.id);
-  } else {
-    arr.splice(Location1(id.id), 1);
-  }
-  console.log(arr);
-}
-
-function Location1(id) {
-  for (let i = 0; i < arr.length; i++) if (id == arr[i]) return i;
-}
-function LocationID(x) {
-  for (var i = 0; i < length0; i++) {
-    if (x == obj1.customer[i].id) return i;
-  }
-}
-
-// Khóa tài khoản
-// function LockAccount() {
-//   var length1 = arr.length;
-//   for (var i = 0; i < length1; i++) {
-//     let x = LocationID(arr[i]);
-//     console.log(x);
-//     ConfirmLock(x);
-//   }
-//   ClosePopupLock();
-//   CloseBtnLock();
-// }
-// function ConfirmOpenLock(i) {
-//   obj1.customer[i].status = "còn hoạt động";
-//   writeToLocalStorage(obj1);
-// }
-
-// Mở khóa tài khoản
-// function OpenAccount() {
-//   var length1 = arr.length;
-//   for (var i = 0; i < length1; i++) {
-//     let x = LocationID(arr[i]);
-//     console.log(x);
-//     ConfirmOpenLock(x);
-//   }
-//   ClosePopupOpen();
-//   CloseBtnLock();
-// }
-// function ConfirmLock(i) {
-//   obj1.customer[i].status = "đã khóa";
-//   writeToLocalStorage(obj1);
-// }
-
-// Fill bảng tìm kiếm
-function renderTableFind(find) {
-  let table = document.getElementById("myTable");
-  for (let i = table.rows.length - 1; i > 0; i--) table.deleteRow(i);
-  for (let i = 0; i < find.length; i++) {
-    let row = table.insertRow();
-    let cell0 = row.insertCell(0);
-    let cell1 = row.insertCell(1);
-    let cell2 = row.insertCell(2);
-    let cell3 = row.insertCell(3);
-    let cell4 = row.insertCell(4);
-    let cell5 = row.insertCell(5);
-    let cell6 = row.insertCell(6);
-    cell0.innerHTML = obj1.customer[find[i]].id;
-    cell1.innerHTML = obj1.customer[find[i]].name;
-    cell2.innerHTML = obj1.customer[find[i]].username;
-    cell3.innerHTML = obj1.customer[find[i]].birth_day;
-    cell4.innerHTML = obj1.customer[find[i]].number_phone;
-    cell5.innerHTML = obj1.customer[find[i]].date_init;
-    cell6.innerHTML = obj1.customer[find[i]].status;
-  }
-}
-
-function TableFindOpen(find) {
-  let table = document.getElementById("myTable");
-  for (let i = table.rows.length - 1; i > 0; i--) table.deleteRow(i);
-  for (let i = 0; i < find.length; i++) {
-    if (obj1.customer[i].status.toLowerCase() == "cón hoạt động") {
-      continue;
-    } else {
-      let row = table.insertRow();
-      let cell0 = row.insertCell(0);
-      let cell1 = row.insertCell(1);
-      let cell2 = row.insertCell(2);
-      let cell3 = row.insertCell(3);
-      let cell4 = row.insertCell(4);
-      let cell5 = row.insertCell(5);
-      let cell6 = row.insertCell(6);
-      let cell7 = row.insertCell(7);
-      cell0.innerHTML = obj1.customer[find[i]].id;
-      cell1.innerHTML = obj1.customer[find[i]].name;
-      cell2.innerHTML = obj1.customer[find[i]].username;
-      cell3.innerHTML = obj1.customer[find[i]].birth_day;
-      cell4.innerHTML = obj1.customer[find[i]].number_phone;
-      cell5.innerHTML = obj1.customer[find[i]].date_init;
-      cell6.innerHTML = obj1.customer[find[i]].status;
-      cell7.innerHTML =
-        `<input id= "` +
-        obj1.customer[i].id +
-        `" 
-        style= "cursor: pointer;" type='checkbox' onchange=SetCheckboxK(this)>`;
-    }
-  }
-}
-
-function TableFindLock(find) {
-  let table = document.getElementById("myTable");
-  for (let i = table.rows.length - 1; i > 0; i--) table.deleteRow(i);
-  for (let i = 0; i < find.length; i++) {
-    if (obj1.customer[i].status.toLowerCase() == "đã khóa") {
-      continue;
-    } else {
-      let row = table.insertRow();
-      let cell0 = row.insertCell(0);
-      let cell1 = row.insertCell(1);
-      let cell2 = row.insertCell(2);
-      let cell3 = row.insertCell(3);
-      let cell4 = row.insertCell(4);
-      let cell5 = row.insertCell(5);
-      let cell6 = row.insertCell(6);
-      let cell7 = row.insertCell(7);
-      cell0.innerHTML = obj1.customer[find[i]].id;
-      cell1.innerHTML = obj1.customer[find[i]].name;
-      cell2.innerHTML = obj1.customer[find[i]].username;
-      cell3.innerHTML = obj1.customer[find[i]].birth_day;
-      cell4.innerHTML = obj1.customer[find[i]].number_phone;
-      cell5.innerHTML = obj1.customer[find[i]].date_init;
-      cell6.innerHTML = obj1.customer[find[i]].status;
-      cell7.innerHTML =
-        `<input id= "` +
-        obj1.customer[i].id +
-        `" 
-      style= "cursor: pointer;" type='checkbox' onchange=SetCheckboxK(this)>`;
-    }
-  }
-}
-
-//Fill Bảng
-
-// Fill checkbox
-function renderLock_CheckBoxTable() {
-  let table = document.getElementById("myTable");
-  for (let i = table.rows.length - 1; i > 0; i--) table.deleteRow(i);
-  for (let i = 0; i < length0; i++) {
-    if (obj1.customer[i].status.toLowerCase() == "đã khóa") {
-      continue;
-    } else {
-      let row = table.insertRow();
-      let cell0 = row.insertCell(0);
-      let cell1 = row.insertCell(1);
-      let cell2 = row.insertCell(2);
-      let cell3 = row.insertCell(3);
-      let cell4 = row.insertCell(4);
-      let cell5 = row.insertCell(5);
-      let cell6 = row.insertCell(6);
-      let cell7 = row.insertCell(7);
-      cell0.innerHTML = obj1.customer[i].id;
-      cell1.innerHTML = obj1.customer[i].name;
-      cell2.innerHTML = obj1.customer[i].username;
-      cell3.innerHTML = obj1.customer[i].birth_day;
-      cell4.innerHTML = obj1.customer[i].number_phone;
-      cell5.innerHTML = obj1.customer[i].date_init;
-      cell6.innerHTML = obj1.customer[i].status;
-      cell7.innerHTML =
-        `<input id= "` +
-        obj1.customer[i].id +
-        `" 
-      style= "cursor: pointer;" type='checkbox' onchange=SetCheckboxK(this)>`;
-    }
-  }
-}
-
-function renderOpen_CheckBoxTable() {
-  let table = document.getElementById("myTable");
-  for (let i = table.rows.length - 1; i > 0; i--) table.deleteRow(i);
-  for (let i = 0; i < length0; i++) {
-    if (obj1.customer[i].status.toLowerCase() == "còn hoạt động") {
-      continue;
-    } else {
-      let row = table.insertRow();
-      let cell0 = row.insertCell(0);
-      let cell1 = row.insertCell(1);
-      let cell2 = row.insertCell(2);
-      let cell3 = row.insertCell(3);
-      let cell4 = row.insertCell(4);
-      let cell5 = row.insertCell(5);
-      let cell6 = row.insertCell(6);
-      let cell7 = row.insertCell(7);
-      cell0.innerHTML = obj1.customer[i].id;
-      cell1.innerHTML = obj1.customer[i].name;
-      cell2.innerHTML = obj1.customer[i].username;
-      cell3.innerHTML = obj1.customer[i].birth_day;
-      cell4.innerHTML = obj1.customer[i].number_phone;
-      cell5.innerHTML = obj1.customer[i].date_init;
-      cell6.innerHTML = obj1.customer[i].status;
-      cell7.innerHTML =
-        `<input id= "` +
-        obj1.customer[i].id +
-        `" type='checkbox'
-      style= "cursor: pointer;" onchange=SetCheckboxK(this)>`;
-    }
-  }
-}
-
-//Đóng mở
-function OpenBtnLock() {
-  document.getElementById("HeadButton1").style.display = "none";
-  document.getElementById("HeadButton2").style.display = "block";
-  document.getElementById("HeadButton3").style.display = "none";
-  renderLock_CheckBoxTable();
-}
-
-function CloseBtnLock() {
-  document.getElementById("HeadButton1").style.display = "block";
-  document.getElementById("HeadButton2").style.display = "none";
-  document.getElementById("HeadButton3").style.display = "none";
-  renderTable();
-  arr.splice(0, arr.length);
-  // writeToLocalStorage(obj1)
-}
-
-function OpenBtnOLock() {
-  document.getElementById("HeadButton1").style.display = "none";
-  document.getElementById("HeadButton2").style.display = "none";
-  document.getElementById("HeadButton3").style.display = "block";
-  renderOpen_CheckBoxTable();
-}
 function OpenFilter() {
-  document.getElementById("dialog").style.display = "flex";
-  document.getElementById("Section").style.display = "flex";
+  $("#dialog").css("display", "flex");
+  $("#filter-customer-box").css("display", "flex");
 }
 
-function CloseFilter() {
-  document.getElementById("dialog").style.display = "none";
-  document.getElementById("Section").style.display = "none";
-}
 
-function OpenPopupLock() {
-  if (arr.length == 0) {
-    alert("Bạn chưa chọn tài khoản để khóa");
-  } else {
-    document.getElementById("dialog").style.display = "flex";
-    document.getElementById("Confirm-Cancel-Lock").style.display = "flex";
-  }
-}
-function ClosePopupLock() {
-  document.getElementById("dialog").style.display = "none";
-  document.getElementById("Confirm-Cancel-Lock").style.display = "none";
-}
+// ? CODE CỦA PHÚ TRỞ VỀ SAU
+// ? CODE CỦA PHÚ TRỞ VỀ SAU
+// ? CODE CỦA PHÚ TRỞ VỀ SAU
 
-function OpenPopupOpen() {
-  if (arr.length == 0) {
-    alert("Bạn chưa chọn tài khoản để mở khóa");
-  } else {
-    document.getElementById("dialog").style.display = "flex";
-    document.getElementById("Confirm-Cancel-Open").style.display = "flex";
-  }
-}
-function ClosePopupOpen() {
-  document.getElementById("dialog").style.display = "none";
-  document.getElementById("Confirm-Cancel-Open").style.display = "none";
-}
+// function SearchALLK() {
+//   let findall = document.getElementById("sl-all").value.toLowerCase();
+//   let string1 = document
+//     .getElementById("text-search")
+//     .value.trim()
+//     .toLowerCase();
+//   if (findall == "all") {
+//     return FindAllK(string1);
+//   } else if (findall == "id") {
+//     return FindIDK(string1);
+//   } else if (findall == "name") {
+//     return FindNameK(string1);
+//   } else if (findall == "username") {
+//     return FindUsernameK(string1);
+//   } else {
+//     return FindNumberPhoneK(string1);
+//   }
+// }
+
+// function SearchInitK() {
+//   var init = document.getElementById("date-init").value;
+//   if (init == "") {
+//     return FindAllK("");
+//   } else {
+//     console.log(getDateK(init));
+//     return FindDateInitK(getDateK(init));
+//   }
+// }
+
+// function SearchStatusK() {
+//   let findstatus = document.getElementById("sl-status").value.toLowerCase();
+//   if (findstatus == "all") {
+//     return FindAllK("");
+//   } else {
+//     return FindStatusK(findstatus);
+//   }
+// }
+
+// function SearchBirdayK() {
+//   var birth = document.getElementById("birth-day").value;
+//   if (birth == "") {
+//     return FindAllK("");
+//   } else {
+//     console.log(getDateK(birth));
+//     return FindBirthdayK(getDateK(birth));
+//   }
+// }
+
+// function FindIDK(tring) {
+//   let array = [];
+//   for (let i = 0; i < length0; i++) {
+//     if (obj1.customer[i].id.toLowerCase().indexOf(tring) != -1) {
+//       array.push(i);
+//     }
+//   }
+//   return array;
+// }
+// function FindNameK(tring) {
+//   let array = [];
+//   for (let i = 0; i < length0; i++) {
+//     if (obj1.customer[i].name.toLowerCase().indexOf(tring) != -1) {
+//       array.push(i);
+//     }
+//   }
+//   return array;
+// }
+// function FindUsernameK(tring) {
+//   let array = [];
+//   for (let i = 0; i < length0; i++) {
+//     if (obj1.customer[i].username.toLowerCase().indexOf(tring) != -1) {
+//       array.push(i);
+//     }
+//   }
+//   return array;
+// }
+
+// function getDateK(date) {
+//   let newdate =
+//     date.split("-")[2] + "/" + date.split("-")[1] + "/" + date.split("-")[0];
+//   return newdate;
+// }
+
+// function FindBirthdayK(tring) {
+//   let array = [];
+//   for (let i = 0; i < length0; i++) {
+//     if (obj1.customer[i].birth_day.indexOf(tring) != -1) {
+//       array.push(i);
+//     }
+//   }
+//   return array;
+// }
+// function FindDateInitK(tring) {
+//   let array = [];
+//   for (let i = 0; i < length0; i++) {
+//     if (obj1.customer[i].date_init.indexOf(tring) != -1) {
+//       array.push(i);
+//     }
+//   }
+//   return array;
+// }
+
+// function FindNumberPhoneK(tring) {
+//   let array = [];
+//   for (let i = 0; i < length0; i++) {
+//     if (obj1.customer[i].number_phone.indexOf(tring) != -1) {
+//       array.push(i);
+//     }
+//   }
+//   return array;
+// }
+
+// function FindStatusK(tring) {
+//   let array = [];
+//   for (let i = 0; i < length0; i++) {
+//     if (obj1.customer[i].status.toLowerCase().indexOf(tring) != -1) {
+//       array.push(i);
+//     }
+//   }
+//   return array;
+// }
+// function FindAllK(tring) {
+//   let array = [];
+//   for (let i = 0; i < length0; i++) {
+//     if (
+//       obj1.customer[i].id.toLowerCase().indexOf(tring) != -1 ||
+//       obj1.customer[i].name.toLowerCase().indexOf(tring) != -1 ||
+//       obj1.customer[i].username.toLowerCase().indexOf(tring) != -1 ||
+//       obj1.customer[i].number_phone.toLowerCase().indexOf(tring) != -1 ||
+//       obj1.customer[i].status.toLowerCase().indexOf(tring) != -1 ||
+//       obj1.customer[i].birth_day.indexOf(tring) != -1 ||
+//       obj1.customer[i].date_init.indexOf(tring) != -1
+//     ) {
+//       array.push(i);
+//     }
+//   }
+//   return array;
+// }
+
+// function CompareArrK(ar1, ar2) {
+//   let array = [];
+//   for (let i = 0; i < ar1.length; i++) {
+//     for (let j = 0; j < ar2.length; j++) {
+//       if (ar2[j] == ar1[i]) {
+//         array.push(ar1[i]);
+//       }
+//     }
+//   }
+//   return array;
+// }
+
+// // Lấy Checkbox
+// function SetCheckboxK(id) {
+//   if (id.checked) {
+//     arr.push(id.id);
+//   } else {
+//     arr.splice(Location1(id.id), 1);
+//   }
+//   console.log(arr);
+// }
+
+// function Location1(id) {
+//   for (let i = 0; i < arr.length; i++) if (id == arr[i]) return i;
+// }
+// function LocationID(x) {
+//   for (var i = 0; i < length0; i++) {
+//     if (x == obj1.customer[i].id) return i;
+//   }
+// }
+
+// // Khóa tài khoản
+// // function LockAccount() {
+// //   var length1 = arr.length;
+// //   for (var i = 0; i < length1; i++) {
+// //     let x = LocationID(arr[i]);
+// //     console.log(x);
+// //     ConfirmLock(x);
+// //   }
+// //   ClosePopupLock();
+// //   CloseBtnLock();
+// // }
+// // function ConfirmOpenLock(i) {
+// //   obj1.customer[i].status = "còn hoạt động";
+// //   writeToLocalStorage(obj1);
+// // }
+
+// // Mở khóa tài khoản
+// // function OpenAccount() {
+// //   var length1 = arr.length;
+// //   for (var i = 0; i < length1; i++) {
+// //     let x = LocationID(arr[i]);
+// //     console.log(x);
+// //     ConfirmOpenLock(x);
+// //   }
+// //   ClosePopupOpen();
+// //   CloseBtnLock();
+// // }
+// // function ConfirmLock(i) {
+// //   obj1.customer[i].status = "đã khóa";
+// //   writeToLocalStorage(obj1);
+// // }
+
+// // Fill bảng tìm kiếm
+// function renderTableFind(find) {
+//   let table = document.getElementById("myTable");
+//   for (let i = table.rows.length - 1; i > 0; i--) table.deleteRow(i);
+//   for (let i = 0; i < find.length; i++) {
+//     let row = table.insertRow();
+//     let cell0 = row.insertCell(0);
+//     let cell1 = row.insertCell(1);
+//     let cell2 = row.insertCell(2);
+//     let cell3 = row.insertCell(3);
+//     let cell4 = row.insertCell(4);
+//     let cell5 = row.insertCell(5);
+//     let cell6 = row.insertCell(6);
+//     cell0.innerHTML = obj1.customer[find[i]].id;
+//     cell1.innerHTML = obj1.customer[find[i]].name;
+//     cell2.innerHTML = obj1.customer[find[i]].username;
+//     cell3.innerHTML = obj1.customer[find[i]].birth_day;
+//     cell4.innerHTML = obj1.customer[find[i]].number_phone;
+//     cell5.innerHTML = obj1.customer[find[i]].date_init;
+//     cell6.innerHTML = obj1.customer[find[i]].status;
+//   }
+// }
+
+// function TableFindOpen(find) {
+//   let table = document.getElementById("myTable");
+//   for (let i = table.rows.length - 1; i > 0; i--) table.deleteRow(i);
+//   for (let i = 0; i < find.length; i++) {
+//     if (obj1.customer[i].status.toLowerCase() == "cón hoạt động") {
+//       continue;
+//     } else {
+//       let row = table.insertRow();
+//       let cell0 = row.insertCell(0);
+//       let cell1 = row.insertCell(1);
+//       let cell2 = row.insertCell(2);
+//       let cell3 = row.insertCell(3);
+//       let cell4 = row.insertCell(4);
+//       let cell5 = row.insertCell(5);
+//       let cell6 = row.insertCell(6);
+//       let cell7 = row.insertCell(7);
+//       cell0.innerHTML = obj1.customer[find[i]].id;
+//       cell1.innerHTML = obj1.customer[find[i]].name;
+//       cell2.innerHTML = obj1.customer[find[i]].username;
+//       cell3.innerHTML = obj1.customer[find[i]].birth_day;
+//       cell4.innerHTML = obj1.customer[find[i]].number_phone;
+//       cell5.innerHTML = obj1.customer[find[i]].date_init;
+//       cell6.innerHTML = obj1.customer[find[i]].status;
+//       cell7.innerHTML =
+//         `<input id= "` +
+//         obj1.customer[i].id +
+//         `" 
+//         style= "cursor: pointer;" type='checkbox' onchange=SetCheckboxK(this)>`;
+//     }
+//   }
+// }
+
+// function TableFindLock(find) {
+//   let table = document.getElementById("myTable");
+//   for (let i = table.rows.length - 1; i > 0; i--) table.deleteRow(i);
+//   for (let i = 0; i < find.length; i++) {
+//     if (obj1.customer[i].status.toLowerCase() == "đã khóa") {
+//       continue;
+//     } else {
+//       let row = table.insertRow();
+//       let cell0 = row.insertCell(0);
+//       let cell1 = row.insertCell(1);
+//       let cell2 = row.insertCell(2);
+//       let cell3 = row.insertCell(3);
+//       let cell4 = row.insertCell(4);
+//       let cell5 = row.insertCell(5);
+//       let cell6 = row.insertCell(6);
+//       let cell7 = row.insertCell(7);
+//       cell0.innerHTML = obj1.customer[find[i]].id;
+//       cell1.innerHTML = obj1.customer[find[i]].name;
+//       cell2.innerHTML = obj1.customer[find[i]].username;
+//       cell3.innerHTML = obj1.customer[find[i]].birth_day;
+//       cell4.innerHTML = obj1.customer[find[i]].number_phone;
+//       cell5.innerHTML = obj1.customer[find[i]].date_init;
+//       cell6.innerHTML = obj1.customer[find[i]].status;
+//       cell7.innerHTML =
+//         `<input id= "` +
+//         obj1.customer[i].id +
+//         `" 
+//       style= "cursor: pointer;" type='checkbox' onchange=SetCheckboxK(this)>`;
+//     }
+//   }
+// }
+
+// //Fill Bảng
+
+// // Fill checkbox
+// function renderLock_CheckBoxTable() {
+//   let table = document.getElementById("myTable");
+//   for (let i = table.rows.length - 1; i > 0; i--) table.deleteRow(i);
+//   for (let i = 0; i < length0; i++) {
+//     if (obj1.customer[i].status.toLowerCase() == "đã khóa") {
+//       continue;
+//     } else {
+//       let row = table.insertRow();
+//       let cell0 = row.insertCell(0);
+//       let cell1 = row.insertCell(1);
+//       let cell2 = row.insertCell(2);
+//       let cell3 = row.insertCell(3);
+//       let cell4 = row.insertCell(4);
+//       let cell5 = row.insertCell(5);
+//       let cell6 = row.insertCell(6);
+//       let cell7 = row.insertCell(7);
+//       cell0.innerHTML = obj1.customer[i].id;
+//       cell1.innerHTML = obj1.customer[i].name;
+//       cell2.innerHTML = obj1.customer[i].username;
+//       cell3.innerHTML = obj1.customer[i].birth_day;
+//       cell4.innerHTML = obj1.customer[i].number_phone;
+//       cell5.innerHTML = obj1.customer[i].date_init;
+//       cell6.innerHTML = obj1.customer[i].status;
+//       cell7.innerHTML =
+//         `<input id= "` +
+//         obj1.customer[i].id +
+//         `" 
+//       style= "cursor: pointer;" type='checkbox' onchange=SetCheckboxK(this)>`;
+//     }
+//   }
+// }
+
+// function renderOpen_CheckBoxTable() {
+//   let table = document.getElementById("myTable");
+//   for (let i = table.rows.length - 1; i > 0; i--) table.deleteRow(i);
+//   for (let i = 0; i < length0; i++) {
+//     if (obj1.customer[i].status.toLowerCase() == "còn hoạt động") {
+//       continue;
+//     } else {
+//       let row = table.insertRow();
+//       let cell0 = row.insertCell(0);
+//       let cell1 = row.insertCell(1);
+//       let cell2 = row.insertCell(2);
+//       let cell3 = row.insertCell(3);
+//       let cell4 = row.insertCell(4);
+//       let cell5 = row.insertCell(5);
+//       let cell6 = row.insertCell(6);
+//       let cell7 = row.insertCell(7);
+//       cell0.innerHTML = obj1.customer[i].id;
+//       cell1.innerHTML = obj1.customer[i].name;
+//       cell2.innerHTML = obj1.customer[i].username;
+//       cell3.innerHTML = obj1.customer[i].birth_day;
+//       cell4.innerHTML = obj1.customer[i].number_phone;
+//       cell5.innerHTML = obj1.customer[i].date_init;
+//       cell6.innerHTML = obj1.customer[i].status;
+//       cell7.innerHTML =
+//         `<input id= "` +
+//         obj1.customer[i].id +
+//         `" type='checkbox'
+//       style= "cursor: pointer;" onchange=SetCheckboxK(this)>`;
+//     }
+//   }
+// }
+
+// //Đóng mở
+// function OpenBtnLock() {
+//   document.getElementById("HeadButton1").style.display = "none";
+//   document.getElementById("HeadButton2").style.display = "block";
+//   document.getElementById("HeadButton3").style.display = "none";
+//   renderLock_CheckBoxTable();
+// }
+
+// function CloseBtnLock() {
+//   document.getElementById("HeadButton1").style.display = "block";
+//   document.getElementById("HeadButton2").style.display = "none";
+//   document.getElementById("HeadButton3").style.display = "none";
+//   renderTable();
+//   arr.splice(0, arr.length);
+//   // writeToLocalStorage(obj1)
+// }
+
+// function OpenBtnOLock() {
+//   document.getElementById("HeadButton1").style.display = "none";
+//   document.getElementById("HeadButton2").style.display = "none";
+//   document.getElementById("HeadButton3").style.display = "block";
+//   renderOpen_CheckBoxTable();
+// }
+
+
+// function OpenPopupLock() {
+//   if (arr.length == 0) {
+//     alert("Bạn chưa chọn tài khoản để khóa");
+//   } else {
+//     document.getElementById("dialog").style.display = "flex";
+//     document.getElementById("Confirm-Cancel-Lock").style.display = "flex";
+//   }
+// }
+// function ClosePopupLock() {
+//   document.getElementById("dialog").style.display = "none";
+//   document.getElementById("Confirm-Cancel-Lock").style.display = "none";
+// }
+
+// function OpenPopupOpen() {
+//   if (arr.length == 0) {
+//     alert("Bạn chưa chọn tài khoản để mở khóa");
+//   } else {
+//     document.getElementById("dialog").style.display = "flex";
+//     document.getElementById("Confirm-Cancel-Open").style.display = "flex";
+//   }
+// }
+// function ClosePopupOpen() {
+//   document.getElementById("dialog").style.display = "none";
+//   document.getElementById("Confirm-Cancel-Open").style.display = "none";
+// }
 
 // renderTable()
