@@ -22,10 +22,23 @@ class Table {
 	// * query 1 child table inner join with 
 	// * 1 parent tables on keys with SPECIFIC COLUMNS
 	// * child key and parent key are required
-	public static function tableQueryCouple($conn, $childTable, $parentTable, $childkey, $parentkey, $column) {
-		$query = 
-			"SELECT $column FROM $childTable INNER JOIN $parentTable 
-			ON $childTable.$childkey = $parentTable.$parentkey;";
+	public static function tableQueryCouple(
+		$conn, 
+		$childTable, 
+		$parentTable, 
+		$childkey, 
+		$parentkey, 
+		$column,
+		$condition
+	){
+		if ($condition === "")
+			$query = 
+				"SELECT $column FROM $childTable INNER JOIN $parentTable 
+				ON $childTable.$childkey = $parentTable.$parentkey;";
+		else
+			$query = 
+				"SELECT $column FROM $childTable INNER JOIN $parentTable 
+				ON $childTable.$childkey = $parentTable.$parentkey WHERE $condition;";
 		// echo $query . "</br>";
 		$query_statement = $conn->prepare($query);
 		$query_statement->execute();
