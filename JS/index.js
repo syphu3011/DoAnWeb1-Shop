@@ -877,9 +877,51 @@ function choice_type_product(gender) {
                 },
                 function (respone) {
                     console.log(respone);
+                    create_main_onclick_classify(respone);
                 }
             );
         };
+    }
+}
+
+function create_main_onclick_classify(data) {
+    if (data.success) {
+        let li = "";
+
+        document.getElementById("main").innerHTML = `<ul class="container">
+		<li class="main_list_product_product" id="AO00000001">
+        <div class="promo_stamp" id="stamp_AO00000001" style="display: block;">Giảm 25%</div>
+        <img class="main_list_product_product_image" style="" src="./admin/image/ao-thun-nu-local-brand-dep-davies.jpeg" alt="">
+       <div class="main_list_product_product_infor"> 
+       <label class="product_infor_name">Áo thun</label>
+         <div>
+         <del class="del_price" id="del_AO00000001">320.000 VND</del>
+         <label id="price_AO00000001">240.000 VND</label>
+         </div>
+        </div>
+      </li>
+		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
+		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
+		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
+		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
+		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
+
+		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
+		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
+		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
+		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
+		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
+		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
+
+		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
+		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
+		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
+		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
+		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
+		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
+	</ul>`;
+    } else {
+        alert("Comming soon");
     }
 }
 function pushAmount(value) {

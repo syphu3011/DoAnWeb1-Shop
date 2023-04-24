@@ -74,15 +74,28 @@
             $sql="SELECT 
                 product_list_classify.id_product, 
                 product.name, 
-                product_list.price
+                product_list.price, (
+                	SELECT DISTINCT image_product.link_image 
+                    FROM image_product
+                    WHERE image_product.id_product=product.id
+                ) AS link_image,
+                promotion.content,
+                promotion.discount_price,
+                promotion.discount_percent
             FROM 
                 product_list_classify, 
                 product, 
                 product_list,
-                classify
+                classify,
+                detail_promotion,
+                promotion
+                 
             WHERE product_list_classify.id_classify=classify.id
+           		AND detail_promotion.id_product=product_list_classify.id_product
+                AND promotion.id=detail_promotion.id_promotion
                 AND product_list_classify.id_product=product.id
-                AND product.idstatus='TT01'
+                AND product.idstatus = 'TT01'
+                AND promotion.id_status = 'TT10'
                 AND product_list.id_product = product_list_classify.id_product
                 AND classify.gender = ?
                 AND classify.id = ?
