@@ -82,7 +82,7 @@
                 classify
             WHERE product_list_classify.id_classify=classify.id
                 AND product_list_classify.id_product=product.id
-                AND product.idstatus=`TT01`
+                AND product.idstatus='TT01'
                 AND product_list.id_product = product_list_classify.id_product
                 AND classify.gender = ?
                 AND classify.id = ?
