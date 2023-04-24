@@ -342,6 +342,11 @@ function click_Product(response) {
         //
         let button_size = document.getElementsByClassName("item_size");
         // console.log(response.data.product);
+        console.log(
+            response.data.product[0].id,
+            response.data.attribute_product[0].id_size,
+            response.data.attribute_product[0].id_color
+        );
         getDataFromServer(
             "./Server/get_product_instock.php",
             {
@@ -386,7 +391,7 @@ function click_Product(response) {
         );
         //Chon size
         document.getElementById("count_amount_product").value = 1;
-        onclick_amount(response.data.promotion[0]);
+        onclick_amount(response.data);
         for (let index = 0; index < button_size.length; index++) {
             // const element = array[index];
             button_size[index].onclick = function () {
@@ -604,12 +609,14 @@ function get_product_instock(response) {
     // );
 }
 
-function onclick_amount(data_respone) {
+function onclick_amount(data) {
     let price = 0;
     let sale = null;
-    if (data_respone.content == null) {
-        price = data_respone.price;
+    let data_respone;
+    if (data.promotion.length == 0) {
+        price = data.attribute_product[0].price;
     } else {
+        data_respone = data.promotion[0];
         sale = data_respone.price;
         price = price_from_dis(
             data_respone.price,

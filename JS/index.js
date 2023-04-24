@@ -886,39 +886,36 @@ function choice_type_product(gender) {
 
 function create_main_onclick_classify(data) {
     if (data.success) {
+        let data_product = data.data;
         let li = "";
+        for (let i = 0; i < data_product.length; i++) {
 
-        document.getElementById("main").innerHTML = `<ul class="container">
-		<li class="main_list_product_product" id="AO00000001">
-        <div class="promo_stamp" id="stamp_AO00000001" style="display: block;">Giảm 25%</div>
-        <img class="main_list_product_product_image" style="" src="./admin/image/ao-thun-nu-local-brand-dep-davies.jpeg" alt="">
-       <div class="main_list_product_product_infor"> 
-       <label class="product_infor_name">Áo thun</label>
-         <div>
-         <del class="del_price" id="del_AO00000001">320.000 VND</del>
-         <label id="price_AO00000001">240.000 VND</label>
-         </div>
+            li +=
+                `<li class="main_list_product_product" id="` +
+                data_product[i].id_product +
+                `">
+        <div class="promo_stamp" id="stamp_` +
+                data_product[i].id_product +
+                `" style="display: block;"></div>
+            <img class="main_list_product_product_image" style="" src="` +
+                data_product[i].link_image +
+                `" alt="">
+        <div class="main_list_product_product_infor"> 
+        <label class="product_infor_name">` +
+                data_product[i].name +
+                `</label>
+            <div>
+                <del class="del_price" id="del_AO00000001">320.000 VND</del>
+                <label id="price_AO00000001">240.000 VND</label>
+            </div>
         </div>
-      </li>
-		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
-		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
-		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
-		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
-		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
-
-		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
-		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
-		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
-		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
-		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
-		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
-
-		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
-		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
-		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
-		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
-		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
-		<li class="item"><img src="https://via.placeholder.com/300x200"></li>
+    </li>`;
+        }
+        document.getElementById("main").innerHTML =
+            `<ul class="container">
+		` +
+            li +
+            `
 	</ul>`;
     } else {
         alert("Comming soon");
