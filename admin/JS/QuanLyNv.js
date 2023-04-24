@@ -1,10 +1,26 @@
-let objk = JSON.parse(localStorage.getItem("data"))
-// var arrNhanVien = objk.staff
+// let staff 
+var arrNhanVien
 
-function writeToLocalStorage(arr) {
-    let setlocal = JSON.stringify(arr)
-    localStorage.setItem("data", setlocal)
+
+get_DataStaff();
+function get_DataStaff() {
+    return $.ajax({
+        url: './Server/staff/staff.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+          arrNhanVien = data;
+          console.log(arrNhanVien);
+          renderTable1();
+          console.log(data);
+        },
+        error: function(xhr, status, error) {
+          // Xử lý lỗi ở đây
+          console.error(error);
+        }
+      });
 }
+
 
 
 document.getElementById('CapTaiKhoan-Button').onclick = function () {
@@ -89,12 +105,12 @@ function captaikhoan() {
     let chucvu = document.getElementById("chucvu").value;
     let date_init = getCurrentDate()
     let validNumPhone = true
-    for (staff of objk.staff) {
-        if (staff.number_phone.trim() == number_phone) {
-            alert("Số điện thoại đã tồn tại!")
-            return
-        }
-    }
+    // for (staff of staff) {
+    //     if (staff.number_phone.trim() == number_phone) {
+    //         alert("Số điện thoại đã tồn tại!")
+    //         return
+    //     }
+    // }
     if (name != "" && number_phone != "" && birth_day != "") {
         if (checkValidNameU(name, "")) {
             if (checkValidPhoneNumber(number_phone)) {
@@ -114,8 +130,8 @@ function captaikhoan() {
                             position: chucvu
                         };
                         arrNhanVien.push(objNV);
-                        objk.staff = arrNhanVien
-                        writeToLocalStorage(objk)
+                        // staff = arrNhanVien
+                        // writeToLocalStorage(staff)
                         resetForm();
                         renderTable1();
                         document.getElementById("background-color-captaikhoan").remove();
@@ -156,10 +172,9 @@ function renderTable1() {
     for (let i = table.rows.length - 1; i > 0; i--)
         table.deleteRow(i);
     for (let i = 0; i < arrNhanVien.length; i++) {
-        if (arrNhanVien[i].status.toLowerCase().includes("hết làm việc")) {
+        // if (arrNhanVien[i].status.toLowerCase().includes("hết làm việc")) {
 
-        } else {
-            if (arrNhanVien[i].id == "") arrNhanVien[i].id = ("NV000" + (i + 1)).toLowerCase();
+        // } else {
             if (arrNhanVien[i].status == "") arrNhanVien[i].status = "1";
             let obj = arrNhanVien[i];
             let row = table.insertRow();
@@ -176,13 +191,13 @@ function renderTable1() {
             cell0.innerHTML = obj.id;
             cell1.innerHTML = obj.name;
             cell2.innerHTML = obj.username;
-            cell3.innerHTML = obj.birth_day;
-            cell4.innerHTML = obj.number_phone;
+            cell3.innerHTML = obj.birthday;
+            cell4.innerHTML = obj.phone;
             cell5.innerHTML = obj.date_init
             cell6.innerHTML = obj.position;
             cell7.innerHTML = obj.status;
             cell9.innerHTML = "<button style='font-size: 10px; margin: 1px 2px 1px 2px; border-radius: 2px;' onclick='sathai(this)'>sa thải</button>";
-        }
+        // }
     }
 }
 
@@ -205,7 +220,7 @@ function render_CheckBoxTable() {
 
         cell0.innerHTML = obj.id;
         cell1.innerHTML = obj.name;
-        cell2.innerHTML = obj.name + ".baka";
+        cell2.innerHTML = obj.username;
         cell3.innerHTML = obj.birth_day;
         cell4.innerHTML = obj.number_phone;
         cell5.innerHTML = obj.date_init
@@ -275,8 +290,8 @@ function oke() {
     for (let i = 0; i < arrNhanVien.length; i++) {
         if (arrNhanVien[i].id.toLowerCase() == selectedNv.toLowerCase()) {
             arrNhanVien[i].status = "hết làm việc";
-            objk.staff = arrNhanVien
-            writeToLocalStorage(objk)
+            // staff = arrNhanVien
+            // writeToLocalStorage(staff)
         }
 
 
@@ -462,4 +477,3 @@ function kiemtrangaysinh() {
         document.getElementById("ngaysinh_err").innerHTML = "chưa nhập ngày sinh";
     } else document.getElementById("ngaysinh_err").innerHTML = "";
 }
-// renderTable1()

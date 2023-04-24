@@ -882,7 +882,7 @@ document.getElementById("cancel").onclick = hideRemove;
 
 // Thêm loại
 document.getElementById("add_type").onclick = function() {
-    document.getElementById("add_type_pro").style.displat = "flex";
+    document.getElementById("add_type_pro").style.display = "flex";
     OpenDialog33();
 };
 
@@ -1222,4 +1222,14 @@ function OpenDialog33() {
 function CloseDialog33() {
     document.getElementById("dialog33").style.display = "none";
 
+}
+
+/// Loại sản phẩm
+
+function OpenDeType() {
+    document.getElementById("cancel33").style.display="block" ;
+}
+
+function CloseDeType() {
+    document.getElementById("cancel33").style.display="none" ;
 }

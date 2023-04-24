@@ -1,14 +1,33 @@
 
-function writeToLocalStorage(arr) {
-    let setlocal = JSON.stringify(arr)
-    localStorage.setItem("data", setlocal)
-}
+// function writeToLocalStorage(arr) {
+//     let setlocal = JSON.stringify(arr)
+//     localStorage.setItem("data", setlocal)
+// }
 
 
 // let objk = JSON.parse(JSON.stringify(data))
 // localStorage.setItem("data", JSON.stringify(data))
-let obj12 = JSON.parse(localStorage.getItem("data"))
-// let length1 = obj12.receipt.length
+let receipt
+let length1
+function get_DataStaff() {
+    return $.ajax({
+        url: './Server/receipt/receipt.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            receipt = data
+            let length1 = receipt.length
+            FillOrder()
+          console.log(data);
+        },
+        error: function(xhr, status, error) {
+          // Xử lý lỗi ở đây
+          console.error(error);
+        }
+      });
+}
+get_DataStaff() 
+
 // let length2 = obj12.prodInStock.length
 // let length3 = obj12.product.length
 // let length4 = obj12.customer.length
@@ -77,58 +96,58 @@ function GetNamePro(id) {
 
 function ConfirmOrder(x) {
     console.log(x)
-    let lengt = obj12.receipt[x].list_prod.length
+    let lengt = receipt[x].list_prod.length
     let temp = 0
     for (let i = 0; i < lengt; i++) {
-        if (parseInt(GetAmount(obj12.receipt[x].list_prod[i].idProd)) >
-            parseInt(obj12.receipt[x].list_prod[i].amount)) {
+        if (parseInt(GetAmount(receipt[x].list_prod[i].idProd)) >
+            parseInt(receipt[x].list_prod[i].amount)) {
             temp++
         }
     }
     if (temp == lengt) {
-        obj12.receipt[x].status = "xác nhận"
-        obj12.receipt[x].idStaff = JSON.parse(localStorage.getItem("currentStaff")).id
-        obj12.receipt[x].date_confirm = getCurrentDate2()
+        receipt[x].id_status = "xác nhận"
+        receipt[x].idStaff = JSON.parse(localStorage.getItem("currentStaff")).id
+        receipt[x].date_confirm = getCurrentDate2()
         for (let i = 0; i < lengt; i++) {
-            SetAmount(obj12.receipt[x].list_prod[i].amount,  obj12.receipt[x].list_prod[i].idProd)
+            SetAmount(receipt[x].list_prod[i].amount,  receipt[x].list_prod[i].idProd)
         }
         writeToLocalStorage(obj12)
     } else {
         alert("Số lượng trong kho không đủ")
     }
 
-    if(document.getElementById("date-init-first").value==""||
-    document.getElementById("date-init-last").value==""){
+    // if(document.getElementById("date-init-first").value==""||
+    // document.getElementById("date-init-last").value==""){
         FillOrder()
-    }
-    else{
-        timtheokhoang()
-    }
+    // }
+    // else{
+    //     timtheokhoang()
+    // }
 }
 
 // Hủy đơn
 
 function CancelOrder(x) {
-    obj12.receipt[x].date_confirm = getCurrentDate2()
-    obj12.receipt[x].status = "đã hủy"
-    obj12.receipt[x].idStaff = JSON.parse(localStorage.getItem("currentStaff")).id
-    writeToLocalStorage(obj12)
-    if(document.getElementById("date-init-first").value==""||
-    document.getElementById("date-init-last").value==""){
+    receipt[x].date_confirm = getCurrentDate2()
+    receipt[x].id_status = "đã hủy"
+    receipt[x].idStaff = JSON.parse(localStorage.getItem("currentStaff")).id
+    // writeToLocalStorage(obj12)
+    // if(document.getElementById("date-init-first").value==""||
+    // document.getElementById("date-init-last").value==""){
         FillOrder()
-    }
-    else{
-        timtheokhoang()
-    }
+    // }
+    // else{
+    //     timtheokhoang()
+    // }
 }
 
 // Tính tổng tiền
 
 function TotalMoney(x) {
     let total = 0
-    let leng = obj12.receipt[x].list_prod.length
+    let leng = receipt[x].list_prod.length
     for (var i = 0; i < leng; i++) {
-        total = total + (obj12.receipt[x].list_prod[i].amount * GetPrice(obj12.receipt[x].list_prod[i].idProd))
+        total = total + (receipt[x].list_prod[i].amount * GetPrice(receipt[x].list_prod[i].idProd))
     }
     return total
 }
@@ -139,18 +158,18 @@ function FillOrder() {
     for (let i = tagtable.rows.length - 1; i > 0; i--)
         tagtable.deleteRow(i);
     for (var i = 0; i < length1; i++) {
-        if (obj12.receipt[i].status == "xác nhận" || obj12.receipt[i].status == "đã hủy") {
+        if (receipt[i].id_status == "TT07" || receipt[i].id_status == "TT08") {
             continue
         } else {
             let tagrow = document.createElement("tr")
             tagrow.innerHTML = `
-            <td>` + obj12.receipt[i].id + `</td>
-            <td>` + obj12.receipt[i].idCustomer + `</td>
-            <td>` + GetNameCus(obj12.receipt[i].idCustomer) + `</td>
-            <td>` + obj12.receipt[i].date_init + `</td>
+            <td>` + receipt[i].id + `</td>
+            <td>` + receipt[i].idCustomer + `</td>
+            <td>` + GetNameCus(receipt[i].idCustomer) + `</td>
+            <td>` + receipt[i].date_init + `</td>
             <td>` + calculated(TotalMoney(i)) + ` VNĐ</td>
             <td class = detail_o onclick=DetailOr(` + i + `)>Chi tiết</td>
-            <td>` + obj12.receipt[i].status + `</td>
+            <td>` + receipt[i].id_status + `</td>
             <td> <button onclick=ConfirmOrder(` + i + `) >Xác nhận</button> <button onclick=CancelOrder(` + i + `)>Hủy</button> </td>`
             tagtable.appendChild(tagrow)
         }
@@ -164,18 +183,18 @@ function FillHistory() {
     for (let i = tagtable.rows.length - 1; i > 0; i--)
         tagtable.deleteRow(i);
     for (var i = 0; i < length1; i++) {
-        console.log(obj12.receipt[i].status)
-        if (obj12.receipt[i].status.toLowerCase() != "chờ xác nhận") {
+        console.log(receipt[i].id_status)
+        if (receipt[i].id_status.toLowerCase() != "TT09") {
             let tagrow = document.createElement("tr")
             tagrow.innerHTML = `
-            <td>` + obj12.receipt[i].id + `</td>
-            <td>` + obj12.receipt[i].idCustomer + `</td>
-            <td>` + GetNameCus(obj12.receipt[i].idCustomer) + `</td>
-            <td>` + obj12.receipt[i].date_confirm + `</td>
-            <td>` + calculated(tongtienHD(obj12.receipt[i].list_prod)) + ` VNĐ</td>
+            <td>` + receipt[i].id + `</td>
+            <td>` + receipt[i].idCustomer + `</td>
+            <td>` + GetNameCus(receipt[i].idCustomer) + `</td>
+            <td>` + receipt[i].date_confirm + `</td>
+            <td>` + calculated(tongtienHD(receipt[i].list_prod)) + ` VNĐ</td>
             <td class = detail_h onclick=DetailHis(` + i + `)>Chi tiết</td>
-            <td>` + obj12.receipt[i].status + `</td>
-            <td> ` + obj12.receipt[i].idStaff + ` </td>`
+            <td>` + receipt[i].id_status + `</td>
+            <td> ` + receipt[i].idStaff + ` </td>`
             tagtable.appendChild(tagrow)
         }
     }
@@ -184,26 +203,26 @@ function FillHistory() {
 // Chi tết đơn hang và chi tiết lịch sử đơn hàng
 
 function FillDetailO(x) {
-    let leng = obj12.receipt[x].list_prod.length
-    document.getElementById("Text-detail-order").innerHTML = `Chi tiết đơn hàng ` + obj12.receipt[x].id
+    let leng = receipt[x].list_prod.length
+    document.getElementById("Text-detail-order").innerHTML = `Chi tiết đơn hàng ` + receipt[x].id
     let tagtable = document.getElementById("Table-detail-order")
     for (let i = tagtable.rows.length - 1; i > 0; i--)
         tagtable.deleteRow(i);
     for (var i = 0; i < leng; i++) {
         let tagrow = document.createElement("tr")
-        let idprod = obj12.receipt[x].list_prod[i].idProd
+        let idprod = receipt[x].list_prod[i].idProd
         tagrow.innerHTML = `
     <td>` + idprod + `</td>
     <td>` + GetNamePro(idprod)+ `</td>
-    <td>` + obj12.receipt[x].list_prod[i].idSize + `</td>
+    <td>` + receipt[x].list_prod[i].idSize + `</td>
     <td>` + calculated(GetPrice(idprod)) + ` VNĐ</td>
-    <td>` + obj12.receipt[x].list_prod[i].amount + `</td>
+    <td>` + receipt[x].list_prod[i].amount + `</td>
     <td >` + GetAmount(idprod) + `</td>
-    <td>` + calculated((obj12.receipt[x].list_prod[i].amount * GetPrice(obj12.receipt[x].list_prod[i].idProd)) - GetTotal(obj12.receipt[x].list_prod[i])) + `</td>
-    <td>` + calculated(GetTotal(obj12.receipt[x].list_prod[i])) + ` VNĐ</td>`
+    <td>` + calculated((receipt[x].list_prod[i].amount * GetPrice(receipt[x].list_prod[i].idProd)) - GetTotal(receipt[x].list_prod[i])) + `</td>
+    <td>` + calculated(GetTotal(receipt[x].list_prod[i])) + ` VNĐ</td>`
         tagtable.appendChild(tagrow)
     }
-    document.getElementById("total").innerHTML = `Tổng đơn hàng: ` + calculated(tongtienHD(obj12.receipt[x].list_prod)) + ` VNĐ`
+    document.getElementById("total").innerHTML = `Tổng đơn hàng: ` + calculated(tongtienHD(receipt[x].list_prod)) + ` VNĐ`
     document.getElementById("confirm-order").onclick = function() {
         ConfirmOrder(x)
         CloseDetailOr()
@@ -215,28 +234,28 @@ function FillDetailO(x) {
 }
 
 function FillDetailH(x) {
-    let leng = obj12.receipt[x].list_prod.length
-    document.getElementById("Text-Detail-History").innerHTML = `Chi tiết đơn hàng ` + obj12.receipt[x].id
+    let leng = receipt[x].list_prod.length
+    document.getElementById("Text-Detail-History").innerHTML = `Chi tiết đơn hàng ` + receipt[x].id
     let tagtable = document.getElementById("Table-detail-history")
     for (let i = tagtable.rows.length - 1; i > 0; i--)
         tagtable.deleteRow(i);
     for (var i = 0; i < leng; i++) {
         let tagrow = document.createElement("tr")
-        let idprod = obj12.receipt[x].list_prod[i].idProd
-        console.log(GetTotal(obj12.receipt[x].list_prod[i]))
+        let idprod = receipt[x].list_prod[i].idProd
+        console.log(GetTotal(receipt[x].list_prod[i]))
         tagrow.innerHTML = `
     <td>` + idprod + `</td>
     <td>` + GetNamePro(idprod) + `</td>
-    <td>` + obj12.receipt[x].list_prod[i].idSize + `</td>
+    <td>` + receipt[x].list_prod[i].idSize + `</td>
     <td>` + calculated(GetPrice(idprod)) + ` VNĐ</td>
-    <td>` + obj12.receipt[x].list_prod[i].amount + `</td>
-    <td>` + calculated((obj12.receipt[x].list_prod[i].amount * GetPrice(obj12.receipt[x].list_prod[i].idProd)) - GetTotal(obj12.receipt[x].list_prod[i])) + `</td>
-    <td>` + calculated(GetTotal(obj12.receipt[x].list_prod[i])) + ` VNĐ</td>`
+    <td>` + receipt[x].list_prod[i].amount + `</td>
+    <td>` + calculated((receipt[x].list_prod[i].amount * GetPrice(receipt[x].list_prod[i].idProd)) - GetTotal(receipt[x].list_prod[i])) + `</td>
+    <td>` + calculated(GetTotal(receipt[x].list_prod[i])) + ` VNĐ</td>`
 
         tagtable.appendChild(tagrow)
     }
-    document.getElementById("total-his").innerHTML = `Tổng đơn hàng:  ` + calculated(tongtienHD(obj12.receipt[x].list_prod)) + ` VNĐ`
-    document.getElementById("Lbl-date").innerHTML = `Ngày đặt: ` + obj12.receipt[x].date_init
+    document.getElementById("total-his").innerHTML = `Tổng đơn hàng:  ` + calculated(tongtienHD(receipt[x].list_prod)) + ` VNĐ`
+    document.getElementById("Lbl-date").innerHTML = `Ngày đặt: ` + receipt[x].date_init
 }
 
 //Tắt mở dialog
@@ -252,25 +271,25 @@ function CloseDialog1() {
 document.getElementById("detail").onclick = function() {
     document.getElementById("order").style.display = 'none';
     document.getElementById("order_h").style.display = 'block';
-    if(document.getElementById("date-confirm-first").value==""||
-    document.getElementById("date-confirm-last").value==""){
+    // if(document.getElementById("date-confirm-first").value==""||
+    // document.getElementById("date-confirm-last").value==""){
         FillHistory()
-    }
-    else{
-        timtheokhoangLS()
-    }
+    // }
+    // else{
+    //     timtheokhoangLS()
+    // }
     
 };
 document.getElementById("page_order").onclick = function() {
     document.getElementById("order").style.display = 'block';
     document.getElementById("order_h").style.display = 'none';
-    if(document.getElementById("date-init-first").value==""||
-    document.getElementById("date-init-last").value==""){
+    // if(document.getElementById("date-init-first").value==""||
+    // document.getElementById("date-init-last").value==""){
         FillOrder()
-    }
-    else{
-        timtheokhoang()
-    }
+    // }
+    // else{
+    //     timtheokhoang()
+    // }
     
     
 };
@@ -439,7 +458,7 @@ function SearchConfirm() {
 function FindIDO(tring) {
     var array = []
     for (let i = 0; i < length1; i++) {
-        if (obj12.receipt[i].id.toLowerCase().indexOf(tring) != -1) {
+        if (receipt[i].id.toLowerCase().indexOf(tring) != -1) {
             array.push(i)
         }
     }
@@ -449,7 +468,7 @@ function FindIDO(tring) {
 function FindIDCus(tring) {
     var array = []
     for (let i = 0; i < length1; i++) {
-        if (obj12.receipt[i].idCustomer.toLowerCase().indexOf(tring) != -1) {
+        if (receipt[i].idCustomer.toLowerCase().indexOf(tring) != -1) {
             array.push(i)
         }
     }
@@ -459,7 +478,7 @@ function FindIDCus(tring) {
 function FindNameCus(tring) {
     var array = []
     for (let i = 0; i < length1; i++) {
-        if (GetNameCus(obj12.receipt[i].idCustomer).toLowerCase().indexOf(tring) != -1) {
+        if (GetNameCus(receipt[i].idCustomer).toLowerCase().indexOf(tring) != -1) {
             array.push(i)
         }
     }
@@ -469,7 +488,7 @@ function FindNameCus(tring) {
 function FindIDStaff(tring) {
     var array = []
     for (let i = 0; i < length1; i++) {
-        if (obj12.receipt[i].idStaff.toLowerCase().indexOf(tring) != -1) {
+        if (receipt[i].idStaff.toLowerCase().indexOf(tring) != -1) {
             array.push(i)
         }
     }
@@ -479,7 +498,7 @@ function FindIDStaff(tring) {
 function FindStatus2(tring) {
     var array = []
     for (let i = 0; i < length1; i++) {
-        if (obj12.receipt[i].status.toLowerCase().indexOf(tring) != -1) {
+        if (receipt[i].id_status.toLowerCase().indexOf(tring) != -1) {
             array.push(i)
         }
     }
@@ -489,7 +508,7 @@ function FindStatus2(tring) {
 function FindDateInit(tring) {
     var array = []
     for (let i = 0; i < length1; i++) {
-        if (obj12.receipt[i].date_init.indexOf(tring) != -1) {
+        if (receipt[i].date_init.indexOf(tring) != -1) {
             array.push(i)
         }
     }
@@ -499,7 +518,7 @@ function FindDateInit(tring) {
 function FindDateComfirm(tring) {
     var array = []
     for (let i = 0; i < length1; i++) {
-        if (obj12.receipt[i].date_confirm.indexOf(tring) != -1) {
+        if (receipt[i].date_confirm.indexOf(tring) != -1) {
             array.push(i)
         }
     }
@@ -510,7 +529,7 @@ function FindDateComfirm(tring) {
 function FindTotalMoney(min, max) {
     var array = []
     for (let i = 0; i < length1; i++) {
-        if (CompareTotal(min, max, tongtienHD(obj12.receipt[i].list_prod))) {
+        if (CompareTotal(min, max, tongtienHD(receipt[i].list_prod))) {
             array.push(i)
         }
     }
@@ -539,11 +558,11 @@ function CompareArr(ar1,ar2) {
 function FindAllO(tring) {
     var array = []
     for (let i = 0; i < length1; i++) {
-        let total = tongtienHD(obj12.receipt[i].list_prod).toString()
-        if (obj12.receipt[i].id.toLowerCase().indexOf(tring) != -1 ||
-            obj12.receipt[i].idCustomer.toLowerCase().indexOf(tring) != -1 ||
-            GetNameCus(obj12.receipt[i].idCustomer).toLowerCase().indexOf(tring) != -1 ||
-            obj12.receipt[i].date_init.indexOf(tring) != -1 ||
+        let total = tongtienHD(receipt[i].list_prod).toString()
+        if (receipt[i].id.toLowerCase().indexOf(tring) != -1 ||
+            receipt[i].idCustomer.toLowerCase().indexOf(tring) != -1 ||
+            GetNameCus(receipt[i].idCustomer).toLowerCase().indexOf(tring) != -1 ||
+            receipt[i].date_init.indexOf(tring) != -1 ||
             total.indexOf(tring) != -1) {
             array.push(i)
         }
@@ -554,14 +573,14 @@ function FindAllO(tring) {
 function FindAllOH(tring) {
     let array = []
     for (let i = 0; i < length1; i++) {
-        let total = tongtienHD(obj12.receipt[i].list_prod).toString()
-        if (obj12.receipt[i].id.toLowerCase().indexOf(tring) != -1 ||
-            obj12.receipt[i].idCustomer.toLowerCase().indexOf(tring) != -1 ||
-            GetNameCus(obj12.receipt[i].idCustomer).toLowerCase().indexOf(tring) != -1 ||
-            obj12.receipt[i].date_confirm.indexOf(tring) != -1 ||
+        let total = tongtienHD(receipt[i].list_prod).toString()
+        if (receipt[i].id.toLowerCase().indexOf(tring) != -1 ||
+            receipt[i].idCustomer.toLowerCase().indexOf(tring) != -1 ||
+            GetNameCus(receipt[i].idCustomer).toLowerCase().indexOf(tring) != -1 ||
+            receipt[i].date_confirm.indexOf(tring) != -1 ||
             total.indexOf(tring) != -1 ||
-            obj12.receipt[i].idStaff.toLowerCase().indexOf(tring) != -1 ||
-            obj12.receipt[i].status.toLowerCase().indexOf(tring) != -1) {
+            receipt[i].idStaff.toLowerCase().indexOf(tring) != -1 ||
+            receipt[i].id_status.toLowerCase().indexOf(tring) != -1) {
             array.push(i)
         }
     }
@@ -581,19 +600,19 @@ function FillOrderFind(find) {
     for (let i = tagtable.rows.length - 1; i > 0; i--)
         tagtable.deleteRow(i);
     for (var i = 0; i < find.length; i++) {
-        if (obj12.receipt[find[i]].status == "xác nhận" || obj12.receipt[find[i]].status == "đã hủy") {
+        if (receipt[find[i]].id_status == "xác nhận" || receipt[find[i]].id_status == "đã hủy") {
             continue
         } else {
             let tagrow = document.createElement("tr")
             // tagrow.className = "first-row"
             tagrow.innerHTML = `
-            <td>` + obj12.receipt[find[i]].id + `</td>
-            <td>` + obj12.receipt[find[i]].idCustomer + `</td>
-            <td>` + GetNameCus(obj12.receipt[find[i]].idCustomer) + `</td>
-            <td>` + obj12.receipt[find[i]].date_init + `</td>
-            <td>` + calculated(tongtienHD(obj12.receipt[find[i]].list_prod)) + ` VNĐ</td>
+            <td>` + receipt[find[i]].id + `</td>
+            <td>` + receipt[find[i]].idCustomer + `</td>
+            <td>` + GetNameCus(receipt[find[i]].idCustomer) + `</td>
+            <td>` + receipt[find[i]].date_init + `</td>
+            <td>` + calculated(tongtienHD(receipt[find[i]].list_prod)) + ` VNĐ</td>
             <td class = detail_o onclick=DetailOr(` + find[i] + `)>Chi tiết</td>
-            <td>` + obj12.receipt[find[i]].status + `</td>
+            <td>` + receipt[find[i]].id_status + `</td>
             <td> <button onclick=ConfirmOrder(` + find[i] + `) >Xác nhận</button>  <button onclick=CancelOrder(` + find[i] + `)>Hủy</button>  </td>`
             tagtable.appendChild(tagrow)
         }
@@ -605,19 +624,19 @@ function FillHistoryFind(find) {
     for (let j = tagtable.rows.length - 1; j > 0; j--)
         tagtable.deleteRow(j);
     for (var i = 0; i < find.length; i++) {
-        if (obj12.receipt[find[i]].status.toLowerCase() == "chờ xác nhận") {
+        if (receipt[find[i]].id_status.toLowerCase() == "chờ xác nhận") {
             continue
         } else {
             let tagrow = document.createElement("tr")
             tagrow.innerHTML = `
-            <td>` + obj12.receipt[find[i]].id + `</td>
-            <td>` + obj12.receipt[find[i]].idCustomer + `</td>
-            <td>` + GetNameCus(obj12.receipt[find[i]].idCustomer) + `</td>
-            <td>` + obj12.receipt[find[i]].date_confirm + `</td>
-            <td>` + calculated(tongtienHD(obj12.receipt[find[i]].list_prod)) + ` VNĐ</td>
+            <td>` + receipt[find[i]].id + `</td>
+            <td>` + receipt[find[i]].idCustomer + `</td>
+            <td>` + GetNameCus(receipt[find[i]].idCustomer) + `</td>
+            <td>` + receipt[find[i]].date_confirm + `</td>
+            <td>` + calculated(tongtienHD(receipt[find[i]].list_prod)) + ` VNĐ</td>
             <td class = detail_h onclick=DetailHis(` + find[i] + `)>Chi tiết</td>
-            <td>` + obj12.receipt[find[i]].status + `</td>
-            <td> ` + obj12.receipt[find[i]].idStaff + ` </td>`
+            <td>` + receipt[find[i]].id_status + `</td>
+            <td> ` + receipt[find[i]].idStaff + ` </td>`
             tagtable.appendChild(tagrow)
         }
     }
@@ -682,10 +701,10 @@ function timtheokhoang() {
     else{
         if (check2D(ngayBD, ngayKT)) {
             for(var i=0; i<length1;i++) {
-                let date = obj12.receipt[i].date_init.split(" ")[0].split("/")
+                let date = receipt[i].date_init.split(" ")[0].split("/")
                 if (check2D(ngayBD, date[2] + "-" + date[1] + "-" + date[0]) &&
                     check2D(date[2] + "-" + date[1] + "-" + date[0], ngayKT) &&
-                    obj12.receipt[i].status.toLowerCase() == "chờ xác nhận") {
+                    receipt[i].id_status.toLowerCase() == "chờ xác nhận") {
                     arOder.push(i)
                 }
             }
@@ -705,10 +724,10 @@ function timtheokhoangLS() {
     else{
         if (check2D(ngayBD, ngayKT)) {
             for(var i=0; i<length1;i++) {
-                let date = obj12.receipt[i].date_confirm.split(" ")[0].split("/")
+                let date = receipt[i].date_confirm.split(" ")[0].split("/")
                 if (check2D(ngayBD, date[2] + "-" + date[1] + "-" + date[0]) &&
                     check2D(date[2] + "-" + date[1] + "-" + date[0], ngayKT) &&
-                    obj12.receipt[i].status.toLowerCase() != "chờ xác nhận"
+                    receipt[i].id_status.toLowerCase() != "chờ xác nhận"
                 ) {
                     arOder.push(i)
                 }

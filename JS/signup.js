@@ -30,7 +30,7 @@ $(document).ready(function () {
 
         // if(Checkavai()==true){
         // Gửi thông tin đăng ký lên server
-        if (Checkavai(checksdt, checkuser) == true) {
+        // if (Checkavai(checksdt, checkuser) == true) {
             $.ajax({
                 url: "./admin/Server/customer/customer.php?action=create",
                 method: "POST",
@@ -51,10 +51,10 @@ $(document).ready(function () {
                 },
                 error: function (xhr, status, error) {
                     console.log(error);
-                    //   notifition();
+                      notifition();
                 },
             });
-        }
+        // }
     });
 });
 

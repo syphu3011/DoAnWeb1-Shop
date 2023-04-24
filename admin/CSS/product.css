@@ -730,7 +730,7 @@ option{
 /* Thêm loại mới */
 
 .set3_product{
-    display: flex;
+    display: none;
     flex-direction: column;
     z-index: 10;
     padding: 10px 10px;
@@ -739,7 +739,6 @@ option{
     right: 360px;
     position: fixed;
     background-color: white;
-    visibility: hidden;
     font-size: 12px;
     transition: visible 0.2s;
 }
@@ -915,4 +914,7 @@ option{
     display: flex;
     align-items: center;
     justify-content: center;
+}
+#cancel33{
+    display: none;
 }
