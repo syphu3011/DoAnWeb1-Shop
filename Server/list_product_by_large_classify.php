@@ -4,10 +4,9 @@
     $data_received = json_decode(file_get_contents("php://input"), true);
     $crud = new CRUD();
     
-    $dataResult["product"] = $crud->read_productByIdClassify(
+    $dataResult["product"] = $crud->read_productByIdLarge_classify(
         $conn, 
-        $data_received["gender"],
-        $data_received["id_classify"]
+        $data_received["id_large_classify"]
     );
     
     if (count($dataResult["product"]) > 0) { // Fixed the condition to check count of "product" array inside the $dataResult array 

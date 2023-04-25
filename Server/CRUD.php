@@ -70,6 +70,7 @@
             $stmt = null;
             return $result;
         }
+        //lay du lieu san pham theo gioi tinh, ma loai
         public function read_productByIdClassify($conn, $gender, $id_classify) {
             $sql="SELECT 
                 product_list_classify.id_product, 
@@ -78,30 +79,50 @@
                 	SELECT DISTINCT image_product.link_image 
                     FROM image_product
                     WHERE image_product.id_product=product.id
-                ) AS link_image,
-                promotion.content,
-                promotion.discount_price,
-                promotion.discount_percent
+                ) AS link_image
+                
             FROM 
                 product_list_classify, 
                 product, 
                 product_list,
-                classify,
-                detail_promotion,
-                promotion
+                classify
                  
             WHERE product_list_classify.id_classify=classify.id
-           		AND detail_promotion.id_product=product_list_classify.id_product
-                AND promotion.id=detail_promotion.id_promotion
                 AND product_list_classify.id_product=product.id
                 AND product.idstatus = 'TT01'
-                AND promotion.id_status = 'TT10'
                 AND product_list.id_product = product_list_classify.id_product
                 AND classify.gender = ?
                 AND classify.id = ?
                     ";
             $stmt=$conn->prepare($sql);
             $stmt->execute([$gender, $id_classify]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
+        public function read_productByIdLarge_classify($conn, $id_large_classify) {
+            $sql="SELECT
+                classify.id,
+                classify.name,
+                product_list_classify.id_product,
+                product_list.id_size,
+                product_list.id_size,
+                product_list.price, (
+                                SELECT DISTINCT image_product.link_image 
+                                FROM image_product
+                                WHERE image_product.id_product=product_list.id_product
+                            ) AS link_image
+            FROM 
+                classify,
+                product_list_classify,
+                product_list
+            WHERE 
+                classify.id_big_classify= ? AND
+                classify.id=product_list_classify.id_classify
+                AND product_list.id_product = product_list_classify.id_product
+                    ";
+            $stmt=$conn->prepare($sql);
+            $stmt->execute([$id_large_classify]);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $stmt = null;
             return $result;

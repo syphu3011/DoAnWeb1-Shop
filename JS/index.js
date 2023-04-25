@@ -886,17 +886,51 @@ function choice_type_product(gender) {
 
 function create_main_onclick_classify(data) {
     if (data.success) {
-        let data_product = data.data;
+        let data_product = data.data.product;
+
         let li = "";
         for (let i = 0; i < data_product.length; i++) {
-
+            let str_price =
+                `<label id="price_` +
+                data_product[i].id_product +
+                `">` +
+                calculated(data_product[i].price) +
+                ` VND</label>`;
+            let str_stamp = "";
+            if (data_product[i].promotion.length > 0) {
+                let data_promotion = data_product[i].promotion[0];
+                str_price =
+                    `<del class="del_price" id="del_` +
+                    data_product[i].id_product +
+                    `">` +
+                    calculated(data_promotion.price) +
+                    ` VND</del>
+                <label id="price_` +
+                    data_product[i].id_product +
+                    `">` +
+                    calculated(
+                        price_from_dis(
+                            data_promotion.price,
+                            data_promotion.discount_percent,
+                            data_promotion.discount_price
+                        )
+                    ) +
+                    ` VND</label>`;
+                str_stamp =
+                    `<div class="promo_stamp" id="stamp_` +
+                    data_product[i].id_product +
+                    `" style="display: block;">
+                    ` +
+                    data_promotion.content +
+                    `</div>`;
+            }
             li +=
                 `<li class="main_list_product_product" id="` +
                 data_product[i].id_product +
                 `">
-        <div class="promo_stamp" id="stamp_` +
-                data_product[i].id_product +
-                `" style="display: block;"></div>
+        ` +
+                str_stamp +
+                `
             <img class="main_list_product_product_image" style="" src="` +
                 data_product[i].link_image +
                 `" alt="">
@@ -905,14 +939,21 @@ function create_main_onclick_classify(data) {
                 data_product[i].name +
                 `</label>
             <div>
-                <del class="del_price" id="del_AO00000001">320.000 VND</del>
-                <label id="price_AO00000001">240.000 VND</label>
+                ` +
+                str_price +
+                `
             </div>
         </div>
     </li>`;
         }
         document.getElementById("main").innerHTML =
-            `<ul class="container">
+            `<ul style="display: grid;
+			grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: 1fr 1fr;
+			grid-gap: 20px;
+			list-style: none;
+			padding: 40px;
+			margin: 0;">
 		` +
             li +
             `
@@ -920,6 +961,8 @@ function create_main_onclick_classify(data) {
     } else {
         alert("Comming soon");
     }
+
+    detail_product();
 }
 function pushAmount(value) {
     inStock.push(value);

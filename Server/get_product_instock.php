@@ -12,6 +12,7 @@
 
     $dataResult["product"] = $crud->read_data_product_in_stockById($conn, $idProduct, $idSize, $idColor);
     if (count($dataResult["product"]) > 0) {
+        $dataResult["promote"] = $crud->read_data_promotionById($conn,$idProduct);
         $response = [
             "success" => true,
             "data" => $dataResult,

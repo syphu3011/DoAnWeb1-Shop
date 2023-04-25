@@ -48,7 +48,7 @@ function create_Homepage(data_res) {
         let data_product = data_res.product;
         let count_i = 0;
         for (let k = 0; k < data_product.length; k++) {
-            if (count_i == 5) {
+            if (count_i == 6) {
                 break;
             } else if (
                 data_product[k].id.indexOf(element.id) != -1 &&
@@ -56,7 +56,15 @@ function create_Homepage(data_res) {
             ) {
                 count_i++;
                 let link_image = "";
-                let price_product = "";
+                let price_product = ``;
+                let current_product = data_res.product_list.find(
+                    (product) => product.id_product === data_product[k].id
+                );
+                if (current_product) {
+                    price_product = calculated(current_product.price) + ` VNĐ`;
+                }
+
+                console.log();
                 //Link image
                 for (let i = 0; i < data_res.image_product.length; i++) {
                     if (
@@ -67,15 +75,15 @@ function create_Homepage(data_res) {
                     }
                 }
                 //Giá sản phẩm
-                for (let i = 0; i < data_res.product_list.length; i++) {
-                    if (
-                        data_res.image_product[i].id_product ==
-                        data_product[k].id
-                    ) {
-                        price_product =
-                            calculated(data_res.product_list[i].price) + " VND";
-                    }
-                }
+                // for (let i = 0; i < data_res.product_list.length; i++) {
+                //     if (
+                //         data_res.image_product[i].id_product ==
+                //         data_product[k].id
+                //     ) {
+                //         price_product =
+                //             calculated(data_res.product_list[i].price) + " VND";
+                //     }
+                // }
                 //danh sách sản phẩm
                 str +=
                     `
@@ -157,6 +165,24 @@ function create_Homepage(data_res) {
         }
     }
     //Bắt sk click sản phẩm
+    let button_show_more = document.getElementsByClassName("button_show_more");
+    for (let i = 0; i < button_show_more.length; i++) {
+        button_show_more[i].onclick = function () {
+            getDataFromServer(
+                "./Server/list_product_by_large_classify.php",
+                {
+                    id_large_classify: button_show_more[i].id,
+                },
+                function (respone) {
+                    console.log(respone);
+                    create_main_onclick_classify(respone);
+                }
+            );
+        };
+    }
+    detail_product();
+}
+function detail_product() {
     let click_product = document.getElementsByClassName(
         "main_list_product_product"
     );
@@ -265,7 +291,7 @@ function click_Product(response) {
                     <div style="display: flex;
                       justify-content: space-between;
                       padding: 10px"> 
-                      <div style="margin-right: 10px;">
+                      <div style="margin-right: 10px;display: flex">
                         <button id="button_decrease">
                         -
                         </button>
@@ -434,14 +460,18 @@ function click_Product(response) {
             let user = currentUser;
             let amount = document.getElementById("count_amount_product").value;
             let id_product = response.data.product[0].id;
-            let price =
-                amount *
-                price_from_dis(
-                    response.data.promotion[0].price,
-                    response.data.promotion[0].discount_percent,
-                    response.data.promotion[0].discount_price
-                );
-
+            let price = "";
+            if (response.data.promotion.length > 0) {
+                price =
+                    amount *
+                    price_from_dis(
+                        response.data.promotion[0].price,
+                        response.data.promotion[0].discount_percent,
+                        response.data.promotion[0].discount_price
+                    );
+            } else {
+                price = amount * response.data.attribute_product[0].price;
+            }
             addToCart(
                 user,
                 id_product,
@@ -569,28 +599,29 @@ function get_product_instock(response) {
     // if (xhr.status === 200) {
     // var response = JSON.parse(xhr.responseText);
     if (response.success) {
-        let data_respone = response.data[0];
-        let amount = data_respone.amount;
+        console.log(response);
+        let data_respone = response.data;
+        let amount = response.data.product[0].amount;
         max_amount = amount;
         // console.log("function get_product_instock");
 
         // console.log("data from get product instock", response);
         document.getElementById("product_instock").innerHTML =
             "Sản phẩm khả dụng: " + amount;
-        if (data_respone.content == null) {
+        if (data_respone.promote.length == 0) {
             document.getElementById("price_amount").innerHTML =
-                calculated(data_respone.price) + " VNĐ";
+                calculated(data_respone.product[0].price) + " VNĐ";
         } else {
             document.getElementById("price_amount").innerHTML =
                 calculated(
                     price_from_dis(
-                        data_respone.price,
-                        data_respone.discount_percent,
-                        data_respone.discount_price
+                        data_respone.promote[0].price,
+                        data_respone.promote[0].discount_percent,
+                        data_respone.promote[0].discount_price
                     )
                 ) + " VND";
             document.getElementById("del_price").innerHTML =
-                calculated(data_respone.price) + " VNĐ";
+                calculated(data_respone.promote[0].price) + " VNĐ";
         }
 
         // calculated(
@@ -708,7 +739,9 @@ function count_onclick(
     sale
 ) {
     input_text.value = amount;
-    label_del_price.innerHTML = calculated(sale * amount) + " VNĐ";
+    console.log(sale);
+    if (sale != null)
+        label_del_price.innerHTML = calculated(sale * amount) + " VNĐ";
     label_text.innerHTML = calculated(price * amount) + " VNĐ";
 }
 function addToCart(
