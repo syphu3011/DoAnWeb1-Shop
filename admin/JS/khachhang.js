@@ -1,8 +1,8 @@
 // * UI rendering function
 
-// ! chưa hash mật khẩu
-// ! chưa có lọc rồi xóa
-// ! ready to save password condition ? => toggle save button on
+// TODO chưa hash mật khẩu
+// TODO chưa có lọc rồi xóa
+// TODO ready to save password condition ? => toggle save button on
 
 
 let readyToSubmit = false;
@@ -24,7 +24,6 @@ async function getCustomerData(key, value) {
     console.error(error);
   }
 }
-
 
 async function getCustomers() {
   let table = document.getElementById("myTable");
@@ -97,7 +96,7 @@ function bindStatusButList() {
           status: 'idle'
         }
         $.post(url, customer, (data, status) => {});
-        // ! chưa có báo lõi
+        // TODO chưa có báo lõi
         getCustomers();
       }
       else {
@@ -112,7 +111,7 @@ function bindStatusButList() {
           status: 'active'
         }
         $.post(url, customer, (data, status) => {});
-        // ! chưa có báo lõi
+        // TODO chưa có báo lõi
         getCustomers();
       }
     }
@@ -183,7 +182,7 @@ function saveCustomerDetail(idButton) {
   $.post(url, account, (data, status) => {});
   $.post(url, customer, (data, status) => {});
   closeCustomerPopupDetail();
-  // ! chua co thong bao update thanh cong
+  // TODO chua co thong bao update thanh cong
 }
 
 
@@ -197,9 +196,9 @@ function renderEditCustomerDetail(idButton) {
   // let idSaveBut = `save-but-${tempSplit[2]}-${tempSplit[3]}`;
   // console.log(idSaveBut);
 
-  // ! chưa có làm mờ nút save
-  // ! chưa có upload ảnh
-  // ! chưa cảnh báo trùng sđt
+  // TODO chưa có làm mờ nút save
+  // TODO chưa có upload ảnh
+  // TODO chưa cảnh báo trùng sđt
   $("#detail-customer-content").html(`
     <div style="display: flex; flex-direction: row;">
     <div style="display: flex; flex-direction: column;">
@@ -244,7 +243,7 @@ function renderEditCustomerDetail(idButton) {
     `);
   $(`#save-but-${selectedCustomer.id}-${selectedCustomer.id_user}`).css("display", "inline-block");
   bindEditNotiIntoBox();
-  // ! chưa ẩn hiện nút save khi edit
+  // TODO chưa ẩn hiện nút save khi edit
 }
 
 function bindEditNotiIntoBox() {
@@ -321,8 +320,8 @@ function renderAddNewCusInterface() {
   // * GUI * //
   console.log(sizeOfTable)
   let expectedId = "KH" + String(sizeOfTable+1).padStart(3, '0');
-  // ! chưa có upload ảnh
-  // ! chưa cảnh báo trùng sđt
+  // TODO chưa có upload ảnh
+  // TODO chưa cảnh báo trùng sđt
   $("#add-new-cus-box-content").html(`
   <div style="display: flex; flex-direction: row; padding: 1rem;">
       <form id="cus-add-img-form" method="post" style="display: flex; flex-direction: column; padding-left: 1rem; padding-top: 1rem;">
@@ -415,9 +414,9 @@ function renderAddNewCusInterface() {
   $("#btn-detail-add-customer-group").css("display", "block");
   $("#btn-detail-add-customer-group").css("padding-bottom", "1rem");
 
-  // ! chưa ẩn hiện nút save khi add
-  // ! chưa thông báo thêm thành công
-  // ! chưa có thông báo khi thêm thất bại
+  // TODO chưa ẩn hiện nút save khi add
+  // TODO chưa thông báo thêm thành công
+  // TODO chưa có thông báo khi thêm thất bại
   bindNotiIntoBox();
   
 }
@@ -603,8 +602,8 @@ function toggleDeleteDown(id) {
 }
 
 function delSelCus() {
-  // ! chua xac nhan xoa
-  // ! nếu list rỗng thì ẩn nút delete
+  // TODO chua xac nhan xoa
+  // TODO nếu list rỗng thì ẩn nút delete
   $("#dialog").css("display", "flex");
   $("#confirm-box").css("display", "flex");
   $("#confirm-box").html(`
@@ -675,7 +674,7 @@ async function performDelPut() {
 
 function renderDelConfirmation() {
   let numberOfRow = wantToDeleteCustomer.length;
-  // ! no notification for successful erasion.
+  // TODO no notification for successful erasion.
 }
 
 function foldDelTable() {
@@ -713,7 +712,7 @@ function legacyDate(date) {
 }
 
 function filterCusWithParameters () {
-  // ! chưa có tìm kiếm
+  // TODO chưa có tìm kiếm
   $("#dialog").css("display", "none");
   $("#filter-customer-box").css("display", "none");
   let searchBox = $("#text-search").val();
@@ -813,8 +812,8 @@ function closeCustomerPopupDetail() {
 function saveNewCustomer(id) {
   if (!readyToSubmit)
     return
-  // ! Chưa insert được hình ảnh
-  // ! Chưa có session mới
+  // TODO Chưa insert được hình ảnh
+  // TODO Chưa có session mới
   let data = {
     action: 'create',
     username: $("#customer-username").val(),
@@ -835,7 +834,7 @@ function saveNewCustomer(id) {
   data.username = data.username.toLowerCase();
   data.gender = data.gender.toLowerCase();
   $.post(url, data, (data, status) => {
-    // ! chua co thông báo thêm người dùng mới
+    // TODO chua co thông báo thêm người dùng mới
     console.log("Saved new customer.");
     readyToSubmit = false;
     // * GUI * //

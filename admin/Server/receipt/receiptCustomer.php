@@ -10,13 +10,13 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 	// * GET
 	
 	$child = "receipt";
-	$parent = "detail_receipt";
-	$childHeader = Table::describe($conn, $child); // child header
-	$parntHeader = Table::describe($conn, $parent); // parent header
+	$parent = "customer";
+	$childHeader = Table::describe($conn, $child);
+	$parrentHeader = Table::describe($conn, $parent);
 	$condition = "1=1";
 
 	foreach($_GET as $key => $value) {
-		if (in_array($key, $parntHeader))
+		if (in_array($key, $parrentHeader))
 			$condition .= " AND $parent.$key = '$value'";
 		if (in_array($key, $childHeader))
 			$condition .= " AND $child.$key = '$value'";
@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 	if ($condition === "1=1" && isset($_GET['search'])) {
 		$toSearch = $_GET['search'];
 		$condition = "";
-		foreach($parntHeader as $key => $value) {
+		foreach($parrentHeader as $key => $value) {
 			$condition .= " OR $parent.$value = '$toSearch'";
 		}
 		foreach($childHeader as $key => $value) {
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 
 	// echo $condition;
 
-	// ? http://localhost/doan/admin/Server/customer/customerDetail.php
+	// ? http://localhost/doan/admin/Server/customer/receiptCustomer.php
 	echo Table::jsonifyCouple(
 		$conn, 
 		Table::tableQueryCouple(
@@ -45,17 +45,17 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 			// * childtable
 			"receipt", 
 			// * parenttable
-			"detail_receipt", 
+			"customer", 
 			// * foreign key on child
-			"id",
+			"id_customer",
 			// * foreign key on parent
-			"id_receipt",
+			"id",
 			// * column to select
 			"*",
 			// * condition to select
 			$condition
 		), 
-		"receipt", "detail_receipt"
+		"receipt", "customer"
 	);
 	
 }
