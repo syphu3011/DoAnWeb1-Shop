@@ -80,5 +80,7 @@
     // $stm=null;
     $data["product_list"]=$data_request -> read_data_product_list($conn);
     $data["promotion"] = $data_request -> read_data_promotion($conn);
+    $data["promote"] = $data_request -> read_data_all_promotion($conn);
+    $data["big_data"] = $data_request -> read_data($conn);
     echo json_encode($data);
 ?>

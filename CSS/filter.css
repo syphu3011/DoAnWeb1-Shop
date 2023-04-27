@@ -1,95 +1,97 @@
 #filter-bar {
-  position: fixed;
-  height: 60px;
-  background-color: lightpink;
-  display: flex;
-  z-index: 2;
-  justify-content: space-between;
-  top: 81px;
-  width: 100%;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    position: fixed;
+    height: 60px;
+    background-color: lightpink;
+    display: flex;
+    z-index: 2;
+    justify-content: space-between;
+    top: 81px;
+    right: 0px;
+    left: 0px;
+    /* width: 100%; */
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .type {
-  margin: 20px 40px 10px 115px;
+    margin: 20px 40px 10px 40px;
 }
 
 .price {
-  margin: 20px 30px 10px 30px;
+    margin: 20px 30px 10px 30px;
 }
 
 .sale {
-  margin: 20px 115px 10px 40px;
+    margin: 20px 40px 10px 40px;
 }
 
 .type,
 .price,
 .sale {
-  background-color: white;
-  font-size: 10px;
-  /* width: 220px; */
-  line-height: 30px;
-  padding: 0 10px;
-  display: flex;
-  position: relative;
-  border-radius: 40px;
-  border: 1px solid rgba(128, 128, 128, 0.4);
+    background-color: white;
+    font-size: 10px;
+    /* width: 220px; */
+    line-height: 30px;
+    padding: 0 10px;
+    display: flex;
+    position: relative;
+    border-radius: 40px;
+    border: 1px solid rgba(128, 128, 128, 0.4);
 }
 
-.sale {
-  min-width: 220px;
-}
+/* .sale {
+    min-width: 220px;
+} */
 
 #filter-bar label {
-  border-right: 1px solid rgba(128, 128, 128, 0.4);
-  padding-right: 10px;
+    border-right: 1px solid rgba(128, 128, 128, 0.4);
+    padding-right: 10px;
 }
 
 .list {
-  padding: 0 10px;
-  width: 130px;
-  text-align: center;
+    padding: 0 10px;
+    width: 130px;
+    text-align: center;
 }
 
 #show-type,
 #show-price,
 #show-sale {
-  display: flex;
-  cursor: pointer;
+    display: flex;
+    cursor: pointer;
 }
 
 #show-price .list {
-  width: 200px;
+    width: 200px;
 }
 
 #show-sale .list {
-  width: 120px;
+    width: 120px;
 }
 
 #list-type,
 #list-price,
 #list-sale {
-  position: absolute;
-  background-color: white;
-  display: none;
-  max-height: 200px;
-  top: 30px;
-  border-radius: 20px;
-  padding: 10px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  overflow: hidden;
+    position: absolute;
+    background-color: white;
+    display: none;
+    max-height: 200px;
+    top: 30px;
+    border-radius: 20px;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    overflow: hidden;
 }
 
 #list-type {
-  left: 50px;
+    left: 50px;
 }
 
 #list-price {
-  left: 40px;
-  width: 200px;
+    left: 40px;
+    width: 200px;
 }
 
 #list-sale {
-  left: 90px;
-  width: 100px;
+    left: 90px;
+    width: 100px;
 }

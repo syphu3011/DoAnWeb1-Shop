@@ -3,11 +3,11 @@ let max_amount = 0;
 function get_data(res) {
     //Loại sản phẩm
     data.largeClassify = res.largeClassify;
-    data.miniClassify = res.miniClassify;
+    data.data_promotion = res.promote;
     //Sản phẩm
     data.product = res.product;
     //Sản phẩm trong kho
-    data.product_in_stock = res.product_in_stock;
+    data.big = res.big_data;
     //Khuyến mãi
     data.promote = res.promotion;
     //Ảnh sản phẩm
@@ -19,7 +19,9 @@ getDataFromServer("./Server/homepage.php", "", function (response) {
     console.log(response);
 
     // console.log("Data from homepage.php: ", response);
+    get_data(response);
     create_Homepage(response);
+    create_filter();
 });
 // var xhttp = new XMLHttpRequest();
 // //load trang chủ
@@ -39,8 +41,34 @@ getDataFromServer("./Server/homepage.php", "", function (response) {
 function price_from_dis(price, discount_percent, discount_price) {
     return price - price * discount_percent - discount_price;
 }
+function create_filter(params) {
+    console.log(data);
+    document.getElementById(
+        "clothing-type"
+    ).innerHTML = `<option >Tất cả</option>`;
+    for (let i = 0; i < data.largeClassify.length; i++) {
+        for (let j = 0; j < data.largeClassify[i].miniClassify.length; j++) {
+            document.getElementById("clothing-type").innerHTML +=
+                `<option id="` +
+                data.largeClassify[i].miniClassify[j].id +
+                `">` +
+                data.largeClassify[i].miniClassify[j].name +
+                `</option>`;
+        }
+    }
+    document.getElementById(
+        "sale-select"
+    ).innerHTML = `<option >Tất cả</option>`;
+    for (let i = 0; i < data.promote.length; i++) {
+        document.getElementById("sale-select").innerHTML +=
+            `<option id="` +
+            data.promote[i].id +
+            `">` +
+            data.promote[i].content +
+            `</option>`;
+    }
+}
 function create_Homepage(data_res) {
-    get_data(data_res);
     //Theo loại
     data_res.largeClassify.forEach((element) => {
         var str = "";

@@ -137,16 +137,16 @@ function checkSamePassword(password, same_password) {
     return false;
 }
 
-function initId() {
-    if (data.customer.length == 0) {
-        return "KH0001";
-    }
-    let number = parseInt(
-        data.customer[data.customer.length - 1].id.replace("KH", "")
-    );
-    let newId = "KH" + String(number + 1).padStart(6, "0");
-    return newId;
-}
+// function initId() {
+//     if (data.customer.length == 0) {
+//         return "KH0001";
+//     }
+//     let number = parseInt(
+//         data.customer[data.customer.length - 1].id.replace("KH", "")
+//     );
+//     let newId = "KH" + String(number + 1).padStart(6, "0");
+//     return newId;
+// }
 
 function checkDate(birthday) {
     if (
@@ -572,40 +572,40 @@ document.getElementById("forgot-pass").onclick = function () {
     }, 300);
 };
 //Bộ lọc loại
-showtype.onclick = function () {
-    let arrType = new Array();
-    data.largeClassify.forEach((e) => {
-        e.miniClassify.forEach((el) => {
-            arrType.push(el.name);
-        });
-    });
-    showFilter(
-        listtype,
-        arrType,
-        "id-type",
-        listprice,
-        listsale,
-        document.getElementById("selected-type")
-    );
-};
-showprice.onclick = function () {
-    showFilter(listprice, itemsprice, "", listsale, listtype);
-};
+// showtype.onclick = function () {
+//     let arrType = new Array();
+//     data.largeClassify.forEach((e) => {
+//         e.miniClassify.forEach((el) => {
+//             arrType.push(el.name);
+//         });
+//     });
+//     showFilter(
+//         listtype,
+//         arrType,
+//         "id-type",
+//         listprice,
+//         listsale,
+//         document.getElementById("selected-type")
+//     );
+// };
+// showprice.onclick = function () {
+//     showFilter(listprice, itemsprice, "", listsale, listtype);
+// };
 //bộ lọc khuyến mãi
-showsale.onclick = function () {
-    let arrPromo = new Array();
-    data.promote.forEach((e) => {
-        arrPromo.push(e.content);
-    });
-    showFilter(
-        listsale,
-        arrPromo,
-        "id-sale",
-        listtype,
-        listprice,
-        document.getElementById("selected-sale")
-    );
-};
+// showsale.onclick = function () {
+//     let arrPromo = new Array();
+//     data.promote.forEach((e) => {
+//         arrPromo.push(e.content);
+//     });
+//     showFilter(
+//         listsale,
+//         arrPromo,
+//         "id-sale",
+//         listtype,
+//         listprice,
+//         document.getElementById("selected-sale")
+//     );
+// };
 
 function showFilter(list1, arr, id, list2, list3, select) {
     if (list1.style.display == "block") {
@@ -668,35 +668,35 @@ itemstype.push("tất cả");
 //
 //
 //
-var itemsprice = document
-    .getElementById("list-price")
-    .getElementsByClassName("list-item");
+// var itemsprice = document
+//     .getElementById("list-price")
+//     .getElementsByClassName("list-item");
 var itemssale = new Array();
 itemssale.push("tất cả");
 // data.promote.forEach((e) => {
 //   itemssale.push(e.name);
 // });
 // document.getElementById("list-sale").getElementsByClassName("list-item")
-select(itemstype, document.getElementById("selected-type"), listtype);
-select(itemsprice, document.getElementById("selected-price"), listprice);
-select(itemssale, document.getElementById("selected-sale"), listsale);
+// select(itemstype, document.getElementById("selected-type"), listtype);
+// select(itemsprice, document.getElementById("selected-price"), listprice);
+// select(itemssale, document.getElementById("selected-sale"), listsale);
 
-function select(items, selected, list) {
-    // select
-    for (let i = 0; i < items.length; i++) {
-        items[i].onclick = function () {
-            selected.innerHTML = items[i].textContent;
-            list.style.display = "";
-            timkhiem();
-        };
-    }
-}
+// function select(items, selected, list) {
+//     // select
+//     for (let i = 0; i < items.length; i++) {
+//         items[i].onclick = function () {
+//             selected.innerHTML = items[i].textContent;
+//             list.style.display = "";
+//             timkhiem();
+//         };
+//     }
+// }
 
-function offlist() {
-    listtype.style.display = "";
-    listprice.style.display = "";
-    listsale.style.display = "";
-}
+// function offlist() {
+//     listtype.style.display = "";
+//     listprice.style.display = "";
+//     listsale.style.display = "";
+// }
 btnprodw.onmouseenter = function () {
     prod.style.display = "block";
     offlist();
@@ -887,7 +887,6 @@ function choice_type_product(gender) {
 function create_main_onclick_classify(data) {
     if (data.success) {
         let data_product = data.data.product;
-
         let li = "";
         for (let i = 0; i < data_product.length; i++) {
             let str_price =
@@ -947,60 +946,67 @@ function create_main_onclick_classify(data) {
     </li>`;
         }
         document.getElementById("main").innerHTML =
-            `<ul style="display: grid;
-			grid-template-columns: repeat(5, 1fr);
-            grid-template-rows: 1fr 1fr;
-			grid-gap: 20px;
-			list-style: none;
-			padding: 40px;
-			margin: 0;">
+            `<div style="
+                padding-top: 40px;
+            ">
+            <label style="
+                font-size: 25px;
+                padding-left: 40px;
+            ">sản phẩm</label>
+            <ul style="display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                grid-template-rows: 1fr 1fr;
+                grid-gap: 20px;
+                list-style: none;
+                padding: 40px;
+                margin: 0;">
 		` +
             li +
             `
-	</ul>`;
+	</ul></div>`;
     } else {
         alert("Comming soon");
     }
 
     detail_product();
 }
-function pushAmount(value) {
-    inStock.push(value);
-}
+// function pushAmount(value) {
+//     inStock.push(value);
+// }
 
-function getAmount(id) {
-    for (let i = 0; i < data.prodInStock.length; i++) {
-        if (data.prodInStock[i].idProd == id) {
-            pushAmount(data.prodInStock[i]);
-        }
-    }
-}
+// function getAmount(id) {
+//     for (let i = 0; i < data.prodInStock.length; i++) {
+//         if (data.prodInStock[i].idProd == id) {
+//             pushAmount(data.prodInStock[i]);
+//         }
+//     }
+// }
 
-function getAmountWithSize(id, size) {
-    let amountSize = 0;
-    for (let i = 0; i < data.prodInStock.length; i++) {
-        if (
-            data.prodInStock[i].idProd == id &&
-            data.prodInStock[i].idSize == size
-        ) {
-            amountSize += parseInt(data.prodInStock[i].amount);
-        }
-    }
+// function getAmountWithSize(id, size) {
+//     let amountSize = 0;
+//     for (let i = 0; i < data.prodInStock.length; i++) {
+//         if (
+//             data.prodInStock[i].idProd == id &&
+//             data.prodInStock[i].idSize == size
+//         ) {
+//             amountSize += parseInt(data.prodInStock[i].amount);
+//         }
+//     }
 
-    function createStockWithAmount() {
-        let amount = amountSize;
-        return { amount };
-    }
-    pushAmount(createStockWithAmount());
-}
+//     function createStockWithAmount() {
+//         let amount = amountSize;
+//         return { amount };
+//     }
+//     pushAmount(createStockWithAmount());
+// }
 
-function TongTien(cart) {
-    let tong = 0;
-    cart.forEach((e) => {
-        tong += parseInt(e.price);
-    });
-    return tong;
-}
+// function TongTien(cart) {
+//     let tong = 0;
+//     cart.forEach((e) => {
+//         tong += parseInt(e.price);
+//     });
+//     return tong;
+// }
 let thanhtoansp = new Array();
 //
 //
@@ -1445,102 +1451,102 @@ function search(text, classify = "", minPrice = 0, maxPrice = 0, promote = "") {
     }
 }
 
-function createHomepage() {
-    isHomePage = true;
-    document.getElementById("main").style.display = "flex";
-    try {
-        document.getElementById("div-main").remove();
-    } catch (e) {}
-    try {
-        document.getElementById("searc").remove();
-    } catch (error) {}
-    let div = document.createElement("div");
-    div.id = "div-main";
-    for (let i = 0; i < data.largeClassify.length; i++) {
-        div.appendChild(createMainPro(data.largeClassify[i]));
-    }
-    let divv = document.createElement("div");
-    document.getElementById("main").appendChild(div);
-    for (
-        let j = 0;
-        j < document.getElementsByClassName("list-product").length;
-        j++
-    )
-        document.getElementsByClassName("list-product")[
-            j
-        ].style.gridTemplateColumns = "1fr 1fr 1fr 1fr 1fr";
-}
+// function createHomepage() {
+//     isHomePage = true;
+//     document.getElementById("main").style.display = "flex";
+//     try {
+//         document.getElementById("div-main").remove();
+//     } catch (e) {}
+//     try {
+//         document.getElementById("searc").remove();
+//     } catch (error) {}
+//     let div = document.createElement("div");
+//     div.id = "div-main";
+//     for (let i = 0; i < data.largeClassify.length; i++) {
+//         div.appendChild(createMainPro(data.largeClassify[i]));
+//     }
+//     let divv = document.createElement("div");
+//     document.getElementById("main").appendChild(div);
+//     for (
+//         let j = 0;
+//         j < document.getElementsByClassName("list-product").length;
+//         j++
+//     )
+//         document.getElementsByClassName("list-product")[
+//             j
+//         ].style.gridTemplateColumns = "1fr 1fr 1fr 1fr 1fr";
+// }
 // createHomepage();
 //
 //
 //màn hình chính
-function createMainPro(clasify) {
-    arrProduct.length = 0;
-    let div = document.createElement("div");
-    let title = document.createElement("div");
-    title.style.fontSize = "22px";
-    div.style.margin = "20px 40px";
-    title.style.display = "block";
-    title.style.borderBottom = "1px solid gray";
-    title.style.paddingBottom = "10px";
-    title.appendChild(document.createTextNode(clasify.name));
-    div.appendChild(title);
-    currentPage = 1;
-    let divPro = document.createElement("div");
-    divPro.style.display = "grid";
-    for (let i = 0; i < clasify.miniClassify.length; i++) {
-        getProduct(clasify.miniClassify[i].id);
-    }
-    divPro.appendChild(addListProduct(clasify.id, 5));
-    let btnList = document.createElement("div");
-    btnList.style.display = "flex";
-    btnList.style.justifyContent = "center";
-    let a = document.createElement("a");
-    a.style.fontSize = "18px";
-    a.style.cursor = "pointer";
-    a.style.margin = "15px";
-    a.onclick = function () {
-        isHomePage = false;
-        arrProduct.length = 0;
-        pathImage.length = 0;
-        for (let i = 0; i < clasify.miniClassify.length; i++) {
-            getProduct(clasify.miniClassify[i].id);
-        }
-        console.log(clasify);
-        let pos = document.documentElement.scrollTop;
-        let id = setInterval(function frame() {
-            if (pos <= 300) {
-                clearInterval(id);
-                document.getElementById("main").style.display = "";
-                if (document.getElementById("div-main") != null) {
-                    document.getElementById("div-main").remove();
-                }
-                document.getElementsByClassName("middle")[0].style.display =
-                    "flex";
-                let title = document.createElement("div");
-                title.id = "div-title";
-                let node = document.createTextNode(clasify.name);
-                title.appendChild(node);
-                document.getElementById("space-product").appendChild(title);
-                if (arrProduct.length > 0) {
-                    let divUl = document.createElement("div");
-                    divUl.id = "div-list";
-                    divUl.appendChild(addListProduct(clasify.id, 12));
-                    document.getElementById("space-product").appendChild(divUl);
-                    createPageNumber(clasify.id, arrProduct, 12);
-                }
-            } else {
-                pos -= 10;
-                document.documentElement.scrollTop = pos;
-            }
-        }, 1);
-    };
-    a.appendChild(document.createTextNode("Xem chi tiết"));
-    btnList.appendChild(a);
-    div.appendChild(divPro);
-    div.appendChild(btnList);
-    return div;
-}
+// function createMainPro(clasify) {
+//     arrProduct.length = 0;
+//     let div = document.createElement("div");
+//     let title = document.createElement("div");
+//     title.style.fontSize = "22px";
+//     div.style.margin = "20px 40px";
+//     title.style.display = "block";
+//     title.style.borderBottom = "1px solid gray";
+//     title.style.paddingBottom = "10px";
+//     title.appendChild(document.createTextNode(clasify.name));
+//     div.appendChild(title);
+//     currentPage = 1;
+//     let divPro = document.createElement("div");
+//     divPro.style.display = "grid";
+//     for (let i = 0; i < clasify.miniClassify.length; i++) {
+//         getProduct(clasify.miniClassify[i].id);
+//     }
+//     divPro.appendChild(addListProduct(clasify.id, 5));
+//     let btnList = document.createElement("div");
+//     btnList.style.display = "flex";
+//     btnList.style.justifyContent = "center";
+//     let a = document.createElement("a");
+//     a.style.fontSize = "18px";
+//     a.style.cursor = "pointer";
+//     a.style.margin = "15px";
+//     a.onclick = function () {
+//         isHomePage = false;
+//         arrProduct.length = 0;
+//         pathImage.length = 0;
+//         for (let i = 0; i < clasify.miniClassify.length; i++) {
+//             getProduct(clasify.miniClassify[i].id);
+//         }
+//         console.log(clasify);
+//         let pos = document.documentElement.scrollTop;
+//         let id = setInterval(function frame() {
+//             if (pos <= 300) {
+//                 clearInterval(id);
+//                 document.getElementById("main").style.display = "";
+//                 if (document.getElementById("div-main") != null) {
+//                     document.getElementById("div-main").remove();
+//                 }
+//                 document.getElementsByClassName("middle")[0].style.display =
+//                     "flex";
+//                 let title = document.createElement("div");
+//                 title.id = "div-title";
+//                 let node = document.createTextNode(clasify.name);
+//                 title.appendChild(node);
+//                 document.getElementById("space-product").appendChild(title);
+//                 if (arrProduct.length > 0) {
+//                     let divUl = document.createElement("div");
+//                     divUl.id = "div-list";
+//                     divUl.appendChild(addListProduct(clasify.id, 12));
+//                     document.getElementById("space-product").appendChild(divUl);
+//                     createPageNumber(clasify.id, arrProduct, 12);
+//                 }
+//             } else {
+//                 pos -= 10;
+//                 document.documentElement.scrollTop = pos;
+//             }
+//         }, 1);
+//     };
+//     a.appendChild(document.createTextNode("Xem chi tiết"));
+//     btnList.appendChild(a);
+//     div.appendChild(divPro);
+//     div.appendChild(btnList);
+//     return div;
+// }
 
 let spaceProduct = document.getElementById("space-product");
 let onclickProduct = document.getElementById("onclick-product");
@@ -1636,90 +1642,90 @@ function addListProduct(id, proInpage) {
     return ulList;
 }
 
-function createListProduct(
-    path,
-    img,
-    nameProduct,
-    price,
-    sale,
-    madeIn,
-    id,
-    clasify,
-    description
-) {
-    let k = new Array();
-    data.promote.forEach((element) => {
-        element.products.forEach((e) => {
-            if (e.id.toLowerCase() == id.toLowerCase()) {
-                k.push(element.name);
-            }
-        });
-    });
-    let liItem = document.createElement("li");
-    liItem.className = "product-item";
-    let imgTag = document.createElement("img");
-    imgTag.src = path + img[0];
-    let giamgia = document.createElement("div");
-    giamgia.style.position = "absolute";
-    giamgia.style.right = "10px";
-    giamgia.style.top = "10px";
-    giamgia.style.fontSize = "10px";
-    giamgia.style.padding = "5px 10px";
-    giamgia.style.backgroundColor = "red";
-    giamgia.style.fontFamily = "times new roman";
-    giamgia.style.fontWeight = "bold";
-    giamgia.style.boxShadow = "rgba(0, 0, 0, 0.35) 0px 5px 15px";
-    if (k.length != 0) {
-        giamgia.appendChild(document.createTextNode(k[0]));
-        liItem.appendChild(giamgia);
-    }
-    liItem.appendChild(imgTag);
-    imgTag.style.objectFit = "cover";
-    let namePro = document.createElement("div");
-    namePro.appendChild(document.createTextNode(nameProduct));
-    let divContent = document.createElement("div");
-    divContent.className = "product-content";
-    divContent.appendChild(namePro);
-    divContent.style.paddingTop = "10px";
-    liItem.onmouseenter = function () {
-        liItem.style.backgroundColor = "lightpink";
-        liItem.style.color = "white";
-        divContent.style.borderTop = "none";
-    };
-    liItem.onmouseleave = function () {
-        liItem.style.backgroundColor = "white";
-        liItem.style.color = "black";
-        divContent.style.borderTop = "1px solid gray";
-    };
-    liItem.appendChild(divContent);
-    let salePrice = document.createElement("div");
-    salePrice.style.marginTop = "10px";
-    salePrice.style.color = "red";
-    let cost = document.createElement("del");
-    cost.appendChild(document.createTextNode(calculated(sale) + " VND"));
-    cost.className = "cost";
-    if (sale != "0") {
-        salePrice.appendChild(cost);
-    } else {
-        salePrice.style.justifyContent = "center";
-    }
-    salePrice.appendChild(document.createTextNode(calculated(price) + " VND"));
-    salePrice.style.display = "flex";
-    divContent.appendChild(salePrice);
-    liItem.onclick = function () {
-        if (!isCTSP) {
-            isCTSP = true;
-            document.getElementById("div-onClickProduct").style.display =
-                "flex";
-            xemCTSP(id);
-            showacc(document.getElementsByClassName("popUp-prod")[0], -500, 0);
-        }
-    };
-    return liItem;
-}
-let isCTSP = false;
+// function createListProduct(
+//     path,
+//     img,
+//     nameProduct,
+//     price,
+//     sale,
+//     madeIn,
+//     id,
+//     clasify,
+//     description
+// ) {
+//     let k = new Array();
+//     data.promote.forEach((element) => {
+//         element.products.forEach((e) => {
+//             if (e.id.toLowerCase() == id.toLowerCase()) {
+//                 k.push(element.name);
+//             }
+//         });
+//     });
+//     let liItem = document.createElement("li");
+//     liItem.className = "product-item";
+//     let imgTag = document.createElement("img");
+//     imgTag.src = path + img[0];
+//     let giamgia = document.createElement("div");
+//     giamgia.style.position = "absolute";
+//     giamgia.style.right = "10px";
+//     giamgia.style.top = "10px";
+//     giamgia.style.fontSize = "10px";
+//     giamgia.style.padding = "5px 10px";
+//     giamgia.style.backgroundColor = "red";
+//     giamgia.style.fontFamily = "times new roman";
+//     giamgia.style.fontWeight = "bold";
+//     giamgia.style.boxShadow = "rgba(0, 0, 0, 0.35) 0px 5px 15px";
+//     if (k.length != 0) {
+//         giamgia.appendChild(document.createTextNode(k[0]));
+//         liItem.appendChild(giamgia);
+//     }
+//     liItem.appendChild(imgTag);
+//     imgTag.style.objectFit = "cover";
+//     let namePro = document.createElement("div");
+//     namePro.appendChild(document.createTextNode(nameProduct));
+//     let divContent = document.createElement("div");
+//     divContent.className = "product-content";
+//     divContent.appendChild(namePro);
+//     divContent.style.paddingTop = "10px";
+//     liItem.onmouseenter = function () {
+//         liItem.style.backgroundColor = "lightpink";
+//         liItem.style.color = "white";
+//         divContent.style.borderTop = "none";
+//     };
+//     liItem.onmouseleave = function () {
+//         liItem.style.backgroundColor = "white";
+//         liItem.style.color = "black";
+//         divContent.style.borderTop = "1px solid gray";
+//     };
+//     liItem.appendChild(divContent);
+//     let salePrice = document.createElement("div");
+//     salePrice.style.marginTop = "10px";
+//     salePrice.style.color = "red";
+//     let cost = document.createElement("del");
+//     cost.appendChild(document.createTextNode(calculated(sale) + " VND"));
+//     cost.className = "cost";
+//     if (sale != "0") {
+//         salePrice.appendChild(cost);
+//     } else {
+//         salePrice.style.justifyContent = "center";
+//     }
+//     salePrice.appendChild(document.createTextNode(calculated(price) + " VND"));
+//     salePrice.style.display = "flex";
+//     divContent.appendChild(salePrice);
+//     liItem.onclick = function () {
+//         if (!isCTSP) {
+//             isCTSP = true;
+//             document.getElementById("div-onClickProduct").style.display =
+//                 "flex";
+//             xemCTSP(id);
+//             showacc(document.getElementsByClassName("popUp-prod")[0], -500, 0);
+//         }
+//     };
+//     return liItem;
+// }
+// let isCTSP = false;
 
-let sizeProduct = new Array();
+// let sizeProduct = new Array();
 
 function checkCart(iduser, id_product) {
     getDataFromServer(
@@ -1731,267 +1737,267 @@ function checkCart(iduser, id_product) {
     );
 }
 
-function selectImage(
-    divPreview,
-    i,
-    isSelected,
-    arrImg,
-    imgShow,
-    path,
-    img,
-    scroll,
-    offset
-) {
-    if (i != isSelected) {
-        arrImg[i].style.borderColor = "red";
-        arrImg[i].style.borderRadius = "10px";
-        arrImg[isSelected].style.borderColor = "gray";
-        arrImg[isSelected].style.borderRadius = "0";
-        imgShow.src = path + img[i];
-        if (i > 0) {
-            scroll = offset;
-        }
-        divPreview.scrollTo(scroll, 0);
-    }
-}
+// function selectImage(
+//     divPreview,
+//     i,
+//     isSelected,
+//     arrImg,
+//     imgShow,
+//     path,
+//     img,
+//     scroll,
+//     offset
+// ) {
+//     if (i != isSelected) {
+//         arrImg[i].style.borderColor = "red";
+//         arrImg[i].style.borderRadius = "10px";
+//         arrImg[isSelected].style.borderColor = "gray";
+//         arrImg[isSelected].style.borderRadius = "0";
+//         imgShow.src = path + img[i];
+//         if (i > 0) {
+//             scroll = offset;
+//         }
+//         divPreview.scrollTo(scroll, 0);
+//     }
+// }
 
-function previewImg(path, img, imgShow) {
-    let isSelected = 0;
-    let divPreview = document.createElement("div");
-    let arrImg = new Array();
-    let scroll = 0;
-    for (let i = 0; i < img.length; i++) {
-        let image = document.createElement("img");
-        arrImg.push(image);
-        image.style.height = "80px";
-        image.style.margin = "10px";
-        image.style.cursor = "pointer";
-        image.style.border = "1px solid gray";
-        image.style.boxShadow =
-            "box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;";
-        image.src = path + img[i];
-        arrImg[isSelected].style.borderColor = "red";
-        arrImg[isSelected].style.borderRadius = "10px";
-        divPreview.appendChild(image);
-        image.onclick = function () {
-            selectImage(
-                divPreview,
-                i,
-                isSelected,
-                arrImg,
-                imgShow,
-                path,
-                img,
-                scroll,
-                image.offsetLeft - 20
-            );
-            isSelected = i;
-        };
-    }
-    divPreview.style.overflowX = "scroll";
-    divPreview.style.display = "flex";
-    divPreview.style.marginBottom = "-25px";
-    let div = document.createElement("div");
-    div.style.overflow = "hidden";
-    div.style.position = "relative";
-    div.style.padding = "0 10px";
-    let im = document.createElement("img");
-    im.src = "Image/show-icon.png";
-    im.style.height = "20px";
-    im.style.position = "absolute";
-    im.style.top = "45px";
-    im.style.left = "-5px";
-    im.style.transform = "rotate(180deg)";
-    im.style.cursor = "pointer";
-    im.onclick = function () {
-        let i = img.length - 1;
-        if (isSelected > 0) {
-            i = isSelected - 1;
-        }
-        selectImage(
-            divPreview,
-            i,
-            isSelected,
-            arrImg,
-            imgShow,
-            path,
-            img,
-            scroll,
-            102 * (i - 3)
-        );
-        isSelected = i;
-    };
-    let imm = document.createElement("img");
-    imm.style.height = "20px";
-    imm.style.position = "absolute";
-    imm.src = "Image/show-icon.png";
-    imm.style.top = "45px";
-    imm.style.right = "-5px";
-    imm.style.cursor = "pointer";
-    imm.onclick = function () {
-        let i = 0;
-        if (isSelected < img.length - 1) {
-            i = isSelected + 1;
-        }
-        selectImage(
-            divPreview,
-            i,
-            isSelected,
-            arrImg,
-            imgShow,
-            path,
-            img,
-            scroll,
-            arrImg[i].offsetLeft - 20
-        );
-        isSelected = i;
-    };
-    if (img.length > 4) {
-        div.appendChild(im);
-        div.appendChild(imm);
-    }
-    div.appendChild(divPreview);
-    return div;
-}
+// function previewImg(path, img, imgShow) {
+//     let isSelected = 0;
+//     let divPreview = document.createElement("div");
+//     let arrImg = new Array();
+//     let scroll = 0;
+//     for (let i = 0; i < img.length; i++) {
+//         let image = document.createElement("img");
+//         arrImg.push(image);
+//         image.style.height = "80px";
+//         image.style.margin = "10px";
+//         image.style.cursor = "pointer";
+//         image.style.border = "1px solid gray";
+//         image.style.boxShadow =
+//             "box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;";
+//         image.src = path + img[i];
+//         arrImg[isSelected].style.borderColor = "red";
+//         arrImg[isSelected].style.borderRadius = "10px";
+//         divPreview.appendChild(image);
+//         image.onclick = function () {
+//             selectImage(
+//                 divPreview,
+//                 i,
+//                 isSelected,
+//                 arrImg,
+//                 imgShow,
+//                 path,
+//                 img,
+//                 scroll,
+//                 image.offsetLeft - 20
+//             );
+//             isSelected = i;
+//         };
+//     }
+//     divPreview.style.overflowX = "scroll";
+//     divPreview.style.display = "flex";
+//     divPreview.style.marginBottom = "-25px";
+//     let div = document.createElement("div");
+//     div.style.overflow = "hidden";
+//     div.style.position = "relative";
+//     div.style.padding = "0 10px";
+//     let im = document.createElement("img");
+//     im.src = "Image/show-icon.png";
+//     im.style.height = "20px";
+//     im.style.position = "absolute";
+//     im.style.top = "45px";
+//     im.style.left = "-5px";
+//     im.style.transform = "rotate(180deg)";
+//     im.style.cursor = "pointer";
+//     im.onclick = function () {
+//         let i = img.length - 1;
+//         if (isSelected > 0) {
+//             i = isSelected - 1;
+//         }
+//         selectImage(
+//             divPreview,
+//             i,
+//             isSelected,
+//             arrImg,
+//             imgShow,
+//             path,
+//             img,
+//             scroll,
+//             102 * (i - 3)
+//         );
+//         isSelected = i;
+//     };
+//     let imm = document.createElement("img");
+//     imm.style.height = "20px";
+//     imm.style.position = "absolute";
+//     imm.src = "Image/show-icon.png";
+//     imm.style.top = "45px";
+//     imm.style.right = "-5px";
+//     imm.style.cursor = "pointer";
+//     imm.onclick = function () {
+//         let i = 0;
+//         if (isSelected < img.length - 1) {
+//             i = isSelected + 1;
+//         }
+//         selectImage(
+//             divPreview,
+//             i,
+//             isSelected,
+//             arrImg,
+//             imgShow,
+//             path,
+//             img,
+//             scroll,
+//             arrImg[i].offsetLeft - 20
+//         );
+//         isSelected = i;
+//     };
+//     if (img.length > 4) {
+//         div.appendChild(im);
+//         div.appendChild(imm);
+//     }
+//     div.appendChild(divPreview);
+//     return div;
+// }
 let isSelectedSize = 0;
 //chọn size
-function selectSize(index, id) {
-    isSelectedSize = 0;
-    let div = document.createElement("div");
-    div.style.display = "flex";
-    div.style.marginTop = "0px";
-    div.style.textAlign = "center";
-    textSize = document.createElement("div");
-    textSize.appendChild(document.createTextNode("Size"));
-    textSize.style.lineHeight = "40px";
-    textSize.style.marginRight = "10px";
-    div.appendChild(textSize);
-    let arrBut = new Array();
-    for (let i = 0; i < index.length; i++) {
-        let btnSize = document.createElement("div");
-        arrBut.push(btnSize);
-        btnSize.appendChild(document.createTextNode(index[i].name));
-        btnSize.style.padding = "5px";
-        btnSize.style.width = "15px";
-        btnSize.style.textAlign = "center";
-        btnSize.style.cursor = "pointer";
-        btnSize.style.border = "2px solid gray";
-        btnSize.style.margin = "5px";
-        arrBut[isSelectedSize].style.borderColor = "red";
-        btnSize.onclick = function () {
-            if (i != isSelectedSize) {
-                arrBut[i].style.borderColor = "red";
-                arrBut[isSelectedSize].style.borderColor = "gray";
-                isSelectedSize = i;
-                let amount = 0;
-                data.prodInStock.forEach((e) => {
-                    if (
-                        e.idSize == index[isSelectedSize].id &&
-                        e.idProd == id
-                    ) {
-                        amount += parseInt(e.amount);
-                    }
-                });
-                document.getElementById("sanphamcosan").textContent =
-                    amount + " sản phẩm có sẵn";
-            }
-        };
-        div.appendChild(btnSize);
-    }
+// function selectSize(index, id) {
+//     isSelectedSize = 0;
+//     let div = document.createElement("div");
+//     div.style.display = "flex";
+//     div.style.marginTop = "0px";
+//     div.style.textAlign = "center";
+//     textSize = document.createElement("div");
+//     textSize.appendChild(document.createTextNode("Size"));
+//     textSize.style.lineHeight = "40px";
+//     textSize.style.marginRight = "10px";
+//     div.appendChild(textSize);
+//     let arrBut = new Array();
+//     for (let i = 0; i < index.length; i++) {
+//         let btnSize = document.createElement("div");
+//         arrBut.push(btnSize);
+//         btnSize.appendChild(document.createTextNode(index[i].name));
+//         btnSize.style.padding = "5px";
+//         btnSize.style.width = "15px";
+//         btnSize.style.textAlign = "center";
+//         btnSize.style.cursor = "pointer";
+//         btnSize.style.border = "2px solid gray";
+//         btnSize.style.margin = "5px";
+//         arrBut[isSelectedSize].style.borderColor = "red";
+//         btnSize.onclick = function () {
+//             if (i != isSelectedSize) {
+//                 arrBut[i].style.borderColor = "red";
+//                 arrBut[isSelectedSize].style.borderColor = "gray";
+//                 isSelectedSize = i;
+//                 let amount = 0;
+//                 data.prodInStock.forEach((e) => {
+//                     if (
+//                         e.idSize == index[isSelectedSize].id &&
+//                         e.idProd == id
+//                     ) {
+//                         amount += parseInt(e.amount);
+//                     }
+//                 });
+//                 document.getElementById("sanphamcosan").textContent =
+//                     amount + " sản phẩm có sẵn";
+//             }
+//         };
+//         div.appendChild(btnSize);
+//     }
 
-    return div;
-}
+//     return div;
+// }
 let totalPrice = 0;
 let countPro = 1;
 
-function amount(current, pricee) {
-    let count = 1;
-    totalPrice = pricee;
-    let div = document.createElement("div");
-    let divAmou = document.createElement("div");
-    divAmou.style.display = "block";
-    divAmou.appendChild(div);
-    div.style.display = "flex";
-    div.style.textAlign = "center";
-    divAmou.style.marginTop = "15px";
-    let btnSub = document.createElement("button");
-    btnSub.style.width = "20px";
-    btnSub.style.border = "1px solid gray";
-    btnSub.style.cursor = "pointer";
-    btnSub.style.backgroundColor = "white";
-    btnSub.onclick = function () {
-        if (count > 1) {
-            count--;
-            updatePrice(count);
-        }
-    };
-    btnSub.appendChild(document.createTextNode("-"));
-    div.appendChild(btnSub);
-    let divshow = document.createElement("input");
-    divshow.id = "choose-amount";
-    divshow.style.width = "50px";
-    divshow.style.border = "none";
-    divshow.style.borderTop = "1px solid gray";
-    divshow.style.borderBottom = "1px solid gray";
-    divshow.style.outline = "none";
-    divshow.style.textAlign = "center";
-    divshow.placeholder = "1";
-    divshow.type = "number";
-    divshow.max = current;
-    divshow.min = 1;
+// function amount(current, pricee) {
+//     let count = 1;
+//     totalPrice = pricee;
+//     let div = document.createElement("div");
+//     let divAmou = document.createElement("div");
+//     divAmou.style.display = "block";
+//     divAmou.appendChild(div);
+//     div.style.display = "flex";
+//     div.style.textAlign = "center";
+//     divAmou.style.marginTop = "15px";
+//     let btnSub = document.createElement("button");
+//     btnSub.style.width = "20px";
+//     btnSub.style.border = "1px solid gray";
+//     btnSub.style.cursor = "pointer";
+//     btnSub.style.backgroundColor = "white";
+//     btnSub.onclick = function () {
+//         if (count > 1) {
+//             count--;
+//             updatePrice(count);
+//         }
+//     };
+//     btnSub.appendChild(document.createTextNode("-"));
+//     div.appendChild(btnSub);
+//     let divshow = document.createElement("input");
+//     divshow.id = "choose-amount";
+//     divshow.style.width = "50px";
+//     divshow.style.border = "none";
+//     divshow.style.borderTop = "1px solid gray";
+//     divshow.style.borderBottom = "1px solid gray";
+//     divshow.style.outline = "none";
+//     divshow.style.textAlign = "center";
+//     divshow.placeholder = "1";
+//     divshow.type = "number";
+//     divshow.max = current;
+//     divshow.min = 1;
 
-    function updatePrice(countt) {
-        divshow.placeholder = countt;
-        divshow.value = countt;
-        let price = "";
-        for (let i = 0; i < pricee.toString().length; i++) {
-            price += pricee.toString()[i];
-        }
-        countPro = countt;
-        totalPrice = parseInt(price) * countt;
-        divPr.textContent =
-            "Tổng cộng: " + calculated(parseInt(price) * countt) + " VND";
-    }
-    window.addEventListener("click", function () {
-        if (parseInt(divshow.value) > current) {
-            count = current;
-            updatePrice(current);
-        } else {
-            updatePrice(divshow.value > 0 ? divshow.value : 1);
-        }
-    });
-    div.appendChild(divshow);
-    let btnAdd = document.createElement("button");
-    btnAdd.style.width = "20px";
-    btnAdd.style.border = "1px solid gray";
-    btnAdd.style.cursor = "pointer";
-    btnAdd.style.backgroundColor = "white";
-    btnAdd.onclick = function () {
-        if (count < current) {
-            count++;
-            updatePrice(count);
-        }
-    };
-    btnAdd.appendChild(document.createTextNode("+"));
-    div.appendChild(btnAdd);
-    let text = document.createElement("div");
-    text.id = "sanphamcosan";
-    text.appendChild(document.createTextNode(current + " sản phẩm có sẵn"));
-    text.style.fontSize = "10px";
-    text.style.color = "gray";
-    text.style.marginLeft = "10px";
-    text.style.display = "flex";
-    text.style.flexDirection = "column";
-    text.style.justifyContent = "flex-end";
-    div.appendChild(text);
-    let divPr = document.createElement("div");
-    divPr.style.marginTop = "20px";
-    divPr.appendChild(
-        document.createTextNode("Tổng cộng: " + calculated(pricee) + " VND")
-    );
-    divAmou.appendChild(divPr);
-    return divAmou;
-}
+//     function updatePrice(countt) {
+//         divshow.placeholder = countt;
+//         divshow.value = countt;
+//         let price = "";
+//         for (let i = 0; i < pricee.toString().length; i++) {
+//             price += pricee.toString()[i];
+//         }
+//         countPro = countt;
+//         totalPrice = parseInt(price) * countt;
+//         divPr.textContent =
+//             "Tổng cộng: " + calculated(parseInt(price) * countt) + " VND";
+//     }
+//     window.addEventListener("click", function () {
+//         if (parseInt(divshow.value) > current) {
+//             count = current;
+//             updatePrice(current);
+//         } else {
+//             updatePrice(divshow.value > 0 ? divshow.value : 1);
+//         }
+//     });
+//     div.appendChild(divshow);
+//     let btnAdd = document.createElement("button");
+//     btnAdd.style.width = "20px";
+//     btnAdd.style.border = "1px solid gray";
+//     btnAdd.style.cursor = "pointer";
+//     btnAdd.style.backgroundColor = "white";
+//     btnAdd.onclick = function () {
+//         if (count < current) {
+//             count++;
+//             updatePrice(count);
+//         }
+//     };
+//     btnAdd.appendChild(document.createTextNode("+"));
+//     div.appendChild(btnAdd);
+//     let text = document.createElement("div");
+//     text.id = "sanphamcosan";
+//     text.appendChild(document.createTextNode(current + " sản phẩm có sẵn"));
+//     text.style.fontSize = "10px";
+//     text.style.color = "gray";
+//     text.style.marginLeft = "10px";
+//     text.style.display = "flex";
+//     text.style.flexDirection = "column";
+//     text.style.justifyContent = "flex-end";
+//     div.appendChild(text);
+//     let divPr = document.createElement("div");
+//     divPr.style.marginTop = "20px";
+//     divPr.appendChild(
+//         document.createTextNode("Tổng cộng: " + calculated(pricee) + " VND")
+//     );
+//     divAmou.appendChild(divPr);
+//     return divAmou;
+// }
 
 // document.getElementById("div-onClickProduct").onclick = function (e) {
 //   if (e.target.matches("#div-onClickProduct")) {

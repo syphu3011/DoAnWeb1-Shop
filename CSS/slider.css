@@ -1,0 +1,32 @@
+#slider {
+    height: 5px;
+    background-color: #ddd;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+#slider .noUi-connect {
+    background-color: black;
+    border-radius: 10px;
+}
+#slider .noUi-handle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: black;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+#slider .noUi-handle:hover {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+#slider .noUi-active .noUi-handle {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+#slider .noUi-handle[data-handle="0"] {
+    margin-right: 5px;
+}
+
+#slider .noUi-handle[data-handle="1"] {
+    margin-left: 5px;
+}

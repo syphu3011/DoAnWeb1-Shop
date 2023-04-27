@@ -79,8 +79,9 @@
                 	SELECT DISTINCT image_product.link_image 
                     FROM image_product
                     WHERE image_product.id_product=product.id
-                ) AS link_image
-                
+                ) AS link_image,
+                classify.name as name_classify,
+                classify.gender
             FROM 
                 product_list_classify, 
                 product, 
@@ -205,6 +206,62 @@
                         promotion.id = detail_promotion.id_promotion
                         AND promotion.id_status = status_promotion.id
                         AND detail_promotion.id_product = product_list.id_product";
+            $stmt = $conn -> prepare($sql);
+            $stmt -> execute();
+            $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
+        public function read_data($conn)
+        {
+            # code...
+            $sql = "SELECT 
+                promotion.id AS id_promotion,
+                product.id AS id_product,
+                image_product.link_image,
+                image_product.name_image,
+                promotion.name,
+                promotion.image,
+                promotion.content,
+                promotion.discount_price,
+                promotion.discount_percent,
+                promotion.begin_date,
+                promotion.finish_date,
+                status_promotion.name AS status_promotion
+            FROM 
+                promotion
+            LEFT JOIN detail_promotion ON promotion.id = detail_promotion.id_promotion
+            LEFT JOIN product ON product.id = detail_promotion.id_product
+            LEFT JOIN status_promotion ON status_promotion.id=promotion.id_status
+            LEFT JOIN image_product ON product.id=image_product.id_product
+            WHERE 
+                promotion.finish_date >= CURDATE()
+            ";
+            $stmt = $conn -> prepare($sql);
+            $stmt -> execute();
+            $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
+        public function read_data_all_promotion($conn)
+        {
+            # code...
+            $sql = "SELECT 
+                        promotion.id, 
+                        promotion.content, 
+                        promotion.name, 
+                        promotion.discount_price, 		
+                        promotion.discount_percent, 
+                        promotion.begin_date,
+                        promotion.finish_date,
+                        status_promotion.name
+                    FROM 
+                        promotion, 
+                        status_promotion
+
+                    WHERE 
+                         promotion.id_status = status_promotion.id
+";
             $stmt = $conn -> prepare($sql);
             $stmt -> execute();
             $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
