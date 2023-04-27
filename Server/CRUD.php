@@ -129,7 +129,7 @@
             return $result;
         }
         public function read_data_product($conn) {
-            $sql="SELECT * FROM product";
+            $sql="SELECT * FROM product ";
             $stmt=$conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -175,7 +175,7 @@
             return $result;
         }
         public function read_data_product_list($conn) {
-            $sql="SELECT * FROM product_list";
+            $sql="SELECT * FROM product_list ORDER BY product_list.price";
             $stmt=$conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);

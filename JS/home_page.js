@@ -41,6 +41,11 @@ getDataFromServer("./Server/homepage.php", "", function (response) {
 function price_from_dis(price, discount_percent, discount_price) {
     return price - price * discount_percent - discount_price;
 }
+document.getElementById("clothing-type").onchange = function () {
+    let type_item = document.getElementById("clothing-type").value;
+    let sale_item = document.getElementById("sale-select").value;
+    console.log(document.getElementById("clothing-type").value);
+};
 function create_filter(params) {
     console.log(data);
     document.getElementById(
@@ -67,6 +72,40 @@ function create_filter(params) {
             data.promote[i].content +
             `</option>`;
     }
+    noUiSlider.create(slider, {
+        start: [
+            data.product_list[0].price + 10000,
+            data.product_list[data.product_list.length - 1].price - 10000,
+        ],
+        connect: true,
+        range: {
+            min: data.product_list[0].price,
+            max: data.product_list[data.product_list.length - 1].price,
+        },
+        validate: true,
+        step: 5000, // Set the step value to 10
+    });
+    // var slider = document.getElementById("slider");
+    // var minValue = document.getElementById("min-value");
+    // var maxValue = document.getElementById("max-value");
+    // // noUiSlider.create(slider, {
+    // //     start: [20, 80],
+    // //     connect: true,
+    // //     range: {
+    // //         min: 0,
+    // //         max: 10000,
+    // //     },
+    // //     validate: true,
+    // //     step: 10, // Set the step value to 10
+    // // });
+
+    slider.noUiSlider.on("update", function (values, handle) {
+        if (handle) {
+            maxValue.innerHTML = Math.round(values[handle]);
+        } else {
+            minValue.innerHTML = Math.round(values[handle]);
+        }
+    });
 }
 function create_Homepage(data_res) {
     //Theo loại

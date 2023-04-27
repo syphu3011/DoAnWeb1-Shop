@@ -1395,21 +1395,21 @@ function testthoi() {
 var slider = document.getElementById("slider");
 var minValue = document.getElementById("min-value");
 var maxValue = document.getElementById("max-value");
-noUiSlider.create(slider, {
-    start: [20, 80],
-    connect: true,
-    range: {
-        min: 0,
-        max: 10000,
-    },
-    validate: true,
-    step: 10, // Set the step value to 10
-});
+// noUiSlider.create(slider, {
+//     start: [20, 80],
+//     connect: true,
+//     range: {
+//         min: 0,
+//         max: 10000,
+//     },
+//     validate: true,
+//     step: 10, // Set the step value to 10
+// });
 
-slider.noUiSlider.on("update", function (values, handle) {
-    if (handle) {
-        maxValue.innerHTML = Math.round(values[handle]);
-    } else {
-        minValue.innerHTML = Math.round(values[handle]);
-    }
-});
+// slider.noUiSlider.on("update", function (values, handle) {
+//     if (handle) {
+//         maxValue.innerHTML = Math.round(values[handle]);
+//     } else {
+//         minValue.innerHTML = Math.round(values[handle]);
+//     }
+// });
