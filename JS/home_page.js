@@ -1,4 +1,6 @@
 let max_amount = 0;
+let max_value_slider = 0;
+let min_value_silder = 0;
 
 function get_data(res) {
     //Loại sản phẩm
@@ -23,6 +25,7 @@ getDataFromServer("./Server/homepage.php", "", function (response) {
     create_Homepage(response);
     create_filter();
 });
+
 // var xhttp = new XMLHttpRequest();
 // //load trang chủ
 // xhttp.onreadystatechange = function () {
@@ -41,11 +44,9 @@ getDataFromServer("./Server/homepage.php", "", function (response) {
 function price_from_dis(price, discount_percent, discount_price) {
     return price - price * discount_percent - discount_price;
 }
-document.getElementById("clothing-type").onchange = function () {
-    let type_item = document.getElementById("clothing-type").value;
-    let sale_item = document.getElementById("sale-select").value;
-    console.log(document.getElementById("clothing-type").value);
-};
+//
+//
+
 function create_filter(params) {
     console.log(data);
     document.getElementById(
@@ -63,13 +64,13 @@ function create_filter(params) {
     }
     document.getElementById(
         "sale-select"
-    ).innerHTML = `<option >Tất cả</option>`;
-    for (let i = 0; i < data.promote.length; i++) {
+    ).innerHTML = `<option>Tất cả</option>`;
+    for (let i = 0; i < data.data_promotion.length; i++) {
         document.getElementById("sale-select").innerHTML +=
             `<option id="` +
-            data.promote[i].id +
+            data.data_promotion[i].id +
             `">` +
-            data.promote[i].content +
+            data.data_promotion[i].content +
             `</option>`;
     }
     noUiSlider.create(slider, {
@@ -101,10 +102,16 @@ function create_filter(params) {
 
     slider.noUiSlider.on("update", function (values, handle) {
         if (handle) {
-            maxValue.innerHTML = Math.round(values[handle]);
+            max_value_slider = Math.round(values[handle]);
+            maxValue.innerHTML = calculated(max_value_slider) + " VNĐ";
         } else {
-            minValue.innerHTML = Math.round(values[handle]);
+            min_value_silder = Math.round(values[handle]);
+            minValue.innerHTML = calculated(min_value_silder) + " VNĐ";
         }
+        // let type_item = document.getElementById("clothing-type").value;
+        // let sale_item = document.getElementById("sale-select").value;
+        // console.log(sale_item);
+        // timkiem(type_item, sale_item, max_value_slider, min_value_silder);
     });
 }
 function create_Homepage(data_res) {
