@@ -58,7 +58,7 @@
 </head>
 
 <!-- <body id="body-page"> -->
-<body id="body-page" onload="changeToConsumer()">
+<body id="body-page" onload="changeToPrivilege()">
     <div id="background-admin-homepage">
         <div id="back-head">
             <div id="back-ham">
@@ -99,6 +99,9 @@
                 </li>
                 <li id="input">
                     <img src="./Image/input_prod.png" alt="" class="img-li"> Nhập hàng
+                </li>
+                <li id="privilege">
+                    <img src="./Image/pri_icon.png" alt="" class="img-li"> Phân quyền
                 </li>
                 <li id="staff">
                     <img src="./Image/staff-icon-black 1.png" alt="" class="img-li"> Nhân viên
@@ -908,12 +911,183 @@
                     </div>
                 </div>
             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+
+
+
+            <div id="bgr-privilege" style="display:none">
+                <div id="background-privilege">
+                    <input type="checkbox" id="PhanCvNv">
+                    <input type="checkbox" id="HuyCvNv">
+                    <header>
+                        <div class="back-name-page-admin">Phân quyền tài khoản</div>
+                        <div id="HeadButton11" class="HeadButton0">
+                            <div id="HeadButton21">
+                                <button id="request-privilege" class="btn-left">Chỉ định quyền</button>
+                            </div>
+
+                            <div id="HeadButton41" class="HeadButton0">
+                                <button class="btn-left">xác nhận</button>
+                                <button class="btn-left"><label onclick="huyphanchucvu()"
+                                            for="PhanCvNv">Hủy</label></button>
+                            </div>
+
+                            <div id="HeadButton51" class="HeadButton0">
+                                <button class="btn-left">xác nhận hủy</button>
+                                <button class="btn-left"><label onclick="huyhuychucvu()"
+                                            for="HuyCvNv">hủy</label></button>
+                            </div>
+                        </div>
+                    </header>
+
+
+                    <!-- <div class="Middle1">
+
+                        <div class="Section1">
+                            <div>
+                                <label for="">tìm theo</label>
+                                <select name="" id="timtheo">
+                                        <option value="tatca">Tất cả</option>
+                                        <option value="id">id</option>
+                                        <option value="name">tên</option>
+                                    </select>
+                            </div>
+
+                            <div>
+                                <label for="">ngày sinh</label>
+                                <input oninput="SearchNv()" id="ngsinh" type="date" name="birthday">
+                            </div>
+                            <div>
+                                <label for="">ngày cấp</label>
+                                <input oninput="SearchNv()" type="date" id="ngaythamgia" name="birthday">
+                            </div>
+                            <div>
+                                <label trangthai for="">trạng thái</label>
+                                <select oninput="SearchNv()" name="" id="trangthai">
+                                        <option value="">Tất cả</option>
+                                        <option value="0">Còn làm việc</option>
+                                        <option value="1">Hết làm việc</option>
+                                    </select>
+                            </div>
+                        </div>
+                        <div class="Middle">
+                            <div class="SearchBox">
+                                <input oninput="SearchNv()" id="SearchBar" class="SearchBar" type="text" placeholder="Search">
+                                <img onclick="SearchNv()" class="SearchIcon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/OOjs_UI_icon_search-ltr.svg/1200px-OOjs_UI_icon_search-ltr.svg.png" alt="">
+                            </div>
+                        </div>
+
+
+                    </div> -->
+
+
+                    <div class="Bottom">
+                        <table border="1px" cellspacing=1 id="table-privilege" style="width: 80%;">
+                            <tr class="first-row">
+                                <th>id bảng</th>
+                                <th>xem</th>
+                                <th>thêm</th>
+                                <th>sửa</th>
+                                <th>xóa</th>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="popup-content-pane-privilege">
+                        <div id="privilege-detail-banner">Phân quyền chi tiết</div>
+                            
+                        <table border="1px" cellspacing=1 id="table-privilege-detail" class="popup-content-pane-privilege-board"style="width: 80%;">
+                            <tr class="first-row">
+                                <th>id bảng</th>
+                                <th>id chức năng</th>
+                                <th>id tài khoản</th>
+                            </tr>
+                        </table>
+                        <div id="pri-detail-gr">
+                            <button id="pri-detail-add">Thêm</button>
+                            <button id="pri-detail-f5">Làm mới</button>
+                            <button id="pri-detail-exit">Thoát</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
             <div id="bgr-nv" style="display:none">
                 <div id="background-nv">
                     <input type="checkbox" id="PhanCvNv">
                     <input type="checkbox" id="HuyCvNv">
                     <header>
-                        <div class="back-name-page-admin">Nhân viên</div>
+                        <div class="back-name-page-admin">Phân quyền truy cập</div>
                         <div id="HeadButton11" class="HeadButton0">
                             <div id="HeadButton21">
                                 <button id="CapTaiKhoan-Button" class="btn-left">Cấp tài khoản</button>
@@ -1202,6 +1376,7 @@
     <script src="./JS/order.js"></script>
     <script src="./JS/importProduct.js"></script>
     <script src="./JS/QuanLyNv.js"></script>
+    <script src="./JS/privilege.js"></script>
     <script src="./JS/size.js"></script>
     <script src="./JS/KhuyenMai1.js"></script>
     <script src="./JS/product.js"></script>
