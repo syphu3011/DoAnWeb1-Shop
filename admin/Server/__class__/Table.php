@@ -39,9 +39,16 @@ class Table {
 			$query = 
 				"SELECT $column FROM $childTable INNER JOIN $parentTable 
 				ON $childTable.$childkey = $parentTable.$parentkey WHERE $condition;";
-		// echo $query . "</br>";
+		// echo $query . "</br>";	
 		$query_statement = $conn->prepare($query);
 		$query_statement->execute();
+
+		// $return_val =  $query_statement->fetchAll(PDO::FETCH_ASSOC);
+		// foreach ($return_val as $key1 => $value1) {
+		// 	foreach ($value1 as $key => $value) {
+		// 		echo $key . " " . $value . "</br>";
+		// 	}
+		// }
 		return $query_statement->fetchAll(PDO::FETCH_ASSOC);
 	}
 
@@ -146,6 +153,33 @@ class Table {
 		$jsonItem = array();
 		$propertiesArray = self::describe($conn, $childTable);
 		$arrParent = self::describe($conn, $parentTable);
+		foreach ($arrParent as $key => $value) {
+			array_push($propertiesArray, $value);
+		}
+		foreach ($arrFromDb as $index => $item) {
+			$tempArray = array();
+			foreach ($propertiesArray as $index2 => $item2){	
+				$tempArray[$item2] = $item[$item2];
+			}
+			$jsonItem += array(
+				$index => $tempArray
+			);
+		}
+		return json_encode($jsonItem, JSON_UNESCAPED_UNICODE);
+	} 
+	public static function jsonifyCoupleWithTableName($conn, $arrFromDb, $childTable, $parentTable) {
+		$jsonItem = array();
+		
+		$propertiesArray = self::describe($conn, $childTable);
+		foreach ($propertiesArray as $key => $value) {
+			$propertiesArray[$key] = $value . "_" . $childTable;
+		}
+
+		$arrParent = self::describe($conn, $parentTable);
+		foreach ($arrParent as $key => $value) {
+			$arrParent[$key] = $value . "_" . $parentTable;
+		}
+
 		foreach ($arrParent as $key => $value) {
 			array_push($propertiesArray, $value);
 		}
