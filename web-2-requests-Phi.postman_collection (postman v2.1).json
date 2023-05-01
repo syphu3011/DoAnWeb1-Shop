@@ -625,7 +625,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost/doan/admin/Server/receipt/receiptDetailStatus.php",
+							"raw": "http://localhost/doan/admin/Server/receipt/receiptDetailStatus.php?status_receipt.price=240000",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -636,6 +636,12 @@
 								"Server",
 								"receipt",
 								"receiptDetailStatus.php"
+							],
+							"query": [
+								{
+									"key": "status_receipt.price",
+									"value": "240000"
+								}
 							]
 						}
 					},
