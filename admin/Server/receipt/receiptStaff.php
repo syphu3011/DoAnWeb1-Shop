@@ -5,30 +5,38 @@ require_once('../../../init.php');
 require_once('../__class__/Table.php');
 require_once('../__class__/ReqHandling.php');
 
+function changeProp($arr, $tableName) {
+	$temp = "";
+	foreach ($arr as $key => $value) {
+		$temp .= " $tableName.$value as $value" . "_" . "$tableName, ";
+	}
+	return $temp;
+}
+
 // * get information on child and parent table (use inner join)
 if ($_SERVER["REQUEST_METHOD"] === "GET"){	
 	// * GET
 	
 	$child = "receipt";
 	$parent = "staff";
-	$rcpHeader = Table::describe($conn, $child);
-	$staffHeader = Table::describe($conn, $parent);
+	$childHeader = Table::describe($conn, $child);
+	$parrentHeader = Table::describe($conn, $parent);
 	$condition = "1=1";
 
 	foreach($_GET as $key => $value) {
-		if (in_array($key, $staffHeader))
+		if (in_array($key, $parrentHeader))
 			$condition .= " AND $parent.$key = '$value'";
-		if (in_array($key, $rcpHeader))
+		if (in_array($key, $childHeader))
 			$condition .= " AND $child.$key = '$value'";
 	}
 
 	if ($condition === "1=1" && isset($_GET['search'])) {
 		$toSearch = $_GET['search'];
 		$condition = "";
-		foreach($staffHeader as $key => $value) {
+		foreach($parrentHeader as $key => $value) {
 			$condition .= " OR $parent.$value = '$toSearch'";
 		}
-		foreach($rcpHeader as $key => $value) {
+		foreach($childHeader as $key => $value) {
 			$condition .= " OR $child.$value = '$toSearch'";
 		}
 		$condition = substr($condition, 4);
@@ -36,8 +44,16 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 
 	// echo $condition;
 
-	// ? http://localhost/doan/admin/Server/customer/customerStaff.php
-	echo Table::jsonifyCouple(
+	// ? http://localhost/doan/admin/Server/staff/receiptStaff.php
+	$childTableName = "receipt";
+	$parentTableName = "staff";
+	$childProp = Table::describe($conn, $childTableName);
+	$parentProp = Table::describe($conn, $parentTableName);
+	$columnToSelect = "";
+	$columnToSelect .= changeProp($childProp, $childTableName);
+	$columnToSelect .= changeProp($parentProp, $parentTableName);
+	$columnToSelect = substr($columnToSelect, 0, -2);
+	echo Table::jsonifyCoupleWithTableName(
 		$conn, 
 		Table::tableQueryCouple(
 			// * connection
@@ -51,12 +67,30 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 			// * foreign key on parent
 			"id",
 			// * column to select
-			// TODO: reduce overload here
-			"*",
+			// "
+			// $childTableName.id as id_$childTableName, 
+			// $childTableName.date_init as date_init_$childTableName, 
+			// $childTableName.date_confirm as date_confirm_$childTableName, 
+			// $childTableName.address as address_$childTableName, 
+			// $childTableName.note as note_$childTableName, 
+			// $childTableName.id_staff as id_staff_$childTableName,
+			// $childTableName.id_customer as id_customer_$childTableName,
+			// $childTableName.id_status as id_status_$childTableName,
+			// $parentTableName.id as id_$parentTableName,
+			// $parentTableName.name as name_$parentTableName,
+			// $parentTableName.birthday as birthday_$parentTableName,
+			// $parentTableName.numberphone as numberphone_$parentTableName,
+			// $parentTableName.image as image_$parentTableName,
+			// $parentTableName.address as address_$parentTableName,
+			// $parentTableName.gender as gender_$parentTableName,
+			// $parentTableName.id_user as id_user_$parentTableName
+			// ",
+			$columnToSelect
+			,
 			// * condition to select
 			$condition
 		), 
-		"receipt", "staff"
+		$childTableName, $parentTableName
 	);
 	
 }
