@@ -49,6 +49,8 @@ function price_from_dis(price, discount_percent, discount_price) {
 
 function create_filter(params) {
     console.log(data);
+    //
+    // Thanh chọn loại sản phẩm
     document.getElementById(
         "clothing-type"
     ).innerHTML = `<option >Tất cả</option>`;
@@ -62,6 +64,8 @@ function create_filter(params) {
                 `</option>`;
         }
     }
+    //
+    // Thanh chọn loại giảm giá
     document.getElementById(
         "sale-select"
     ).innerHTML = `<option>Tất cả</option>`;
@@ -73,6 +77,8 @@ function create_filter(params) {
             data.data_promotion[i].content +
             `</option>`;
     }
+    //
+    // Thanh chọn khoảng giá
     noUiSlider.create(slider, {
         start: [
             data.product_list[0].price + 10000,
@@ -113,6 +119,23 @@ function create_filter(params) {
         // console.log(sale_item);
         // timkiem(type_item, sale_item, max_value_slider, min_value_silder);
     });
+}
+function pagination() {
+    let str = `<div class="pagination">
+		<a href="#">&laquo;</a>
+		<a href="#">1</a>
+		<a href="#">2</a>
+		<a href="#">3</a>
+		<a href="#">4</a>
+		<a href="#">5</a>
+		<a href="#">6</a>
+		<a href="#">7</a>
+		<a href="#">8</a>
+		<a href="#">9</a>
+		<a href="#">10</a>
+		<a href="#">&raquo;</a>
+	</div>`;
+    document.getElementById("main").innerHTML += str;
 }
 function create_Homepage(data_res) {
     //Theo loại
@@ -211,7 +234,8 @@ function create_Homepage(data_res) {
           <button id="` +
             element.id +
             `" class="button_show_more">
-          Xem thêm 
+            <a href="?page=1">Xem thêm</a>
+           
         </button>
         </div>
       </div>`;
@@ -249,7 +273,7 @@ function create_Homepage(data_res) {
                 },
                 function (respone) {
                     console.log(respone);
-                    create_main_onclick_classify(respone);
+                    create(respone);
                 }
             );
         };
@@ -260,6 +284,7 @@ function detail_product() {
     let click_product = document.getElementsByClassName(
         "main_list_product_product"
     );
+    pagination();
     for (let i = 0; i < click_product.length; i++) {
         click_product[i].onclick = function () {
             //   console.log(1);

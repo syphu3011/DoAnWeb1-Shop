@@ -26,7 +26,7 @@ function callback_search(params) {
     // document.getElementById("main_label_result").innerHTML = "Kết quả";
 }
 document.getElementById(`refine`).onclick = function () {
-    callback_search();
+    callback_search(1);
 };
 document.getElementById("btn-search").onclick = function () {
     if (document.getElementById("inp-search").value === "") {
@@ -48,85 +48,70 @@ document
             }
         }
     });
-
-function timkiem(key_search, type_value, sale_value, max_price, min_price) {
-    getDataFromServer(
-        "./Server/search.php",
-        {
-            min_price: min_price,
-            max_price: max_price,
-            type_value: type_value,
-            sale_value: sale_value,
-            key_search: key_search,
-        },
-        function (response) {
-            console.log(response);
-            create(response);
-        }
-    );
-    function create(data) {
-        if (data.success) {
-            let data_product = data.result;
-            let li = "";
-            for (let i = 0; i < data_product.length; i++) {
-                let str_price =
-                    `<label id="price_` +
+function create(data) {
+    console.log(data);
+    if (data.success) {
+        let data_product = data.result;
+        let li = "";
+        for (let i = 0; i < data_product.length; i++) {
+            let str_price =
+                `<label id="price_` +
+                data_product[i].id_product +
+                `">` +
+                calculated(data_product[i].price) +
+                ` VND</label>`;
+            let str_stamp = "";
+            if (data_product[i].content != null) {
+                // let data_promotion = data_product[i].promotion[0];
+                str_price =
+                    `<del class="del_price" id="del_` +
                     data_product[i].id_product +
                     `">` +
                     calculated(data_product[i].price) +
-                    ` VND</label>`;
-                let str_stamp = "";
-                if (data_product[i].content != null) {
-                    // let data_promotion = data_product[i].promotion[0];
-                    str_price =
-                        `<del class="del_price" id="del_` +
-                        data_product[i].id_product +
-                        `">` +
-                        calculated(data_product[i].price) +
-                        ` VND</del>
+                    ` VND</del>
                 <label id="price_` +
-                        data_product[i].id_product +
-                        `">` +
-                        calculated(
-                            price_from_dis(
-                                data_product[i].price,
-                                data_product[i].discount_percent,
-                                data_product[i].discount_price
-                            )
-                        ) +
-                        ` VND</label>`;
-                    str_stamp =
-                        `<div class="promo_stamp" id="stamp_` +
-                        data_product[i].id_product +
-                        `" style="display: block;">
-                    ` +
-                        data_product[i].content +
-                        `</div>`;
-                }
-                li +=
-                    `<li class="main_list_product_product" id="` +
                     data_product[i].id_product +
-                    `">
+                    `">` +
+                    calculated(
+                        price_from_dis(
+                            data_product[i].price,
+                            data_product[i].discount_percent,
+                            data_product[i].discount_price
+                        )
+                    ) +
+                    ` VND</label>`;
+                str_stamp =
+                    `<div class="promo_stamp" id="stamp_` +
+                    data_product[i].id_product +
+                    `" style="display: block;">
+                    ` +
+                    data_product[i].content +
+                    `</div>`;
+            }
+            li +=
+                `<li class="main_list_product_product" id="` +
+                data_product[i].id_product +
+                `">
         ` +
-                    str_stamp +
-                    `
+                str_stamp +
+                `
             <img class="main_list_product_product_image" style="" src="` +
-                    data_product[i].link_image +
-                    `" alt="">
+                data_product[i].link_image +
+                `" alt="">
         <div class="main_list_product_product_infor"> 
         <label class="product_infor_name">` +
-                    data_product[i].name +
-                    `</label>
+                data_product[i].name +
+                `</label>
             <div>
                 ` +
-                    str_price +
-                    `
+                str_price +
+                `
             </div>
         </div>
     </li>`;
-            }
-            document.getElementById("main").innerHTML =
-                `<div style="
+        }
+        document.getElementById("main").innerHTML =
+            `<div style="
                 padding-top: 40px;
             ">
             <label style="
@@ -141,16 +126,38 @@ function timkiem(key_search, type_value, sale_value, max_price, min_price) {
                 padding: 40px;
                 margin: 0;">
 		` +
-                li +
-                `
+            li +
+            `
 	</ul></div>`;
-        } else {
-            alert("Comming soon");
-            document.getElementById("main").innerHTML =
-                `<div style="margin: 40px">` + data.result + `</div>`;
-        }
-        detail_product();
+    } else {
+        alert("Comming soon");
+        document.getElementById("main").innerHTML =
+            `<div style="margin: 40px">` + data.result + `</div>`;
     }
+
+    detail_product();
+}
+// function create()
+let total_product_on_page = 12
+let current_page = 1
+function timkiem(key_search, type_value, sale_value, max_price, min_price) {
+    getDataFromServer(
+        "./Server/search.php",
+        {
+            min_price: min_price,
+            max_price: max_price,
+            type_value: type_value,
+            sale_value: sale_value,
+            key_search: key_search,
+            total_product_on_page: total_product_on_page,
+            current_page:current_page
+        },
+        function (response) {
+            console.log(response);
+            create(response);
+        }
+    );
+
     // isHomePage = false;
     // isProductShow = false;
     // let pos = document.documentElement.scrollTop;

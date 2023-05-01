@@ -954,7 +954,7 @@ function create_main_onclick_classify(data) {
                 padding-left: 40px;
             ">sản phẩm</label>
             <ul style="display: grid;
-                grid-template-columns: repeat(5, 1fr);
+                grid-template-columns: repeat(4, 1fr);
                 grid-template-rows: 1fr 1fr;
                 grid-gap: 20px;
                 list-style: none;

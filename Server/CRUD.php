@@ -76,9 +76,10 @@
                 product_list_classify.id_product, 
                 product.name, 
                 product_list.price, (
-                	SELECT DISTINCT image_product.link_image 
+                	SELECT image_product.link_image 
                     FROM image_product
                     WHERE image_product.id_product=product.id
+                    limit 1
                 ) AS link_image,
                 classify.name as name_classify,
                 classify.gender
@@ -102,25 +103,33 @@
             return $result;
         }
         public function read_productByIdLarge_classify($conn, $id_large_classify) {
-            $sql="SELECT
-                classify.id,
-                classify.name,
-                product_list_classify.id_product,
-                product_list.id_size,
-                product_list.id_size,
-                product_list.price, (
-                                SELECT DISTINCT image_product.link_image 
-                                FROM image_product
-                                WHERE image_product.id_product=product_list.id_product
-                            ) AS link_image
-            FROM 
-                classify,
-                product_list_classify,
-                product_list
-            WHERE 
-                classify.id_big_classify= ? AND
-                classify.id=product_list_classify.id_classify
-                AND product_list.id_product = product_list_classify.id_product
+            $sql="SELECT 
+                    classify.id,
+                    classify.name,
+                    product_list_classify.id_product,
+                    product_list.id_size,
+                    product_list.id_size,
+                    product_list.price,
+                    image_product.link_image,
+                    promotion.content,
+                    promotion.discount_price,
+                    promotion.discount_percent,
+                    promotion.begin_date,
+                    promotion.finish_date
+                FROM 
+                                                classify
+                                LEFT JOIN product_list_classify ON product_list_classify.id_classify=classify.id
+                                LEFT JOIN product_list ON product_list.id_product = product_list_classify.id_product
+
+                LEFT JOIN image_product ON image_product.id_product = product_list.id_product
+                LEFT JOIN detail_promotion ON detail_promotion.id_product = product_list.id_product
+                LEFT JOIN promotion ON promotion.id = detail_promotion.id_promotion
+                WHERE 
+                    classify.id_big_classify = ? 
+                    AND (
+                        (promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10')
+                        OR promotion.id IS NULL)
+                GROUP BY product_list_classify.id_product
                     ";
             $stmt=$conn->prepare($sql);
             $stmt->execute([$id_large_classify]);
@@ -295,6 +304,77 @@
         //     return $result;
         // }
         public function read_data_advanced_search($conn, $key, $type, $sale, $min_price, $max_price)
+        {
+            $type_value = '';
+            $sale_value = '';
+            $key_value = '';
+            $params = [$min_price, $max_price];
+
+            if ($type != 'Tất cả') {
+                $type = trim($type);
+                $type_value = 'AND classify.name = ?';
+                $params[] = $type;
+            }
+            if ($sale != 'Tất cả') {
+                $sale = trim($sale);
+                $sale_value = 'AND promotion.content = ?';
+                $params[] = $sale;
+            }
+            if ($key != '') {
+                $key = trim($key);
+                $key_value = 'AND product.name LIKE "%' . $key . '%"';
+
+                // $key_value = 'AND product.name like %  %';
+                // $params[] = $key;
+            }
+
+            $sql = "SELECT 
+                    product_list_classify.id_classify, 
+                    product_list_classify.id_product,
+                    product.name,
+                    input_country.name AS country,
+                    product.description,
+                    status_product.name AS name_status,
+                    product_list.id_size,
+                    product_list.id_color,
+                    product_list.price,
+                    image_product.link_image AS link_image,
+                    promotion.name AS name_promotion,
+                    promotion.image,
+                    promotion.content,
+                    promotion.discount_price,
+                    promotion.discount_percent,
+                    promotion.begin_date,
+                    promotion.finish_date
+                FROM 
+                    product_list_classify
+                    LEFT JOIN product_list ON product_list_classify.id_product=product_list.id_product
+                    LEFT JOIN image_product ON image_product.id_product=product_list_classify.id_product
+                    LEFT JOIN detail_promotion ON detail_promotion.id_product = product_list.id_product
+                    LEFT JOIN promotion ON promotion.id = detail_promotion.id_promotion
+                    LEFT JOIN product ON product.id = product_list_classify.id_product
+                    LEFT JOIN status_product ON status_product.id = product.idstatus
+                    LEFT JOIN input_country ON input_country.id = product.madein
+                    LEFT JOIN classify ON classify.id = product_list_classify.id_classify
+                WHERE 
+                    product_list.price BETWEEN ? AND ?
+                    AND (
+                        promotion.id IS NULL
+                        OR (promotion.begin_date <= CURDATE() AND promotion.finish_date > CURDATE())
+                    ) $type_value $sale_value $key_value";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute($params);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
+        public function 
+            read_data_advanced_search_pagination(
+                $conn, 
+                $key, $type, $sale, 
+                $min_price, $max_price,
+                $begin
+            )
         {
             $type_value = '';
             $sale_value = '';
