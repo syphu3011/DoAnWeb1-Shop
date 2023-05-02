@@ -73,7 +73,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost/doan/admin/Server/customer/customer.php?username=cicada2&password=cicada3303&action=create&privilege=sales&status=active&name=Lang Thang&birthday=2002-11-30 00:00:00&numberphone=394142891&address=HCM&gender=nam",
+							"raw": "http://localhost/doan/admin/Server/customer/customer.php?username=cicada5&password=cicada3303&action=create&privilege=sales&status=active&name=Lang Thang&birthday=2002-06-28 00:00:00&numberphone=394142891&address=HCM&gender=nam",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -88,7 +88,7 @@
 							"query": [
 								{
 									"key": "username",
-									"value": "cicada2"
+									"value": "cicada5"
 								},
 								{
 									"key": "password",
@@ -112,7 +112,7 @@
 								},
 								{
 									"key": "birthday",
-									"value": "2002-11-30 00:00:00"
+									"value": "2002-06-28 00:00:00"
 								},
 								{
 									"key": "numberphone",
@@ -153,6 +153,82 @@
 								{
 									"key": "id_user",
 									"value": "USR015"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add-test",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/customer/customer.php?action=create&username=cicada5&password=cicada3303&name=Lang Thang&gender=nam&birthday=2002-06-28 00:00:00&date_created=2023-04-18 16:11:15&privilege=customer&numberphone=394142899&status=active&address=HCM&session&image",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"customer",
+								"customer.php"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "create"
+								},
+								{
+									"key": "username",
+									"value": "cicada5"
+								},
+								{
+									"key": "password",
+									"value": "cicada3303"
+								},
+								{
+									"key": "name",
+									"value": "Lang Thang"
+								},
+								{
+									"key": "gender",
+									"value": "nam"
+								},
+								{
+									"key": "birthday",
+									"value": "2002-06-28 00:00:00"
+								},
+								{
+									"key": "date_created",
+									"value": "2023-04-18 16:11:15"
+								},
+								{
+									"key": "privilege",
+									"value": "customer"
+								},
+								{
+									"key": "numberphone",
+									"value": "394142899"
+								},
+								{
+									"key": "status",
+									"value": "active"
+								},
+								{
+									"key": "address",
+									"value": "HCM"
+								},
+								{
+									"key": "session",
+									"value": null
+								},
+								{
+									"key": "image",
+									"value": null
 								}
 							]
 						}
@@ -387,7 +463,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost/doan/admin/Server/account/account.php?action=create&username=someoneyoulove&password=123123&privilege=admin&session&status=idle",
+							"raw": "http://localhost/doan/admin/Server/account/account.php?action=create&username=someoneyoulove2&password=123123&privilege=admin&session&status=idle",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -406,7 +482,7 @@
 								},
 								{
 									"key": "username",
-									"value": "someoneyoulove"
+									"value": "someoneyoulove2"
 								},
 								{
 									"key": "password",
@@ -515,12 +591,12 @@
 			"name": "receipt",
 			"item": [
 				{
-					"name": "view-all-detail",
+					"name": "view-staff-customer",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost/doan/admin/Server/receipt/receiptDetail.php",
+							"raw": "http://localhost/doan/admin/Server/receipt/receiptCustomerStaff.php",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -530,34 +606,13 @@
 								"admin",
 								"Server",
 								"receipt",
-								"receiptDetail.php"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "view",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost/doan/admin/Server/receipt/receipt.php?date_confirm=2023-02-12 00:00:00",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"path": [
-								"doan",
-								"admin",
-								"Server",
-								"receipt",
-								"receipt.php"
+								"receiptCustomerStaff.php"
 							],
 							"query": [
 								{
-									"key": "date_confirm",
-									"value": "2023-02-12 00:00:00"
+									"key": "staff.id",
+									"value": "NV001",
+									"disabled": true
 								}
 							]
 						}
@@ -565,7 +620,29 @@
 					"response": []
 				},
 				{
-					"name": "view-all",
+					"name": "view-detail-status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/receipt/receiptDetailStatus.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"receipt",
+								"receiptDetailStatus.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view-general",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -685,6 +762,94 @@
 									"key": "id_status",
 									"value": "TT07"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view-customer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/receipt/receiptCustomer.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"receipt",
+								"receiptCustomer.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view-staff",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/receipt/receiptStaff.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"receipt",
+								"receiptStaff.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view-detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/receipt/receiptDetail.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"receipt",
+								"receiptDetail.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view-status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/doan/admin/Server/receipt/receiptStatus.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"doan",
+								"admin",
+								"Server",
+								"receipt",
+								"receiptStatus.php"
 							]
 						}
 					},
@@ -818,7 +983,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost/doan/admin/Server/staff/staff.php?gender=nam",
+							"raw": "http://localhost/doan/admin/Server/staff/staff.php?gender=nam&address=Đồng Nai",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -834,6 +999,10 @@
 								{
 									"key": "gender",
 									"value": "nam"
+								},
+								{
+									"key": "address",
+									"value": "Đồng Nai"
 								}
 							]
 						}
