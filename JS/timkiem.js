@@ -138,8 +138,8 @@ function create(data) {
     detail_product();
 }
 // function create()
-let total_product_on_page = 12
-let current_page = 1
+let total_product_on_page = 12;
+let current_page = 1;
 function timkiem(key_search, type_value, sale_value, max_price, min_price) {
     getDataFromServer(
         "./Server/search.php",
@@ -150,7 +150,7 @@ function timkiem(key_search, type_value, sale_value, max_price, min_price) {
             sale_value: sale_value,
             key_search: key_search,
             total_product_on_page: total_product_on_page,
-            current_page:current_page
+            current_page: current_page,
         },
         function (response) {
             console.log(response);

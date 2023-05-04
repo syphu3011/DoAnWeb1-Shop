@@ -303,13 +303,12 @@
         //     $stmt = null;
         //     return $result;
         // }
-        public function read_data_advanced_search($conn, $key, $type, $sale, $min_price, $max_price)
+        public function read_data_advanced_search($conn, $key, $type, $sale, $min_price, $max_price, $begin, $amount)
         {
             $type_value = '';
             $sale_value = '';
             $key_value = '';
             $params = [$min_price, $max_price];
-
             if ($type != 'Tất cả') {
                 $type = trim($type);
                 $type_value = 'AND classify.name = ?';
@@ -327,7 +326,8 @@
                 // $key_value = 'AND product.name like %  %';
                 // $params[] = $key;
             }
-
+            $params[]=$begin;
+            $params[]=$amount;
             $sql = "SELECT 
                     product_list_classify.id_classify, 
                     product_list_classify.id_product,
@@ -361,12 +361,14 @@
                     AND (
                         promotion.id IS NULL
                         OR (promotion.begin_date <= CURDATE() AND promotion.finish_date > CURDATE())
-                    ) $type_value $sale_value $key_value";
+                    ) $type_value $sale_value $key_value limit ?,?";
             $stmt = $conn->prepare($sql);
-            $stmt->execute($params);
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $stmt = null;
-            return $result;
+            
+            // $stmt->execute($params);
+            // $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            // $stmt = null;
+            // return $result;
+            return $sql;
         }
         public function 
             read_data_advanced_search_pagination(

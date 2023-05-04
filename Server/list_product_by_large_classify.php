@@ -1,9 +1,10 @@
 <?php
     require_once("../init.php");
     require_once("CRUD.php");
+    // echo file_get_contents("php://input");
     $data_received = json_decode(file_get_contents("php://input"), true);
     $crud = new CRUD();
-    
+    // echo $data_received;
     $data_result = $crud->read_productByIdLarge_classify(
         $conn, 
         $data_received["id_large_classify"]
