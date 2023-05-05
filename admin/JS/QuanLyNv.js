@@ -193,8 +193,8 @@ function renderTable1() {
             cell2.innerHTML = obj.username;
             cell3.innerHTML = obj.birthday;
             cell4.innerHTML = obj.phone;
-            cell5.innerHTML = obj.date_init
-            cell6.innerHTML = obj.position;
+            cell5.innerHTML = obj.date_created
+            cell6.innerHTML = obj.privilege;
             cell7.innerHTML = obj.status;
             cell9.innerHTML = "<button style='font-size: 10px; margin: 1px 2px 1px 2px; border-radius: 2px;' onclick='sathai(this)'>sa thải</button>";
         // }
@@ -223,8 +223,8 @@ function render_CheckBoxTable() {
         cell2.innerHTML = obj.username;
         cell3.innerHTML = obj.birth_day;
         cell4.innerHTML = obj.number_phone;
-        cell5.innerHTML = obj.date_init
-        cell6.innerHTML = obj.position;
+        cell5.innerHTML = obj.date_created;
+        cell6.innerHTML = obj.privilege;
         cell7.innerHTML = obj.status;
         cell9.innerHTML = "<input type='checkbox'>";
 
@@ -304,7 +304,6 @@ function oke() {
 function nope() {
     document.getElementById("background-color-captaikhoan").remove();
 }
-
 function SearchNv() {
     let table = document.getElementById("myTable1");
     let aidi = document.getElementById("SearchBar").value.toLowerCase();
@@ -325,7 +324,7 @@ function SearchNv() {
                 item.name.toLowerCase().includes(name)) &&
             item.status.trim().toLowerCase().includes(trangthai) &&
             item.birth_day.toLowerCase().includes(toDDMMYYYY(ngsinh)) &&
-            item.date_init.toLowerCase().includes(toDDMMYYYY(ngaythamgia))
+            item.date_created.toLowerCase().includes(toDDMMYYYY(ngaythamgia))
         )
         for (let i = table.rows.length - 1; i > 0; i--)
             table.deleteRow(i);
@@ -349,8 +348,8 @@ function SearchNv() {
                 cell2.innerHTML = obj.username;
                 cell3.innerHTML = obj.birth_day;
                 cell4.innerHTML = obj.number_phone;
-                cell5.innerHTML = obj.date_init
-                cell6.innerHTML = obj.position;
+                cell5.innerHTML = obj.date_created;
+                cell6.innerHTML = obj.privilege;
                 cell7.innerHTML = obj.status;
                 cell9.innerHTML = "<button style='font-size: 10px; margin: 1px 2px 1px 2px; border-radius: 2px;' onclick='sathai(this)'>sa thải</button>";
             }
@@ -361,7 +360,7 @@ function SearchNv() {
             item.id.toLowerCase().includes(aidi) &&
             item.status.toLowerCase().includes(trangthai) &&
             item.birth_day.toLowerCase().includes(toDDMMYYYY(ngsinh)) &&
-            item.date_init.toLowerCase().includes(toDDMMYYYY(ngaythamgia))
+            item.date_created.toLowerCase().includes(toDDMMYYYY(ngaythamgia))
         )
         for (let i = table.rows.length - 1; i > 0; i--)
             table.deleteRow(i);
@@ -385,8 +384,8 @@ function SearchNv() {
                 cell2.innerHTML = obj.username;
                 cell3.innerHTML = obj.birth_day;
                 cell4.innerHTML = obj.number_phone;
-                cell5.innerHTML = obj.date_init
-                cell6.innerHTML = obj.position;
+                cell5.innerHTML = obj.date_created;
+                cell6.innerHTML = obj.privilege;
                 cell7.innerHTML = obj.status;
                 cell9.innerHTML = "<button style='font-size: 10px; margin: 1px 2px 1px 2px; border-radius: 2px;' onclick='sathai(this)'>sa thải</button>";
             }
@@ -397,7 +396,7 @@ function SearchNv() {
             item.name.toLowerCase().includes(name) &&
             item.status.toLowerCase().includes(trangthai) &&
             item.birth_day.toLowerCase().includes(toDDMMYYYY(ngsinh)) &&
-            item.date_init.toLowerCase().includes(toDDMMYYYY(ngaythamgia))
+            item.date_created.toLowerCase().includes(toDDMMYYYY(ngaythamgia))
         )
         for (let i = table.rows.length - 1; i > 0; i--)
             table.deleteRow(i);
@@ -421,8 +420,8 @@ function SearchNv() {
                 cell2.innerHTML = obj.username;
                 cell3.innerHTML = obj.birth_day;
                 cell4.innerHTML = obj.number_phone;
-                cell5.innerHTML = obj.date_init
-                cell6.innerHTML = obj.position;
+                cell5.innerHTML = obj.date_created
+                cell6.innerHTML = obj.privilege;
                 cell7.innerHTML = obj.status;
                 cell9.innerHTML = "<button style='font-size: 10px; margin: 1px 2px 1px 2px; border-radius: 2px;' onclick='sathai(this)'>sa thải</button>";
             }

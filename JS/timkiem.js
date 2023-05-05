@@ -1,8 +1,39 @@
+// Tìm kiếm nâng cao
+// document.getElementById("clothing-type").onchange = function () {
+//     let type_item = document.getElementById("clothing-type").value;
+//     let sale_item = document.getElementById("sale-select").value;
+//     console.log(sale_item);
+//     timkiem(type_item, sale_item, max_value_slider, min_value_silder);
+// };
+// document.getElementById("sale-select").onchange = function () {
+// let type_item = document.getElementById("clothing-type").value;
+// let sale_item = document.getElementById("sale-select").value;
+// console.log(sale_item);
+// timkiem(type_item, sale_item, max_value_slider, min_value_silder);
+// };
+function callback_search(params) {
+    let type_item = document.getElementById("clothing-type").value;
+    let sale_item = document.getElementById("sale-select").value;
+    let key_search = document.getElementById("inp-search").value;
+    console.log(sale_item);
+    timkiem(
+        key_search,
+        type_item,
+        sale_item,
+        max_value_slider,
+        min_value_silder
+    );
+    // document.getElementById("main_label_result").innerHTML = "Kết quả";
+}
+document.getElementById(`refine`).onclick = function () {
+    callback_search(1);
+};
 document.getElementById("btn-search").onclick = function () {
     if (document.getElementById("inp-search").value === "") {
         alert("Chưa nhập từ khoá để tìm");
     } else {
-        timkhiem();
+        // timkiem();
+        callback_search();
     }
 };
 document
@@ -12,12 +43,121 @@ document
             if (document.getElementById("inp-search").value === "") {
                 alert("Chưa nhập từ khoá để tìm");
             } else {
-                timkhiem();
+                // timkiem();
+                callback_search();
             }
         }
     });
+function create(data) {
+    console.log(data);
+    if (data.success) {
+        let data_product = data.result;
+        let li = "";
+        for (let i = 0; i < data_product.length; i++) {
+            let str_price =
+                `<label id="price_` +
+                data_product[i].id_product +
+                `">` +
+                calculated(data_product[i].price) +
+                ` VND</label>`;
+            let str_stamp = "";
+            if (data_product[i].content != null) {
+                // let data_promotion = data_product[i].promotion[0];
+                str_price =
+                    `<del class="del_price" id="del_` +
+                    data_product[i].id_product +
+                    `">` +
+                    calculated(data_product[i].price) +
+                    ` VND</del>
+                <label id="price_` +
+                    data_product[i].id_product +
+                    `">` +
+                    calculated(
+                        price_from_dis(
+                            data_product[i].price,
+                            data_product[i].discount_percent,
+                            data_product[i].discount_price
+                        )
+                    ) +
+                    ` VND</label>`;
+                str_stamp =
+                    `<div class="promo_stamp" id="stamp_` +
+                    data_product[i].id_product +
+                    `" style="display: block;">
+                    ` +
+                    data_product[i].content +
+                    `</div>`;
+            }
+            li +=
+                `<li class="main_list_product_product" id="` +
+                data_product[i].id_product +
+                `">
+        ` +
+                str_stamp +
+                `
+            <img class="main_list_product_product_image" style="" src="` +
+                data_product[i].link_image +
+                `" alt="">
+        <div class="main_list_product_product_infor"> 
+        <label class="product_infor_name">` +
+                data_product[i].name +
+                `</label>
+            <div>
+                ` +
+                str_price +
+                `
+            </div>
+        </div>
+    </li>`;
+        }
+        document.getElementById("main").innerHTML =
+            `<div style="
+                padding-top: 40px;
+            ">
+            <label style="
+                font-size: 25px;
+                padding-left: 40px;
+            ">Kết quả</label>
+            <ul style="display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                grid-template-rows: 1fr 1fr;
+                grid-gap: 20px;
+                list-style: none;
+                padding: 40px;
+                margin: 0;">
+		` +
+            li +
+            `
+	</ul></div>`;
+    } else {
+        alert("Comming soon");
+        document.getElementById("main").innerHTML =
+            `<div style="margin: 40px">` + data.result + `</div>`;
+    }
 
-function timkhiem() {
+    detail_product();
+}
+// function create()
+let total_product_on_page = 12;
+let current_page = 1;
+function timkiem(key_search, type_value, sale_value, max_price, min_price) {
+    getDataFromServer(
+        "./Server/search.php",
+        {
+            min_price: min_price,
+            max_price: max_price,
+            type_value: type_value,
+            sale_value: sale_value,
+            key_search: key_search,
+            total_product_on_page: total_product_on_page,
+            current_page: current_page,
+        },
+        function (response) {
+            console.log(response);
+            create(response);
+        }
+    );
+
     // isHomePage = false;
     // isProductShow = false;
     // let pos = document.documentElement.scrollTop;
@@ -230,104 +370,104 @@ function timkhiem() {
     // document.getElementById("main").appendChild(divSearch);
 }
 
-function funcSearch(key, loai, gia, khuyenmai) {
-    listTim.length = 0;
-    listTim = locLoai(loai, data.product);
-    listTim = locGia(gia, listTim);
-    listTim = locKhuyenMai(khuyenmai, listTim);
-    listTim = timTuKhoa(key, listTim);
-}
+// function funcSearch(key, loai, gia, khuyenmai) {
+//     listTim.length = 0;
+//     listTim = locLoai(loai, data.product);
+//     listTim = locGia(gia, listTim);
+//     listTim = locKhuyenMai(khuyenmai, listTim);
+//     listTim = timTuKhoa(key, listTim);
+// }
 
-function locLoai(loai, arr) {
-    let a = new Array();
-    let lcLoai = loai.toLowerCase();
-    if (lcLoai.indexOf("tất cả") == -1) {
-        arr.forEach((element) => {
-            if (
-                lcLoai
-                    .toLowerCase()
-                    .indexOf(element.clasify[1].toLowerCase()) != -1
-            ) {
-                a.push(element);
-            }
-        });
-    } else {
-        arr.forEach((element) => {
-            for (let i = 0; i < data.largeClassify.length; i++) {
-                if (element.id.indexOf(data.largeClassify[i].id) != -1)
-                    a.push(element);
-            }
-        });
-    }
-    return a;
-}
+// function locLoai(loai, arr) {
+//     let a = new Array();
+//     let lcLoai = loai.toLowerCase();
+//     if (lcLoai.indexOf("tất cả") == -1) {
+//         arr.forEach((element) => {
+//             if (
+//                 lcLoai
+//                     .toLowerCase()
+//                     .indexOf(element.clasify[1].toLowerCase()) != -1
+//             ) {
+//                 a.push(element);
+//             }
+//         });
+//     } else {
+//         arr.forEach((element) => {
+//             for (let i = 0; i < data.largeClassify.length; i++) {
+//                 if (element.id.indexOf(data.largeClassify[i].id) != -1)
+//                     a.push(element);
+//             }
+//         });
+//     }
+//     return a;
+// }
 
-function locKhuyenMai(khuyenmai, arr) {
-    let a = new Array();
-    if (khuyenmai.toLowerCase().indexOf("tất cả") != -1) {
-        return (a = arr);
-    }
-    arr.forEach((element) => {
-        data.promote.forEach((e) => {
-            e.products.forEach((ele) => {
-                if (
-                    ele.id.toLowerCase() == element.id.toLowerCase() &&
-                    e.name.toLowerCase().indexOf(khuyenmai.toLowerCase()) != -1
-                ) {
-                    a.push(element);
-                }
-            });
-        });
-    });
-    return a;
-}
+// function locKhuyenMai(khuyenmai, arr) {
+//     let a = new Array();
+//     if (khuyenmai.toLowerCase().indexOf("tất cả") != -1) {
+//         return (a = arr);
+//     }
+//     arr.forEach((element) => {
+//         data.promote.forEach((e) => {
+//             e.products.forEach((ele) => {
+//                 if (
+//                     ele.id.toLowerCase() == element.id.toLowerCase() &&
+//                     e.name.toLowerCase().indexOf(khuyenmai.toLowerCase()) != -1
+//                 ) {
+//                     a.push(element);
+//                 }
+//             });
+//         });
+//     });
+//     return a;
+// }
 
-function locGia(gia, arr) {
-    let khoang = gia.replaceAll(".", "").split(" ");
-    let a = new Array();
-    // console.log(khoang[1])
-    if (gia.toLowerCase() == "tất cả") {
-        return (a = arr);
-    }
-    arr.forEach((element) => {
-        if (khoang[0].toLowerCase().indexOf("dưới") != -1) {
-            if (parseInt(element.price) < parseInt(khoang[1])) {
-                a.push(element);
-            }
-        } else {
-            if (khoang[0].toLowerCase().indexOf("trên") != -1) {
-                if (parseInt(element.price) > parseInt(khoang[1])) {
-                    a.push(element);
-                }
-            } else {
-                if (
-                    parseInt(element.price) > parseInt(khoang[1]) &&
-                    parseInt(element.price) < parseInt(khoang[3])
-                ) {
-                    a.push(element);
-                }
-            }
-        }
-    });
-    return a;
-}
+// function locGia(gia, arr) {
+//     let khoang = gia.replaceAll(".", "").split(" ");
+//     let a = new Array();
+//     // console.log(khoang[1])
+//     if (gia.toLowerCase() == "tất cả") {
+//         return (a = arr);
+//     }
+//     arr.forEach((element) => {
+//         if (khoang[0].toLowerCase().indexOf("dưới") != -1) {
+//             if (parseInt(element.price) < parseInt(khoang[1])) {
+//                 a.push(element);
+//             }
+//         } else {
+//             if (khoang[0].toLowerCase().indexOf("trên") != -1) {
+//                 if (parseInt(element.price) > parseInt(khoang[1])) {
+//                     a.push(element);
+//                 }
+//             } else {
+//                 if (
+//                     parseInt(element.price) > parseInt(khoang[1]) &&
+//                     parseInt(element.price) < parseInt(khoang[3])
+//                 ) {
+//                     a.push(element);
+//                 }
+//             }
+//         }
+//     });
+//     return a;
+// }
 
-function timTuKhoa(key, arr) {
-    let a = new Array();
-    arr.forEach((element) => {
-        if (
-            element.id.toLowerCase().indexOf(key) != -1 ||
-            element.name.toLowerCase().indexOf(key) != -1 ||
-            element.made_in.toLowerCase().indexOf(key) != -1 ||
-            element.description.toLowerCase().indexOf(key) != -1 ||
-            element.price.toLowerCase().indexOf(key) != -1
-        ) {
-            a.push(element);
-        }
-    });
-    return a;
-}
-let listTim = new Array();
+// function timTuKhoa(key, arr) {
+//     let a = new Array();
+//     arr.forEach((element) => {
+//         if (
+//             element.id.toLowerCase().indexOf(key) != -1 ||
+//             element.name.toLowerCase().indexOf(key) != -1 ||
+//             element.made_in.toLowerCase().indexOf(key) != -1 ||
+//             element.description.toLowerCase().indexOf(key) != -1 ||
+//             element.price.toLowerCase().indexOf(key) != -1
+//         ) {
+//             a.push(element);
+//         }
+//     });
+//     return a;
+// }
+// let listTim = new Array();
 
 // document.getElementById("selected-type").onchange = function () {
 //   console.log(document.getElementById("selected-type").value);

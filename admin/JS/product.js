@@ -417,23 +417,12 @@ function Prod(id, name, made_in, description, price, images, classify, status) {
     this.status = status;
 }
 //thêm sửa sản phẩm code
-function get_Data() {
-    return $.ajax({
-        url: './Server/product/products.php',
-        type: 'GET',
-        dataType: 'json'
-    })
+async function get_Data() {
+    return await get('./Server/product/products.php')
 }
 async function refreshData() {
     try {
-            response_data = await get_Data().then(function(responseData) {
-            // Xử lý dữ liệu trả về
-            return responseData
-        }).catch(function(error) {
-            // Xử lý lỗi
-            console.log(error);
-        });
-        obj = response_data
+        obj = await get('./Server/product/products.php')
         console.log(obj);
     } catch (error) {
         console.log(error);
@@ -553,22 +542,7 @@ async function addProd(Prod) {
         // Prod.images = totalfiles
         form_data = to_form_data_have_image(Prod, "images_ar[]", totalfiles);
 
-        $.ajax({
-            type: 'POST',
-            url: './Server/product/create_product.php',
-            data: form_data,
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-            success: function(jqXHR, textStatus, errorThrown) {
-                console.log("Request success: " + textStatus + ", " + errorThrown);
-                alert("Request success: " + textStatus + ", " + errorThrown + jqXHR);
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log("Request failed: " + textStatus + ", " + errorThrown);
-                alert("Request failed: " + textStatus + ", " + errorThrown + JSON.stringify(jqXHR));
-            }
-        });
+        post(form_data,'./Server/product/create_product.php')
     }
 
     await fillProd();

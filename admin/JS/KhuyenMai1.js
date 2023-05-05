@@ -1,16 +1,10 @@
-function writeToLocalStorage(ar) {
-    let setlocal = JSON.stringify(ar)
-    localStorage.setItem("data", setlocal)
-    obj10 = JSON.parse(localStorage.getItem("data"))
-    length11 = obj10.promote.length
-    length21 = obj10.product.length
-}
-
-
-let obj10 = JSON.parse(localStorage.getItem("data"))
+// let obj10 = JSON.parse(localStorage.getItem("data"))
 // let length11 = obj10.promote.length
 // let length21 = obj10.product.length
-
+let obj10
+async function refreshPromotion() {
+    obj10 = await get('./Server/promotion/promotions.php')
+}
 function Themkhuyenmai() {
     document.getElementById("PageUp").innerHTML = `
     <div id="KhuyenMai-Background" >
@@ -327,6 +321,7 @@ function FindID9(id) {
 
 // Fill bảng
 function renderTable2() {
+    refreshPromotion()
     document.getElementById("headkm2").style.display = "none"
     document.getElementById("headkm").style.display = "flex"
     let table = document.getElementById("myTable31");

@@ -692,11 +692,11 @@ itemssale.push("tất cả");
 //     }
 // }
 
-// function offlist() {
-//     listtype.style.display = "";
-//     listprice.style.display = "";
-//     listsale.style.display = "";
-// }
+function offlist() {
+    //     listtype.style.display = "";
+    //     listprice.style.display = "";
+    //     listsale.style.display = "";
+}
 btnprodw.onmouseenter = function () {
     prod.style.display = "block";
     offlist();
@@ -954,7 +954,7 @@ function create_main_onclick_classify(data) {
                 padding-left: 40px;
             ">sản phẩm</label>
             <ul style="display: grid;
-                grid-template-columns: repeat(5, 1fr);
+                grid-template-columns: repeat(4, 1fr);
                 grid-template-rows: 1fr 1fr;
                 grid-gap: 20px;
                 list-style: none;
@@ -1007,7 +1007,7 @@ function create_main_onclick_classify(data) {
 //     });
 //     return tong;
 // }
-let thanhtoansp = new Array();
+// let thanhtoansp = new Array();
 //
 //
 //
@@ -1376,80 +1376,80 @@ document.getElementById("home-page").onclick = function () {
 //     }
 //   }
 // };
-let arrayPro = new Array();
+// let arrayPro = new Array();
 //
 //
 //
 //tìm
-function search(text, classify = "", minPrice = 0, maxPrice = 0, promote = "") {
-    function checkValidName(arg1, arg2) {
-        if (arg2.trim() == "") {
-            return true;
-        }
-        if (arg1.toLowerCase().indexOf(arg2.toLowerCase()) != -1) {
-            return true;
-        }
-        return false;
-    }
+// function search(text, classify = "", minPrice = 0, maxPrice = 0, promote = "") {
+//     function checkValidName(arg1, arg2) {
+//         if (arg2.trim() == "") {
+//             return true;
+//         }
+//         if (arg1.toLowerCase().indexOf(arg2.toLowerCase()) != -1) {
+//             return true;
+//         }
+//         return false;
+//     }
 
-    function checkPrice(minPrice, maxPrice, price) {
-        if (minPrice == 0 && maxPrice == 0) {
-            return true;
-        }
-        if (price >= minPrice && price <= maxPrice) {
-            return true;
-        }
-        return false;
-    }
+//     function checkPrice(minPrice, maxPrice, price) {
+//         if (minPrice == 0 && maxPrice == 0) {
+//             return true;
+//         }
+//         if (price >= minPrice && price <= maxPrice) {
+//             return true;
+//         }
+//         return false;
+//     }
 
-    function checkClassify(prod) {
-        if (classify == "") {
-            return true;
-        }
-        let check = false;
-        prod.clasify.forEach((element) => {
-            if (checkValidName(classify, element)) {
-                check = true;
-                return;
-            }
-        });
-        return check;
-    }
-    let promot = [];
-    data.promote.forEach((element) => {
-        if (checkValidName(element.name, promote)) {
-            promot = element;
-            return;
-        }
-    });
-    arrayPro.length = 0;
-    for (let i = 0; i < data.product.length; i++) {
-        let prodI = data.product[i];
-        if (
-            checkValidName(prodI.name, text) &&
-            checkPrice(minPrice, maxPrice, parseInt(prodI.price))
-        ) {
-            let checkExist = false;
-            if (promote.trim() == "") {
-                checkExist = true;
-            } else {
-                if (promot.length > 0) {
-                    promot.products.forEach((element) => {
-                        if (checkValidName(element.id, prodI.id)) {
-                            checkExist = true;
-                        }
-                    });
-                } else {
-                    checkExist = true;
-                }
-            }
-            checkExist = checkClassify(prodI);
-            if (checkExist) {
-                arrayPro.push(prodI);
-            }
-        }
-    }
-}
+//     function checkClassify(prod) {
+//         if (classify == "") {
+//             return true;
+//         }
+//         let check = false;
+//         prod.clasify.forEach((element) => {
+//             if (checkValidName(classify, element)) {
+//                 check = true;
+//                 return;
+//             }
+//         });
+//         return check;
+//     }
+//     let promot = [];
+//     data.promote.forEach((element) => {
+//         if (checkValidName(element.name, promote)) {
+//             promot = element;
+//             return;
+//         }
+//     });
+//     arrayPro.length = 0;
+//     for (let i = 0; i < data.product.length; i++) {
+//         let prodI = data.product[i];
+//         if (
+//             checkValidName(prodI.name, text) &&
+//             checkPrice(minPrice, maxPrice, parseInt(prodI.price))
+//         ) {
+//             let checkExist = false;
+//             if (promote.trim() == "") {
+//                 checkExist = true;
+//             } else {
+//                 if (promot.length > 0) {
+//                     promot.products.forEach((element) => {
+//                         if (checkValidName(element.id, prodI.id)) {
+//                             checkExist = true;
+//                         }
+//                     });
+//                 } else {
+//                     checkExist = true;
+//                 }
+//             }
+//             checkExist = checkClassify(prodI);
+//             if (checkExist) {
+//                 arrayPro.push(prodI);
+//             }
+//         }
+//     }
+// }
 
 // function createHomepage() {
 //     isHomePage = true;
@@ -1551,34 +1551,34 @@ function search(text, classify = "", minPrice = 0, maxPrice = 0, promote = "") {
 let spaceProduct = document.getElementById("space-product");
 let onclickProduct = document.getElementById("onclick-product");
 
-function getPromote(id) {
-    for (let i = 0; i < data.promote.length; i++) {
-        for (let j = 0; j < data.promote[i].products.length; j++) {
-            if (
-                data.promote[i].products[j].id.toLowerCase() == id.toLowerCase()
-            ) {
-                return [i, j];
-            }
-        }
-    }
-    return -1;
-}
+// function getPromote(id) {
+//     for (let i = 0; i < data.promote.length; i++) {
+//         for (let j = 0; j < data.promote[i].products.length; j++) {
+//             if (
+//                 data.promote[i].products[j].id.toLowerCase() == id.toLowerCase()
+//             ) {
+//                 return [i, j];
+//             }
+//         }
+//     }
+//     return -1;
+// }
 
-function getProduct(id) {
-    for (let i = 0; i < data.product.length; i++) {
-        if (data.product[i].id.indexOf(id) != -1) {
-            arrProduct.push(data.product[i]);
-        }
-    }
-}
+// function getProduct(id) {
+//     for (let i = 0; i < data.product.length; i++) {
+//         if (data.product[i].id.indexOf(id) != -1) {
+//             arrProduct.push(data.product[i]);
+//         }
+//     }
+// }
 
-function getPath(id, path) {
-    path.Path.forEach((element) => {
-        if (element.indexOf(id) != -1) {
-            pathImage.push(element);
-        }
-    });
-}
+// function getPath(id, path) {
+//     path.Path.forEach((element) => {
+//         if (element.indexOf(id) != -1) {
+//             pathImage.push(element);
+//         }
+//     });
+// }
 
 function createPageProduct(root, textTitle, idPr, proInpage) {
     arrProduct.length = 0;
@@ -2201,11 +2201,11 @@ saveUpdate.onclick = function () {
     }
 };
 
-function initIdReceipt() {
-    let max = 0;
-    max = parseInt(data.receipt[data.receipt.length - 1].id.replace("RE", ""));
-    return "RE" + String(max + 1).padStart(4, "0");
-}
+// function initIdReceipt() {
+//     let max = 0;
+//     max = parseInt(data.receipt[data.receipt.length - 1].id.replace("RE", ""));
+//     return "RE" + String(max + 1).padStart(4, "0");
+// }
 
 function createReceipt(liProd) {
     let st = "Chờ xác nhận";

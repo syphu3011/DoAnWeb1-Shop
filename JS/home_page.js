@@ -1,4 +1,6 @@
 let max_amount = 0;
+let max_value_slider = 0;
+let min_value_silder = 0;
 
 function get_data(res) {
     //Loại sản phẩm
@@ -23,6 +25,7 @@ getDataFromServer("./Server/homepage.php", "", function (response) {
     create_Homepage(response);
     create_filter();
 });
+
 // var xhttp = new XMLHttpRequest();
 // //load trang chủ
 // xhttp.onreadystatechange = function () {
@@ -41,13 +44,13 @@ getDataFromServer("./Server/homepage.php", "", function (response) {
 function price_from_dis(price, discount_percent, discount_price) {
     return price - price * discount_percent - discount_price;
 }
-document.getElementById("clothing-type").onchange = function () {
-    let type_item = document.getElementById("clothing-type").value;
-    let sale_item = document.getElementById("sale-select").value;
-    console.log(document.getElementById("clothing-type").value);
-};
+//
+//
+
 function create_filter(params) {
     console.log(data);
+    //
+    // Thanh chọn loại sản phẩm
     document.getElementById(
         "clothing-type"
     ).innerHTML = `<option >Tất cả</option>`;
@@ -61,21 +64,25 @@ function create_filter(params) {
                 `</option>`;
         }
     }
+    //
+    // Thanh chọn loại giảm giá
     document.getElementById(
         "sale-select"
-    ).innerHTML = `<option >Tất cả</option>`;
-    for (let i = 0; i < data.promote.length; i++) {
+    ).innerHTML = `<option>Tất cả</option>`;
+    for (let i = 0; i < data.data_promotion.length; i++) {
         document.getElementById("sale-select").innerHTML +=
             `<option id="` +
-            data.promote[i].id +
+            data.data_promotion[i].id +
             `">` +
-            data.promote[i].content +
+            data.data_promotion[i].content +
             `</option>`;
     }
+    //
+    // Thanh chọn khoảng giá
     noUiSlider.create(slider, {
         start: [
-            data.product_list[0].price + 10000,
-            data.product_list[data.product_list.length - 1].price - 10000,
+            0,
+            data.product_list[data.product_list.length - 1].price + 10000,
         ],
         connect: true,
         range: {
@@ -101,11 +108,34 @@ function create_filter(params) {
 
     slider.noUiSlider.on("update", function (values, handle) {
         if (handle) {
-            maxValue.innerHTML = Math.round(values[handle]);
+            max_value_slider = Math.round(values[handle]);
+            maxValue.innerHTML = calculated(max_value_slider) + " VNĐ";
         } else {
-            minValue.innerHTML = Math.round(values[handle]);
+            min_value_silder = Math.round(values[handle]);
+            minValue.innerHTML = calculated(min_value_silder) + " VNĐ";
         }
+        // let type_item = document.getElementById("clothing-type").value;
+        // let sale_item = document.getElementById("sale-select").value;
+        // console.log(sale_item);
+        // timkiem(type_item, sale_item, max_value_slider, min_value_silder);
     });
+}
+function pagination() {
+    let str = `<div class="pagination">
+		<a href="#">&laquo;</a>
+		<a href="#">1</a>
+		<a href="#">2</a>
+		<a href="#">3</a>
+		<a href="#">4</a>
+		<a href="#">5</a>
+		<a href="#">6</a>
+		<a href="#">7</a>
+		<a href="#">8</a>
+		<a href="#">9</a>
+		<a href="#">10</a>
+		<a href="#">&raquo;</a>
+	</div>`;
+    document.getElementById("main").innerHTML += str;
 }
 function create_Homepage(data_res) {
     //Theo loại
@@ -204,7 +234,8 @@ function create_Homepage(data_res) {
           <button id="` +
             element.id +
             `" class="button_show_more">
-          Xem thêm 
+            <a href="?page=1">Xem thêm</a>
+           
         </button>
         </div>
       </div>`;
@@ -242,7 +273,7 @@ function create_Homepage(data_res) {
                 },
                 function (respone) {
                     console.log(respone);
-                    create_main_onclick_classify(respone);
+                    create(respone);
                 }
             );
         };
@@ -253,6 +284,7 @@ function detail_product() {
     let click_product = document.getElementsByClassName(
         "main_list_product_product"
     );
+    // pagination();
     for (let i = 0; i < click_product.length; i++) {
         click_product[i].onclick = function () {
             //   console.log(1);

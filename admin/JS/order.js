@@ -8,8 +8,9 @@
 // let objk = JSON.parse(JSON.stringify(data))
 // localStorage.setItem("data", JSON.stringify(data))
 let receipt
+let detail_receipt
 let length1
-function get_DataStaff() {
+function get_DataOrder() {
     return $.ajax({
         url: './Server/receipt/receipt.php',
         method: 'GET',
@@ -18,7 +19,7 @@ function get_DataStaff() {
             receipt = data
             let length1 = receipt.length
             FillOrder()
-          console.log(data);
+          console.log(receipt);
         },
         error: function(xhr, status, error) {
           // Xử lý lỗi ở đây
@@ -26,7 +27,25 @@ function get_DataStaff() {
         }
       });
 }
-get_DataStaff() 
+
+function get_DataDetailO() {
+    return $.ajax({
+        url: './Server/receipt/receiptDetail.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            detail_receipt = data
+          console.log(detail_receipt);
+        },
+        error: function(xhr, status, error) {
+          // Xử lý lỗi ở đây
+          console.error(error);
+        }
+      });
+}
+
+get_DataOrder() 
+get_DataDetailO()
 
 // let length2 = obj12.prodInStock.length
 // let length3 = obj12.product.length
@@ -164,7 +183,7 @@ function FillOrder() {
             let tagrow = document.createElement("tr")
             tagrow.innerHTML = `
             <td>` + receipt[i].id + `</td>
-            <td>` + receipt[i].idCustomer + `</td>
+            <td>` + receipt[i].id_customer + `</td>
             <td>` + GetNameCus(receipt[i].idCustomer) + `</td>
             <td>` + receipt[i].date_init + `</td>
             <td>` + calculated(TotalMoney(i)) + ` VNĐ</td>
