@@ -46,13 +46,14 @@ class Table {
 	}
 
 	// * query 1 child table inner join with 2 parent tables on keys
-	public static function tableQueryTriple($conn, $childTable, $parentTable, $parentTable2, $key1, $key2, $key3, $key4, $column) {
+	public static function tableQueryTriple($conn, $childTable, $parentTable, $parentTable2, $key1, $key2, $key3, $key4, $column, $condition) {
 		$query = 
 			"SELECT $column FROM $childTable 
 			INNER JOIN $parentTable 
 			ON $childTable.$key1 = $parentTable.$key3
 			INNER JOIN $parentTable2
-			ON $childTable.$key2 = $parentTable2.$key4;";
+			ON $childTable.$key2 = $parentTable2.$key4
+			WHERE $condition;";
 		// echo $query . "</br>";
 		$query_statement = $conn->prepare($query);
 		$query_statement->execute();
