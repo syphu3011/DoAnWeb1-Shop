@@ -81,8 +81,8 @@ function create_filter(params) {
     // Thanh chọn khoảng giá
     noUiSlider.create(slider, {
         start: [
-            data.product_list[0].price + 10000,
-            data.product_list[data.product_list.length - 1].price - 10000,
+            0,
+            data.product_list[data.product_list.length - 1].price + 10000,
         ],
         connect: true,
         range: {

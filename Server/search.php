@@ -27,30 +27,31 @@
     $data_result = 
         $crud -> read_data_advanced_search(
             $conn, 
-            $key_search, $type_value, $sale_value, 
+            $type_value, $sale_value, $key_search,
             $min_price, $max_price,
-            $begin,
-            $total_product_on_page
+            $begin, $total_product_on_page
         );
-    // if (count($data_result)>0){
-    //     $response = array(
-    //         'success' => true,
-    //         'result' => $data_result,
-    //         'data received' => $data_received
+    if (count($data_result)>0){
+        $response = array(
+            'success' => true,
+            'result' => $data_result,
+            'data received' => $data_received
 
-    //     );
-    // } else {
-    //     $response = array(
-    //         'success' => false,
-    //         'result' => 'No data found',
-    //         'data received' => $data_received
-    //     );
-    // }
-     $response = array(
+        );
+    } else {
+        $response = array(
             'success' => false,
             'result' => 'No data found',
-            'data ' => $data_result
+            'data received' => $data_received
         );
+    }
+    //  $response = array(
+    //         'success' => false,
+    //         'result' => 'No data found',
+    //         'data ' => 
+    //         $data_result
+        
+    //     );
     echo json_encode($response);
 ?>
 
