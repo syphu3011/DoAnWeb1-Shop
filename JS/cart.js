@@ -134,9 +134,7 @@ function sukien(data_product) {
                     id_product: product_in_cart[i].id_product,
                 },
                 function (respone) {
-                    create_cart_from_server();
-
-                    showacc(document.getElementById("tranggiohang"), 0, 1500);
+                    showacc(document.getElementById("tranggiohang"), 0, 1200);
                     setTimeout(() => {
                         document.getElementsByClassName(
                             "table-giohang"
@@ -144,6 +142,7 @@ function sukien(data_product) {
                         document.getElementById(
                             "hienthigiohang"
                         ).style.display = "";
+                        create_cart_from_server();
                     }, 400);
 
                     //     console.log(respone);
@@ -406,8 +405,8 @@ function sukien(data_product) {
             //       }
             //       document.getElementsByClassName("ton-tien")[i].textContent =
             //         calculated(currentUser.cart[i].price) + " VND";
-                //   document.getElementById("tongthanhtoan").textContent =
-                //     calculated(total_price_onclick().totalprice) + " VND";
+            //   document.getElementById("tongthanhtoan").textContent =
+            //     calculated(total_price_onclick().totalprice) + " VND";
             //     } else {
             //       alert("Đã đạt số lượng tối thiểu");
             //     }

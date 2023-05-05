@@ -70,19 +70,28 @@
             $stmt = null;
             return $result;
         }
+        //lay du lieu san pham theo gioi tinh, ma loai
         public function read_productByIdClassify($conn, $gender, $id_classify) {
             $sql="SELECT 
                 product_list_classify.id_product, 
                 product.name, 
-                product_list.price
+                product_list.price, (
+                	SELECT image_product.link_image 
+                    FROM image_product
+                    WHERE image_product.id_product=product.id
+                    limit 1
+                ) AS link_image,
+                classify.name as name_classify,
+                classify.gender
             FROM 
                 product_list_classify, 
                 product, 
                 product_list,
                 classify
+                 
             WHERE product_list_classify.id_classify=classify.id
                 AND product_list_classify.id_product=product.id
-                AND product.idstatus='TT01'
+                AND product.idstatus = 'TT01'
                 AND product_list.id_product = product_list_classify.id_product
                 AND classify.gender = ?
                 AND classify.id = ?
@@ -93,8 +102,43 @@
             $stmt = null;
             return $result;
         }
+        public function read_productByIdLarge_classify($conn, $id_large_classify) {
+            $sql="SELECT 
+                    classify.id,
+                    classify.name,
+                    product_list_classify.id_product,
+                    product_list.id_size,
+                    product_list.id_size,
+                    product_list.price,
+                    image_product.link_image,
+                    promotion.content,
+                    promotion.discount_price,
+                    promotion.discount_percent,
+                    promotion.begin_date,
+                    promotion.finish_date
+                FROM 
+                                                classify
+                                LEFT JOIN product_list_classify ON product_list_classify.id_classify=classify.id
+                                LEFT JOIN product_list ON product_list.id_product = product_list_classify.id_product
+
+                LEFT JOIN image_product ON image_product.id_product = product_list.id_product
+                LEFT JOIN detail_promotion ON detail_promotion.id_product = product_list.id_product
+                LEFT JOIN promotion ON promotion.id = detail_promotion.id_promotion
+                WHERE 
+                    classify.id_big_classify = ? 
+                    AND (
+                        (promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10')
+                        OR promotion.id IS NULL)
+                GROUP BY product_list_classify.id_product
+                    ";
+            $stmt=$conn->prepare($sql);
+            $stmt->execute([$id_large_classify]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
         public function read_data_product($conn) {
-            $sql="SELECT * FROM product";
+            $sql="SELECT * FROM product ";
             $stmt=$conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -140,7 +184,7 @@
             return $result;
         }
         public function read_data_product_list($conn) {
-            $sql="SELECT * FROM product_list";
+            $sql="SELECT * FROM product_list ORDER BY product_list.price";
             $stmt=$conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -171,6 +215,317 @@
                         promotion.id = detail_promotion.id_promotion
                         AND promotion.id_status = status_promotion.id
                         AND detail_promotion.id_product = product_list.id_product";
+            $stmt = $conn -> prepare($sql);
+            $stmt -> execute();
+            $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
+        public function read_data($conn)
+        {
+            # code...
+            $sql = "SELECT 
+                promotion.id AS id_promotion,
+                product.id AS id_product,
+                image_product.link_image,
+                image_product.name_image,
+                promotion.name,
+                promotion.image,
+                promotion.content,
+                promotion.discount_price,
+                promotion.discount_percent,
+                promotion.begin_date,
+                promotion.finish_date,
+                status_promotion.name AS status_promotion
+            FROM 
+                promotion
+            LEFT JOIN detail_promotion ON promotion.id = detail_promotion.id_promotion
+            LEFT JOIN product ON product.id = detail_promotion.id_product
+            LEFT JOIN status_promotion ON status_promotion.id=promotion.id_status
+            LEFT JOIN image_product ON product.id=image_product.id_product
+            WHERE 
+                promotion.finish_date >= CURDATE()
+            ";
+            $stmt = $conn -> prepare($sql);
+            $stmt -> execute();
+            $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
+        // public function read_data_advanced_search($conn, $type, $min_price, $max_price)
+        // {
+        //     # code...
+        //     if ($type == 'Tất cả'){
+        //         $type_value ='';
+        //     } else {
+        //         $type = trim($type);
+        //         $type_value = 'AND classify.name = ?';
+        //     }
+
+        //     $sql = "SELECT 
+        //         product_list_classify.id_classify, 
+        //         product_list_classify.id_product,
+        //         product.name,
+        //         input_country.name,
+        //         product.description,
+        //         status_product.name,
+        //         product_list.id_size,
+        //         product_list.id_color,
+        //         product_list.price,
+        //         image_product.link_image AS link_image,
+        //         promotion.name AS name_promotion,
+        //         promotion.image,
+        //         promotion.content,
+        //         promotion.discount_price,
+        //         promotion.discount_percent,
+        //         promotion.begin_date,
+        //         promotion.finish_date
+        //     FROM 
+        //         product_list_classify
+        //         LEFT JOIN product_list ON product_list_classify.id_product=product_list.id_product
+        //         LEFT JOIN image_product ON image_product.id_product=product_list_classify.id_product
+        //         LEFT JOIN detail_promotion ON detail_promotion.id_product = product_list.id_product
+        //         LEFT JOIN promotion ON promotion.id = detail_promotion.id_promotion
+        //         LEFT JOIN product ON product.id = product_list_classify.id_product
+        //         LEFT JOIN status_product ON status_product.id = product.idstatus
+        //         LEFT JOIN input_country ON input_country.id = product.madein
+        //         LEFT JOIN classify ON classify.id = product_list_classify.id_classify
+        //     WHERE 
+        //         product_list.price BETWEEN ? AND ?
+        //         AND (
+        //             promotion.id IS NULL
+        //             OR (promotion.begin_date <= CURDATE() AND promotion.finish_date > CURDATE())
+        //         )
+        //     .$type_value.";
+        //     $stmt = $conn -> prepare($sql);
+        //     $stmt -> execute([$min_price, $max_price, $type]);
+        //     $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+        //     $stmt = null;
+        //     return $result;
+        // }
+        public function read_data_advanced_search($conn, $type, $sale, $key, $min_price, $max_price, $begin, $total_product_on_page)
+        {
+            $type_value = $type;
+            $sale_value = $sale;
+            $key_value = $key;
+            // $params = [$min_price, $max_price, $type, $sale, $key, $begin, $amount];
+            if ($type == 'Tất cả') {
+                $type_value = '% %';
+                // $params[] = $type;
+            }
+            if ($sale == 'Tất cả') {
+                // $sale = trim($sale);
+                $sale_value = '% %';
+                // $params[] = $sale;
+            }
+            // if ($key == '') {
+            //     // $k÷ey = trim($key);
+            $key_value = "%" . $key . "%";
+            $params = 'LIMIT '. $begin .',' .$total_product_on_page;
+            // $params[]=$amount;
+            $sql = "SELECT 
+                   product_list_classify.id_classify, 
+                   product_list_classify.id_product,
+                   product.name,
+                   input_country.name AS country,
+                   product.description,
+                   status_product.name AS name_status,
+                   product_list.id_size,
+                   product_list.id_color,
+                   product_list.price,
+                   image_product.link_image AS link_image,
+                   promotion.name AS name_promotion,
+                   promotion.image,
+                   promotion.content,
+                   promotion.discount_price,
+                   promotion.discount_percent,
+                   promotion.begin_date,
+                   promotion.finish_date
+               FROM 
+                   product_list_classify
+                   LEFT JOIN product_list ON product_list_classify.id_product=product_list.id_product
+                   LEFT JOIN image_product ON image_product.id_product=product_list_classify.id_product
+                   LEFT JOIN detail_promotion ON detail_promotion.id_product = product_list.id_product
+                   LEFT JOIN promotion ON promotion.id = detail_promotion.id_promotion
+                   LEFT JOIN product ON product.id = product_list_classify.id_product
+                   LEFT JOIN status_product ON status_product.id = product.idstatus
+                   LEFT JOIN input_country ON input_country.id = product.madein
+                   LEFT JOIN classify ON classify.id = product_list_classify.id_classify
+               WHERE 
+                   product_list.price BETWEEN ? AND ?
+                   AND (
+                       promotion.id IS NULL
+                       OR (promotion.begin_date <= CURDATE() AND promotion.finish_date > CURDATE())
+                   ) 
+                   AND classify.name LIKE ?
+                   AND product.name LIKE ?
+                $params
+                    ";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$min_price, $max_price, $type_value, $key_value]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
+
+    //    public function read_data_advanced_search($conn, $key, $type, $sale, $min_price, $max_price, $begin, $amount)
+        // {
+        //     $type_value = '';
+        //     $sale_value = '';
+        //     $key_value = '';
+        //     $params = [$min_price, $max_price];
+        //     if ($type != 'Tất cả') {
+        //         $type = trim($type);
+        //         $type_value = 'AND classify.name = ?';
+        //         $params[] = $type;
+        //     }
+        //     if ($sale != 'Tất cả') {
+        //         $sale = trim($sale);
+        //         $sale_value = 'AND promotion.content = ?';
+        //         $params[] = $sale;
+        //     }
+        //     if ($key != '') {
+        //         $key = trim($key);
+        //         $key_value = 'AND product.name LIKE "%' . $key . '%"';
+
+        //         // $key_value = 'AND product.name like %  %';
+        //         // $params[] = $key;
+        //     }
+        //     $params[]=$begin;
+        //     $params[]=$amount;
+        //     $sql = "SELECT 
+        //             product_list_classify.id_classify, 
+        //             product_list_classify.id_product,
+        //             product.name,
+        //             input_country.name AS country,
+        //             product.description,
+        //             status_product.name AS name_status,
+        //             product_list.id_size,
+        //             product_list.id_color,
+        //             product_list.price,
+        //             image_product.link_image AS link_image,
+        //             promotion.name AS name_promotion,
+        //             promotion.image,
+        //             promotion.content,
+        //             promotion.discount_price,
+        //             promotion.discount_percent,
+        //             promotion.begin_date,
+        //             promotion.finish_date
+        //         FROM 
+        //             product_list_classify
+        //             LEFT JOIN product_list ON product_list_classify.id_product=product_list.id_product
+        //             LEFT JOIN image_product ON image_product.id_product=product_list_classify.id_product
+        //             LEFT JOIN detail_promotion ON detail_promotion.id_product = product_list.id_product
+        //             LEFT JOIN promotion ON promotion.id = detail_promotion.id_promotion
+        //             LEFT JOIN product ON product.id = product_list_classify.id_product
+        //             LEFT JOIN status_product ON status_product.id = product.idstatus
+        //             LEFT JOIN input_country ON input_country.id = product.madein
+        //             LEFT JOIN classify ON classify.id = product_list_classify.id_classify
+        //         WHERE 
+        //             product_list.price BETWEEN ? AND ?
+        //             AND (
+        //                 promotion.id IS NULL
+        //                 OR (promotion.begin_date <= CURDATE() AND promotion.finish_date > CURDATE())
+        //             ) $type_value $sale_value $key_value AND LIMIT ?, ?";
+        //     $stmt = $conn->prepare($sql);
+        //     $stmt->execute($params);
+        //     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        //     $stmt = null;
+        //     return $result;
+        //     // return $sql;
+        // }
+        public function 
+            read_data_advanced_search_pagination(
+                $conn, 
+                $key, $type, $sale, 
+                $min_price, $max_price,
+                $begin
+            )
+        {
+            $type_value = '';
+            $sale_value = '';
+            $key_value = '';
+            $params = [$min_price, $max_price];
+
+            if ($type != 'Tất cả') {
+                $type = trim($type);
+                $type_value = 'AND classify.name = ?';
+                $params[] = $type;
+            }
+            if ($sale != 'Tất cả') {
+                $sale = trim($sale);
+                $sale_value = 'AND promotion.content = ?';
+                $params[] = $sale;
+            }
+            if ($key != '') {
+                $key = trim($key);
+                $key_value = 'AND product.name LIKE "%' . $key . '%"';
+
+                // $key_value = 'AND product.name like %  %';
+                // $params[] = $key;
+            }
+
+            $sql = "SELECT 
+                    product_list_classify.id_classify, 
+                    product_list_classify.id_product,
+                    product.name,
+                    input_country.name AS country,
+                    product.description,
+                    status_product.name AS name_status,
+                    product_list.id_size,
+                    product_list.id_color,
+                    product_list.price,
+                    image_product.link_image AS link_image,
+                    promotion.name AS name_promotion,
+                    promotion.image,
+                    promotion.content,
+                    promotion.discount_price,
+                    promotion.discount_percent,
+                    promotion.begin_date,
+                    promotion.finish_date
+                FROM 
+                    product_list_classify
+                    LEFT JOIN product_list ON product_list_classify.id_product=product_list.id_product
+                    LEFT JOIN image_product ON image_product.id_product=product_list_classify.id_product
+                    LEFT JOIN detail_promotion ON detail_promotion.id_product = product_list.id_product
+                    LEFT JOIN promotion ON promotion.id = detail_promotion.id_promotion
+                    LEFT JOIN product ON product.id = product_list_classify.id_product
+                    LEFT JOIN status_product ON status_product.id = product.idstatus
+                    LEFT JOIN input_country ON input_country.id = product.madein
+                    LEFT JOIN classify ON classify.id = product_list_classify.id_classify
+                WHERE 
+                    product_list.price BETWEEN ? AND ?
+                    AND (
+                        promotion.id IS NULL
+                        OR (promotion.begin_date <= CURDATE() AND promotion.finish_date > CURDATE())
+                    ) $type_value $sale_value $key_value";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute($params);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $result;
+        }
+
+
+        public function read_data_all_promotion($conn)
+        {
+            # code...
+            $sql = "SELECT 
+                        promotion.id, 
+                        promotion.content, 
+                        promotion.name, 
+                        promotion.discount_price, 		
+                        promotion.discount_percent, 
+                        promotion.begin_date,
+                        promotion.finish_date,
+                        status_promotion.name
+                    FROM 
+                        promotion, 
+                        status_promotion
+
+                    WHERE 
+                         promotion.id_status = status_promotion.id
+";
             $stmt = $conn -> prepare($sql);
             $stmt -> execute();
             $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
@@ -263,22 +618,18 @@
         public function read_data_product_in_stockById($conn, $id_product, $id_size, $id_color)
         {
             # code...
-            $sql="SELECT product_in_stock.amount, product_in_stock.price_input , 
-                        promotion.content,
-                        promotion.discount_price,
-                        promotion.discount_percent,
-                        product_list.price
-                    FROM 
-                        product_in_stock, 
-                        promotion, 
-                        detail_promotion,
-                        product_list
-                    where product_in_stock.id_product = ? and
-                        product_in_stock.id_size = ? and
-                        product_in_stock.id_color = ? AND
-                        product_list.id_product = product_in_stock.id_product AND
-                        detail_promotion.id_product=product_in_stock.id_product AND
-                        promotion.id=detail_promotion.id_promotion";
+            $sql="SELECT 
+                product_in_stock.amount, 
+                product_in_stock.price_input ,
+                product_list.price
+            FROM 
+                product_in_stock, 
+                product_list
+            WHERE 
+                product_in_stock.id_product = ? and
+                product_in_stock.id_size = ? and
+                product_in_stock.id_color = ? AND
+                product_list.id_product = product_in_stock.id_product";
             $stmt=$conn->prepare($sql);
             $stmt->execute([$id_product, $id_size, $id_color]);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);

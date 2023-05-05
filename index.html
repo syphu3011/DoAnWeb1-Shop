@@ -12,17 +12,24 @@
         <link rel="stylesheet" href="CSS/middle.css" />
         <link rel="stylesheet" href="CSS/main.css" />
         <link rel="stylesheet" href="CSS/js.css" />
+        <link rel="stylesheet" href="CSS/pagination.css" />
         <link rel="stylesheet" href="CSS/cart.css" />
         <link rel="stylesheet" href="CSS/lsMuaHang.css" />
+        <link rel="stylesheet" href="CSS/slider.css" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
             href="https://fonts.googleapis.com/css2?family=Bungee&display=swap"
             rel="stylesheet"
         />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.css"
+        />
         <script src="./init.php"></script>
         <title>Document</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.js"></script>
         <style>
             #back-btn {
                 padding: 10px;
@@ -171,7 +178,29 @@
                 margin-right: -25px;
                 overflow-y: scroll;
             }
+            #refine {
+                /* background-color: #4caf50; */
+                font-family: "Bungee", cursive;
+                box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                cursor: pointer;
+                /* color: white; */
+                border: none;
+                padding: 10px 20px;
+                margin: 10px;
+                margin-right: 40px;
+                border-radius: 5px;
+                transition: 0.7s;
+            }
+            #refine:hover {
+                background-color: gray;
+                color: white;
+            }
+            #refine:active {
+                background-color: #1e1e1e;
+                box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6);
+            }
         </style>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.js"></script>
     </head>
 
     <body style="font-family: 'Bungee', cursive; position: relative">
@@ -1034,7 +1063,7 @@
             </div>
         </div>
         <div id="filter-bar">
-            <div class="type">
+            <!-- <div class="type">
                 <label for="">loại</label>
                 <div id="show-type">
                     <div id="selected-type" class="list">tất cả</div>
@@ -1071,15 +1100,59 @@
                         <li class="list-item">áo croptop</li>
                         <li class="list-item">
                             áo sơ mi
-                            <!-- <img src="admin/Image/ao-croptop-nu-sign.jpeg" alt=""> -->
+
                         </li>
                     </ul>
                     <div style="display: flex; justify-content: center">
                         <img src="Image/icon-show.png" alt="" />
                     </div>
                 </div>
+            </div> -->
+            <div class="type">
+                <label for="clothing-type">Loại:</label>
+                <select id="clothing-type" style="border: none; outline: none">
+                    <option value="all">Tất cả</option>
+                    <option value="shirt">Sơ mi</option>
+                    <option value="t-shirt">Áo thun</option>
+                    <option value="trousers">Quần tây</option>
+                    <option value="pants">Quần thun</option>
+                </select>
             </div>
-            <div class="price">
+            <div
+                style="
+                    display: flex;
+                    font-size: 10px;
+                    justify-content: space-between;
+                    padding: 0 20px;
+                    align-items: center;
+                    width: 100%;
+                "
+            >
+                <p
+                    style="
+                        display: flex;
+                        margin-right: 10px;
+                        justify-content: center;
+                        align-items: center;
+                    "
+                >
+                    từ <span style="padding-left: 5px" id="min-value"></span>
+                </p>
+                <!-- <div style="padding: 10px 20px; width: 100%"> -->
+                <div id="slider"></div>
+                <!-- </div> -->
+                <p
+                    style="
+                        display: flex;
+                        margin-left: 10px;
+                        justify-content: center;
+                        align-items: center;
+                    "
+                >
+                    đến <span style="padding-left: 5px" id="max-value"></span>
+                </p>
+            </div>
+            <!-- <div class="price">
                 <label for="">giá</label>
                 <div id="show-price">
                     <div id="selected-price" class="list">tất cả</div>
@@ -1120,8 +1193,8 @@
                         <img src="Image/icon-show.png" alt="" />
                     </div>
                 </div>
-            </div>
-            <div class="sale">
+            </div> -->
+            <!-- <div class="sale">
                 <label for="">khuyến mãi</label>
                 <div id="show-sale">
                     <div id="selected-sale" class="list">tất cả</div>
@@ -1167,7 +1240,29 @@
                         <img src="Image/icon-show.png" alt="" />
                     </div>
                 </div>
+            </div> -->
+            <div class="sale">
+                <label for="sale-select" style="min-width: 83px"
+                    >Khuyến mãi:</label
+                >
+                <select id="sale-select" style="border: none; outline: none">
+                    <option value="all">Tất cả</option>
+                    <option value="15%">Giảm 15%</option>
+                    <option value="20%">Giảm 20%</option>
+                    <option value="25%">Giảm 25%</option>
+                    <option value="30%">Giảm 30%</option>
+                    <option value="35%">Giảm 35%</option>
+                    <option value="40%">Giảm 40%</option>
+                    <option value="45%">Giảm 45%</option>
+                    <option value="50%">Giảm 50%</option>
+                    <option value="55%">Giảm 55%</option>
+                    <option value="60%">Giảm 60%</option>
+                    <option value="65%">Giảm 65%</option>
+                    <option value="70%">Giảm 70%</option>
+                    <option value="75%">Giảm 75%</option>
+                </select>
             </div>
+            <button id="refine">Lọc</button>
         </div>
         <!-- poster -->
         <div id="poster">
@@ -1195,6 +1290,7 @@
         </div>
         <div id="main"></div>
         <div id="ds-tim"></div>
+
         <!-- <div id="search-div"></div> -->
         <div class="middle">
             <!-- <div id="left" class="left">
@@ -1302,6 +1398,7 @@
         </div>
     </body>
     <!-- <script src="init.js"></script> -->
+    <script src="nouislider.min.js"></script>
     <script src="./JS/function.js" defer></script>
     <script src="./JS/home_page.js" defer></script>
     <script src="./JS/index.js" defer></script>
