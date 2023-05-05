@@ -318,10 +318,9 @@
                 $sale_value = '% %';
                 // $params[] = $sale;
             }
-            if ($key == '') {
-                // $k÷ey = trim($key);
-                $key_value = "%" . $key . "%";
-            }
+            // if ($key == '') {
+            //     // $k÷ey = trim($key);
+            $key_value = "%" . $key . "%";
             $params = 'LIMIT '. $begin .',' .$total_product_on_page;
             // $params[]=$amount;
             $sql = "SELECT 
@@ -358,7 +357,7 @@
                        promotion.id IS NULL
                        OR (promotion.begin_date <= CURDATE() AND promotion.finish_date > CURDATE())
                    ) 
-                   ANd classify.name LIKE ?
+                   AND classify.name LIKE ?
                    AND product.name LIKE ?
                 $params
                     ";

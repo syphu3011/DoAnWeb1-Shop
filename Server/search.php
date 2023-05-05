@@ -16,7 +16,7 @@
     $total_product_on_page = $data_received['total_product_on_page'];
     $current_page = $data_received['current_page'];
     // echo $current_page;
-    $begin = $current_page+($current_page-1)*$total_product_on_page;
+    $begin = 0+($current_page-1)*$total_product_on_page;
             // echo `xx/xxxxxxxx`;
     // $response = array(
     //         'success' => false,

@@ -284,7 +284,7 @@ function detail_product() {
     let click_product = document.getElementsByClassName(
         "main_list_product_product"
     );
-    pagination();
+    // pagination();
     for (let i = 0; i < click_product.length; i++) {
         click_product[i].onclick = function () {
             //   console.log(1);
