@@ -5,6 +5,14 @@ require_once('../../../init.php');
 require_once('../__class__/Table.php');
 require_once('../__class__/ReqHandling.php');
 
+function changeProp($arr, $tableName) {
+	$temp = "";
+	foreach ($arr as $key => $value) {
+		$temp .= " $tableName.$value as $value" . "_" . "$tableName, ";
+	}
+	return $temp;
+}
+
 // * get information on child and parent table (use inner join)
 if ($_SERVER["REQUEST_METHOD"] === "GET"){	
 	// * GET
@@ -37,7 +45,15 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 	// echo $condition;
 
 	// ? http://localhost/doan/admin/Server/customer/receiptCustomer.php
-	echo Table::jsonifyCouple(
+	$childTableName = "receipt";
+	$parentTableName = "customer";
+	$childProp = Table::describe($conn, $childTableName);
+	$parentProp = Table::describe($conn, $parentTableName);
+	$columnToSelect = "";
+	$columnToSelect .= changeProp($childProp, $childTableName);
+	$columnToSelect .= changeProp($parentProp, $parentTableName);
+	$columnToSelect = substr($columnToSelect, 0, -2);
+	echo Table::jsonifyCoupleWithTableName(
 		$conn, 
 		Table::tableQueryCouple(
 			// * connection
@@ -51,11 +67,30 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 			// * foreign key on parent
 			"id",
 			// * column to select
-			"*",
+			// "
+			// $childTableName.id as id_$childTableName, 
+			// $childTableName.date_init as date_init_$childTableName, 
+			// $childTableName.date_confirm as date_confirm_$childTableName, 
+			// $childTableName.address as address_$childTableName, 
+			// $childTableName.note as note_$childTableName, 
+			// $childTableName.id_staff as id_staff_$childTableName,
+			// $childTableName.id_customer as id_customer_$childTableName,
+			// $childTableName.id_status as id_status_$childTableName,
+			// $parentTableName.id as id_$parentTableName,
+			// $parentTableName.name as name_$parentTableName,
+			// $parentTableName.birthday as birthday_$parentTableName,
+			// $parentTableName.numberphone as numberphone_$parentTableName,
+			// $parentTableName.image as image_$parentTableName,
+			// $parentTableName.address as address_$parentTableName,
+			// $parentTableName.gender as gender_$parentTableName,
+			// $parentTableName.id_user as id_user_$parentTableName
+			// ",
+			$columnToSelect
+			,
 			// * condition to select
 			$condition
 		), 
-		"receipt", "customer"
+		$childTableName, $parentTableName
 	);
 	
 }
