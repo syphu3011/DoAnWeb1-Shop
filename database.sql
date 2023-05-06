@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 19, 2023 at 03:37 AM
+-- Generation Time: May 06, 2023 at 12:24 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -44,7 +44,7 @@ CREATE TABLE `account` (
 INSERT INTO `account` (`id_user`, `username`, `password`, `date_created`, `privilege`, `session`, `status`) VALUES
 ('USR001', 'admin2', '123123', '2023-04-18 16:11:15', 'admin', '', 'active'),
 ('USR002', 'admin1', '123123', '2023-04-18 16:11:43', 'admin', '', 'active'),
-('USR003', 'syphu', '123123', '2023-04-18 16:11:01', 'customer', '', 'active'),
+('USR003', 'syphu', '123123', '2023-04-28 07:16:41', 'customer', '', 'idle'),
 ('USR004', 'khaphi', '123123', '2023-04-18 16:11:19', 'customer', '', 'idle'),
 ('USR005', 'minhthao', '123123', '2023-04-18 16:16:08', 'customer', '', 'active'),
 ('USR006', 'congmenh', '123123', '2023-04-18 16:16:06', 'customer', '', 'active'),
@@ -54,9 +54,8 @@ INSERT INTO `account` (`id_user`, `username`, `password`, `date_created`, `privi
 ('USR010', 'phii', '123123', '2023-04-18 16:15:53', 'sales', '', 'active'),
 ('USR011', 'thao', '123123', '2023-04-18 16:15:47', 'sales', '', 'active'),
 ('USR012', 'menh', '123123', '2023-04-18 16:15:45', 'sales', '', 'active'),
-('USR014', 'phideptraihehee', '123123', '2023-04-18 16:15:36', 'sales', '', 'active'),
-('USR016', 'admin3', '123123', '2023-04-18 16:11:12', 'admin', '', 'active'),
-('USR017', 'someoneyoulove', '123123', '2023-04-18 16:11:11', 'admin', '', 'idle');
+('USR013', 'cicada3301', 'cicada3301', '0000-00-00 00:00:00', 'customer', '', 'active'),
+('USR014', 'bbbb', 'bbbb', '0000-00-00 00:00:00', 'customer', '', 'active');
 
 -- --------------------------------------------------------
 
@@ -151,10 +150,12 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`id`, `name`, `birthday`, `numberphone`, `image`, `address`, `gender`, `id_user`) VALUES
-('KH001', 'Phú', '2002-11-30 00:00:00', '394142892', NULL, 'HCM', 'nam', 'USR003'),
-('KH002', 'Phi', '2002-06-28 00:00:00', '394142894', NULL, 'HCM', 'nam', 'USR004'),
-('KH003', 'Mềnh', '2002-02-18 00:00:00', '394142896', NULL, 'HCM', 'nam', 'USR006'),
-('KH004', 'Thao', '2002-07-29 00:00:00', '394142898', NULL, 'HCM', 'nam', 'USR005');
+('KH001', 'phú', '2002-11-30 00:00:00', '394142892', NULL, 'hcm', 'nam', 'USR003'),
+('KH002', 'phi', '2002-06-28 00:00:00', '394142894', NULL, 'HCM', 'nam', 'USR004'),
+('KH003', 'mềnh', '2002-02-18 00:00:00', '394142896', NULL, 'HCM', 'nữ', 'USR006'),
+('KH004', 'thao', '2002-07-29 00:00:00', '394142898', NULL, 'HCM', 'nữ', 'USR005'),
+('KH005', 'cicada3301', '0000-00-00 00:00:00', '113', '', 'tan binh', 'nam', 'USR013'),
+('KH006', 'bbbb', '0000-00-00 00:00:00', '0123', '', 'asdasdasd', 'nam', 'USR014');
 
 -- --------------------------------------------------------
 
@@ -294,7 +295,7 @@ CREATE TABLE `image_product` (
 --
 
 INSERT INTO `image_product` (`id_product`, `link_image`, `name_image`) VALUES
-('AO00000001', './admin/image/ao-thun-nu-local-brand-dep-davies.jpeg', NULL),
+('AO00000001', 'Link hỏi Phú', NULL),
 ('AO00000002', 'Link hỏi Phú', NULL),
 ('AO00000003', '0button.png', NULL),
 ('AO00000003', '1car.png', NULL),
@@ -370,28 +371,128 @@ INSERT INTO `parameters` (`id`, `variable1`, `variable2`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `privilege`
+-- Table structure for table `privilege_account`
 --
 
-CREATE TABLE `privilege` (
-  `table_affect` varchar(30) NOT NULL,
-  `code` varchar(30) NOT NULL
+CREATE TABLE `privilege_account` (
+  `id_user` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `privilege`
+-- Dumping data for table `privilege_account`
 --
 
-INSERT INTO `privilege` (`table_affect`, `code`) VALUES
-('account_password', '--U---U---U-crud'),
-('account_username', '-RU--r---RU-crud'),
-('classify', '-r---r--crudcrud'),
-('coupon', '-R------crudcrud'),
-('customer', '-RUD-----RUDcrud'),
-('parameter', '-r---r--crudcrud'),
-('product', '-r---r--crudcrud'),
-('size', '-r---r--crudcrud'),
-('staff', '------------crud');
+INSERT INTO `privilege_account` (`id_user`) VALUES
+('USR001'),
+('USR002');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `privilege_action`
+--
+
+CREATE TABLE `privilege_action` (
+  `id_table` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `privilege_action`
+--
+
+INSERT INTO `privilege_action` (`id_table`) VALUES
+('customer'),
+('import_product'),
+('product'),
+('promotion'),
+('receipt'),
+('staff'),
+('statistic');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `privilege_feature`
+--
+
+CREATE TABLE `privilege_feature` (
+  `id_feature` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `privilege_feature`
+--
+
+INSERT INTO `privilege_feature` (`id_feature`) VALUES
+('sua'),
+('them'),
+('xem'),
+('xoa');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `privilege_general`
+--
+
+CREATE TABLE `privilege_general` (
+  `id_table` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_feature` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `privilege_general`
+--
+
+INSERT INTO `privilege_general` (`id_table`, `id_feature`) VALUES
+('product', 'sua'),
+('product', 'them'),
+('product', 'xem'),
+('product', 'xoa'),
+('statistic', 'xem');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `privilege_general_detail`
+--
+
+CREATE TABLE `privilege_general_detail` (
+  `id_table` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_feature` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_user` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `privilege_general_detail`
+--
+
+INSERT INTO `privilege_general_detail` (`id_table`, `id_feature`, `id_user`) VALUES
+('customer', 'sua', 'USR001'),
+('customer', 'them', 'USR001'),
+('customer', 'xem', 'USR001'),
+('customer', 'xoa', 'USR001'),
+('import_product', 'sua', 'USR001'),
+('import_product', 'them', 'USR001'),
+('import_product', 'xem', 'USR001'),
+('import_product', 'xoa', 'USR001'),
+('product', 'sua', 'USR001'),
+('product', 'them', 'USR001'),
+('product', 'xem', 'USR001'),
+('product', 'xoa', 'USR001'),
+('promotion', 'sua', 'USR001'),
+('promotion', 'them', 'USR001'),
+('promotion', 'xem', 'USR001'),
+('promotion', 'xoa', 'USR001'),
+('receipt', 'sua', 'USR001'),
+('receipt', 'them', 'USR001'),
+('receipt', 'xem', 'USR001'),
+('receipt', 'xoa', 'USR001'),
+('staff', 'sua', 'USR001'),
+('staff', 'them', 'USR001'),
+('staff', 'xem', 'USR001'),
+('staff', 'xoa', 'USR001'),
+('statistic', 'xem', 'USR001');
 
 -- --------------------------------------------------------
 
@@ -608,8 +709,7 @@ INSERT INTO `staff` (`id`, `name`, `birthday`, `gender`, `phone`, `address`, `no
 ('NV001', 'Sỹ Phú', '2002-11-30 00:00:00', 'nam', '828049515', 'HCM', NULL, 'USR009'),
 ('NV002', 'Khả Phi', '2002-06-28 00:00:00', 'nam', '828049516', 'HCM', NULL, 'USR010'),
 ('NV003', 'Cỏng Mềnh', '2002-02-18 00:00:00', 'nam', '828049517', 'Đồng Nai', NULL, 'USR012'),
-('NV004', 'Minh Thao', '2002-07-29 00:00:00', 'nam', '828049518', 'Long AN', NULL, 'USR011'),
-('NV005', 'Sy Phi', '2002-11-30 00:00:00', 'nam', '828049515', 'HCM', '', 'USR016');
+('NV004', 'Minh Thao', '2002-07-29 00:00:00', 'nam', '828049518', 'Long AN', NULL, 'USR011');
 
 -- --------------------------------------------------------
 
@@ -840,10 +940,37 @@ ALTER TABLE `parameters`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `privilege`
+-- Indexes for table `privilege_account`
 --
-ALTER TABLE `privilege`
-  ADD UNIQUE KEY `table_affect` (`table_affect`);
+ALTER TABLE `privilege_account`
+  ADD PRIMARY KEY (`id_user`);
+
+--
+-- Indexes for table `privilege_action`
+--
+ALTER TABLE `privilege_action`
+  ADD PRIMARY KEY (`id_table`);
+
+--
+-- Indexes for table `privilege_feature`
+--
+ALTER TABLE `privilege_feature`
+  ADD PRIMARY KEY (`id_feature`);
+
+--
+-- Indexes for table `privilege_general`
+--
+ALTER TABLE `privilege_general`
+  ADD PRIMARY KEY (`id_table`,`id_feature`),
+  ADD KEY `id_feature` (`id_feature`);
+
+--
+-- Indexes for table `privilege_general_detail`
+--
+ALTER TABLE `privilege_general_detail`
+  ADD PRIMARY KEY (`id_table`,`id_feature`,`id_user`),
+  ADD KEY `id_feature` (`id_feature`),
+  ADD KEY `id_user` (`id_user`);
 
 --
 -- Indexes for table `product`
@@ -1022,6 +1149,26 @@ ALTER TABLE `image_product`
 --
 ALTER TABLE `import_coupon`
   ADD CONSTRAINT `import_coupon_ibfk_1` FOREIGN KEY (`id_staff`) REFERENCES `staff` (`id`);
+
+--
+-- Constraints for table `privilege_account`
+--
+ALTER TABLE `privilege_account`
+  ADD CONSTRAINT `privilege_account_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `account` (`id_user`);
+
+--
+-- Constraints for table `privilege_general`
+--
+ALTER TABLE `privilege_general`
+  ADD CONSTRAINT `privilege_general_ibfk_1` FOREIGN KEY (`id_feature`) REFERENCES `privilege_feature` (`id_feature`),
+  ADD CONSTRAINT `privilege_general_ibfk_2` FOREIGN KEY (`id_table`) REFERENCES `privilege_action` (`id_table`),
+  ADD CONSTRAINT `privilege_general_ibfk_3` FOREIGN KEY (`id_table`) REFERENCES `privilege_general_detail` (`id_table`);
+
+--
+-- Constraints for table `privilege_general_detail`
+--
+ALTER TABLE `privilege_general_detail`
+  ADD CONSTRAINT `privilege_general_detail_ibfk_3` FOREIGN KEY (`id_user`) REFERENCES `privilege_account` (`id_user`);
 
 --
 -- Constraints for table `product`
