@@ -477,12 +477,65 @@ class CRUD
                     // echo $sql;
         
         // $stmt->bindParam('iiisssssss', $min_price, $max_price, $type_value, $key_value, $begin, $total_product_on_page);
+        $sql3 = "SELECT 
+        product_list_classify.id_classify, 
+        product_list_classify.id_product,
+        product.name,
+        input_country.name AS country,
+        product.description,
+        status_product.name AS name_status,
+        product_list.id_size,
+        product_list.id_color,
+        product_list.price,
+       (
+         SELECT image_product.link_image 
+         FROM image_product
+         WHERE image_product.id_product=product.id
+         limit 1
+     ) AS link_image,
+        promotion.name AS name_promotion,
+        promotion.image,
+        promotion.content,
+        promotion.discount_price,
+        promotion.discount_percent,
+        promotion.begin_date,
+        promotion.finish_date
+    FROM 
+        product_list_classify
+        LEFT JOIN product_list ON product_list_classify.id_product=product_list.id_product
+        LEFT JOIN detail_promotion ON detail_promotion.id_product = product_list.id_product
+        LEFT JOIN promotion ON promotion.id = detail_promotion.id_promotion
+        LEFT JOIN product ON product.id = product_list_classify.id_product
+        LEFT JOIN status_product ON status_product.id = product.idstatus
+        LEFT JOIN input_country ON input_country.id = product.madein
+        LEFT JOIN classify ON classify.id = product_list_classify.id_classify
+    WHERE 
+         product_list.price BETWEEN 0 AND 10000000
+         AND (
+             (promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10')
+         OR promotion.id IS NULL)
+         AND classify.name LIKE '%%'
+         AND promotion.content LIKE 'Giảm 25%'
+         AND product.name LIKE '%%'
+         LIMIT 0, 12
+         ";
         if ($sale != "Tất cả") {
             // $sale = trim($sale);
             echo 'okkkkk1';
+            // $response = $conn->query($sql3);
+            // $result = $response -> fetchAll(PDO::FETCH_ASSOC);
+            // echo $result;
+            $_begin = (int)$begin;
+            $_total_product_on_page = (int)$total_product_on_page;
             $stmt = $conn->prepare($sql1);
-            echo $stmt;
-            $stmt->execute([$min_price, $max_price, $type_value, $sale, $key_value, $begin, $total_product_on_page]);
+            $stmt -> bindParam(1, $min_price);
+            $stmt -> bindParam(2, $max_price);
+            $stmt -> bindParam(3, $type_value);
+            $stmt -> bindParam(4, $sale);
+            $stmt -> bindParam(5, $key_value);
+            $stmt -> bindParam(6, $_begin, PDO::PARAM_INT);
+            $stmt -> bindParam(7, $_total_product_on_page, PDO::PARAM_INT);
+            $stmt->execute();
             // $params[] = $sale;
         }
         else {
