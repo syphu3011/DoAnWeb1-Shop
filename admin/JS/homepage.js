@@ -112,6 +112,7 @@ function changeToSize() {
 function changeToPromote() {
   hideCurrent();
   appearDiv(document.getElementById("bgr-km"));
+  renderTable2()
 }
 function changeToClassify(){
   hideCurrent();

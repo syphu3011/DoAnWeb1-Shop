@@ -1,9 +1,10 @@
 // let obj10 = JSON.parse(localStorage.getItem("data"))
-// let length11 = obj10.promote.length
+let length11
 // let length21 = obj10.product.length
-let obj10
+let obj10 = {"promote": ""}
 async function refreshPromotion() {
-    obj10 = await get('./Server/promotion/promotions.php')
+    obj10.promote = await get('./Server/promotion/promotions.php')
+    length11 = obj10.promote.length
 }
 function Themkhuyenmai() {
     document.getElementById("PageUp").innerHTML = `
@@ -291,7 +292,8 @@ function themkhuyenmai() {
                             obj10.promote[x].products.push(idsp.toUperCase())
                         }
                         arr1.splice(0, arr1.length)
-                        writeToLocalStorage(obj10)
+                        // writeToLocalStorage(obj10)
+                        post(obj10KM,'./Server/promotion/create_promotion.php')
                         document.getElementById("KhuyenMai-Background").remove()
                         renderTable2()
                     } else {
@@ -320,11 +322,12 @@ function FindID9(id) {
 }
 
 // Fill bảng
-function renderTable2() {
-    refreshPromotion()
+async function renderTable2() {
+    await refreshPromotion()
     document.getElementById("headkm2").style.display = "none"
     document.getElementById("headkm").style.display = "flex"
     let table = document.getElementById("myTable31");
+    let length11 = obj10.promote.length
     for (let i = table.rows.length - 1; i > 0; i--)
         table.deleteRow(i);
     for (let i = 0; i < length11; i++) {
@@ -443,7 +446,8 @@ function capnhat(x) {
                             let id = { id: arr2[i] }
                             obj10.promote[x].products.push(id)
                         }
-                        writeToLocalStorage(obj10)
+                        // writeToLocalStorage(obj10)
+                        put(obj10.promote[x],'./Server/promotion/update_promotion.php')
                         for (let i = table.rows.length - 1; i > 0; i--)
                             table.deleteRow(i);
                         for (let i = 0; i < length11; i++) {

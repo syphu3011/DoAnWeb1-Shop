@@ -531,6 +531,9 @@ function to_form_data_have_image(object, name_form_for_images, files) {
      }
     return formData;
 }
+function getUsername() {
+    return ''
+}
 async function addProd(Prod) {
     refreshData();
     console.log(JSON.stringify(Prod));
@@ -648,10 +651,8 @@ document.getElementById("submit").onclick = function() {
     // if (checkNumber(document.getElementById("inp-price").value.toLowerCase())) {
     createPopUpYesNo("Bạn có muốn thêm sản phẩm này không ?", function(background) {
         let name = document.getElementById("inp-name").value.toLowerCase()
-        // let price = document.getElementById("inp-price").value.toLowerCase()
-        let made_in = document.getElementById("inp-made-in").value.toLowerCase()
         let des = document.getElementById("add-des").value.toLowerCase()
-        if (name == "" || price == "" || made_in == "") {
+        if (name == "") {
             alert("Không thể bỏ trống tên, giá và xuất xứ")
             return
         }
