@@ -417,23 +417,12 @@ function Prod(id, name, made_in, description, price, images, classify, status) {
     this.status = status;
 }
 //thêm sửa sản phẩm code
-function get_Data() {
-    return $.ajax({
-        url: './Server/product/products.php',
-        type: 'GET',
-        dataType: 'json'
-    })
+async function get_Data() {
+    return await get('./Server/product/products.php')
 }
 async function refreshData() {
     try {
-            response_data = await get_Data().then(function(responseData) {
-            // Xử lý dữ liệu trả về
-            return responseData
-        }).catch(function(error) {
-            // Xử lý lỗi
-            console.log(error);
-        });
-        obj = response_data
+        obj = await get('./Server/product/products.php')
         console.log(obj);
     } catch (error) {
         console.log(error);
@@ -542,6 +531,9 @@ function to_form_data_have_image(object, name_form_for_images, files) {
      }
     return formData;
 }
+function getUsername() {
+    return ''
+}
 async function addProd(Prod) {
     refreshData();
     console.log(JSON.stringify(Prod));
@@ -553,22 +545,7 @@ async function addProd(Prod) {
         // Prod.images = totalfiles
         form_data = to_form_data_have_image(Prod, "images_ar[]", totalfiles);
 
-        $.ajax({
-            type: 'POST',
-            url: './Server/product/create_product.php',
-            data: form_data,
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-            success: function(jqXHR, textStatus, errorThrown) {
-                console.log("Request success: " + textStatus + ", " + errorThrown);
-                alert("Request success: " + textStatus + ", " + errorThrown + jqXHR);
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log("Request failed: " + textStatus + ", " + errorThrown);
-                alert("Request failed: " + textStatus + ", " + errorThrown + JSON.stringify(jqXHR));
-            }
-        });
+        post(form_data,'./Server/product/create_product.php')
     }
 
     await fillProd();
@@ -674,10 +651,8 @@ document.getElementById("submit").onclick = function() {
     // if (checkNumber(document.getElementById("inp-price").value.toLowerCase())) {
     createPopUpYesNo("Bạn có muốn thêm sản phẩm này không ?", function(background) {
         let name = document.getElementById("inp-name").value.toLowerCase()
-        // let price = document.getElementById("inp-price").value.toLowerCase()
-        let made_in = document.getElementById("inp-made-in").value.toLowerCase()
         let des = document.getElementById("add-des").value.toLowerCase()
-        if (name == "" || price == "" || made_in == "") {
+        if (name == "") {
             alert("Không thể bỏ trống tên, giá và xuất xứ")
             return
         }

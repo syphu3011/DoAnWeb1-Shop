@@ -9,6 +9,12 @@ let readyToSubmit = false;
 let sizeOfTable = 0;
 let selectedCustomer = {};
 let wantToDeleteCustomer = [];
+let toggleDelete = false;
+let keyListener = false;
+
+let readyToUsername = false;
+let readyToPassword = false;
+let readyToPasswordAgain = false;
 
 function clearTable() {
   let table = document.getElementById("myTable");
@@ -253,36 +259,41 @@ function bindEditNotiIntoBox() {
   let usernameBox = $("#edit-customer-username")
   let passwordBox = $("#edit-customer-password")
   let passwordAgainBox = $("#edit-customer-password-again")
+
+  usernameBox.off();
+  passwordBox.off();
+  passwordAgainBox.off();
+
   usernameBox.on('input', function (e) {
     let inputValue = e.target.value;
     if (inputValue.length > 12) {
       warnUsernameDiv.css("display", "block");
       warnUsernameDiv.html(`--> quá dài`);
-      readyToSubmit = false;
+      readyToUsername = false;
     } else if (inputValue.length > 3 || inputValue.length == 0){
       warnUsernameDiv.css("display", "none");
-      readyToSubmit = true;
+      readyToUsername = true;
     } else {
       warnUsernameDiv.css("display", "block");
       warnUsernameDiv.html(`--> quá ngắn`);
-      readyToSubmit = false;
+      readyToUsername = false;
     }
   })
   passwordBox.on('input', function (e) {
     let inputValue = e.target.value;
-    console.log(inputValue)
+    // console.log(inputValue)
     if (inputValue.length > 12) {
       warnPasswordDiv.css("display", "block");
       warnPasswordDiv.html(`--> quá dài`);
-      readyToSubmit = false;
+      readyToPassword = false;
     } else 
     if (inputValue.length > 3 || inputValue.length == 0) {
       warnPasswordDiv.css("display", "none");
-      readyToSubmit = true;
+      readyToPassword = true;
     } else {
       warnPasswordDiv.css("display", "block");
       warnPasswordDiv.html(`--> quá ngắn`);
-      readyToSubmit = false;
+      readyToPassword = false;
     }
   })
   passwordAgainBox.on('input', function (e) {
@@ -291,10 +302,10 @@ function bindEditNotiIntoBox() {
     if (inputValue !== previousInputValue) {
       warnPasswordAgainDiv.css("display", "block");
       warnPasswordAgainDiv.html(`--> không trùng mk`);
-      readyToSubmit = false;
+      readyToPasswordAgain = false;
     } else {
       warnPasswordAgainDiv.css("display", "none");
-      readyToSubmit = true;
+      readyToPasswordAgain = true;
     }
   })
 
@@ -313,6 +324,7 @@ function componentToHex(c) {
 
 function renderAddNewCusInterface() {
   readyToSubmit = false;
+  keyListener = true;
   // * GUI * //
   $("#dialog").css("display", "flex");
   $("#add-new-cus-box").css("display", "flex");
@@ -411,6 +423,22 @@ function renderAddNewCusInterface() {
     <button style="width:30rem;" id="save-but-add-${expectedId}" onclick=saveNewCustomer(this.id)>Thêm</button>
     <button style="margin-left: 2rem;" id="canc-but-add" onclick=closeAddCustomer(this.id)>Thoát</button>
   `);
+  if (!readyToSubmit) {
+    $(`#save-but-add-${expectedId}`).prop("disabled", true);
+  }
+
+  window.addEventListener("keypress", (e) => {
+    readyToSubmit = 
+      readyToUsername &&
+      readyToPassword && 
+      readyToPasswordAgain;
+    if (readyToSubmit) {
+      $(`#save-but-add-${expectedId}`).prop("disabled", false);
+    } else {
+      $(`#save-but-add-${expectedId}`).prop("disabled", true);
+    }
+  });
+
   $("#btn-detail-add-customer-group").css("display", "block");
   $("#btn-detail-add-customer-group").css("padding-bottom", "1rem");
 
@@ -428,36 +456,42 @@ function bindNotiIntoBox() {
   let usernameBox = $("#customer-username")
   let passwordBox = $("#customer-password")
   let passwordAgainBox = $("#customer-password-again")
+
+  usernameBox.off();
+  passwordBox.off();
+  passwordAgainBox.off();
+
+
   usernameBox.on('input', function (e) {
     let inputValue = e.target.value;
     if (inputValue.length > 12) {
       warnUsernameDiv.css("display", "block");
       warnUsernameDiv.html(`--> quá dài`);
-      readyToSubmit = false;
+      readyToUsername = false;
     } else if (inputValue.length > 3 || inputValue.length == 0){
       warnUsernameDiv.css("display", "none");
-      readyToSubmit = true;
+      readyToUsername = true;
     } else {
       warnUsernameDiv.css("display", "block");
       warnUsernameDiv.html(`--> quá ngắn`);
-      readyToSubmit = false;
+      readyToUsername = false;
     }
   })
   passwordBox.on('input', function (e) {
     let inputValue = e.target.value;
-    console.log(inputValue)
+    // console.log(inputValue)
     if (inputValue.length > 12) {
       warnPasswordDiv.css("display", "block");
       warnPasswordDiv.html(`--> quá dài`);
-      readyToSubmit = false;
+      readyToPassword = false;
     } else 
     if (inputValue.length > 3 || inputValue.length == 0) {
       warnPasswordDiv.css("display", "none");
-      readyToSubmit = true;
+      readyToPassword = true;
     } else {
       warnPasswordDiv.css("display", "block");
       warnPasswordDiv.html(`--> quá ngắn`);
-      readyToSubmit = false;
+      readyToPassword = false;
     }
   })
   passwordAgainBox.on('input', function (e) {
@@ -466,16 +500,17 @@ function bindNotiIntoBox() {
     if (inputValue !== previousInputValue) {
       warnPasswordAgainDiv.css("display", "block");
       warnPasswordAgainDiv.html(`--> không trùng mk`);
-      readyToSubmit = false;
+      readyToPasswordAgain = false;
     } else {
       warnPasswordAgainDiv.css("display", "none");
-      readyToSubmit = true;
+      readyToPasswordAgain = true;
     }
   })
 
 }
 
 async function renderDeleteCus() {
+  toggleDelete = true;
   clearTable();
   let table = document.getElementById("myTable");
   table.innerHTML = `
@@ -566,6 +601,8 @@ async function renderDeleteCus() {
   renderDelButs()
   bindStatusButList()
 }
+
+// TODO: chưa phân trang
 
 function renderDelButs() {
   let headButGroupDelCus = $("#HeadButton1");
@@ -748,6 +785,20 @@ function filterCusWithParameters () {
     data: data,
     success: function (customers) {
       console.log(customers);
+      $("#myTable").html(`
+        <tr class="first-row">
+          <th>id khách hàng</th>
+          <th>id tài khoản</th>
+          <th>ngày tham gia</th>
+          <th>tên</th>
+          <th>tên đăng nhập</th>
+          <th>mật khẩu</th>
+          <th>quyền</th>
+          <th>trạng thái</th>
+          <th>chi tiết</th>
+          <th>Xóa</th>
+        </tr>
+        `);
       sizeOfTable = customers.length;
       let table = document.getElementById("myTable");
       customers.forEach((customer) => {
@@ -761,6 +812,7 @@ function filterCusWithParameters () {
         let cell6 = row.insertCell(6);
         let cell7 = row.insertCell(7);
         let cell8 = row.insertCell(8);
+        let cell9 = row.insertCell(9);
         cell0.innerHTML = customer.id;
         cell1.innerHTML = customer.id_user;
         cell2.innerHTML = customer.date_created;
@@ -791,7 +843,29 @@ function filterCusWithParameters () {
                 <button id="canc-but-${customer.id}" onclick=closeCustomerPopupDetail(this.id)>Thoát</button>
                 `);
         });
+        cell9.innerHTML = `
+          <button id="button-customer-delete-no-${customer.id}-${customer.id_user}">Xóa X</button>
+          <button id="button-customer-delete-yes-${customer.id}-${customer.id_user}" style="display:none;">Xóa V</button>
+          `;
+
+
+        // * delete but action
+        let delButCus = $("#button-customer-delete-no-" + customer.id + "-" + customer.id_user)
+        let delButCusYes = $("#button-customer-delete-yes-" + customer.id + "-" + customer.id_user);
+        delButCusYes.css("display", "none");
+        delButCus.on("click", function () {
+          delButCus.css("display", "none");
+          delButCusYes.css("display", "block");
+          toggleDeleteUp(this.id);
+        });
+        delButCusYes.on("click", function () {
+          delButCus.css("display", "block");
+          delButCusYes.css("display", "none");
+          toggleDeleteDown(this.id);
+        });
+
       });
+      renderDelButs();
       bindStatusButList();
       console.log("rendered table")
     },
@@ -810,10 +884,10 @@ function closeCustomerPopupDetail() {
 
 
 function saveNewCustomer(id) {
+  $(window).off("keypress");
   if (!readyToSubmit)
     return
   // TODO Chưa insert được hình ảnh
-  // TODO Chưa có session mới
   let data = {
     action: 'create',
     username: $("#customer-username").val(),
@@ -843,9 +917,16 @@ function saveNewCustomer(id) {
     $("#add-new-cus-box-content").css("display", "none");
     // * GUI * //
   });
+  closeAddCustomer();
 }
 
 function closeAddCustomer() {
+  readyToSubmit = false;
+  window.removeEventListener("keypress", (e) => {
+    if (readyToSubmit) {
+      $(`#save-but-add-${expectedId}`).prop("disabled", false);
+    }
+  });
   $("#add-new-cus-box").css("display", "none")
   $("#dialog").css("display", "none");
 }
