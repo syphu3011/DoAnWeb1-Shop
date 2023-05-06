@@ -120,7 +120,6 @@ function create(data) {
             ">Kết quả</label>
             <ul style="display: grid;
                 grid-template-columns: repeat(5, 1fr);
-                grid-template-rows: 1fr 1fr;
                 grid-gap: 20px;
                 list-style: none;
                 padding: 40px;
@@ -136,6 +135,7 @@ function create(data) {
     }
 
     detail_product();
+    pagination(data);
 }
 // function create()
 let total_product_on_page = 12;

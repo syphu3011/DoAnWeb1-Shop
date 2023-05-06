@@ -120,22 +120,24 @@ function create_filter(params) {
         // timkiem(type_item, sale_item, max_value_slider, min_value_silder);
     });
 }
-function pagination() {
-    let str = `<div class="pagination">
-		<a href="#">&laquo;</a>
-		<a href="#">1</a>
-		<a href="#">2</a>
-		<a href="#">3</a>
-		<a href="#">4</a>
-		<a href="#">5</a>
-		<a href="#">6</a>
-		<a href="#">7</a>
-		<a href="#">8</a>
-		<a href="#">9</a>
-		<a href="#">10</a>
-		<a href="#">&raquo;</a>
+function pagination(data) {
+    // document.getElementById('main').innerHTML+=
+    let tag_a = ``;
+    for (
+        let i = 1;
+        i <= Math.floor(data.total_product / total_product_on_page) + 1;
+        i++
+    ) {
+        tag_a += `<a>` + i + `</a>`;
+    }
+    document.getElementById("main").innerHTML +=
+        `<div class="pagination">
+		<a href="">&laquo;</a>
+		` +
+        tag_a +
+        `
+		<a href="">&raquo;</a>
 	</div>`;
-    document.getElementById("main").innerHTML += str;
 }
 function create_Homepage(data_res) {
     //Theo loại
@@ -233,9 +235,7 @@ function create_Homepage(data_res) {
         <div style="display: flex; justify-content: center;">
           <button id="` +
             element.id +
-            `" class="button_show_more">
-            <a href="?page=1">Xem thêm</a>
-           
+            `" class="button_show_more">Xem thêm
         </button>
         </div>
       </div>`;
@@ -262,6 +262,7 @@ function create_Homepage(data_res) {
                 ) + " VND";
         }
     }
+    detail_product();
     //Bắt sk click sản phẩm
     let button_show_more = document.getElementsByClassName("button_show_more");
     for (let i = 0; i < button_show_more.length; i++) {
@@ -270,15 +271,19 @@ function create_Homepage(data_res) {
                 "./Server/list_product_by_large_classify.php",
                 {
                     id_large_classify: button_show_more[i].id,
+                    current_page:current_page,
+                    total_product_on_page, total_product_on_page
                 },
                 function (respone) {
                     console.log(respone);
                     create(respone);
+                    detail_product();
+                    pagination(respone);
+
                 }
             );
         };
     }
-    detail_product();
 }
 function detail_product() {
     let click_product = document.getElementsByClassName(
@@ -287,7 +292,7 @@ function detail_product() {
     // pagination();
     for (let i = 0; i < click_product.length; i++) {
         click_product[i].onclick = function () {
-            //   console.log(1);
+            console.log(1);
             //chọn xem sản phẩm
             getDataFromServer(
                 "./Server/get_product.php",
