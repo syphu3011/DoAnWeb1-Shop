@@ -1,9 +1,9 @@
 // let obj10 = JSON.parse(localStorage.getItem("data"))
 let length11
 // let length21 = obj10.product.length
-let obj10 = {"promote": ""}
+let obj10 = {"promote": [], "detail_promotion": []}
 async function refreshPromotion() {
-    obj10.promote = await get('./Server/promotion/promotions.php')
+    obj10 = await get('./Server/promotion/promotions.php')
     length11 = obj10.promote.length
 }
 function Themkhuyenmai() {
@@ -153,8 +153,8 @@ function sua(x) {
     document.getElementById("tenkhuyenmai").value = obj10.promote[x].name;
     document.getElementById("giamgia").value = obj10.promote[x].discount_price;
     document.getElementById("phantramgiam").value = obj10.promote[x].discount_percent;
-    document.getElementById("batdau").value = setDate(obj10.promote[x].date_begin)
-    document.getElementById("ketthuc").value = setDate(obj10.promote[x].date_end)
+    document.getElementById("batdau").value = setDate(obj10.promote[x].begin_date)
+    document.getElementById("ketthuc").value = setDate(obj10.promote[x].finish_date)
     document.getElementById("noidung").value = obj10.promote[x].content;
     ThemSPSua(x);
 }
@@ -256,7 +256,7 @@ function suasanpham() {
 
 // Thêm khuyến mãi
 function themkhuyenmai() {
-    let id = `SALE000` + length11;
+    let id = `KM` + length11;
     let ten = document.getElementById("tenkhuyenmai").value;
     let giamgia = document.getElementById("giamgia").value;
     let phantramgiam = document.getElementById("phantramgiam").value;
@@ -272,28 +272,33 @@ function themkhuyenmai() {
             if (checkNumber(phantramgiam)) {
                 if (batdau > getCurrentDate().split(" ")[0]) {
                     if (batdau < ketthuc) {
-                        let obj10KM = {
+                        let promotion = {
                             id: id,
                             name: ten.toLowerCase(),
                             content: noidung,
-                            date_begin: batdau,
-                            date_end: ketthuc,
+                            begin_date: batdau,
+                            finish_date: ketthuc,
                             image: "",
-                            products: [],
                             discount_percent: phantramgiam,
-                            discount_price: giamgia
+                            discount_price: giamgia,
+                            id_status: 'TT10'
                         };
-                        obj10.promote.push(obj10KM);
+                        let detail_promotion = []
+                        obj10.promote.push(promotion);
                         length11 = obj10.promote.length
                         // writeToLocalStorage(obj10)
                         x = FindID9(id)
                         for (var i = 0; i < arr1.length; i++) {
-                            let idsp = { id: arr1[i] }
-                            obj10.promote[x].products.push(idsp.toUperCase())
+                            detail_promotion.push({id_product: arr1[i]})
+                            // obj10.promote[x].products.push(idsp.toUperCase())
                         }
                         arr1.splice(0, arr1.length)
                         // writeToLocalStorage(obj10)
-                        post(obj10KM,'./Server/promotion/create_promotion.php')
+                        let dataUpServer = {
+                            promotion: promotion,
+                            detail_promotion: detail_promotion
+                        }
+                        post(dataUpServer,'./Server/promotion/create_promotion.php')
                         document.getElementById("KhuyenMai-Background").remove()
                         renderTable2()
                     } else {
@@ -345,9 +350,9 @@ async function renderTable2() {
         cell0.innerHTML = obj100.id
         cell1.innerHTML = obj100.name;
         cell2.innerHTML = obj100.content;
-        cell3.innerHTML = obj100.date_begin;
-        cell4.innerHTML = obj100.date_end;
-        cell5.innerHTML = `<p class="detail" onclick=OpenDetail(` + i + `)> Chi tiết</p>`
+        cell3.innerHTML = obj100.begin_date;
+        cell4.innerHTML = obj100.finish_date;
+        cell5.innerHTML = `<p class="detail" onclick=OpenDetail("` + obj100.id + `")> Chi tiết</p>`
         cell6.innerHTML = obj100.discount_percent + `%`;
         cell7.innerHTML = calculated(obj100.discount_price) + " VND";
     }
@@ -376,8 +381,8 @@ function suakhuyenmai() {
         cell0.innerHTML = obj100.id
         cell1.innerHTML = obj100.name;
         cell2.innerHTML = obj100.content;
-        cell3.innerHTML = obj100.date_begin;
-        cell4.innerHTML = obj100.date_end;
+        cell3.innerHTML = obj100.begin_date;
+        cell4.innerHTML = obj100.finish_date;
         cell5.innerHTML = `<p class="detail" onclick=OpenDetail(` + i + `)> Chi tiết</p>`
         cell6.innerHTML = obj100.discount_percent + `%`;
         cell7.innerHTML = calculated(obj100.discount_price) + " VND";
@@ -386,23 +391,23 @@ function suakhuyenmai() {
 }
 
 function ThemSPSua(x) {
-    for (let i = 0; i < obj10.promote[x].products.length; i++) {
-        let type = obj10.promote[x].products[i].id.toLowerCase()
-        let div = document.getElementById("list-prod")
-        let ele = document.createElement("div")
-        ele.classList.add("div-pro")
-        ele.appendChild(document.createTextNode(type))
-        div.appendChild(ele)
-        let tag = document.createElement("button")
-        tag.classList.add("close_type")
-        tag.appendChild(document.createTextNode("X"))
-        ele.appendChild(tag)
-        arr2.push(type)
-        tag.onclick = function() {
-            arr2.splice(CheckTagType(type, arr2), 1);
-            ele.remove();
-        }
-    }
+    // for (let i = 0; i < obj10.promote[x].products.length; i++) {
+    //     let type = obj10.promote[x].products[i].id.toLowerCase()
+    //     let div = document.getElementById("list-prod")
+    //     let ele = document.createElement("div")
+    //     ele.classList.add("div-pro")
+    //     ele.appendChild(document.createTextNode(type))
+    //     div.appendChild(ele)
+    //     let tag = document.createElement("button")
+    //     tag.classList.add("close_type")
+    //     tag.appendChild(document.createTextNode("X"))
+    //     ele.appendChild(tag)
+    //     arr2.push(type)
+    //     tag.onclick = function() {
+    //         arr2.splice(CheckTagType(type, arr2), 1);
+    //         ele.remove();
+    //     }
+    // }
 }
 
 
@@ -438,14 +443,14 @@ function capnhat(x) {
                         obj10.promote[x].name = ten
                         obj10.promote[x].discount_price = giamgia
                         obj10.promote[x].discount_percent = phantramgiam
-                        obj10.promote[x].date_begin = getDate(batdau)
-                        obj10.promote[x].date_end = getDate(ketthuc)
+                        obj10.promote[x].begin_date = getDate(batdau)
+                        obj10.promote[x].finish_date = getDate(ketthuc)
                         obj10.promote[x].content = noidung
-                        obj10.promote[x].products.splice(0, obj10.promote[x].products.length)
-                        for (var i = 0; i < arr2.length; i++) {
-                            let id = { id: arr2[i] }
-                            obj10.promote[x].products.push(id)
-                        }
+                        // obj10.promote[x].products.splice(0, obj10.promote[x].products.length)
+                        // for (var i = 0; i < arr2.length; i++) {
+                        //     let id = { id: arr2[i] }
+                        //     obj10.promote[x].products.push(id)
+                        // }
                         // writeToLocalStorage(obj10)
                         put(obj10.promote[x],'./Server/promotion/update_promotion.php')
                         for (let i = table.rows.length - 1; i > 0; i--)
@@ -465,8 +470,8 @@ function capnhat(x) {
                             cell0.innerHTML = obj100.id
                             cell1.innerHTML = obj100.name;
                             cell2.innerHTML = obj100.content;
-                            cell3.innerHTML = obj100.date_begin;
-                            cell4.innerHTML = obj100.date_end;
+                            cell3.innerHTML = obj100.begin_date;
+                            cell4.innerHTML = obj100.finish_date;
                             cell6.innerHTML = `<p class="detail" onclick=OpenDetail(` + i + `)> Chi tiết</p>`
                             cell7.innerHTML = obj100.discount_percent + `%`;
                             cell8.innerHTML = calculated(obj100.discount_price) + " VND";
@@ -492,7 +497,7 @@ function capnhat(x) {
 
 //Danh sách áp dụng
 
-function OpenDetail(x) {
+function OpenDetail(id) {
     let UnDo = document.getElementById("dialog5");
     UnDo.style.display = `flex`;
     UnDo.onclick = function(clk) {
@@ -503,17 +508,18 @@ function OpenDetail(x) {
     let table = document.getElementById("list-table")
     for (let i = table.rows.length - 1; i > 0; i--)
         table.deleteRow(i);
-    for (let i = 0; i < obj10.promote[x].products.length; i++) {
-        let id = obj10.promote[x].products[i].id.toLowerCase()
+    let current = obj10.detail_promotion.filter(promote => promote.id_promotion == id)
+    for (let i = 0; i < current.length; i++) {
+        // let id = obj10.promote[x].products[i].id.toLowerCase()
         let row = table.insertRow();
         let cell0 = row.insertCell(0);
         let cell1 = row.insertCell(1);
         let cell2 = row.insertCell(2);
         let cell3 = row.insertCell(3);
-        cell0.innerHTML = id
-        cell1.innerHTML = GetName(id)
-        cell2.innerHTML = GetMade(id)
-        cell3.innerHTML = GetClasify(id)
+        cell0.innerHTML = current[i].id
+        cell1.innerHTML = current[i].name
+        cell2.innerHTML = current[i].made_in
+        cell3.innerHTML = current[i].classify
     }
 }
 

@@ -19,7 +19,7 @@
         $stmt = $conn->prepare($query_get_promotions);
         $response_array = new stdClass();
         if ($stmt->execute()) {
-            $response_array->promotion = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $response_array->promote = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $stmt = $conn->prepare($query_detail_promotions);
             if (!$stmt->execute()) {
                 echo 'Lỗi khi lấy danh sách áp dụng';
