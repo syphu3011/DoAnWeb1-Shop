@@ -13,10 +13,17 @@ function Themkhuyenmai() {
             <div class="KhuyenMai3" >
                <div class="Div1">Thêm khuyến mãi</div>
                <div class="Div2">
-                     <div>
-                        <label for="idkm13">ID:</label> 
-                        <input id="idkm13" type="text" readonly>
-                     </div>
+                    <div id="div-id-km">
+                        <p class="label-input">ID</p>
+                        <div id="div-input-id-km">
+                            <input type="text" id="input-id-km" name="import-id-km" style="height: 25px;margin:0px">
+                            <button id="select-id-km" style="height: 25px; padding:5px; margin: 0px;">
+                            <img src="./Image/arrow.png" class="img-button">
+                            </button>
+                            <ul class="list-drop-down" id="list-drop-down-id-km">z
+                            </ul>
+                        </div>
+                    </div>
                      <div>
                         <label for="tenkhuyenmai">Tên khuyến mãi:</label>
                         <input id="tenkhuyenmai"type="text">
@@ -85,23 +92,30 @@ function sua(x) {
     <div id="KhuyenMai-Background" >
     <div id="KhuyenMai" style="border-radius: 10px;">
        <div class="KhuyenMai3" >
-          <div class="Div1">Thêm khuyến mãi</div>
-          <div class="Div2">
-                <div>
-                   <label for="idkm13">ID:</label> 
-                   <input id="idkm13" type="text" readonly>
+          <div class="Div1">Sửa khuyến mãi</div>
+            <div class="Div2">
+                <div id="div-id-km">
+                    <p class="label-input">ID</p>
+                    <div id="div-input-id-km">
+                        <input type="text" id="input-id-km" name="import-id-km" style="height: 25px;margin:0px">
+                        <button id="select-id-km" style="height: 25px; padding:5px; margin: 0px;">
+                        <img src="./Image/arrow.png" class="img-button">
+                        </button>
+                        <ul class="list-drop-down" id="list-drop-down-id-km">z
+                        </ul>
+                    </div>
                 </div>
                 <div>
-                   <label for="tenkhuyenmai">Tên khuyến mãi:</label>
-                   <input id="tenkhuyenmai"type="text">
+                    <label for="tenkhuyenmai">Tên khuyến mãi:</label>
+                    <input id="tenkhuyenmai"type="text">
                 </div>
                 <div>
-                   <label for="giamgia">Giá giảm</label>
-                   <input id="giamgia"  type="text">
+                    <label for="giamgia">Giá giảm</label>
+                    <input id="giamgia"  type="text">
                 </div>
                 <div>              
-                   <label for="">Giảm(%)</label>
-                   <input id="phantramgiam" type="text">
+                    <label for="">Giảm(%)</label>
+                    <input id="phantramgiam" type="text">
                 </div>
           </div>
           <div class="Div4">
