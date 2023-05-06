@@ -41,9 +41,9 @@ let arrImg = [
 ];
 let x = 1;
 let y = 2;
-let btnPrevious = document.getElementById("btn-previous");
-let btnNext = document.getElementById("btn-next");
-let isClicked = false;
+// let btnPrevious = document.getElementById("btn-previous");
+// let btnNext = document.getElementById("btn-next");
+// let isClicked = false;
 let interv = setInterval(function () {
     inter();
 }, 5000);
@@ -868,6 +868,7 @@ function choice_type_product(gender) {
     for (let i = 0; i < classify.length; i++) {
         classify[i].onclick = function () {
             console.log(gender);
+            localStorage.setItem("current_page", "is_classify");
 
             getDataFromServer(
                 "./Server/list_product_by_classify.php",
@@ -1326,9 +1327,10 @@ document.getElementById("thaydoi-mk").onclick = function () {
         document.getElementById("nhapthaydoi").style.display = "block";
     }
 };
-let isSearch = false;
-let isHomePage = false;
+// let isSearch = false;
+// let isHomePage = false;
 document.getElementById("home-page").onclick = function () {
+    localStorage.setItem("current_page", "");
     document.getElementById("main").innerHTML = "";
     getDataFromServer("./Server/homepage.php", "", function (response) {
         // console.log("Data from homepage.php: ", response);
@@ -1548,8 +1550,8 @@ document.getElementById("home-page").onclick = function () {
 //     return div;
 // }
 
-let spaceProduct = document.getElementById("space-product");
-let onclickProduct = document.getElementById("onclick-product");
+// let spaceProduct = document.getElementById("space-product");
+// let onclickProduct = document.getElementById("onclick-product");
 
 // function getPromote(id) {
 //     for (let i = 0; i < data.promote.length; i++) {
@@ -1580,67 +1582,67 @@ let onclickProduct = document.getElementById("onclick-product");
 //     });
 // }
 
-function createPageProduct(root, textTitle, idPr, proInpage) {
-    arrProduct.length = 0;
-    getProduct(idPr);
-    console.log(pathImage, arrProduct);
-    let title = document.createElement("div");
-    title.id = "div-title";
-    let node = document.createTextNode(textTitle);
-    title.appendChild(node);
-    root.appendChild(title);
-    if (arrProduct.length > 0) {
-        let divUl = document.createElement("div");
-        divUl.id = "div-list";
-        divUl.appendChild(addListProduct(idPr, proInpage));
-        root.appendChild(divUl);
-        createPageNumber(idPr, arrProduct, proInpage);
-    }
-}
+// function createPageProduct(root, textTitle, idPr, proInpage) {
+//     arrProduct.length = 0;
+//     getProduct(idPr);
+//     console.log(pathImage, arrProduct);
+//     let title = document.createElement("div");
+//     title.id = "div-title";
+//     let node = document.createTextNode(textTitle);
+//     title.appendChild(node);
+//     root.appendChild(title);
+//     if (arrProduct.length > 0) {
+//         let divUl = document.createElement("div");
+//         divUl.id = "div-list";
+//         divUl.appendChild(addListProduct(idPr, proInpage));
+//         root.appendChild(divUl);
+//         createPageNumber(idPr, arrProduct, proInpage);
+//     }
+// }
 
-function addListProduct(id, proInpage) {
-    let start = (currentPage - 1) * proInpage;
-    let end = currentPage * proInpage;
-    if (end > arrProduct.length) {
-        end = arrProduct.length;
-    }
-    let ulList = document.createElement("ul");
-    ulList.id = "list-product";
-    ulList.className = "list-product";
-    ulList.style.gridTemplateColumns = "1fr 1fr 1fr 1fr";
-    document.getElementById("space-product").style.width = "100%";
-    for (let i = start; i < end; i++) {
-        let discountPrice = "0";
-        let cost = "0";
-        let promot = getPromote(arrProduct[i].id);
-        // console.log(promot)
-        if (promot == -1) {
-            discountPrice = arrProduct[i].price;
-            cost = "0";
-        } else {
-            cost = arrProduct[i].price;
-            discountPrice =
-                parseInt(cost) -
-                parseInt(data.promote[promot[0]].discount_price) -
-                (parseInt(data.promote[promot[0]].discount_percent) / 100) *
-                    cost;
-        }
-        ulList.appendChild(
-            createListProduct(
-                "Image/SANPHAM/",
-                arrProduct[i].images,
-                arrProduct[i].name,
-                discountPrice,
-                cost,
-                arrProduct[i].made_in,
-                arrProduct[i].id,
-                arrProduct[i].clasify,
-                arrProduct[i].description
-            )
-        );
-    }
-    return ulList;
-}
+// function addListProduct(id, proInpage) {
+//     let start = (currentPage - 1) * proInpage;
+//     let end = currentPage * proInpage;
+//     if (end > arrProduct.length) {
+//         end = arrProduct.length;
+//     }
+//     let ulList = document.createElement("ul");
+//     ulList.id = "list-product";
+//     ulList.className = "list-product";
+//     ulList.style.gridTemplateColumns = "1fr 1fr 1fr 1fr";
+//     document.getElementById("space-product").style.width = "100%";
+//     for (let i = start; i < end; i++) {
+//         let discountPrice = "0";
+//         let cost = "0";
+//         let promot = getPromote(arrProduct[i].id);
+//         // console.log(promot)
+//         if (promot == -1) {
+//             discountPrice = arrProduct[i].price;
+//             cost = "0";
+//         } else {
+//             cost = arrProduct[i].price;
+//             discountPrice =
+//                 parseInt(cost) -
+//                 parseInt(data.promote[promot[0]].discount_price) -
+//                 (parseInt(data.promote[promot[0]].discount_percent) / 100) *
+//                     cost;
+//         }
+//         ulList.appendChild(
+//             createListProduct(
+//                 "Image/SANPHAM/",
+//                 arrProduct[i].images,
+//                 arrProduct[i].name,
+//                 discountPrice,
+//                 cost,
+//                 arrProduct[i].made_in,
+//                 arrProduct[i].id,
+//                 arrProduct[i].clasify,
+//                 arrProduct[i].description
+//             )
+//         );
+//     }
+//     return ulList;
+// }
 
 // function createListProduct(
 //     path,
@@ -1907,8 +1909,8 @@ let isSelectedSize = 0;
 
 //     return div;
 // }
-let totalPrice = 0;
-let countPro = 1;
+// let totalPrice = 0;
+// let countPro = 1;
 
 // function amount(current, pricee) {
 //     let count = 1;
@@ -2014,70 +2016,70 @@ document.getElementById("show_product").onclick = function (e) {
     }
 };
 
-function createPageNumber(idPr, product, proInpage) {
-    let totalProduct = product.length;
-    let totalPage = 0;
-    if (totalProduct % 12 > 0) {
-        totalPage = (totalProduct - (totalProduct % 12)) / 12 + 1;
-    } else {
-        totalPage = (totalProduct - (totalProduct % 12)) / 12;
-    }
-    let ul = document.createElement("ul");
-    ul.id = "page-number";
-    let arr = new Array();
-    let aArr = new Array();
-    for (let i = 1; i <= totalPage; i++) {
-        let li = document.createElement("li");
-        arr.push(li);
-        li.style.border = "1px solid gray";
-        li.style.cursor = "pointer";
-        li.style.margin = "10px";
-        li.style.padding = "5px 10px";
-        li.style.lineHeight = "20px";
-        li.style.borderRadius = "5px";
-        li.style.boxShadow = "rgba(0, 0, 0, 0.24) 0px 3px 8px";
-        li.style.transition = "0.8s";
-        let a = document.createElement("a");
-        a.style.color = "black";
-        aArr.push(a);
-        a.appendChild(document.createTextNode(i));
-        li.onclick = function () {
-            arr[currentPage - 1].style.backgroundColor = "white";
-            aArr[currentPage - 1].style.color = "black";
-            currentPage = parseInt(li.textContent);
-            arr[currentPage - 1].style.backgroundColor = "lightpink";
-            aArr[currentPage - 1].style.color = "white";
-            let pos = document.documentElement.scrollTop;
-            let id = setInterval(function frame() {
-                if (pos <= 300) {
-                    clearInterval(id);
-                    if (document.getElementById("list-product") != null) {
-                        document.getElementById("list-product").remove();
-                    }
-                    document
-                        .getElementById("div-list")
-                        .appendChild(addListProduct(idPr, proInpage));
-                } else {
-                    pos -= 10;
-                    document.documentElement.scrollTop = pos;
-                }
-            }, 1);
-        };
-        li.onmouseenter = function () {
-            li.style.borderRadius = "50px";
-        };
-        li.onmouseleave = function () {
-            li.style.borderRadius = "5px";
-        };
-        li.appendChild(a);
-        ul.appendChild(li);
-        aArr[currentPage - 1].style.color = "white";
-        arr[currentPage - 1].style.backgroundColor = "lightpink";
-    }
-    document.getElementById("space-product").appendChild(ul);
-}
-let c = 0;
-let curPageSearch = 1;
+// function createPageNumber(idPr, product, proInpage) {
+//     let totalProduct = product.length;
+//     let totalPage = 0;
+//     if (totalProduct % 12 > 0) {
+//         totalPage = (totalProduct - (totalProduct % 12)) / 12 + 1;
+//     } else {
+//         totalPage = (totalProduct - (totalProduct % 12)) / 12;
+//     }
+//     let ul = document.createElement("ul");
+//     ul.id = "page-number";
+//     let arr = new Array();
+//     let aArr = new Array();
+//     for (let i = 1; i <= totalPage; i++) {
+//         let li = document.createElement("li");
+//         arr.push(li);
+//         li.style.border = "1px solid gray";
+//         li.style.cursor = "pointer";
+//         li.style.margin = "10px";
+//         li.style.padding = "5px 10px";
+//         li.style.lineHeight = "20px";
+//         li.style.borderRadius = "5px";
+//         li.style.boxShadow = "rgba(0, 0, 0, 0.24) 0px 3px 8px";
+//         li.style.transition = "0.8s";
+//         let a = document.createElement("a");
+//         a.style.color = "black";
+//         aArr.push(a);
+//         a.appendChild(document.createTextNode(i));
+//         li.onclick = function () {
+//             arr[currentPage - 1].style.backgroundColor = "white";
+//             aArr[currentPage - 1].style.color = "black";
+//             currentPage = parseInt(li.textContent);
+//             arr[currentPage - 1].style.backgroundColor = "lightpink";
+//             aArr[currentPage - 1].style.color = "white";
+//             let pos = document.documentElement.scrollTop;
+//             let id = setInterval(function frame() {
+//                 if (pos <= 300) {
+//                     clearInterval(id);
+//                     if (document.getElementById("list-product") != null) {
+//                         document.getElementById("list-product").remove();
+//                     }
+//                     document
+//                         .getElementById("div-list")
+//                         .appendChild(addListProduct(idPr, proInpage));
+//                 } else {
+//                     pos -= 10;
+//                     document.documentElement.scrollTop = pos;
+//                 }
+//             }, 1);
+//         };
+//         li.onmouseenter = function () {
+//             li.style.borderRadius = "50px";
+//         };
+//         li.onmouseleave = function () {
+//             li.style.borderRadius = "5px";
+//         };
+//         li.appendChild(a);
+//         ul.appendChild(li);
+//         aArr[currentPage - 1].style.color = "white";
+//         arr[currentPage - 1].style.backgroundColor = "lightpink";
+//     }
+//     document.getElementById("space-product").appendChild(ul);
+// }
+// let c = 0;
+// let curPageSearch = 1;
 
 function checkUpdatePassword(mkht, mkm, xnmkm) {
     if (mkht != currentUser.password) {

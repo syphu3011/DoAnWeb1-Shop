@@ -128,16 +128,23 @@ function pagination(data) {
         i <= Math.floor(data.total_product / total_product_on_page) + 1;
         i++
     ) {
-        tag_a += `<a>` + i + `</a>`;
+        tag_a += `<a class="button_pagination" id="` + i + `">` + i + `</a>`;
     }
     document.getElementById("main").innerHTML +=
         `<div class="pagination">
-		<a href="">&laquo;</a>
 		` +
         tag_a +
         `
-		<a href="">&raquo;</a>
 	</div>`;
+    let btn = document.getElementsByClassName("button_pagination");
+    for (let i = 0; i < btn.length; i++) {
+        btn[i].onclick = function () {
+            console.log(btn[i].id);
+            if (localStorage.getItem("current_page") == "is_search") {
+                callback_search(btn[i].id);
+            }
+        };
+    }
 }
 function create_Homepage(data_res) {
     //Theo loại
@@ -271,15 +278,15 @@ function create_Homepage(data_res) {
                 "./Server/list_product_by_large_classify.php",
                 {
                     id_large_classify: button_show_more[i].id,
-                    current_page:current_page,
-                    total_product_on_page, total_product_on_page
+                    current_page: 1,
+                    total_product_on_page: total_product_on_page,
                 },
                 function (respone) {
+                    localStorage.setItem("current_page", "is_show_more");
                     console.log(respone);
                     create(respone);
                     detail_product();
-                    pagination(respone);
-
+                    // pagination(respone);
                 }
             );
         };

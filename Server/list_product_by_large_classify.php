@@ -17,7 +17,7 @@ if (count($data_result) > 0) {
         "success" => true,
         "result" => $data_result,
         "data received" => $data_received,
-        "total_product" => $crud -> read_productByIdLarge_classify_pagination($conn, $data_received["id_large_classify"])[0]["COUNT(*)"]
+        "total_product" => $crud -> read_productByIdLarge_classify_pagination($conn, $data_received["id_large_classify"])
     ];
 } else {
     $response = [

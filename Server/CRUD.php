@@ -118,7 +118,12 @@ class CRUD
                     product_list.id_size,
                     product_list.id_size,
                     product_list.price,
-                    image_product.link_image,
+                    (
+                	SELECT image_product.link_image 
+                    FROM image_product
+                    WHERE image_product.id_product=product.id
+                    limit 1
+                ) AS link_image,
                     promotion.content,
                     promotion.discount_price,
                     promotion.discount_percent,
@@ -129,7 +134,7 @@ class CRUD
                                 LEFT JOIN product_list_classify ON product_list_classify.id_classify=classify.id
                                 LEFT JOIN product_list ON product_list.id_product = product_list_classify.id_product
 				LEFT JOIN product ON product.id = product_list_classify.id_product
-                LEFT JOIN image_product ON image_product.id_product = product_list.id_product
+
                 LEFT JOIN detail_promotion ON detail_promotion.id_product = product_list.id_product
                 LEFT JOIN promotion ON promotion.id = detail_promotion.id_promotion
                 WHERE 
@@ -155,7 +160,7 @@ class CRUD
                                 LEFT JOIN product_list_classify ON product_list_classify.id_classify=classify.id
                                 LEFT JOIN product_list ON product_list.id_product = product_list_classify.id_product
 				LEFT JOIN product ON product.id = product_list_classify.id_product
-                LEFT JOIN image_product ON image_product.id_product = product_list.id_product
+
                 LEFT JOIN detail_promotion ON detail_promotion.id_product = product_list.id_product
                 LEFT JOIN promotion ON promotion.id = detail_promotion.id_promotion
                 WHERE 
@@ -359,16 +364,20 @@ class CRUD
         $total_product_on_page
     ) {
         $type_value = $type;
-        $sale_value = "";
+        $sale_value = '';
         $key_value = $key;
         // $params = [$min_price, $max_price, $type, $sale, $key, $begin, $amount];
         if ($type == "Tất cả") {
             $type_value = "% %";
             // $params[] = $type;
         }
+        // if ($sale == "Tất cả") {
+        //     $sale_value = "% %";
+        //     // $params[] = $type;
+        // }
         if ($sale != "Tất cả") {
             // $sale = trim($sale);
-            $sale_value = "AND promotion.content LIKE" . $sale;
+            $sale_value = "AND promotion.content LIKE '". $sale ."'";
             // $params[] = $sale;
         }
         // if ($key == '') {
@@ -376,7 +385,7 @@ class CRUD
         $key_value = "%" . $key . "%";
         $params = "LIMIT " . $begin . "," . $total_product_on_page;
         // $params[]=$amount;
-        $sql = "SELECT 
+        $sql1 = "SELECT 
                    product_list_classify.id_classify, 
                    product_list_classify.id_product,
                    product.name,
@@ -386,7 +395,12 @@ class CRUD
                    product_list.id_size,
                    product_list.id_color,
                    product_list.price,
-                   image_product.link_image AS link_image,
+                  (
+                	SELECT image_product.link_image 
+                    FROM image_product
+                    WHERE image_product.id_product=product.id
+                    limit 1
+                ) AS link_image,
                    promotion.name AS name_promotion,
                    promotion.image,
                    promotion.content,
@@ -397,7 +411,6 @@ class CRUD
                FROM 
                    product_list_classify
                    LEFT JOIN product_list ON product_list_classify.id_product=product_list.id_product
-                   LEFT JOIN image_product ON image_product.id_product=product_list_classify.id_product
                    LEFT JOIN detail_promotion ON detail_promotion.id_product = product_list.id_product
                    LEFT JOIN promotion ON promotion.id = detail_promotion.id_promotion
                    LEFT JOIN product ON product.id = product_list_classify.id_product
@@ -410,12 +423,75 @@ class CRUD
                         (promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10')
                     OR promotion.id IS NULL)
                     AND classify.name LIKE ?
-                    $sale_value
+                    AND promotion.content LIKE ?
                     AND product.name LIKE ?
-                $params
+                    LIMIT ?, ?
                     ";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$min_price, $max_price, $type_value, $key_value]);
+        $sql2 = "SELECT 
+                   product_list_classify.id_classify, 
+                   product_list_classify.id_product,
+                   product.name,
+                   input_country.name AS country,
+                   product.description,
+                   status_product.name AS name_status,
+                   product_list.id_size,
+                   product_list.id_color,
+                   product_list.price,
+                  (
+                	SELECT image_product.link_image 
+                    FROM image_product
+                    WHERE image_product.id_product=product.id
+                    limit 1
+                ) AS link_image,
+                   promotion.name AS name_promotion,
+                   promotion.image,
+                   promotion.content,
+                   promotion.discount_price,
+                   promotion.discount_percent,
+                   promotion.begin_date,
+                   promotion.finish_date
+               FROM 
+                   product_list_classify
+                   LEFT JOIN product_list ON product_list_classify.id_product=product_list.id_product
+                   LEFT JOIN detail_promotion ON detail_promotion.id_product = product_list.id_product
+                   LEFT JOIN promotion ON promotion.id = detail_promotion.id_promotion
+                   LEFT JOIN product ON product.id = product_list_classify.id_product
+                   LEFT JOIN status_product ON status_product.id = product.idstatus
+                   LEFT JOIN input_country ON input_country.id = product.madein
+                   LEFT JOIN classify ON classify.id = product_list_classify.id_classify
+               WHERE 
+                    product_list.price BETWEEN ? AND ?
+                    AND (
+                        (promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10')
+                    OR promotion.id IS NULL)
+                    AND classify.name LIKE ?
+                    AND product.name LIKE ?
+                    LIMIT ?, ?
+                    ";
+                    // echo $min_price;
+                    // echo $max_price;
+                    // echo $type_value;
+                    // echo $key_value;
+                    // echo $begin;
+                    // echo $total_product_on_page;
+                    // echo $sql;
+        
+        // $stmt->bindParam('iiisssssss', $min_price, $max_price, $type_value, $key_value, $begin, $total_product_on_page);
+        if ($sale != "Tất cả") {
+            // $sale = trim($sale);
+            echo 'okkkkk1';
+            $stmt = $conn->prepare($sql1);
+            echo $stmt;
+            $stmt->execute([$min_price, $max_price, $type_value, $sale, $key_value, $begin, $total_product_on_page]);
+            // $params[] = $sale;
+        }
+        else {
+            echo 'okkkkk12';
+            $stmt = $conn->prepare($sql2);
+            $stmt->execute([$min_price, $max_price, $type_value, $key_value, $begin, $total_product_on_page]);
+        }
+        echo 'okkkkk13';
+            // $stmt->execute        
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt = null;
         return $result;
@@ -752,7 +828,12 @@ class CRUD
         $sql = "SELECT 
                     cart.id_product,
                     product.name, 
-                    image_product.link_image,
+                    (
+                	SELECT image_product.link_image 
+                    FROM image_product
+                    WHERE image_product.id_product=product.id
+                    limit 1
+                ) AS link_image,
                     product_in_stock.amount as amount_in_stock,
                     product_list.price as cost,
                     cart.id_color, 
@@ -764,7 +845,7 @@ class CRUD
                     product_list
                 WHERE cart.id_customer= ?
                     AND cart.id_product=product.id
-                    AND image_product.id_product=cart.id_product
+
                     AND product_in_stock.id_product=cart.id_product
                     AND product_in_stock.id_size = cart.id_size
                     AND product_in_stock.id_color = cart.id_color

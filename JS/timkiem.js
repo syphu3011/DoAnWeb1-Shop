@@ -11,6 +11,7 @@
 // console.log(sale_item);
 // timkiem(type_item, sale_item, max_value_slider, min_value_silder);
 // };
+localStorage.setItem("current_page", "");
 function callback_search(params) {
     let type_item = document.getElementById("clothing-type").value;
     let sale_item = document.getElementById("sale-select").value;
@@ -21,7 +22,8 @@ function callback_search(params) {
         type_item,
         sale_item,
         max_value_slider,
-        min_value_silder
+        min_value_silder,
+        params
     );
     // document.getElementById("main_label_result").innerHTML = "Kết quả";
 }
@@ -33,7 +35,7 @@ document.getElementById("btn-search").onclick = function () {
         alert("Chưa nhập từ khoá để tìm");
     } else {
         // timkiem();
-        callback_search();
+        callback_search(1);
     }
 };
 document
@@ -44,7 +46,7 @@ document
                 alert("Chưa nhập từ khoá để tìm");
             } else {
                 // timkiem();
-                callback_search();
+                callback_search(1);
             }
         }
     });
@@ -140,7 +142,15 @@ function create(data) {
 // function create()
 let total_product_on_page = 12;
 let current_page = 1;
-function timkiem(key_search, type_value, sale_value, max_price, min_price) {
+function timkiem(
+    key_search,
+    type_value,
+    sale_value,
+    max_price,
+    min_price,
+    params
+) {
+    localStorage.setItem("current_page", "is_search");
     getDataFromServer(
         "./Server/search.php",
         {
@@ -150,7 +160,7 @@ function timkiem(key_search, type_value, sale_value, max_price, min_price) {
             sale_value: sale_value,
             key_search: key_search,
             total_product_on_page: total_product_on_page,
-            current_page: current_page,
+            current_page: params,
         },
         function (response) {
             console.log(response);
