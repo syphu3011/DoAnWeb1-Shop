@@ -2,7 +2,8 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         require_once('../../../init.php');
         require_once('../same_function.php');
-        $username = $_POST["user"]["username"];
+        $data_from_client = json_decode(file_get_contents('php://input'), true);
+        $username = $data_from_client["user"]["username"];
         // if (check_privilege($username,$conn,'them','promotion')) {
             try {
                 require_once('../../../init.php');
@@ -28,24 +29,25 @@
                 :id_product)
                 ";
                 $stmt = $conn->prepare($query_insert_promotion);
-                $stmt->
-                $data_promotion = $_POST["promotion"];
+                // $stmt
+                $data_promotion = $data_from_client["promotion"];
+                $discount_percent = $data_promotion['discount_percent'] / 100;
                 $stmt->bindParam(':id', $id);
                 $stmt->bindParam(':name', $data_promotion['name']);
                 $stmt->bindParam(':image', $data_promotion['image']);
                 $stmt->bindParam(':content', $data_promotion['content']);
                 $stmt->bindParam(':discount_price', $data_promotion['discount_price']);
-                $stmt->bindParam(':discount_percent', $data_promotion['discount_percent']);
+                $stmt->bindParam(':discount_percent', $discount_percent);
                 $stmt->bindParam(':begin_date', $data_promotion['begin_date']);
                 $stmt->bindParam(':finish_date', $data_promotion['finish_date']);
                 $stmt->bindParam(':id_status', $data_promotion['id_status']);
                 if ($stmt->execute()) {
                     $stmt = $conn->prepare($query_insert_detail_promotion);
-                    $data_detail_promotion = $_POST["detail_promotion"];
+                    $data_detail_promotion = $data_from_client["detail_promotion"];
                     if (is_array($data_detail_promotion)) {
                         foreach ($data_detail_promotion as $value) {
-                            $stmt->bindParam(':id_promotion', $data_detail_promotion['id_promotion']);
-                            $stmt->bindParam(':id_product', $data_detail_promotion['id_product']);
+                            $stmt->bindParam(':id_promotion', $id);
+                            $stmt->bindParam(':id_product', $value['id_product']);
                             if (!($stmt->execute())) {
                                 echo 'Lỗi thêm sản phẩm khuyến mãi';
                                 $conn->rollBack();

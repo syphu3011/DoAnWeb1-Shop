@@ -135,9 +135,8 @@ function create(data) {
         document.getElementById("main").innerHTML =
             `<div style="margin: 40px">` + data.result + `</div>`;
     }
-
-    detail_product();
     pagination(data);
+    detail_product();
 }
 // function create()
 let total_product_on_page = 12;

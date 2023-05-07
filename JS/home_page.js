@@ -293,6 +293,8 @@ function create_Homepage(data_res) {
     }
 }
 function detail_product() {
+    console.log(1);
+
     let click_product = document.getElementsByClassName(
         "main_list_product_product"
     );

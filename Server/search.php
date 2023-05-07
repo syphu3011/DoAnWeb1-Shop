@@ -24,26 +24,26 @@ $begin = ($current_page - 1) * $total_product_on_page;
 //         'data received' => $data_received
 //     );
 //     echo json_decode($response);
-// $data_result = $crud->read_data_advanced_search(
-//     $conn,
-//     $type_value,
-//     $sale_value,
-//     $key_search,
-//     $min_price,
-//     $max_price,
-//     $begin,
-//     $total_product_on_page
-// );
 $data_result = $crud->read_data_advanced_search(
     $conn,
-    'Tất cả',
-    'Giảm 25%',
-    '',
-    0,
-    10000000,
-    0,
-    12
+    $type_value,
+    $sale_value,
+    $key_search,
+    $min_price,
+    $max_price,
+    $begin,
+    $total_product_on_page
 );
+// $data_result = $crud->read_data_advanced_search(
+//     $conn,
+//     'Tất cả',
+//     'Giảm 25%',
+//     'mi',
+//     0,
+//     10000000,
+//     0,
+//     12
+// );
 if (count($data_result) > 0) {
     $response = [
         "success" => true,
@@ -56,7 +56,7 @@ if (count($data_result) > 0) {
             $key_search,
             $min_price,
             $max_price
-        )[0]["COUNT(*)"],
+        ),
     ];
 } else {
     $response = [
@@ -72,6 +72,7 @@ if (count($data_result) > 0) {
 //         $data_result
 
 //     );
+// echo $data_result;
 echo json_encode($response);
 ?>
 

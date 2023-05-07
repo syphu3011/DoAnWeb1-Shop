@@ -13,17 +13,6 @@ function Themkhuyenmai() {
             <div class="KhuyenMai3" >
                <div class="Div1">Thêm khuyến mãi</div>
                <div class="Div2">
-                    <div id="div-id-km">
-                        <p class="label-input">ID</p>
-                        <div id="div-input-id-km">
-                            <input type="text" id="input-id-km" name="import-id-km" style="height: 25px;margin:0px">
-                            <button id="select-id-km" style="height: 25px; padding:5px; margin: 0px;">
-                            <img src="./Image/arrow.png" class="img-button">
-                            </button>
-                            <ul class="list-drop-down" id="list-drop-down-id-km">z
-                            </ul>
-                        </div>
-                    </div>
                      <div>
                         <label for="tenkhuyenmai">Tên khuyến mãi:</label>
                         <input id="tenkhuyenmai"type="text">
@@ -94,16 +83,9 @@ function sua(x) {
        <div class="KhuyenMai3" >
           <div class="Div1">Sửa khuyến mãi</div>
             <div class="Div2">
-                <div id="div-id-km">
-                    <p class="label-input">ID</p>
-                    <div id="div-input-id-km">
-                        <input type="text" id="input-id-km" name="import-id-km" style="height: 25px;margin:0px">
-                        <button id="select-id-km" style="height: 25px; padding:5px; margin: 0px;">
-                        <img src="./Image/arrow.png" class="img-button">
-                        </button>
-                        <ul class="list-drop-down" id="list-drop-down-id-km">z
-                        </ul>
-                    </div>
+                <div>
+                    <label for="maid">ID:</label>
+                    <input id="id-km"type="text" readonly>
                 </div>
                 <div>
                     <label for="tenkhuyenmai">Tên khuyến mãi:</label>
@@ -185,47 +167,50 @@ function themsanpham() {
     }
     document.getElementById("btn-xacnhan").onclick = function() {
         let type = document.getElementById("idprod").value.toLowerCase()
-        if (type == "" || CheckTagType(type, arr1) >= 0 || !CheckIDPro(type)) {
-            alert("ID không hợp lệ")
-        } else {
-            let div = document.getElementById("list-prod")
-            let ele = document.createElement("div")
-            ele.classList.add("div-pro")
-            ele.appendChild(document.createTextNode(type))
-            div.appendChild(ele)
-            let tag = document.createElement("button")
-            tag.classList.add("close_type")
-            tag.appendChild(document.createTextNode("X"))
-            ele.appendChild(tag)
-            arr1.push(type)
-            tag.onclick = function() {
-                arr1.splice(CheckTagType(type, arr1), 1);
-                ele.remove();
-            }
-            document.getElementById("idprod").value = ""
-            UnDo.style.display = `none`;
+        // if (type == "" || CheckTagType(type, arr1) >= 0 || !CheckIDPro(type)) {
+        //     alert("ID không hợp lệ")
+        // } else {
+        let div = document.getElementById("list-prod")
+        let ele = document.createElement("div")
+        ele.classList.add("div-pro")
+        ele.appendChild(document.createTextNode(type))
+        div.appendChild(ele)
+        let tag = document.createElement("button")
+        tag.classList.add("close_type")
+        tag.appendChild(document.createTextNode("X"))
+        ele.appendChild(tag)
+        arr1.push(type)
+        tag.onclick = function() {
+            arr1.splice(CheckTagTypePromote(type, arr1), 1);
+            ele.remove();
         }
+        document.getElementById("idprod").value = ""
+        UnDo.style.display = `none`;
+        // }
 
     }
 }
 
-function CheckIDPro(id) {
-    for (var i = 0; i < length21; i++) {
-        if (obj10.product[i].id.toLowerCase() == id) {
-            return true
-        }
-    }
-    return false
-}
 
-function CheckTagType(type, a) {
-    for (let i = 0; i < a.length; i++) {
-        if (a[i] == type) {
-            return i;
-        }
-    }
-    return -1;
-}
+
+// function CheckIDPro(id) {
+//     for (var i = 0; i < obj10.product.length; i++) {
+//         if (obj10.product[i].id.toLowerCase() == id) {
+//             return true
+//         }
+//     }
+//     return false
+// }
+
+// function CheckTagTypePromote(type, a) {
+//     for (let i = 0; i < a.length; i++) {
+//         if (a[i] == type) {
+//             return i;
+//         }
+//     }
+//     return -1;
+// }
+
 
 
 // Sửa sản phẩm
@@ -242,7 +227,7 @@ function suasanpham() {
     }
     document.getElementById("btn-xacnhan2").onclick = function() {
         let type = document.getElementById("idprod2").value.toLowerCase()
-        if (type == "" || CheckTagType(type, arr2) >= 0 || !CheckIDPro(type)) {
+        if (type == "" || CheckTagTypePromote(type, arr2) >= 0 || !CheckIDPro(type)) {
             alert("ID không hợp lệ")
         } else {
             let div = document.getElementById("list-prod")
@@ -256,7 +241,7 @@ function suasanpham() {
             ele.appendChild(tag)
             arr2.push(type)
             tag.onclick = function() {
-                arr2.splice(CheckTagType(type, arr2), 1);
+                arr2.splice(CheckTagTypePromote(type, arr2), 1);
                 ele.remove();
             }
             document.getElementById("idprod2").value = ""
@@ -278,20 +263,26 @@ function themkhuyenmai() {
     let ketthuc = getDate(document.getElementById("ketthuc").value)
     let noidung = document.getElementById("noidung").value;
 
-    if (ten == "" || giamgia == "" || phantramgiam == "" || document.getElementById("batdau").value == "" ||
+    if (ten == "" || (giamgia == "" && phantramgiam == "") || document.getElementById("batdau").value == "" ||
         document.getElementById("ketthuc").value == " ") {
         alert("Hãy nhập đủ thông tin")
     } else {
         if (checkNumber(giamgia)) {
             if (checkNumber(phantramgiam)) {
+                if (phantramgiam != '') {
+                    if (parseFloat(phantramgiam) > 100 || parseFloat(phantramgiam) < 0) {
+                        alert('Phần trăm giảm không được quá 100 và dưới 0!')
+                        return
+                    }
+                }
                 if (batdau > getCurrentDate().split(" ")[0]) {
                     if (batdau < ketthuc) {
                         let promotion = {
                             id: id,
                             name: ten.toLowerCase(),
                             content: noidung,
-                            begin_date: batdau,
-                            finish_date: ketthuc,
+                            begin_date: setDate(batdau),
+                            finish_date: setDate(ketthuc),
                             image: "",
                             discount_percent: phantramgiam,
                             discount_price: giamgia,
@@ -312,7 +303,8 @@ function themkhuyenmai() {
                             promotion: promotion,
                             detail_promotion: detail_promotion
                         }
-                        post(dataUpServer,'./Server/promotion/create_promotion.php')
+                        let toJSON = JSON.stringify(dataUpServer)
+                        postJSON(toJSON,'./Server/promotion/create_promotion.php')
                         document.getElementById("KhuyenMai-Background").remove()
                         renderTable2()
                     } else {
