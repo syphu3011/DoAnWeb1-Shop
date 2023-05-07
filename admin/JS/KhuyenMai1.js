@@ -13,10 +13,17 @@ function Themkhuyenmai() {
             <div class="KhuyenMai3" >
                <div class="Div1">Thêm khuyến mãi</div>
                <div class="Div2">
-                     <div>
-                        <label for="idkm13">ID:</label> 
-                        <input id="idkm13" type="text" readonly>
-                     </div>
+                    <div id="div-id-km">
+                        <p class="label-input">ID</p>
+                        <div id="div-input-id-km">
+                            <input type="text" id="input-id-km" name="import-id-km" style="height: 25px;margin:0px">
+                            <button id="select-id-km" style="height: 25px; padding:5px; margin: 0px;">
+                            <img src="./Image/arrow.png" class="img-button">
+                            </button>
+                            <ul class="list-drop-down" id="list-drop-down-id-km">z
+                            </ul>
+                        </div>
+                    </div>
                      <div>
                         <label for="tenkhuyenmai">Tên khuyến mãi:</label>
                         <input id="tenkhuyenmai"type="text">
@@ -85,23 +92,30 @@ function sua(x) {
     <div id="KhuyenMai-Background" >
     <div id="KhuyenMai" style="border-radius: 10px;">
        <div class="KhuyenMai3" >
-          <div class="Div1">Thêm khuyến mãi</div>
-          <div class="Div2">
-                <div>
-                   <label for="idkm13">ID:</label> 
-                   <input id="idkm13" type="text" readonly>
+          <div class="Div1">Sửa khuyến mãi</div>
+            <div class="Div2">
+                <div id="div-id-km">
+                    <p class="label-input">ID</p>
+                    <div id="div-input-id-km">
+                        <input type="text" id="input-id-km" name="import-id-km" style="height: 25px;margin:0px">
+                        <button id="select-id-km" style="height: 25px; padding:5px; margin: 0px;">
+                        <img src="./Image/arrow.png" class="img-button">
+                        </button>
+                        <ul class="list-drop-down" id="list-drop-down-id-km">z
+                        </ul>
+                    </div>
                 </div>
                 <div>
-                   <label for="tenkhuyenmai">Tên khuyến mãi:</label>
-                   <input id="tenkhuyenmai"type="text">
+                    <label for="tenkhuyenmai">Tên khuyến mãi:</label>
+                    <input id="tenkhuyenmai"type="text">
                 </div>
                 <div>
-                   <label for="giamgia">Giá giảm</label>
-                   <input id="giamgia"  type="text">
+                    <label for="giamgia">Giá giảm</label>
+                    <input id="giamgia"  type="text">
                 </div>
                 <div>              
-                   <label for="">Giảm(%)</label>
-                   <input id="phantramgiam" type="text">
+                    <label for="">Giảm(%)</label>
+                    <input id="phantramgiam" type="text">
                 </div>
           </div>
           <div class="Div4">
@@ -171,7 +185,7 @@ function themsanpham() {
     }
     document.getElementById("btn-xacnhan").onclick = function() {
         let type = document.getElementById("idprod").value.toLowerCase()
-        if (type == "" || CheckTagType(type, arr1) >= 0 || !CheckIDPro(type)) {
+        if (type == "" || CheckTagTypePromote(type, arr1) >= 0 || !CheckIDPro(type)) {
             alert("ID không hợp lệ")
         } else {
             let div = document.getElementById("list-prod")
@@ -185,7 +199,7 @@ function themsanpham() {
             ele.appendChild(tag)
             arr1.push(type)
             tag.onclick = function() {
-                arr1.splice(CheckTagType(type, arr1), 1);
+                arr1.splice(CheckTagTypePromote(type, arr1), 1);
                 ele.remove();
             }
             document.getElementById("idprod").value = ""
@@ -196,7 +210,7 @@ function themsanpham() {
 }
 
 function CheckIDPro(id) {
-    for (var i = 0; i < length21; i++) {
+    for (var i = 0; i < obj10.product.length; i++) {
         if (obj10.product[i].id.toLowerCase() == id) {
             return true
         }
@@ -204,7 +218,7 @@ function CheckIDPro(id) {
     return false
 }
 
-function CheckTagType(type, a) {
+function CheckTagTypePromote(type, a) {
     for (let i = 0; i < a.length; i++) {
         if (a[i] == type) {
             return i;
@@ -228,7 +242,7 @@ function suasanpham() {
     }
     document.getElementById("btn-xacnhan2").onclick = function() {
         let type = document.getElementById("idprod2").value.toLowerCase()
-        if (type == "" || CheckTagType(type, arr2) >= 0 || !CheckIDPro(type)) {
+        if (type == "" || CheckTagTypePromote(type, arr2) >= 0 || !CheckIDPro(type)) {
             alert("ID không hợp lệ")
         } else {
             let div = document.getElementById("list-prod")
@@ -242,7 +256,7 @@ function suasanpham() {
             ele.appendChild(tag)
             arr2.push(type)
             tag.onclick = function() {
-                arr2.splice(CheckTagType(type, arr2), 1);
+                arr2.splice(CheckTagTypePromote(type, arr2), 1);
                 ele.remove();
             }
             document.getElementById("idprod2").value = ""
@@ -276,8 +290,8 @@ function themkhuyenmai() {
                             id: id,
                             name: ten.toLowerCase(),
                             content: noidung,
-                            begin_date: batdau,
-                            finish_date: ketthuc,
+                            begin_date: setDate(begin_date),
+                            finish_date: setDate(ketthuc),
                             image: "",
                             discount_percent: phantramgiam,
                             discount_price: giamgia,
@@ -298,7 +312,8 @@ function themkhuyenmai() {
                             promotion: promotion,
                             detail_promotion: detail_promotion
                         }
-                        post(dataUpServer,'./Server/promotion/create_promotion.php')
+                        let toJSON = JSON.stringify(dataUpServer)
+                        postJSON(toJSON,'./Server/promotion/create_promotion.php')
                         document.getElementById("KhuyenMai-Background").remove()
                         renderTable2()
                     } else {

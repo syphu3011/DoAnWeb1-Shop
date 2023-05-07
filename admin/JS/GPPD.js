@@ -28,6 +28,21 @@ async function post(data,dir) {
     });
     return data_response
 }
+async function postJSON(data,dir) {
+    let data_response = await $.ajax({
+        url: dir,
+        type: 'POST',
+        dataType: 'json',
+        contentType: "application/json",
+        data: data
+    }).then(function(responseData) {
+        return responseData
+    }).catch(function(error) {
+        // Xử lý lỗi
+        return errors
+    });
+    return data_response
+}
 async function put(data,dir) {
     let data_response = await $.ajax({
         url: dir,

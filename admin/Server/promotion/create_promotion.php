@@ -2,7 +2,8 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         require_once('../../../init.php');
         require_once('../same_function.php');
-        $username = $_POST["user"]["username"];
+        $data_from_client = json_decode(file_get_contents('php://input'), true);
+        $username = $data_from_client["user"]["username"];
         // if (check_privilege($username,$conn,'them','promotion')) {
             try {
                 require_once('../../../init.php');
@@ -28,8 +29,8 @@
                 :id_product)
                 ";
                 $stmt = $conn->prepare($query_insert_promotion);
-                $stmt->
-                $data_promotion = $_POST["promotion"];
+                // $stmt
+                $data_promotion = $data_from_client["promotion"];
                 $stmt->bindParam(':id', $id);
                 $stmt->bindParam(':name', $data_promotion['name']);
                 $stmt->bindParam(':image', $data_promotion['image']);
@@ -41,7 +42,7 @@
                 $stmt->bindParam(':id_status', $data_promotion['id_status']);
                 if ($stmt->execute()) {
                     $stmt = $conn->prepare($query_insert_detail_promotion);
-                    $data_detail_promotion = $_POST["detail_promotion"];
+                    $data_detail_promotion = $data_from_client["detail_promotion"];
                     if (is_array($data_detail_promotion)) {
                         foreach ($data_detail_promotion as $value) {
                             $stmt->bindParam(':id_promotion', $data_detail_promotion['id_promotion']);

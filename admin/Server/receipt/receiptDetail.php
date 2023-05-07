@@ -63,9 +63,9 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 			// * parenttable
 			$parentTableName, 
 			// * foreign key on child
-			"id_receipt",
-			// * foreign key on parent
 			"id",
+			// * foreign key on parent
+			"id_receipt",
 			// * column to select
 			// "
 			// $childTableName.id as id_$childTableName, 

@@ -138,6 +138,12 @@ ul {
     padding-top: 5px;
     padding-bottom: 5px;
 }
+.label-input-km {
+    width: 20%;
+    margin-right: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
 button:hover .img-button{
     filter: invert(100%);
 }
