@@ -24,23 +24,37 @@ if ($_SERVER['REQUEST_METHOD'] === "GET"){
 
 	if ($getAll) {
 		// ? http://localhost/doan/admin/Server/receipt/receipt.php
-		$arrFromDb = Table::tableQueryAll($conn, $tableName);
-		echo Table::jsonify($conn, $arrFromDb, $tableName);
+		try {
+			$conn->beginTransaction();
+			$arrFromDb = Table::tableQueryAll($conn, $tableName);
+			echo Table::jsonify($conn, $arrFromDb, $tableName);
+			$conn->commit();
+		} catch (Exception $e) {
+			Table::json_fire_exception($e);
+			$conn->rollBack();
+		}
 	} else {
 		// ? http://localhost/doan/admin/Server/receipt/receipt.php?date_confirm=2023-02-12 00:00:00
-		$arrProperty = array();
-		$arrContent = array();
-		foreach ($_REQUEST as $key => $value) {
-			array_push($arrProperty, $key);
-			array_push($arrContent, $value);
+		try {
+			$conn->beginTransaction();	
+			$arrProperty = array();
+			$arrContent = array();
+			foreach ($_REQUEST as $key => $value) {
+				array_push($arrProperty, $key);
+				array_push($arrContent, $value);
+			}
+			$arrFromDb = Table::tableQueryMultipleProperty(
+				$conn, 
+				$tableName,
+				$arrProperty,
+				$arrContent
+			);
+			echo Table::jsonify($conn, $arrFromDb, $tableName);
+			$conn->commit();
+		} catch (Exception $e) {
+			Table::json_fire_exception($e);
+			$conn->rollback();
 		}
-		$arrFromDb = Table::tableQueryMultipleProperty(
-			$conn, 
-			$tableName,
-			$arrProperty,
-			$arrContent
-		);
-		echo Table::jsonify($conn, $arrFromDb, $tableName);
 	}
 	
 }
@@ -51,13 +65,27 @@ if ($_SERVER['REQUEST_METHOD'] === "GET"){
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
 	if (isset($_REQUEST["action"])){
 		if ($_REQUEST["action"] === "update"){
-			echo "Update is not supported.";
+			try {
+				$conn->beginTransaction();
+				echo "Update is not supported.";
+				$conn->commit();
+			} catch (Exception $e) {
+				Table::json_fire_exception($e);
+				$conn->rollback();
+			}
 		} else
 		// ? http://localhost/doan/admin/Server/receipt/receipt.php?action=create&date_init=2023-02-24 00:00:00&date_confirm=2023-02-24 00:00:00&note&id_staff=NV001&id_customer=KH001&id_status=TT07
 		if ($_REQUEST["action"] === "create") {
-			$maxId = Table::getMaxId($conn, $tableName, 'id');
-			$_REQUEST["id"] = "HD" . sprintf("%03d", strval($maxId+1));
-			ReqHandling::createRow($conn, $tableName);
+			try {
+				$conn->beginTransaction();
+				$maxId = Table::getMaxId($conn, $tableName, 'id');
+				$_REQUEST["id"] = "HD" . sprintf("%03d", strval($maxId+1));
+				ReqHandling::createRow($conn, $tableName);
+				$conn->commit();
+			} catch (Exception $e) {
+				Table::json_fire_exception($e);
+				$conn->rollback();
+			}
 		}
 	}
 }
@@ -66,11 +94,14 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
 // ? http://localhost/doan/admin/Server/receipt/receipt.php?id=TUOITEEN
 if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-	if (isset($_REQUEST["id"])) {
+	try {
+		$conn->beginTransaction();
+		if (isset($_REQUEST["id"])) 
 		ReqHandling::deleteRow($conn, $tableName, $_REQUEST["id"]);
-		exit();
-	} else {
-		echo "Please specify your id for erasion." . "</br>" ;
+		$conn->commit();
+	} catch (Exception $e) {
+		Table::json_fire_exception($e);
+		$conn->rollback();
 	}
 }
 ?>

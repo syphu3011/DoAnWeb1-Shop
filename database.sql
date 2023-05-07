@@ -2,10 +2,12 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: localhost
--- Thời gian đã tạo: Th5 07, 2023 lúc 06:24 AM
--- Phiên bản máy phục vụ: 10.4.27-MariaDB
--- Phiên bản PHP: 8.2.0
+
+-- Host: 127.0.0.1
+-- Generation Time: May 07, 2023 at 10:40 AM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.1.12
+
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -372,25 +374,8 @@ INSERT INTO `parameters` (`id`, `variable1`, `variable2`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `privilege_account`
---
 
-CREATE TABLE `privilege_account` (
-  `id_user` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `privilege_account`
---
-
-INSERT INTO `privilege_account` (`id_user`) VALUES
-('USR001'),
-('USR002');
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `privilege_action`
+-- Table structure for table `privilege_action`
 --
 
 CREATE TABLE `privilege_action` (
@@ -446,10 +431,26 @@ CREATE TABLE `privilege_general` (
 --
 
 INSERT INTO `privilege_general` (`id_table`, `id_feature`) VALUES
-('product', 'sua'),
-('product', 'them'),
-('product', 'xem'),
-('product', 'xoa'),
+('customer', 'sua'),
+('customer', 'them'),
+('customer', 'xem'),
+('customer', 'xoa'),
+('import_product', 'sua'),
+('import_product', 'them'),
+('import_product', 'xem'),
+('import_product', 'xoa'),
+('promotion', 'sua'),
+('promotion', 'them'),
+('promotion', 'xem'),
+('promotion', 'xoa'),
+('receipt', 'sua'),
+('receipt', 'them'),
+('receipt', 'xem'),
+('receipt', 'xoa'),
+('staff', 'sua'),
+('staff', 'them'),
+('staff', 'xem'),
+('staff', 'xoa'),
 ('statistic', 'xem');
 
 -- --------------------------------------------------------
@@ -942,13 +943,10 @@ ALTER TABLE `parameters`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `privilege_account`
---
-ALTER TABLE `privilege_account`
-  ADD PRIMARY KEY (`id_user`);
 
---
--- Chỉ mục cho bảng `privilege_action`
+-- Indexes for table `privilege_action`
+
+
 --
 ALTER TABLE `privilege_action`
   ADD PRIMARY KEY (`id_table`);
@@ -971,8 +969,8 @@ ALTER TABLE `privilege_general`
 --
 ALTER TABLE `privilege_general_detail`
   ADD PRIMARY KEY (`id_table`,`id_feature`,`id_user`),
-  ADD KEY `id_feature` (`id_feature`),
-  ADD KEY `id_user` (`id_user`);
+  ADD KEY `privilege_general_detail_ibfk_3` (`id_user`),
+  ADD KEY `id_feature` (`id_feature`);
 
 --
 -- Chỉ mục cho bảng `product`
@@ -1152,24 +1150,20 @@ ALTER TABLE `import_coupon`
   ADD CONSTRAINT `import_coupon_ibfk_1` FOREIGN KEY (`id_staff`) REFERENCES `staff` (`id`);
 
 --
--- Các ràng buộc cho bảng `privilege_account`
---
-ALTER TABLE `privilege_account`
-  ADD CONSTRAINT `privilege_account_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `account` (`id_user`);
 
---
--- Các ràng buộc cho bảng `privilege_general`
+-- Constraints for table `privilege_general`
+
 --
 ALTER TABLE `privilege_general`
   ADD CONSTRAINT `privilege_general_ibfk_1` FOREIGN KEY (`id_feature`) REFERENCES `privilege_feature` (`id_feature`),
-  ADD CONSTRAINT `privilege_general_ibfk_2` FOREIGN KEY (`id_table`) REFERENCES `privilege_action` (`id_table`),
-  ADD CONSTRAINT `privilege_general_ibfk_3` FOREIGN KEY (`id_table`) REFERENCES `privilege_general_detail` (`id_table`);
+  ADD CONSTRAINT `privilege_general_ibfk_2` FOREIGN KEY (`id_table`) REFERENCES `privilege_action` (`id_table`);
 
 --
 -- Các ràng buộc cho bảng `privilege_general_detail`
 --
 ALTER TABLE `privilege_general_detail`
-  ADD CONSTRAINT `privilege_general_detail_ibfk_3` FOREIGN KEY (`id_user`) REFERENCES `privilege_account` (`id_user`);
+  ADD CONSTRAINT `privilege_general_detail_ibfk_3` FOREIGN KEY (`id_user`) REFERENCES `account` (`id_user`),
+  ADD CONSTRAINT `privilege_general_detail_ibfk_4` FOREIGN KEY (`id_feature`) REFERENCES `privilege_general` (`id_feature`);
 
 --
 -- Các ràng buộc cho bảng `product`
