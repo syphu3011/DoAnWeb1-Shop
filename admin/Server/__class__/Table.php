@@ -5,6 +5,18 @@ class Table {
 	// * -------------------------------
 	// * $conn : connection from init.php
 	// * $tableName: targeted table name
+
+	public static function json_fire_exception($e, $yourQuery = "") {
+		echo json_encode(array(
+			'error_code' => $e->getCode(),
+			'file' => $e->getFile(),
+			'line' => $e->getLine(),
+			'message' => $e->getMessage(),
+			'trace' => $e->getTrace(),
+			'yourQuery' => $yourQuery
+		), JSON_UNESCAPED_UNICODE);
+	}
+
 	public static function tableQueryAll($conn, $tableName) {
 		$query = "SELECT * FROM " . $tableName;
 		$query_statement = $conn->prepare($query);
@@ -31,25 +43,28 @@ class Table {
 		$column,
 		$condition
 	){
-		if ($condition === "")
-			$query = 
-				"SELECT $column FROM $childTable INNER JOIN $parentTable 
-				ON $childTable.$childkey = $parentTable.$parentkey;";
-		else
-			$query = 
-				"SELECT $column FROM $childTable INNER JOIN $parentTable 
-				ON $childTable.$childkey = $parentTable.$parentkey WHERE $condition;";
-		// echo $query . "</br>";	
-		$query_statement = $conn->prepare($query);
-3		$query_statement->execute();
-
-		// $return_val =  $query_statement->fetchAll(PDO::FETCH_ASSOC);
-		// foreach ($return_val as $key1 => $value1) {
-		// 	foreach ($value1 as $key => $value) {
-		// 		echo $key . " " . $value . "</br>";
-		// 	}
-		// }
-		return $query_statement->fetchAll(PDO::FETCH_ASSOC);
+		try {
+			if ($condition === "")
+				$query = 
+					"SELECT $column FROM $childTable INNER JOIN $parentTable 
+					ON $childTable.$childkey = $parentTable.$parentkey;";
+			else
+				$query = 
+					"SELECT $column FROM $childTable INNER JOIN $parentTable 
+					ON $childTable.$childkey = $parentTable.$parentkey WHERE $condition;";
+			echo $query . "</br>";	
+			$query_statement = $conn->prepare($query);
+			$query_statement->execute();
+			// $return_val =  $query_statement->fetchAll(PDO::FETCH_ASSOC);
+			// foreach ($return_val as $key1 => $value1) {
+			// 	foreach ($value1 as $key => $value) {
+			// 		echo $key . " " . $value . "</br>";
+			// 	}
+			// }
+			return $query_statement->fetchAll(PDO::FETCH_ASSOC);
+		} catch (Exception $e) {
+			self::json_fire_exception($e);
+		}
 	}
 
 	// * query 1 child table inner join with 2 parent tables on keys
@@ -103,7 +118,19 @@ class Table {
 			$query_statement = $conn->prepare($query);
 			$query_statement->execute();
 		} catch (Exception $e) {
-			echo "Please change key value in parameters." . "</br>";
+			self::json_fire_exception($e);
+		}
+		return $query_statement->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	public static function tableQueryPropertyWithColSel($conn, $tableName, $property, $content, $column) {
+		try {
+			$query = "SELECT $column FROM " . $tableName . " WHERE " . $property . " = '" . $content . "'";
+			// echo $query . "</br>";
+			$query_statement = $conn->prepare($query);
+			$query_statement->execute();
+		} catch (Exception $e) {
+			self::json_fire_exception($e);
 		}
 		return $query_statement->fetchAll(PDO::FETCH_ASSOC);
 	}
