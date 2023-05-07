@@ -150,6 +150,9 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 	perform_GET_receipt_status($conn, false);
 
 } else if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+	// ? http://localhost/doan/admin/Server/receipt/receiptStatus.php?action=update&id_receipt=HD001&status=Đã hủy
+
 	if (isset($_REQUEST["action"])){
 		if ($_REQUEST["action"] === "update" ){
 			try {
@@ -179,6 +182,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 					ReqHandling::updateDb($conn, "receipt", $id, "id_status", $tempArr);
 				} catch (Exception $e) {
 					Table::json_fire_exception($e);
+					$conn->rollback();
 					exit();
 				}
 				echo json_encode(array(

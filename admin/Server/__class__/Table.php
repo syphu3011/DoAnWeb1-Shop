@@ -52,7 +52,7 @@ class Table {
 				$query = 
 					"SELECT $column FROM $childTable INNER JOIN $parentTable 
 					ON $childTable.$childkey = $parentTable.$parentkey WHERE $condition;";
-			echo $query . "</br>";	
+			// echo $query . "</br>";	
 			$query_statement = $conn->prepare($query);
 			$query_statement->execute();
 			// $return_val =  $query_statement->fetchAll(PDO::FETCH_ASSOC);
@@ -63,7 +63,7 @@ class Table {
 			// }
 			return $query_statement->fetchAll(PDO::FETCH_ASSOC);
 		} catch (Exception $e) {
-			self::json_fire_exception($e);
+			self::json_fire_exception($e, $query);
 		}
 	}
 
