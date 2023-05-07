@@ -29,6 +29,7 @@
                 $stmt -> bindParam(":made_in", $made_in);
                 $stmt -> bindParam(":description", $description);
                 $stmt -> bindParam(":idstatus", $status);
+                $stmt -> bindParam(":id", $id);
                 // thực thi query
                 if ($stmt -> execute()) {
                     //Upload ảnh
@@ -41,9 +42,6 @@
                         $file_tmp =$_FILES['images_ar']['tmp_name'][$key];
                         $file_type=$_FILES['images_ar']['type'][$key]; 
                         $name_image = $file_name;
-                        if(is_dir($desired_dir)==false){
-                            mkdir("$desired_dir", 0700);    // Create directory if it does not exist
-                        }
                         if(is_dir("$desired_dir/".$file_name)==false){
                             move_uploaded_file($file_tmp,$desired_dir.'/'.$file_name);
                             chmod($desired_dir.'/'.$file_name, 0644);
@@ -51,6 +49,13 @@
                             $_POST_image = ['id' => $id, 'name_img' => $name_image];
                             $stmt_image->execute($_POST_image);
                         }
+                    }
+                    //Xóa ảnh
+                    $stmt_delete_image = $conn->prepare("DELETE FROM image_product WHERE id_product = :id_product and link_image = :link_image");
+                    $image_delete = $_POST["image_delete"];
+                    foreach($image_delete as $value) {
+                        $data_image_delete = array('id_product' => $id, 'link_image' => $value);
+                        $stmt_delete_image->execute($data_image_delete);
                     }
                 }
                 else {
