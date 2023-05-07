@@ -31,7 +31,27 @@
                 $stmt -> bindParam(":idstatus", $status);
                 // thực thi query
                 if ($stmt -> execute()) {
-                    echo 'Dữ liệu đã được thay đổi!';
+                    //Upload ảnh
+                    $errors= array();
+                    $stmt_image = $conn->prepare("INSERT INTO image_product(id_product,link_image) VALUES(:id,:name_img)");
+                    $desired_dir="../../Image";
+                    $absolute_dir = realpath($desired_dir);
+                    foreach($_FILES['images_ar']['tmp_name'] as $key => $tmp_name ){
+                        $file_name = $key.$_FILES['images_ar']['name'][$key];
+                        $file_tmp =$_FILES['images_ar']['tmp_name'][$key];
+                        $file_type=$_FILES['images_ar']['type'][$key]; 
+                        $name_image = $file_name;
+                        if(is_dir($desired_dir)==false){
+                            mkdir("$desired_dir", 0700);    // Create directory if it does not exist
+                        }
+                        if(is_dir("$desired_dir/".$file_name)==false){
+                            move_uploaded_file($file_tmp,$desired_dir.'/'.$file_name);
+                            chmod($desired_dir.'/'.$file_name, 0644);
+                            //Thêm vào cơ sở dữ liệu
+                            $_POST_image = ['id' => $id, 'name_img' => $name_image];
+                            $stmt_image->execute($_POST_image);
+                        }
+                    }
                 }
                 else {
                     $conn -> rollBack();

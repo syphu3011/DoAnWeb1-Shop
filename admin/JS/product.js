@@ -1050,7 +1050,7 @@ function fillDetail(id) {
         }
     })
     if (prod == null) {
-        console.log("khoong cos san pham");
+        console.log("Không có sản phẩm");
         return
     }
     let amountAr = []
@@ -1093,7 +1093,7 @@ function fillDetail(id) {
     let count = 0
     let images = prod.images.split(',')
     images.forEach(element => {
-        addImg("../Image/"+element, "image-div1", count)
+        addImg("/Applications/XAMPP/htdocs/DoAnWeb1-Shop/admin/Image/"+element, "image-div1", count)
         count += 1
     })
 }
