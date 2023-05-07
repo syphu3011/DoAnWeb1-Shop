@@ -91,7 +91,22 @@ function changeToConsumer() {
 function changeToOrder() {
   hideCurrent();
   appearDiv(document.getElementById("background_order"));
-  timtheokhoang();
+  // timtheokhoang();
+// get_DataDetailO()
+// get_DataCus()
+// get_DataOrder() 
+Promise.all([get_DataOrder(), get_DataCus(), get_DataDetailO()])
+  .then(function(results) {
+ 
+    console.log(results[0]); // receipt
+    console.log(results[1]); // customer
+    console.log(results[2]); // detail_receipt
+    FillOrder();
+  })
+  .catch(function(error) {
+    
+    console.error(error);
+  });
 }
 
 function changeToInput() {
