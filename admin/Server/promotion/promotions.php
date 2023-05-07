@@ -16,6 +16,7 @@
         WHERE promotion.id_status = 'TT10'
         GROUP BY id_promotion, product.id
         ";
+        $query_get_id_product = 'SELECT id FROM product';
         $stmt = $conn->prepare($query_get_promotions);
         $response_array = new stdClass();
         if ($stmt->execute()) {
@@ -26,9 +27,16 @@
             }
             else {
                 $response_array->detail_promotion = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                $json = json_encode($response_array, JSON_UNESCAPED_UNICODE);
-                header('Content-Type: application/json; charset=utf-8');
-                echo $json;
+                $stmt = $conn->prepare($query_get_id_product);
+                if (!$stmt->execute()) {
+                    echo 'Lỗi khi lấy danh sách sản phẩm';
+                }
+                else {
+                    $response_array->product = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    $json = json_encode($response_array, JSON_UNESCAPED_UNICODE);
+                    header('Content-Type: application/json; charset=utf-8');
+                    echo $json;
+                }
             }
         }
         else {

@@ -185,7 +185,7 @@ function themsanpham() {
     }
     document.getElementById("btn-xacnhan").onclick = function() {
         let type = document.getElementById("idprod").value.toLowerCase()
-        if (type == "" || CheckTagType(type, arr1) >= 0 || !CheckIDPro(type)) {
+        if (type == "" || CheckTagTypePromote(type, arr1) >= 0 || !CheckIDPro(type)) {
             alert("ID không hợp lệ")
         } else {
             let div = document.getElementById("list-prod")
@@ -199,7 +199,7 @@ function themsanpham() {
             ele.appendChild(tag)
             arr1.push(type)
             tag.onclick = function() {
-                arr1.splice(CheckTagType(type, arr1), 1);
+                arr1.splice(CheckTagTypePromote(type, arr1), 1);
                 ele.remove();
             }
             document.getElementById("idprod").value = ""
@@ -210,7 +210,7 @@ function themsanpham() {
 }
 
 function CheckIDPro(id) {
-    for (var i = 0; i < length21; i++) {
+    for (var i = 0; i < obj10.product.length; i++) {
         if (obj10.product[i].id.toLowerCase() == id) {
             return true
         }
@@ -218,7 +218,7 @@ function CheckIDPro(id) {
     return false
 }
 
-function CheckTagType(type, a) {
+function CheckTagTypePromote(type, a) {
     for (let i = 0; i < a.length; i++) {
         if (a[i] == type) {
             return i;
@@ -242,7 +242,7 @@ function suasanpham() {
     }
     document.getElementById("btn-xacnhan2").onclick = function() {
         let type = document.getElementById("idprod2").value.toLowerCase()
-        if (type == "" || CheckTagType(type, arr2) >= 0 || !CheckIDPro(type)) {
+        if (type == "" || CheckTagTypePromote(type, arr2) >= 0 || !CheckIDPro(type)) {
             alert("ID không hợp lệ")
         } else {
             let div = document.getElementById("list-prod")
@@ -256,7 +256,7 @@ function suasanpham() {
             ele.appendChild(tag)
             arr2.push(type)
             tag.onclick = function() {
-                arr2.splice(CheckTagType(type, arr2), 1);
+                arr2.splice(CheckTagTypePromote(type, arr2), 1);
                 ele.remove();
             }
             document.getElementById("idprod2").value = ""
@@ -290,8 +290,8 @@ function themkhuyenmai() {
                             id: id,
                             name: ten.toLowerCase(),
                             content: noidung,
-                            begin_date: batdau,
-                            finish_date: ketthuc,
+                            begin_date: setDate(begin_date),
+                            finish_date: setDate(ketthuc),
                             image: "",
                             discount_percent: phantramgiam,
                             discount_price: giamgia,
@@ -312,7 +312,8 @@ function themkhuyenmai() {
                             promotion: promotion,
                             detail_promotion: detail_promotion
                         }
-                        post(dataUpServer,'./Server/promotion/create_promotion.php')
+                        let toJSON = JSON.stringify(dataUpServer)
+                        postJSON(toJSON,'./Server/promotion/create_promotion.php')
                         document.getElementById("KhuyenMai-Background").remove()
                         renderTable2()
                     } else {
