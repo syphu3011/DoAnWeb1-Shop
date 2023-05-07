@@ -282,9 +282,9 @@ function findSumAmount(id) {
 }
 
 function fillEdit(prod) {
+    let image_delete = []
     document.getElementById("edit-id").value = prod.id
     document.getElementById("edit-name").value = prod.name
-    document.getElementById("edit-price").value = prod.price
     document.getElementById("edit-made-in").value = prod.made_in
     document.getElementById("edit-des").value = prod.description
     document.getElementById("confirm").onclick = function() {
@@ -292,27 +292,31 @@ function fillEdit(prod) {
             document.getElementById("image-div2").innerHTML = ""
             document.getElementById("edit_pro").style.visibility = "hidden";
             prod.name = document.getElementById("edit-name").value
-            prod.price = document.getElementById("edit-price").value
             prod.made_in = document.getElementById("edit-made-in").value
             prod.description = document.getElementById("edit-des").value
             prod.clasify = tag_type_edit
             prod.images = arrImageEdit
             tag_type_edit = []
             document.getElementById("add-type-edit").innerHTML = ""
-            updateProd(prod)
+            updateProd(prod, image_delete)
             arrImageEdit = arrImageEdit.filter(() => true == false)
 
             CloseDialog();
             fillProd(obj.product)
         }, function() {})
     };
-    prod.clasify.forEach(e => {
+    let classifies = prod.clasify.split(',')
+    classifies.forEach(e => {
         AddTagType(document.getElementById("add-type-edit"), tag_type_edit, true, e)
     })
     remove_all_image()
     let count = 0
-    prod.images.forEach(e => {
-        add_item_of_image("../Image/"+e, count)
+    let images = prod.images.split(',')
+    images.forEach(e => {
+        add_item_of_image("./Image/"+e, 'image-div2',count,'btn_rm_+'+'e')
+        document.getElementById('btn_remove_'+'e').onclick = function() {
+            image_delete.push(e);
+        }
         count += 1
     })
 }
@@ -535,7 +539,7 @@ function getUsername() {
     return ''
 }
 async function addProd(Prod) {
-    refreshData();
+    await refreshData();
     console.log(JSON.stringify(Prod));
 
     if (checkConstraintAddProd(Prod)) {
@@ -544,30 +548,44 @@ async function addProd(Prod) {
 
         // Prod.images = totalfiles
         form_data = to_form_data_have_image(Prod, "images_ar[]", totalfiles);
-
-        post(form_data,'./Server/product/create_product.php')
+        form_data.append('id_user','USR001')
+        let response = await post(form_data,'./Server/product/create_product.php');
+        alert(response);
+        document.getElementById('choose-img-prod').value = ''
     }
 
     await fillProd();
 }
 
 
-async function updateProd(Prod) {
+async function updateProd(Prod, remove_image = null) {
     await refreshData();
-    if (checkConstraintUpdateProd(Prod)) {
-        obj.product.forEach(function(part, index) {
-            if (compareTwoVar(Prod.id, this[index].id)) {
-                this[index] = Prod;
-                return true;
-            }
-        }, obj.product);
-        writeToLocalStorage(obj);
+    // if (checkConstraintUpdateProd(Prod)) {
+    //     obj.product.forEach(function(part, index) {
+    //         if (compareTwoVar(Prod.id, this[index].id)) {
+    //             this[index] = Prod;
+    //             return true;
+    //         }
+    //     }, obj.product);
+    //     // writeToLocalStorage(obj);
+    // }
+    var form_data = new FormData();
+    let totalfiles = document.getElementById('choose-img-prod').files;
+
+    // Prod.images = totalfiles
+    form_data = to_form_data_have_image(Prod, "images_ar[]", totalfiles);
+    form_data.append('id_user','USR001')
+    if (remove_image != null) {
+        remove_image.forEach(e => {
+            form_data.append('image_delete', e)    
+        })
     }
     return false;
 }
 //event thêm sản phẩm
 document.getElementById("add").onclick = function() {
     document.getElementById("add_pro").style.visibility = "visible";
+    document.getElementById("image-div").innerHTML = ''
     OpenDialog();
 };
 
@@ -660,7 +678,7 @@ document.getElementById("submit").onclick = function() {
         addProd(prod)
         blank("inp-name")
         // blank("inp-price")
-        blank("inp-made-in")
+        blank("inp-madein")
         blank("add-des")
         document.getElementById("add-pro-type").innerHTML = ""
         // arrImageAdd = arrImageAdd.filter(e => true == false)
@@ -699,7 +717,7 @@ function add_img_files(files, count) {
     var reader = new FileReader();
     reader.readAsDataURL(files[count]);
     reader.onload = function() {
-        add_item_of_image(reader.result, count)
+        add_item_of_image(reader.result, 'image-div',count)
         if (files.length > count + 1) {
             add_img_files(files, count + 1)
         }
@@ -713,12 +731,15 @@ async function addType() {
         add_img_files(inp.files, 0)
     };
 }
-function add_item_of_image(name_img, count) {
+function add_item_of_image(name_img, div, count, id_buttton = '') {
     let btnRemove = document.createElement("button")
+    if (id_button == '') {
+        btnRemove.id = id_buttton
+    }
     btnRemove.className = "add_type remove_img"
     btnRemove.style.position = "absolute"
     btnRemove.textContent = "X"
-    let img_div1 = addImg(name_img, "image-div", count)
+    let img_div1 = addImg(name_img, div, count)
     img_div1.appendChild(btnRemove)
     img_div1.style.position = "relative"
     btnRemove.style.right = "-5px"
@@ -1048,7 +1069,7 @@ function fillDetail(id) {
         }
     })
     if (prod == null) {
-        console.log("khoong cos san pham");
+        console.log("Không có sản phẩm");
         return
     }
     let amountAr = []
@@ -1071,7 +1092,6 @@ function fillDetail(id) {
     })
     document.getElementById("detail-id").value = prod.id
     document.getElementById("detail-name").value = prod.name
-    document.getElementById("detail-price").value = prod.price
     document.getElementById("detail-made-in").value = prod.made_in
     let table_amount = document.getElementById("amount-table")
     let thead = document.createElement("thead")
@@ -1088,10 +1108,12 @@ function fillDetail(id) {
     })
     document.getElementById("type-div").innerHTML += "<p>" + prod.clasify[0] + "</p>"
     document.getElementById("image-div1").innerHTML = ""
+    document.getElementById("txt-detail-product").textContent = prod.description
     remove_all_image()
     let count = 0
-    prod.images.forEach(element => {
-        addImg("../Image/"+element, "image-div1", count)
+    let images = prod.images.split(',')
+    images.forEach(element => {
+        addImg("./Image/"+element, "image-div1", count)
         count += 1
     })
 }

@@ -92,12 +92,13 @@ function changeToOrder() {
   hideCurrent();
   appearDiv(document.getElementById("background_order"));
   // timtheokhoang();
-Promise.all([get_DataOrder(), get_DataCus(), get_DataDetailO()])
+Promise.all([get_DataOrder(), get_DataCus(), get_DataDetailO(), get_DataProd()])
   .then(function(results) {
  
     console.log(results[0]); // receipt
     console.log(results[1]); // customer
     console.log(results[2]); // detail_receipt
+    console.log(results[3]);
     FillOrder();
   })
   .catch(function(error) {

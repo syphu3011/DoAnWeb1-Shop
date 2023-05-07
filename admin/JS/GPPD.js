@@ -17,7 +17,7 @@ async function post(data,dir) {
         url: dir,
         type: 'POST',
         data: data,
-        dataType: 'json',
+        dataType: 'text',
         contentType: false,
         processData: false,
     }).then(function(responseData) {

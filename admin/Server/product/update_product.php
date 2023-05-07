@@ -6,18 +6,18 @@
         try {
             // bắt đầu phiên
             $conn -> beginTransaction();
-            $name = $_POST["product"]["name"];
-            $id = $_POST["product"]["id"];
-            $made_in = $_POST["product"]["made_in"];
-            $description = $_POST["product"]["description"];
-            $status = $_POST["product"]["status"];
+            $name = $_POST["name"];
+            $id = $_POST["id"];
+            $made_in = $_POST["made_in"];
+            $description = $_POST["description"];
+            $status = $_POST["status"];
             // Kiểm tra quyền
-            $username = $_POST["user"]["username"];
-            if (!check_name($conn, $name, $id)) {
-                die("Tên không được trùng lặp với các sản phẩm khác!");
-            }
+            $username = $_POST["id_user"];
             if (check_privilege($username, $conn, $action,'product')) {
-                // hoàn tất giao dịch
+                if (!check_name($conn, $name, $id)) {
+                    die("Tên không được trùng lặp với các sản phẩm khác!");
+                }
+                // Kiểm tra xuất xứ
                 check_input_country($conn, $made_in);
                 // thiết lập query
                 $query = "UPDATE product 
@@ -29,15 +29,38 @@
                 $stmt -> bindParam(":made_in", $made_in);
                 $stmt -> bindParam(":description", $description);
                 $stmt -> bindParam(":idstatus", $status);
+                $stmt -> bindParam(":id", $id);
                 // thực thi query
                 if ($stmt -> execute()) {
-                    $json_response = ["Trạng thái" => "thành công", "Thông báo" => "Dữ liệu đã được sửa"];
-                    echo json_encode($json_response);
+                    //Upload ảnh
+                    $errors= array();
+                    $stmt_image = $conn->prepare("INSERT INTO image_product(id_product,link_image) VALUES(:id,:name_img)");
+                    $desired_dir="../../Image";
+                    $absolute_dir = realpath($desired_dir);
+                    foreach($_FILES['images_ar']['tmp_name'] as $key => $tmp_name ){
+                        $file_name = $key.$_FILES['images_ar']['name'][$key];
+                        $file_tmp =$_FILES['images_ar']['tmp_name'][$key];
+                        $file_type=$_FILES['images_ar']['type'][$key]; 
+                        $name_image = $file_name;
+                        if(is_dir("$desired_dir/".$file_name)==false){
+                            move_uploaded_file($file_tmp,$desired_dir.'/'.$file_name);
+                            chmod($desired_dir.'/'.$file_name, 0644);
+                            //Thêm vào cơ sở dữ liệu
+                            $_POST_image = ['id' => $id, 'name_img' => $name_image];
+                            $stmt_image->execute($_POST_image);
+                        }
+                    }
+                    //Xóa ảnh
+                    $stmt_delete_image = $conn->prepare("DELETE FROM image_product WHERE id_product = :id_product and link_image = :link_image");
+                    $image_delete = $_POST["image_delete"];
+                    foreach($image_delete as $value) {
+                        $data_image_delete = array('id_product' => $id, 'link_image' => $value);
+                        $stmt_delete_image->execute($data_image_delete);
+                    }
                 }
                 else {
-                    $json_response = ["Trạng thái" => "không thành công", "Thông báo" => "Dữ liệu không được sửa"];
                     $conn -> rollBack();
-                    die(json_encode($json_response));
+                    die('Có lỗi xảy ra! Dữ liệu chưa được thay đổi!');
                 }
                 $conn -> commit();
             }
@@ -49,8 +72,7 @@
         catch (Exception $e) {
             //giao dịch thất bại, rollback
             $conn -> rollBack();
-            $json_response = ["Trạng thái" => "không thành công", "Thông báo" => "Dữ liệu không được sửa", "Lỗi người phát triển" => $e];
-            die(json_encode($json_response));
+            die('Có lỗi trong quá trình thay đổi dữ liệu!');
         }
     }
     if ($_SERVER('REQUEST_METHOD') === 'PUT') {

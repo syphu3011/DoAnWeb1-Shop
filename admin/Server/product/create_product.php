@@ -6,13 +6,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES)) {
     try {
         $conn -> beginTransaction();
         // kiểm tra quyền 
-        $username = $_POST["user"]["username"];
-        if (check_privilege($username, $conn, 'them','product')) {
+        $id_user = $_POST["id_user"];
+        if (check_privilege($id_user, $conn, 'them','product')) {
             //Khai báo các thuộc tính sản phẩm
-            $id = $_POST["product"]["id"];
-            $name = $_POST["product"]["name"];
-            $made_in = $_POST["product"]["made_in"];
-            $description = $_POST["product"]["description"];
+            $id = $_POST["id"];
+            $name = $_POST["name"];
+            $made_in = $_POST["made_in"];
+            $description = $_POST["description"];
             $status = "TT01";
             // Kiểm tra tên
             if (!check_name($conn, $name)){
@@ -28,15 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES)) {
             $stmt->bindParam(':description', $description);
             $stmt->bindParam(':status', $status);
             // Thực thi truy vấn thêm sản phẩm các thông tin chính và kiểm tra kết quả
-            if ($stmt->execute()) {
-                // Thành công
-                $response = array('status' => 'success', 'message' => 'Data inserted.');
-                echo json_encode($response);
-            } else {
-                // Thất bại
-                $response = array('status' => 'error', 'message' => 'Failed to insert data.');
-                echo json_encode($response);
+            if (!($stmt->execute())) {
                 $conn -> rollBack();
+                die("Thêm không thành công!");
             }
             //Upload ảnh
             $errors= array();
@@ -48,7 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES)) {
                 $file_tmp =$_FILES['images_ar']['tmp_name'][$key];
                 $file_type=$_FILES['images_ar']['type'][$key]; 
                 $name_image = $file_name;
-                echo $file_tmp;
                 if(is_dir($desired_dir)==false){
                     mkdir("$desired_dir", 0700);    // Create directory if it does not exist
                 }
@@ -68,17 +61,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES)) {
             }
             //Thêm loại
             $stmt_classify = $conn->prepare("INSERT INTO product_list_classify(id_product,id_classify) VALUES (:id_product_arg,:id_classify_arg)");
-            if (is_array($_POST["product"]['clasify'])) {
-                foreach($_POST["product"]["clasify"] as $key) {
+            if (is_array($_POST['clasify'])) {
+                foreach($_POST["clasify"] as $key) {
                     $_POST_classify = ['id_product_arg' => $id, 'id_classify_arg' => $key];
                     $stmt_classify->execute($_POST_classify);
                 }
             }
             else {
-                $_POST_classify = ['id_product_arg' => $id, 'id_classify_arg' => $_POST["product"]["clasify"]];
+                $_POST_classify = ['id_product_arg' => $id, 'id_classify_arg' => $_POST["clasify"]];
                 $stmt_classify->execute($_POST_classify);
             }
-            echo "okokokok";
+            echo "Thêm thành công!";
             $conn -> commit();
         }
         else {
@@ -87,15 +80,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES)) {
         }
     }
     catch(Exception $e) {
-        $response = array('status' => 'error', 'message' => 'Thất bại');
-        // echo json_encode($response);
-        echo "Thua";
+        echo "Thất bại! Có lỗi trong quá trình thêm!";
         $conn -> rollBack();
     }
 } else {
-    $response = array('status' => 'error', 'message' => 'Invalid request method.');
+    // $response = array('status' => 'error', 'message' => 'Invalid request method.');
     // echo json_encode($response);
-    echo "Thua luôn";
+    echo "Không đúng phương thức!";
     $conn -> rollBack();
 }
 ?>

@@ -1,20 +1,19 @@
 <?php
-    function check_privilege($username,$conn, $action, $privilege_group) {
+    function check_privilege($id_user,$conn, $action, $privilege_group) {
         $query ="
         SELECT *
-        FROM account, privilege_list
+        FROM privilege_general_detail
         WHERE 
-        username = :username and 
-        privilege_list.id_primilege = account.id_privilege and 
-        privilege_list.id_privilege_group = :privilege_group
+        id_user = :username and 
+        id_table = :privilege_group
         ";
         $stmt = $conn->prepare($query);
-        $stmt->bindParam(':username',$username);
+        $stmt->bindParam(':username',$id_user);
         $stmt->bindParam(':privilege_group',$privilege_group);
         if ($stmt->execute()) {
             $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
             foreach ($response as $value) {
-                if ($value['action'] == $action) {
+                if ($value['id_feature'] == $action) {
                     return true;
                 }
             }

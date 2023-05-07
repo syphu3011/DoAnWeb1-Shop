@@ -10,9 +10,11 @@
 let receipt
 let detail_receipt
 let customer
+let product
 let length1
 let length2
 let length3
+// let length4
 
 // let length2 = obj12.prodInStock.length
 // let length3 = obj12.product.length
@@ -31,6 +33,22 @@ function get_DataOrder() {
         success: function(data) {
             receipt = data;
             length1 = receipt.length;
+            // FillOrder();
+        //   console.log(receipt);
+        },
+        error: function(xhr, status, error) {
+          // Xử lý lỗi ở đây
+          console.error(error);
+        }
+      });
+}
+function get_DataProd() {
+    return $.ajax({
+        url: './Server/product/products.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            product = data;
             // FillOrder();
         //   console.log(receipt);
         },
@@ -93,9 +111,9 @@ function calculated(price) {
     return price
 }
 function GetAmount(id) {
-    for (var i = 0; i < length2; i++) {
-        if (obj12.prodInStock[i].idProd == id) {
-            return obj12.prodInStock[i].amount
+    for (var i = 0; i < product.prodInStock.length; i++) {
+        if (product.prodInStock[i].idProd == id) {
+            return product.prodInStock[i].amount
         }
     }
 }
@@ -117,44 +135,60 @@ function SetAmount(sl, id) {
     }
 }
 
-function GetPrice(id) {
-    for (var i = 0; i < length3; i++) {
-        if (obj12.product[i].id == id) {
-            return obj12.product[i].price
-        }
-    }
-}
+// function GetPrice(id) {
+//     for (var i = 0; i < length3; i++) {
+//         if (obj12.product[i].id == id) {
+//             return obj12.product[i].price
+//         }
+//     }
+// }
 // Lấy tên sản phẩm
 function GetNamePro(id) {
-    for (var i = 0; i < length3; i++) {
-        if (obj12.product[i].id == id) {
-            return obj12.product[i].name
+    for (var i = 0; i < product.product.length; i++) {
+        if (product.product[i].id == id) {
+            return product.product[i].name
         }
     }
 }
 // Xác nhận đơn
 
 function ConfirmOrder(x) {
-    console.log(x)
-    let lengt = receipt[x].list_prod.length
-    let temp = 0
-    for (let i = 0; i < lengt; i++) {
-        if (parseInt(GetAmount(receipt[x].list_prod[i].idProd)) >
-            parseInt(receipt[x].list_prod[i].amount)) {
-            temp++
-        }
-    }
-    if (temp == lengt) {
-        receipt[x].id_status = "xác nhận"
-        receipt[x].idStaff = JSON.parse(localStorage.getItem("currentStaff")).id
+    // console.log(x)
+    // let lengt = receipt[x].list_prod.length
+    // let temp = 0
+    // for (let i = 0; i < lengt; i++) {
+    //     if (parseInt(GetAmount(receipt[x].list_prod[i].idProd)) >
+    //         parseInt(receipt[x].list_prod[i].amount)) {
+    //         temp++
+    //     }
+    // }
+    // if (temp == lengt) {
+
+        receipt[x].id_status = "TT07"
+        // receipt[x].idStaff = JSON.parse(localStorage.getItem("currentStaff")).id
         receipt[x].date_confirm = getCurrentDate2()
-        for (let i = 0; i < lengt; i++) {
-            SetAmount(receipt[x].list_prod[i].amount,  receipt[x].list_prod[i].idProd)
-        }
-        writeToLocalStorage(obj12)
-    } else {
-        alert("Số lượng trong kho không đủ")
-    }
+        $.ajax({
+            url: "./Server/receipt/receipt.php?action=update",
+            method: "POST",
+            dataType: "json",
+            data: {
+                id: receipt[x].id,
+                id_status: "TT07",
+                date_confirm:receipt[x].date_confirm
+            },
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            },
+        });
+        // for (let i = 0; i < lengt; i++) {
+        //     SetAmount(receipt[x].list_prod[i].amount,  receipt[x].list_prod[i].idProd)
+        // }
+    // } else {
+    //     alert("Số lượng trong kho không đủ")
+    // }
 
     // if(document.getElementById("date-init-first").value==""||
     // document.getElementById("date-init-last").value==""){
@@ -201,9 +235,9 @@ function FillOrder() {
     for (let i = tagtable.rows.length - 1; i > 0; i--)
         tagtable.deleteRow(i);
     for (var i = 0; i < length1; i++) {
-        // if (receipt[i].id_status == "TT07" || receipt[i].id_status == "TT08") {
-        //     continue
-        // } else {
+        if (receipt[i].id_status == "TT07" || receipt[i].id_status == "TT08") {
+            continue
+        } else {
             let tagrow = document.createElement("tr")
             tagrow.innerHTML = `
             <td>` + receipt[i].id + `</td>
@@ -211,11 +245,11 @@ function FillOrder() {
             <td>` + GetNameCus(receipt[i].id_customer) + `</td>
             <td>` + receipt[i].date_init + `</td>
             <td>` + calculated(TotalMoney(receipt[i].id)) + ` VNĐ</td>
-            <td class = detail_o onclick=DetailOr(` + i + `)>Chi tiết</td>
-            <td>` + receipt[i].id_status + `</td>
+            <td class = detail_o onclick=DetailOr("` + receipt[i].id + `")>Chi tiết</td>
+            <td>` + "chưa xử lý" + `</td>
             <td> <button onclick=ConfirmOrder(` + i + `) >Xác nhận</button> <button onclick=CancelOrder(` + i + `)>Hủy</button> </td>`
             tagtable.appendChild(tagrow)
-        // }
+        }
     }
 
 }
@@ -223,21 +257,27 @@ function FillOrder() {
 
 function FillHistory() {
     let tagtable = document.getElementById("table-history")
+    let status
     for (let i = tagtable.rows.length - 1; i > 0; i--)
         tagtable.deleteRow(i);
     for (var i = 0; i < length1; i++) {
-        console.log(receipt[i].id_status)
-        if (receipt[i].id_status.toLowerCase() != "TT09") {
+        if (receipt[i].id_status != "TT09") {
+            if(receipt[i].id_status=="TT08"){
+                status="đã hủy"
+            }
+            else{
+                status="đã xác nhận"
+            }
             let tagrow = document.createElement("tr")
             tagrow.innerHTML = `
             <td>` + receipt[i].id + `</td>
-            <td>` + receipt[i].idCustomer + `</td>
-            <td>` + GetNameCus(receipt[i].idCustomer) + `</td>
+            <td>` + receipt[i].id_customer + `</td>
+            <td>` + GetNameCus(receipt[i].id_customer) + `</td>
             <td>` + receipt[i].date_confirm + `</td>
-            <td>` + calculated(tongtienHD(receipt[i].list_prod)) + ` VNĐ</td>
-            <td class = detail_h onclick=DetailHis(` + i + `)>Chi tiết</td>
-            <td>` + receipt[i].id_status + `</td>
-            <td> ` + receipt[i].idStaff + ` </td>`
+            <td>` + calculated(TotalMoney(receipt[i].id)) + ` VNĐ</td>
+            <td class = detail_h onclick=DetailHis("` + receipt[i].id + `")>Chi tiết</td>
+            <td>` + status + `</td>
+            <td> ` + receipt[i].id_staff + ` </td>`
             tagtable.appendChild(tagrow)
         }
     }
@@ -246,26 +286,29 @@ function FillHistory() {
 // Chi tết đơn hang và chi tiết lịch sử đơn hàng
 
 function FillDetailO(x) {
-    let leng = receipt[x].list_prod.length
-    document.getElementById("Text-detail-order").innerHTML = `Chi tiết đơn hàng ` + receipt[x].id
+    // let leng = receipt[x].list_prod.length
+    document.getElementById("Text-detail-order").innerHTML = `Chi tiết đơn hàng ` + x
     let tagtable = document.getElementById("Table-detail-order")
     for (let i = tagtable.rows.length - 1; i > 0; i--)
         tagtable.deleteRow(i);
-    for (var i = 0; i < leng; i++) {
-        let tagrow = document.createElement("tr")
-        let idprod = receipt[x].list_prod[i].idProd
-        tagrow.innerHTML = `
-    <td>` + idprod + `</td>
-    <td>` + GetNamePro(idprod)+ `</td>
-    <td>` + receipt[x].list_prod[i].idSize + `</td>
-    <td>` + calculated(GetPrice(idprod)) + ` VNĐ</td>
-    <td>` + receipt[x].list_prod[i].amount + `</td>
-    <td >` + GetAmount(idprod) + `</td>
-    <td>` + calculated((receipt[x].list_prod[i].amount * GetPrice(receipt[x].list_prod[i].idProd)) - GetTotal(receipt[x].list_prod[i])) + `</td>
-    <td>` + calculated(GetTotal(receipt[x].list_prod[i])) + ` VNĐ</td>`
-        tagtable.appendChild(tagrow)
+    for (var i = 0; i < length2; i++) {
+        if(detail_receipt[i].id_receipt==x){
+            let tagrow = document.createElement("tr")
+            let idprod = detail_receipt[i].id_product_detail_receipt
+            tagrow.innerHTML = `
+            <td>` + detail_receipt[i].id_product_detail_receipt + `</td>
+            <td>` + GetNamePro(idprod)+ `</td>
+            <td>` + detail_receipt[i].id_size_detail_receipt  + `</td>
+            <td>` + calculated(detail_receipt[i].price_detail_receipt) + ` VNĐ</td>
+            <td>` + detail_receipt[i].amount_detail_receipt + `</td>
+            <td >` + GetAmount(idprod) + `</td>
+            <td>` + " " + `</td>
+            <td>` + calculated(detail_receipt[i].amount_detail_receipt*detail_receipt[i].price_detail_receipt) + ` VNĐ</td>`
+            tagtable.appendChild(tagrow)
+        }
+        
     }
-    document.getElementById("total").innerHTML = `Tổng đơn hàng: ` + calculated(tongtienHD(receipt[x].list_prod)) + ` VNĐ`
+    document.getElementById("total").innerHTML = `Tổng đơn hàng: ` + calculated(TotalMoney(x)) + ` VNĐ` // cũ là tongtienhd
     document.getElementById("confirm-order").onclick = function() {
         ConfirmOrder(x)
         CloseDetailOr()
@@ -277,28 +320,29 @@ function FillDetailO(x) {
 }
 
 function FillDetailH(x) {
-    let leng = receipt[x].list_prod.length
-    document.getElementById("Text-Detail-History").innerHTML = `Chi tiết đơn hàng ` + receipt[x].id
+    let date_order
+    document.getElementById("Text-Detail-History").innerHTML = `Chi tiết đơn hàng ` + x
     let tagtable = document.getElementById("Table-detail-history")
     for (let i = tagtable.rows.length - 1; i > 0; i--)
         tagtable.deleteRow(i);
-    for (var i = 0; i < leng; i++) {
-        let tagrow = document.createElement("tr")
-        let idprod = receipt[x].list_prod[i].idProd
-        console.log(GetTotal(receipt[x].list_prod[i]))
-        tagrow.innerHTML = `
-    <td>` + idprod + `</td>
-    <td>` + GetNamePro(idprod) + `</td>
-    <td>` + receipt[x].list_prod[i].idSize + `</td>
-    <td>` + calculated(GetPrice(idprod)) + ` VNĐ</td>
-    <td>` + receipt[x].list_prod[i].amount + `</td>
-    <td>` + calculated((receipt[x].list_prod[i].amount * GetPrice(receipt[x].list_prod[i].idProd)) - GetTotal(receipt[x].list_prod[i])) + `</td>
-    <td>` + calculated(GetTotal(receipt[x].list_prod[i])) + ` VNĐ</td>`
-
-        tagtable.appendChild(tagrow)
+    for (var i = 0; i < length2; i++) {
+        if(detail_receipt[i].id_receipt==x){
+            date_order =detail_receipt[i].date_confirm_receipt
+            let tagrow = document.createElement("tr")
+            let idprod = detail_receipt[i].id_product_detail_receipt
+            tagrow.innerHTML = `
+        <td>` + idprod + `</td>
+        <td>` + GetNamePro(idprod) + `</td>
+        <td>` + detail_receipt[i].id_size_detail_receipt + `</td>
+        <td>` + calculated(detail_receipt[i].price_detail_receipt) + ` VNĐ</td>
+        <td>` + detail_receipt[i].amount_detail_receipt + `</td>
+        <td>` + "" + `</td>
+        <td>` + calculated(detail_receipt[i].amount_detail_receipt*detail_receipt[i].price_detail_receipt)  + ` VNĐ</td>`
+            tagtable.appendChild(tagrow)
+        }
     }
-    document.getElementById("total-his").innerHTML = `Tổng đơn hàng:  ` + calculated(tongtienHD(receipt[x].list_prod)) + ` VNĐ`
-    document.getElementById("Lbl-date").innerHTML = `Ngày đặt: ` + receipt[x].date_init
+    document.getElementById("total-his").innerHTML = `Tổng đơn hàng:  ` + calculated(TotalMoney(x)) + ` VNĐ`
+    document.getElementById("Lbl-date").innerHTML = `Ngày đặt: ` + date_order
 }
 
 //Tắt mở dialog
@@ -794,22 +838,22 @@ function timKm(id) {
     return km
 }
 
-function tongtienHD(od) {
-    let tong = 0
-    od.forEach(e => {
-        obj12.product.forEach(element => {
-            if (e.idProd == element.id) {
-                if (timKm(e.idProd) != "") {
-                    tong += parseInt(element.price) * parseInt(e.amount) - (parseInt(element.price) * parseInt(e.amount) * timKm(e.idProd).discount_percent / 100 - timKm(e.idProd).discount_price)
-                } else {
-                    tong += parseInt(element.price) * parseInt(e.amount)
+// function tongtienHD(od) {
+//     let tong = 0
+//     od.forEach(e => {
+//         obj12.product.forEach(element => {
+//             if (e.idProd == element.id) {
+//                 if (timKm(e.idProd) != "") {
+//                     tong += parseInt(element.price) * parseInt(e.amount) - (parseInt(element.price) * parseInt(e.amount) * timKm(e.idProd).discount_percent / 100 - timKm(e.idProd).discount_price)
+//                 } else {
+//                     tong += parseInt(element.price) * parseInt(e.amount)
 
-                }
-            }
-        })
-    })
-    return tong
-}
+//                 }
+//             }
+//         })
+//     })
+//     return tong
+// }
 
 function GetTotal(x) {
     let tong = 0
@@ -829,20 +873,20 @@ function GetTotal(x) {
 
 
 // timtheokhoang()
-get_DataDetailO()
-get_DataCus()
-get_DataOrder() 
-Promise.all([get_DataOrder(), get_DataCus(), get_DataDetailO()])
-  .then(function(results) {
-    // Tất cả các promise đã được giải quyết thành công
-    // Làm gì đó với kết quả trả về của các promise
-    console.log(results[0]); // receipt
-    console.log(results[1]); // customer
-    console.log(results[2]); // detail_receipt
-    FillOrder();
-  })
-  .catch(function(error) {
-    // Một trong các promise bị từ chối
-    // Xử lý lỗi ở đây
-    console.error(error);
-  });
+// get_DataDetailO()
+// get_DataCus()
+// get_DataOrder() 
+// Promise.all([get_DataOrder(), get_DataCus(), get_DataDetailO()])
+//   .then(function(results) {
+//     // Tất cả các promise đã được giải quyết thành công
+//     // Làm gì đó với kết quả trả về của các promise
+//     console.log(results[0]); // receipt
+//     console.log(results[1]); // customer
+//     console.log(results[2]); // detail_receipt
+//     FillOrder();
+//   })
+//   .catch(function(error) {
+//     // Một trong các promise bị từ chối
+//     // Xử lý lỗi ở đây
+//     console.error(error);
+//   });
