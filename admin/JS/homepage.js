@@ -92,9 +92,6 @@ function changeToOrder() {
   hideCurrent();
   appearDiv(document.getElementById("background_order"));
   // timtheokhoang();
-// get_DataDetailO()
-// get_DataCus()
-// get_DataOrder() 
 Promise.all([get_DataOrder(), get_DataCus(), get_DataDetailO()])
   .then(function(results) {
  
