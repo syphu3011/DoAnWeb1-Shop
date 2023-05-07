@@ -31,8 +31,8 @@ function get_DataOrder() {
         success: function(data) {
             receipt = data;
             length1 = receipt.length;
-            FillOrder();
-          console.log(receipt);
+            // FillOrder();
+        //   console.log(receipt);
         },
         error: function(xhr, status, error) {
           // Xử lý lỗi ở đây
@@ -48,8 +48,8 @@ function get_DataCus() {
         success: function(data) {
             customer = data;
             length3 = customer.length;
-            FillOrder();
-          console.log(customer);
+            // FillOrder();
+        //   console.log(customer);
         },
         error: function(xhr, status, error) {
           // Xử lý lỗi ở đây
@@ -65,8 +65,8 @@ function get_DataDetailO() {
         success: function(data) {
             detail_receipt = data;
             length2 = detail_receipt.length;
-            FillOrder();
-          console.log(detail_receipt);
+            // FillOrder();
+        //   console.log(detail_receipt);
         },
         error: function(xhr, status, error) {
           // Xử lý lỗi ở đây
