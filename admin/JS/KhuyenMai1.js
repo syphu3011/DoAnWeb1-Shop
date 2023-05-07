@@ -252,7 +252,9 @@ function suasanpham() {
 }
 
 
-
+function checkNamePromote(name) {
+    
+}
 // Thêm khuyến mãi
 function themkhuyenmai() {
     let id = `KM` + length11;
@@ -305,7 +307,7 @@ function themkhuyenmai() {
                             detail_promotion: detail_promotion
                         }
                         let toJSON = JSON.stringify(dataUpServer)
-                        postJSON(toJSON,'./Server/promotion/create_promotion.php')
+                        alert(postJSON(toJSON,'./Server/promotion/create_promotion.php'))
                         document.getElementById("KhuyenMai-Background").remove()
                         renderTable2()
                     } else {
