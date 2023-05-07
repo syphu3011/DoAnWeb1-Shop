@@ -263,19 +263,25 @@ function themkhuyenmai() {
     let ketthuc = getDate(document.getElementById("ketthuc").value)
     let noidung = document.getElementById("noidung").value;
 
-    if (ten == "" || giamgia == "" || phantramgiam == "" || document.getElementById("batdau").value == "" ||
+    if (ten == "" || (giamgia == "" && phantramgiam == "") || document.getElementById("batdau").value == "" ||
         document.getElementById("ketthuc").value == " ") {
         alert("Hãy nhập đủ thông tin")
     } else {
         if (checkNumber(giamgia)) {
             if (checkNumber(phantramgiam)) {
+                if (phantramgiam != '') {
+                    if (parseFloat(phantramgiam) > 100 || parseFloat(phantramgiam) < 0) {
+                        alert('Phần trăm giảm không được quá 100 và dưới 0!')
+                        return
+                    }
+                }
                 if (batdau > getCurrentDate().split(" ")[0]) {
                     if (batdau < ketthuc) {
                         let promotion = {
                             id: id,
                             name: ten.toLowerCase(),
                             content: noidung,
-                            begin_date: setDate(begin_date),
+                            begin_date: setDate(batdau),
                             finish_date: setDate(ketthuc),
                             image: "",
                             discount_percent: phantramgiam,
