@@ -126,25 +126,25 @@ function fill_infor(
     } else {
         document.getElementById("other").checked = true;
     }
-    document.getElementById("save-update").onclick = function () {
-        $.ajax({
-            url: "./admin/Server/customer/customer.php?action=update",
-            method: "POST",
-            dataType: "json",
-            data: {
-                id: id,
-                name: name,
-                numberphone: number_phone,
-                birthday: birth_day,
-                gender: gender,
-                // password: password_customer
-            },
-            success: function (response) {
-                console.log(response);
-            },
-            error: function (xhr, status, error) {
-                console.log(error);
-            },
-        });
-    };
+    // document.getElementById("save-update").onclick = function () {
+    //     $.ajax({
+    //         url: "./admin/Server/customer/customer.php?action=update",
+    //         method: "POST",
+    //         dataType: "json",
+    //         data: {
+    //             id: id,
+    //             name: name,
+    //             numberphone: number_phone,
+    //             birthday: birth_day,
+    //             gender: gender,
+    //             // password: password_customer
+    //         },
+    //         success: function (response) {
+    //             console.log(response);
+    //         },
+    //         error: function (xhr, status, error) {
+    //             console.log(error);
+    //         },
+    //     });
+    // };
 }

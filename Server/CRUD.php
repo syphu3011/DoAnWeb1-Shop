@@ -974,8 +974,7 @@ class CRUD
                     cart.id_size,
                     cart.amount,
                     cart.price
-                FROM cart, product, 
-                    image_product, product_in_stock,
+                FROM cart, product, product_in_stock,
                     product_list
                 WHERE cart.id_customer= ?
                     AND cart.id_product=product.id
@@ -990,6 +989,7 @@ class CRUD
         $stmt = null;
         return $result;
     }
+    // check
     public function check_cartById($conn, $id_kh, $id_product)
     {
         # code...
@@ -1002,6 +1002,22 @@ class CRUD
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt = null;
         return $result;
+    }
+    public function check_number_phone_when_update($conn, $id_customer, $number_phone)
+    {
+        # code...
+        $sql = "SELECT COUNT(*) AS count
+            FROM customer
+            WHERE customer.id != '$id_customer'
+            AND customer.numberphone = '$number_phone'";
+        // echo $sql;
+        $stmt = $conn -> prepare($sql);
+        $stmt -> execute();
+        $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+        $stmt = null;
+        // echo $sql;
+        // echo "/n";
+        return $result[0]["count"];
     }
     public function insert_data_to_cartById(
         $conn,
@@ -1068,6 +1084,28 @@ class CRUD
         }
         return $result;
     }
+    public function update_customer($conn, $customer)
+    {
+        $sql = "UPDATE customer 
+                JOIN account ON account.id_user = customer.id_user
+                SET     
+                    account.password = IF(NULLIF(:password, '') IS NOT NULL, :password, password),
+                    name = IF(NULLIF(:name, '') IS NOT NULL, :name, name),
+                    birthday = IF(NULLIF(:birthday, '') IS NOT NULL, :birthday, birthday),
+                    numberphone = IF(NULLIF(:numberphone, '') IS NOT NULL, :numberphone, numberphone),
+                    image = IF(NULLIF(:image, '') IS NOT NULL, :image, image),
+                    address = IF(NULLIF(:address, '') IS NOT NULL, :address, address),
+                    gender = IF(NULLIF(:gender, '') IS NOT NULL, :gender, gender)
+                WHERE id = :id";
+                
+        $stmt = $conn->prepare($sql);
+        $stmt->execute($customer);
+        $result = $stmt->rowCount();
+        $stmt = null;
+        return $result;
+    }
+
+
     // xoa san pham trong gio
     public function delete_product_in_cartById($conn, $username, $id_product)
     {
