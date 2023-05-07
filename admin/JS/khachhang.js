@@ -335,49 +335,65 @@ function renderAddNewCusInterface() {
   // TODO chưa có upload ảnh
   // TODO chưa cảnh báo trùng sđt
   $("#add-new-cus-box-content").html(`
-  <div style="display: flex; flex-direction: row; padding: 1rem;">
-      <form id="cus-add-img-form" method="post" style="display: flex; flex-direction: column; padding-left: 1rem; padding-top: 1rem;">
-        <input type="file" name="cus-add-img" id="cus-add-img">
-        <button style="margin-top: 1rem;" type="submit">Upload</button>
-      </form>
-      <form style="display: flex; flex-direction: column; align-items:center; padding-left: 1rem; padding-bottom: 1rem;">
-        <div id="id-new-account">ID tài khoản: ${expectedId}</div>
-        <div>Ngày tham gia: Chưa có</div>
-            <label for="">Tên người dùng:</label>
-        <input type="text" id="customer-name" value="">
-            <label for="">Giới tính:</label>
-        <select  id="customer-gender">
-            <option value="Nam">Nam</option>
-            <option value="Nữ">Nữ</option>
-            <option value="Khác">Khác</option>
-        </select>
-            <label for="">Ngày sinh:</label>
-        <input type="date" id="customer-birthday">
-            <label for="">Quyền:</label>
-        <select id="customer-privilege">
-            <option value="customer">customer</option>
-        </select>
-      </form>
-      <form style="display: flex; flex-direction: column; align-items:center; padding: 1rem;">
-            <label for="">* Tên đăng nhập:</label>
-        <input type="text" id="customer-username" value="">
-        <div id="warn-username-cus-box"></div>
-            <label for="">* Mật khẩu:</label>
-        <input type="password" id="customer-password" value="">
-        <div id="warn-password-cus-box"></div>
-            <label for="">* Nhập lại mật khẩu:</label>
-        <input type="password" id="customer-password-again" value="">
-        <div id="warn-password-again-cus-box"></div>
-            <label for="">Địa chỉ:</label>
-        <input type="text" id="customer-address" value="">
-            <label for="">Số điện thoại:</label>
-        <input type="text" id="customer-numberphone" value="">
+  <div class="cus-modify-frame">
+      <form id="cus-add-form" class="form-general">
+        
+        <div>
+            <input type="file" name="cus-add-img" id="cus-add-img">
+        </div>
+
+        <div class="form-2">
+            <div id="id-new-account">ID tài khoản: ${expectedId}</div>
+          
+            <label for="">Ngày tham gia: Chưa có</label>
             
+            <label for="">Tên người dùng:</label>
+          <input type="text" id="customer-name" value="">
+            
+            <label for="">Giới tính:</label>
+          <select  id="customer-gender">
+              <option value="Nam">Nam</option>
+              <option value="Nữ">Nữ</option>
+              <option value="Khác">Khác</option>
+          </select>
+              <label for="">Ngày sinh:</label>
+          <input type="date" id="customer-birthday">
+              
+            <label for="">Quyền:</label>
+          <select id="customer-privilege">
+              <option value="customer">customer</option>
+          </select>
+        </div>
+          
+        <div class="form-3">
+            <label for="">* Tên đăng nhập:</label>
+          <input type="text" id="customer-username" value="">
+          <div id="warn-username-cus-box"></div>
+            <span>
+              <label for="">* Mật khẩu:</label>
+            </span>
+          <input type="password" id="customer-password" value="">
+          <div id="warn-password-cus-box"></div>
+            
+            <label for="">* Nhập lại mật khẩu:</label>
+          <input type="password" id="customer-password-again" value="">
+          <div id="warn-password-again-cus-box"></div>
+            
+            <label for="">Địa chỉ:</label>
+          <input type="text" id="customer-address" value="">
+            
+            <label for="">Số điện thoại:</label>
+          <input type="text" id="customer-numberphone" value="">
+        </div>
+
       </form>
   </div>
   `);
 
-  let customerImgAddform = document.getElementById('cus-add-img-form');
+  // add form attribute into button
+  $("#btn-detail-add-customer-group").attr("form", "cus-add-form");
+
+  let customerImgAddform = document.getElementById('cus-add-form');
   customerImgAddform.addEventListener('submit', function (event){
     event.preventDefault();
     let formData = new FormData(customerImgAddform);
@@ -404,17 +420,17 @@ function renderAddNewCusInterface() {
         'image': hexData
       });
       console.log(postData);
-      $.ajax({
-        url: 'server.php',
-        method: 'POST',
-        data: postData,
-        success: function(response) {
-          console.log(response);
-        },
-        error: function(xhr, status, error) {
-          console.log(error);
-        }
-      });
+      // $.ajax({
+      //   url: 'server.php',
+      //   method: 'POST',
+      //   data: postData,
+      //   success: function(response) {
+      //     console.log(response);
+      //   },
+      //   error: function(xhr, status, error) {
+      //     console.log(error);
+      //   }
+      // });
     };
     image.src = URL.createObjectURL(imageFile);
   });
@@ -428,6 +444,11 @@ function renderAddNewCusInterface() {
   }
 
   window.addEventListener("keypress", (e) => {
+    console.log({
+      username: readyToUsername ? "True" : "False",
+      password: readyToPassword ? "True" : "False",
+      passagain: readyToPasswordAgain ? "True" : "False",
+    })
     readyToSubmit = 
       readyToUsername &&
       readyToPassword && 
@@ -467,14 +488,11 @@ function bindNotiIntoBox() {
     if (inputValue.length > 12) {
       warnUsernameDiv.css("display", "block");
       warnUsernameDiv.html(`--> quá dài`);
-      readyToUsername = false;
     } else if (inputValue.length > 3 || inputValue.length == 0){
       warnUsernameDiv.css("display", "none");
-      readyToUsername = true;
     } else {
       warnUsernameDiv.css("display", "block");
       warnUsernameDiv.html(`--> quá ngắn`);
-      readyToUsername = false;
     }
   })
   passwordBox.on('input', function (e) {
@@ -483,15 +501,12 @@ function bindNotiIntoBox() {
     if (inputValue.length > 12) {
       warnPasswordDiv.css("display", "block");
       warnPasswordDiv.html(`--> quá dài`);
-      readyToPassword = false;
     } else 
     if (inputValue.length > 3 || inputValue.length == 0) {
       warnPasswordDiv.css("display", "none");
-      readyToPassword = true;
     } else {
       warnPasswordDiv.css("display", "block");
       warnPasswordDiv.html(`--> quá ngắn`);
-      readyToPassword = false;
     }
   })
   passwordAgainBox.on('input', function (e) {
@@ -500,10 +515,8 @@ function bindNotiIntoBox() {
     if (inputValue !== previousInputValue) {
       warnPasswordAgainDiv.css("display", "block");
       warnPasswordAgainDiv.html(`--> không trùng mk`);
-      readyToPasswordAgain = false;
     } else {
       warnPasswordAgainDiv.css("display", "none");
-      readyToPasswordAgain = true;
     }
   })
 
@@ -921,6 +934,8 @@ function saveNewCustomer(id) {
 }
 
 function closeAddCustomer() {
+  // remove form attachment from button
+  $("#btn-detail-add-customer-group").removeAttr("form");
   readyToSubmit = false;
   window.removeEventListener("keypress", (e) => {
     if (readyToSubmit) {
