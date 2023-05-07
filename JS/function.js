@@ -23,6 +23,8 @@ function upCustomer(
     numberphone,
     username,
     password,
+    samepassword,
+    lastpassword,
     gender,
     birthday,
     address = "",
@@ -41,6 +43,8 @@ function upCustomer(
     this.image = image;
     this.cart = cart;
     this.status = status;
+    this.lastpassword = lastpassword;
+    this.samepassword=samepassword
     this.date_init = getCurrentDate();
 }
 function Customer(

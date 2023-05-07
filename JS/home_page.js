@@ -142,6 +142,10 @@ function pagination(data) {
             console.log(btn[i].id);
             if (localStorage.getItem("current_page") == "is_search") {
                 callback_search(btn[i].id);
+            } else {
+                if (localStorage.getItem("current_page")=="is_show_more"){
+                    
+                }
             }
         };
     }
@@ -293,15 +297,12 @@ function create_Homepage(data_res) {
     }
 }
 function detail_product() {
-    console.log(1);
-
     let click_product = document.getElementsByClassName(
         "main_list_product_product"
     );
     // pagination();
     for (let i = 0; i < click_product.length; i++) {
         click_product[i].onclick = function () {
-            console.log(1);
             //chọn xem sản phẩm
             getDataFromServer(
                 "./Server/get_product.php",

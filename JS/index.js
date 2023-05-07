@@ -1210,6 +1210,12 @@ document.getElementById("thanh-toan").onclick = function (e) {
 btnuser.onclick = function () {
     document.getElementById("passwd").value = "";
     if (currentUser != null) {
+        document.getElementById("mkm").value = "";
+        document.getElementById("xnmkm").value = "";
+        document.getElementById("mkht").value = "";
+        tdmk = false;
+        document.getElementById("nhapthaydoi").style.display = "";
+        document.getElementById("thaydoi-mk").textContent = "Thay đổi";
         if (showuser.style.display == "") {
             uname.innerHTML = currentUser.name;
             showuser.style.display = "block";
@@ -1319,6 +1325,9 @@ document.getElementById("btn-update").onclick = function () {
     }, 300);
 };
 document.getElementById("thaydoi-mk").onclick = function () {
+    document.getElementById("mkm").value = "";
+    document.getElementById("xnmkm").value = "";
+    document.getElementById("mkht").value = "";
     if (tdmk) {
         tdmk = false;
         document.getElementById("nhapthaydoi").style.display = "";
@@ -2123,6 +2132,8 @@ saveUpdate.onclick = function () {
         document.getElementById("update-contact").value,
         "",
         document.getElementById("mkm").value,
+        document.getElementById("xnmkm").value,
+        document.getElementById("mkht").value,
         checkedInput.value,
         document.getElementById("update-birthday").value,
         "",

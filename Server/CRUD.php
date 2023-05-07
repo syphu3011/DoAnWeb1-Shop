@@ -1019,6 +1019,36 @@ class CRUD
         // echo "/n";
         return $result[0]["count"];
     }
+    public function check_password($conn, $customer)
+    {
+        # code...
+        $sql = "SELECT * 
+            FROM customer, account
+            WHERE account.id_user = customer.id_user
+            AND customer.id = '".$customer['id']."'
+            AND account.password = '" .$customer['lastpassword']."';'";
+        // $sql = "SELECT * 
+        //     FROM customer, account
+        //     WHERE account.id_user = customer.id_user
+        //     AND customer.id = :id
+        //     AND account.password = :lastpassword";
+        //     echo $customer['id'];
+
+            $stmt = $conn -> prepare($sql);
+            // echo json_encode($customer);
+            // $stmt -> execute($customer);
+            $stmt->execute();
+            // $stmt->execute([
+            //     ':id' => $customer['id'],
+            //     ':lastpassword' => $customer['lastpassword']
+            // ]);
+            // echo json_encode($customer);
+
+            $result = $stmt -> rowCount();
+            // echo $sql;
+            $stmt = null;
+            return $result;
+    }
     public function insert_data_to_cartById(
         $conn,
         $id_kh,
