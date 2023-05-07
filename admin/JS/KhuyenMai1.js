@@ -13,17 +13,6 @@ function Themkhuyenmai() {
             <div class="KhuyenMai3" >
                <div class="Div1">Thêm khuyến mãi</div>
                <div class="Div2">
-                    <div id="div-id-km">
-                        <p class="label-input">ID</p>
-                        <div id="div-input-id-km">
-                            <input type="text" id="input-id-km" name="import-id-km" style="height: 25px;margin:0px">
-                            <button id="select-id-km" style="height: 25px; padding:5px; margin: 0px;">
-                            <img src="./Image/arrow.png" class="img-button">
-                            </button>
-                            <ul class="list-drop-down" id="list-drop-down-id-km">z
-                            </ul>
-                        </div>
-                    </div>
                      <div>
                         <label for="tenkhuyenmai">Tên khuyến mãi:</label>
                         <input id="tenkhuyenmai"type="text">
@@ -94,16 +83,9 @@ function sua(x) {
        <div class="KhuyenMai3" >
           <div class="Div1">Sửa khuyến mãi</div>
             <div class="Div2">
-                <div id="div-id-km">
-                    <p class="label-input">ID</p>
-                    <div id="div-input-id-km">
-                        <input type="text" id="input-id-km" name="import-id-km" style="height: 25px;margin:0px">
-                        <button id="select-id-km" style="height: 25px; padding:5px; margin: 0px;">
-                        <img src="./Image/arrow.png" class="img-button">
-                        </button>
-                        <ul class="list-drop-down" id="list-drop-down-id-km">z
-                        </ul>
-                    </div>
+                <div>
+                    <label for="maid">ID:</label>
+                    <input id="id-km"type="text" readonly>
                 </div>
                 <div>
                     <label for="tenkhuyenmai">Tên khuyến mãi:</label>
@@ -185,9 +167,18 @@ function themsanpham() {
     }
     document.getElementById("btn-xacnhan").onclick = function() {
         let type = document.getElementById("idprod").value.toLowerCase()
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+        // if (type == "" || CheckTagType(type, arr1) >= 0 || !CheckIDPro(type)) {
+        //     alert("ID không hợp lệ")
+        // } else {
+=======
+>>>>>>> Stashed changes
         if (type == "" || CheckTagTypePromote(type, arr1) >= 0 || !CheckIDPro(type)) {
             alert("ID không hợp lệ")
         } else {
+>>>>>>> 59c6702014d571836b14680753c58b15a71225cd
             let div = document.getElementById("list-prod")
             let ele = document.createElement("div")
             ele.classList.add("div-pro")
@@ -204,11 +195,30 @@ function themsanpham() {
             }
             document.getElementById("idprod").value = ""
             UnDo.style.display = `none`;
-        }
+        // }
 
     }
 }
 
+<<<<<<< HEAD
+// function CheckIDPro(id) {
+//     for (var i = 0; i < length21; i++) {
+//         if (obj10.product[i].id.toLowerCase() == id) {
+//             return true
+//         }
+//     }
+//     return false
+// }
+
+// function CheckTagType(type, a) {
+//     for (let i = 0; i < a.length; i++) {
+//         if (a[i] == type) {
+//             return i;
+//         }
+//     }
+//     return -1;
+// }
+=======
 function CheckIDPro(id) {
     for (var i = 0; i < obj10.product.length; i++) {
         if (obj10.product[i].id.toLowerCase() == id) {
@@ -226,6 +236,7 @@ function CheckTagTypePromote(type, a) {
     }
     return -1;
 }
+>>>>>>> 59c6702014d571836b14680753c58b15a71225cd
 
 
 // Sửa sản phẩm
