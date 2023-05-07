@@ -25,7 +25,7 @@ class ReqHandling {
 			$query_statement = $conn->prepare($query);
 			$query_statement->execute();
 		} catch (Exception $e) {
-			echo "Please change key value in parameters." . "</br>";
+			Table::json_fire_exception($e);
 		}
 	}
 
