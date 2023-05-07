@@ -167,42 +167,34 @@ function themsanpham() {
     }
     document.getElementById("btn-xacnhan").onclick = function() {
         let type = document.getElementById("idprod").value.toLowerCase()
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
         // if (type == "" || CheckTagType(type, arr1) >= 0 || !CheckIDPro(type)) {
         //     alert("ID không hợp lệ")
         // } else {
-=======
->>>>>>> Stashed changes
-        if (type == "" || CheckTagTypePromote(type, arr1) >= 0 || !CheckIDPro(type)) {
-            alert("ID không hợp lệ")
-        } else {
->>>>>>> 59c6702014d571836b14680753c58b15a71225cd
-            let div = document.getElementById("list-prod")
-            let ele = document.createElement("div")
-            ele.classList.add("div-pro")
-            ele.appendChild(document.createTextNode(type))
-            div.appendChild(ele)
-            let tag = document.createElement("button")
-            tag.classList.add("close_type")
-            tag.appendChild(document.createTextNode("X"))
-            ele.appendChild(tag)
-            arr1.push(type)
-            tag.onclick = function() {
-                arr1.splice(CheckTagTypePromote(type, arr1), 1);
-                ele.remove();
-            }
-            document.getElementById("idprod").value = ""
-            UnDo.style.display = `none`;
+        let div = document.getElementById("list-prod")
+        let ele = document.createElement("div")
+        ele.classList.add("div-pro")
+        ele.appendChild(document.createTextNode(type))
+        div.appendChild(ele)
+        let tag = document.createElement("button")
+        tag.classList.add("close_type")
+        tag.appendChild(document.createTextNode("X"))
+        ele.appendChild(tag)
+        arr1.push(type)
+        tag.onclick = function() {
+            arr1.splice(CheckTagTypePromote(type, arr1), 1);
+            ele.remove();
+        }
+        document.getElementById("idprod").value = ""
+        UnDo.style.display = `none`;
         // }
 
     }
 }
 
-<<<<<<< HEAD
+
+
 // function CheckIDPro(id) {
-//     for (var i = 0; i < length21; i++) {
+//     for (var i = 0; i < obj10.product.length; i++) {
 //         if (obj10.product[i].id.toLowerCase() == id) {
 //             return true
 //         }
@@ -210,7 +202,7 @@ function themsanpham() {
 //     return false
 // }
 
-// function CheckTagType(type, a) {
+// function CheckTagTypePromote(type, a) {
 //     for (let i = 0; i < a.length; i++) {
 //         if (a[i] == type) {
 //             return i;
@@ -218,25 +210,7 @@ function themsanpham() {
 //     }
 //     return -1;
 // }
-=======
-function CheckIDPro(id) {
-    for (var i = 0; i < obj10.product.length; i++) {
-        if (obj10.product[i].id.toLowerCase() == id) {
-            return true
-        }
-    }
-    return false
-}
 
-function CheckTagTypePromote(type, a) {
-    for (let i = 0; i < a.length; i++) {
-        if (a[i] == type) {
-            return i;
-        }
-    }
-    return -1;
-}
->>>>>>> 59c6702014d571836b14680753c58b15a71225cd
 
 
 // Sửa sản phẩm
