@@ -9,43 +9,10 @@
 // localStorage.setItem("data", JSON.stringify(data))
 let receipt
 let detail_receipt
+let customer
 let length1
-function get_DataOrder() {
-    return $.ajax({
-        url: './Server/receipt/receipt.php',
-        method: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            receipt = data
-            let length1 = receipt.length
-            FillOrder()
-          console.log(receipt);
-        },
-        error: function(xhr, status, error) {
-          // Xử lý lỗi ở đây
-          console.error(error);
-        }
-      });
-}
-
-function get_DataDetailO() {
-    return $.ajax({
-        url: './Server/receipt/receiptDetail.php',
-        method: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            detail_receipt = data
-          console.log(detail_receipt);
-        },
-        error: function(xhr, status, error) {
-          // Xử lý lỗi ở đây
-          console.error(error);
-        }
-      });
-}
-
-get_DataOrder() 
-get_DataDetailO()
+let length2
+let length3
 
 // let length2 = obj12.prodInStock.length
 // let length3 = obj12.product.length
@@ -56,7 +23,57 @@ document.getElementById("date-init-last").value=CurrentDate()
 document.getElementById("date-confirm-first").value = "1971-01-01"
 document.getElementById("date-confirm-last").value = CurrentDate()
 
-
+function get_DataOrder() {
+    return $.ajax({
+        url: './Server/receipt/receipt.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            receipt = data;
+            length1 = receipt.length;
+            FillOrder();
+          console.log(receipt);
+        },
+        error: function(xhr, status, error) {
+          // Xử lý lỗi ở đây
+          console.error(error);
+        }
+      });
+}
+function get_DataCus() {
+    return $.ajax({
+        url: './Server/customer/customer.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            customer = data;
+            length3 = customer.length;
+            FillOrder();
+          console.log(customer);
+        },
+        error: function(xhr, status, error) {
+          // Xử lý lỗi ở đây
+          console.error(error);
+        }
+      });
+}
+function get_DataDetailO() {
+    return $.ajax({
+        url: './Server/receipt/receiptDetail.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            detail_receipt = data;
+            length2 = detail_receipt.length;
+            FillOrder();
+          console.log(detail_receipt);
+        },
+        error: function(xhr, status, error) {
+          // Xử lý lỗi ở đây
+          console.error(error);
+        }
+      });
+}
 
 function calculated(price) {
     if (price !== null) {
@@ -84,9 +101,12 @@ function GetAmount(id) {
 }
 
 function GetNameCus(id) {
-    for (var i = 0; i < length4; i++)
-        if (id == obj12.customer[i].id)
-            return obj12.customer[i].name
+    for (var i = 0; i < length3; i++) {
+        if (customer[i].id == id) {
+            return customer[i].name
+
+        }
+    }
 }
 
 function SetAmount(sl, id) {
@@ -104,6 +124,7 @@ function GetPrice(id) {
         }
     }
 }
+// Lấy tên sản phẩm
 function GetNamePro(id) {
     for (var i = 0; i < length3; i++) {
         if (obj12.product[i].id == id) {
@@ -164,12 +185,15 @@ function CancelOrder(x) {
 
 function TotalMoney(x) {
     let total = 0
-    let leng = receipt[x].list_prod.length
-    for (var i = 0; i < leng; i++) {
-        total = total + (receipt[x].list_prod[i].amount * GetPrice(receipt[x].list_prod[i].idProd))
+    for (var i = 0; i < length2; i++) {
+        if(detail_receipt[i].id_receipt==x){
+            total = total + detail_receipt[i].amount_detail_receipt*detail_receipt[i].price_detail_receipt
+        }
+        
     }
     return total
 }
+
 
 // Fill bảng
 function FillOrder() {
@@ -177,21 +201,21 @@ function FillOrder() {
     for (let i = tagtable.rows.length - 1; i > 0; i--)
         tagtable.deleteRow(i);
     for (var i = 0; i < length1; i++) {
-        if (receipt[i].id_status == "TT07" || receipt[i].id_status == "TT08") {
-            continue
-        } else {
+        // if (receipt[i].id_status == "TT07" || receipt[i].id_status == "TT08") {
+        //     continue
+        // } else {
             let tagrow = document.createElement("tr")
             tagrow.innerHTML = `
             <td>` + receipt[i].id + `</td>
-            <td>` + receipt[i].id_customer + `</td>
-            <td>` + GetNameCus(receipt[i].idCustomer) + `</td>
+            <td>` + receipt[i].id_customer+ `</td>
+            <td>` + GetNameCus(receipt[i].id_customer) + `</td>
             <td>` + receipt[i].date_init + `</td>
-            <td>` + calculated(TotalMoney(i)) + ` VNĐ</td>
+            <td>` + calculated(TotalMoney(receipt[i].id)) + ` VNĐ</td>
             <td class = detail_o onclick=DetailOr(` + i + `)>Chi tiết</td>
             <td>` + receipt[i].id_status + `</td>
             <td> <button onclick=ConfirmOrder(` + i + `) >Xác nhận</button> <button onclick=CancelOrder(` + i + `)>Hủy</button> </td>`
             tagtable.appendChild(tagrow)
-        }
+        // }
     }
 
 }
@@ -805,3 +829,20 @@ function GetTotal(x) {
 
 
 // timtheokhoang()
+get_DataDetailO()
+get_DataCus()
+get_DataOrder() 
+Promise.all([get_DataOrder(), get_DataCus(), get_DataDetailO()])
+  .then(function(results) {
+    // Tất cả các promise đã được giải quyết thành công
+    // Làm gì đó với kết quả trả về của các promise
+    console.log(results[0]); // receipt
+    console.log(results[1]); // customer
+    console.log(results[2]); // detail_receipt
+    FillOrder();
+  })
+  .catch(function(error) {
+    // Một trong các promise bị từ chối
+    // Xử lý lỗi ở đây
+    console.error(error);
+  });
