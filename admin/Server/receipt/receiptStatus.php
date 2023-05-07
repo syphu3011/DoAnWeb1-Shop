@@ -14,9 +14,9 @@ function changeProp($arr, $tableName) {
 }
 
 // * get information on child and parent table (use inner join)
-if ($_SERVER["REQUEST_METHOD"] === "GET"){	
-	// * GET
-	
+// ? http://localhost/doan/admin/Server/receipt/receiptStatus.php
+if ($_SERVER["REQUEST_METHOD"] === "GET" && empty($_GET)){	
+
 	$child = "receipt";
 	$parent = "customer";
 	$childHeader = Table::describe($conn, $child);
@@ -93,7 +93,9 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 		$childTableName, $parentTableName
 	);
 	
-}
+} else if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+}	
 
 
 
