@@ -15,13 +15,19 @@ function changeProp($arr, $tableName) {
 
 // * get information on child and parent table (use inner join)
 // ? http://localhost/doan/admin/Server/receipt/receiptStatus.php
-if ($_SERVER["REQUEST_METHOD"] === "GET" && empty($_GET)){	
+
+function perform_GET_receipt_status ($conn, $fromPost) {
 
 	$child = "receipt";
-	$parent = "customer";
+	$parent = "status_receipt";
 	$childHeader = Table::describe($conn, $child);
 	$parrentHeader = Table::describe($conn, $parent);
 	$condition = "1=1";
+
+	if (isset($_GET["id_receipt"])) {
+		$tempId = $_GET["id_receipt"];
+		$condition .= " AND $child.id = '$tempId'";
+	}
 
 	foreach($_GET as $key => $value) {
 		if (in_array($key, $parrentHeader))
@@ -53,48 +59,138 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && empty($_GET)){
 	$columnToSelect .= changeProp($childProp, $childTableName);
 	$columnToSelect .= changeProp($parentProp, $parentTableName);
 	$columnToSelect = substr($columnToSelect, 0, -2);
-	echo Table::jsonifyCoupleWithTableName(
-		$conn, 
-		Table::tableQueryCouple(
-			// * connection
+	if (!$fromPost) {
+		echo Table::jsonifyCoupleWithTableName(
 			$conn, 
-			// * childtable
-			$childTableName, 
-			// * parenttable
-			$parentTableName, 
-			// * foreign key on child
-			"id_status",
-			// * foreign key on parent
-			"id",
-			// * column to select
-			// "
-			// $childTableName.id as id_$childTableName, 
-			// $childTableName.date_init as date_init_$childTableName, 
-			// $childTableName.date_confirm as date_confirm_$childTableName, 
-			// $childTableName.address as address_$childTableName, 
-			// $childTableName.note as note_$childTableName, 
-			// $childTableName.id_staff as id_staff_$childTableName,
-			// $childTableName.id_customer as id_customer_$childTableName,
-			// $childTableName.id_status as id_status_$childTableName,
-			// $parentTableName.id as id_$parentTableName,
-			// $parentTableName.name as name_$parentTableName,
-			// $parentTableName.birthday as birthday_$parentTableName,
-			// $parentTableName.numberphone as numberphone_$parentTableName,
-			// $parentTableName.image as image_$parentTableName,
-			// $parentTableName.address as address_$parentTableName,
-			// $parentTableName.gender as gender_$parentTableName,
-			// $parentTableName.id_user as id_user_$parentTableName
-			// ",
-			$columnToSelect
-			,
-			// * condition to select
-			$condition
-		), 
-		$childTableName, $parentTableName
-	);
-	
-} else if ($_SERVER["REQUEST_METHOD"] === "POST") {
+			Table::tableQueryCouple(
+				// * connection
+				$conn, 
+				// * childtable
+				$childTableName, 
+				// * parenttable
+				$parentTableName, 
+				// * foreign key on child
+				"id_status",
+				// * foreign key on parent
+				"id",
+				// * column to select
+				// "
+				// $childTableName.id as id_$childTableName, 
+				// $childTableName.date_init as date_init_$childTableName, 
+				// $childTableName.date_confirm as date_confirm_$childTableName, 
+				// $childTableName.address as address_$childTableName, 
+				// $childTableName.note as note_$childTableName, 
+				// $childTableName.id_staff as id_staff_$childTableName,
+				// $childTableName.id_customer as id_customer_$childTableName,
+				// $childTableName.id_status as id_status_$childTableName,
+				// $parentTableName.id as id_$parentTableName,
+				// $parentTableName.name as name_$parentTableName,
+				// $parentTableName.birthday as birthday_$parentTableName,
+				// $parentTableName.numberphone as numberphone_$parentTableName,
+				// $parentTableName.image as image_$parentTableName,
+				// $parentTableName.address as address_$parentTableName,
+				// $parentTableName.gender as gender_$parentTableName,
+				// $parentTableName.id_user as id_user_$parentTableName
+				// ",
+				$columnToSelect
+				,
+				// * condition to select
+				$condition
+			), 
+			$childTableName, $parentTableName
+		);
+	} else {
+			return Table::tableQueryCouple(
+				// * connection
+				$conn, 
+				// * childtable
+				$childTableName, 
+				// * parenttable
+				$parentTableName, 
+				// * foreign key on child
+				"id_status",
+				// * foreign key on parent
+				"id",
+				// * column to select
+				// "
+				// $childTableName.id as id_$childTableName, 
+				// $childTableName.date_init as date_init_$childTableName, 
+				// $childTableName.date_confirm as date_confirm_$childTableName, 
+				// $childTableName.address as address_$childTableName, 
+				// $childTableName.note as note_$childTableName, 
+				// $childTableName.id_staff as id_staff_$childTableName,
+				// $childTableName.id_customer as id_customer_$childTableName,
+				// $childTableName.id_status as id_status_$childTableName,
+				// $parentTableName.id as id_$parentTableName,
+				// $parentTableName.name as name_$parentTableName,
+				// $parentTableName.birthday as birthday_$parentTableName,
+				// $parentTableName.numberphone as numberphone_$parentTableName,
+				// $parentTableName.image as image_$parentTableName,
+				// $parentTableName.address as address_$parentTableName,
+				// $parentTableName.gender as gender_$parentTableName,
+				// $parentTableName.id_user as id_user_$parentTableName
+				// ",
+				$columnToSelect
+				,
+				// * condition to select
+				$condition
+			); 
+	}
+}
 
+
+
+
+
+
+
+
+if ($_SERVER["REQUEST_METHOD"] === "GET"){	
+
+	perform_GET_receipt_status($conn, false);
+
+} else if ($_SERVER["REQUEST_METHOD"] === "POST") {
+	if (isset($_REQUEST["action"])){
+		if ($_REQUEST["action"] === "update" ){
+			try {
+				$conn->beginTransaction();
+				$receiptArr = Table::describe($conn, "receipt");
+				$statusArr = Table::describe($conn, "status_receipt");
+				if (isset($_POST["id"])) 
+				$id = $_POST["id"];
+				if (isset($_POST["id_receipt"])) 
+				$id = $_POST["id_receipt"];
+				
+				unset($_POST["id"]);
+				unset($_POST["id_receipt"]);
+				
+				if (!isset($_POST["status"])) {
+					echo json_encode(
+						array(
+							"message" => "Vui lòng thêm status cần sửa. (status)"
+						), JSON_UNESCAPED_UNICODE
+					);
+					$conn->rollback();
+					exit();
+				}
+				$tempArr = Table::tableQueryPropertyWithColSel($conn, "status_receipt", "name", $_POST["status"], "id");
+				$tempArr = $tempArr[0]["id"];
+				try {
+					ReqHandling::updateDb($conn, "receipt", $id, "id_status", $tempArr);
+				} catch (Exception $e) {
+					Table::json_fire_exception($e);
+					exit();
+				}
+				echo json_encode(array(
+					"message" => "Update trạng thái đơn hàng thành công."
+				), JSON_UNESCAPED_UNICODE);
+				$conn->commit();
+			} catch (Exception $e) {
+				Table::json_fire_exception($e);
+				$conn->rollback();
+			}
+		}
+	}
 }	
 
 

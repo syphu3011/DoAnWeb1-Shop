@@ -6,13 +6,14 @@ class Table {
 	// * $conn : connection from init.php
 	// * $tableName: targeted table name
 
-	public static function json_fire_exception($e) {
+	public static function json_fire_exception($e, $yourQuery = "") {
 		echo json_encode(array(
 			'error_code' => $e->getCode(),
 			'file' => $e->getFile(),
 			'line' => $e->getLine(),
 			'message' => $e->getMessage(),
-			'trace' => $e->getTrace()
+			'trace' => $e->getTrace(),
+			'yourQuery' => $yourQuery
 		), JSON_UNESCAPED_UNICODE);
 	}
 
@@ -51,7 +52,7 @@ class Table {
 				$query = 
 					"SELECT $column FROM $childTable INNER JOIN $parentTable 
 					ON $childTable.$childkey = $parentTable.$parentkey WHERE $condition;";
-			// echo $query . "</br>";	
+			echo $query . "</br>";	
 			$query_statement = $conn->prepare($query);
 			$query_statement->execute();
 			// $return_val =  $query_statement->fetchAll(PDO::FETCH_ASSOC);
@@ -117,7 +118,19 @@ class Table {
 			$query_statement = $conn->prepare($query);
 			$query_statement->execute();
 		} catch (Exception $e) {
-			echo "Please change key value in parameters." . "</br>";
+			self::json_fire_exception($e);
+		}
+		return $query_statement->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	public static function tableQueryPropertyWithColSel($conn, $tableName, $property, $content, $column) {
+		try {
+			$query = "SELECT $column FROM " . $tableName . " WHERE " . $property . " = '" . $content . "'";
+			// echo $query . "</br>";
+			$query_statement = $conn->prepare($query);
+			$query_statement->execute();
+		} catch (Exception $e) {
+			self::json_fire_exception($e);
 		}
 		return $query_statement->fetchAll(PDO::FETCH_ASSOC);
 	}
