@@ -517,9 +517,9 @@ exit.onclick = function () {
     if (updateinf.style.display == "block") {
         showacc(updateinf, 0, 1200);
     }
-    if (onclickProduct.style.display == "block") {
-        showacc(onclickProduct, 0, 1200);
-    }
+    // if (onclickProduct.style.display == "block") {
+    //     showacc(onclickProduct, 0, 1200);
+    // }
     if (setnewpass.style.display == "block") {
         showacc(setnewpass, 0, 1200);
     }
@@ -528,7 +528,7 @@ exit.onclick = function () {
         divAcc.style.display = "";
         signup.style.display = "";
         setnewpass.style.display = "";
-        onclickProduct.style.display = "";
+        // onclickProduct.style.display = "";
         in4.style.display = "";
         updateinf.style.display = "";
     }, 450);
@@ -1291,6 +1291,8 @@ btnshowfilter.onclick = function () {
         }
     }
 };
+
+// document.getElementById("div_gender").getElementsByTagName('input');
 //Phần thông tin người dùng
 uname.onclick = function () {
     account.style.display = "flex";
@@ -1729,15 +1731,15 @@ document.getElementById("home-page").onclick = function () {
 
 // let sizeProduct = new Array();
 
-function checkCart(iduser, id_product) {
-    getDataFromServer(
-        "./Server/get_data_cart.php",
-        { idkh: iduser, idpro: id_product },
-        function (respone) {
-            return respone.success;
-        }
-    );
-}
+// function checkCart(iduser, id_product) {
+//     getDataFromServer(
+//         "./Server/get_data_cart.php",
+//         { idkh: iduser, idpro: id_product },
+//         function (respone) {
+//             return respone.success;
+//         }
+//     );
+// }
 
 // function selectImage(
 //     divPreview,
@@ -1861,7 +1863,7 @@ function checkCart(iduser, id_product) {
 //     div.appendChild(divPreview);
 //     return div;
 // }
-let isSelectedSize = 0;
+// let isSelectedSize = 0;
 //chọn size
 // function selectSize(index, id) {
 //     isSelectedSize = 0;
@@ -2109,98 +2111,125 @@ document.getElementById("choose-img").onchange = function () {
 let tdmk = false;
 
 saveUpdate.onclick = function () {
-    let update_birthday = document.getElementById("update-birthday");
-    let update_contact = document.getElementById("update-contact");
-    let update_name = document.getElementById("update-name");
-    let name = update_name.value;
-    let birthday = update_birthday.value;
-    let contact = update_contact.value.replace("+84", "0");
-    let sex = "";
-    let s = document.getElementsByName("sex");
-    for (let i = 3; i < s.length; i++) {
-        if (s[i].checked) {
-            sex = document
-                .getElementById("update-in4")
-                .getElementsByTagName("label")[i - 3].textContent;
-        }
-    }
-    let correct = true;
-    data.customer.forEach((element) => {
-        if (element.number_phone == contact && element.id != currentUser.id) {
-            alert("Số điện thoại này đã tồn tại");
-            correct = false;
-            return;
-        }
+    var inputs = document
+        .getElementById("div_gender")
+        .getElementsByTagName("input");
+    var checkedInput = Array.prototype.find.call(inputs, function (input) {
+        return input.checked;
     });
-    if (!correct) {
-        return;
-    }
-    if (
-        update_name.value != "" &&
-        update_contact.value != "" &&
-        update_birthday.value != "" &&
-        sex != ""
-    ) {
-        if (checkValidNameU(update_name.value, "")) {
-            if (checkValidPhoneNumber(update_contact.value)) {
-                if (checkDate(update_birthday.value)) {
-                    if (tdmk) {
-                        if (
-                            checkUpdatePassword(
-                                document.getElementById("mkht").value,
-                                document.getElementById("mkm").value,
-                                document.getElementById("xnmkm").value
-                            )
-                        ) {
-                            currentUser.name = name;
-                            currentUser.birth_day =
-                                birthday.split("-")[2] +
-                                "-" +
-                                birthday.split("-")[1] +
-                                "-" +
-                                birthday.split("-")[0];
-                            currentUser.sex = sex;
-                            currentUser.number_phone = contact;
-                            currentUser.image = imgLinkChange;
-                            currentUser.password =
-                                document.getElementById("xnmkm").value;
-                            document.getElementById("mkht").value = "";
-                            document.getElementById("mkm").value = "";
-                            document.getElementById("xnmkm").value = "";
-                            localStorage.setItem("data", JSON.stringify(data));
-                            alert("Cập nhật thông tin thành công");
-                        } else {
-                            alert("Vui lòng kiểm tra lại mật khẩu");
-                        }
-                    } else {
-                        currentUser.name = name;
-                        currentUser.birth_day =
-                            birthday.split("-")[2] +
-                            "-" +
-                            birthday.split("-")[1] +
-                            "-" +
-                            birthday.split("-")[0];
-                        currentUser.sex = sex;
-                        currentUser.number_phone = contact;
-                        currentUser.image = imgLinkChange;
-                        document.getElementById("mkht").value = "";
-                        document.getElementById("mkm").value = "";
-                        document.getElementById("xnmkm").value = "";
-                        localStorage.setItem("data", JSON.stringify(data));
-                        alert("Cập nhật thông tin thành công");
-                    }
-                } else {
-                    alert("Ngày sinh chưa hợp lệ");
-                }
-            } else {
-                alert("Số điện thoại không hợp lệ");
-            }
-        } else {
-            alert("Tên không được chứa kí tự đặc biệt hoặc chữ số");
+    update_customer = new upCustomer(
+        currentUser.id,
+        document.getElementById("update-name").value,
+        document.getElementById("update-contact").value,
+        "",
+        document.getElementById("mkm").value,
+        checkedInput.value,
+        document.getElementById("update-birthday").value,
+        "",
+        document.getElementById("img-current-customer").src,
+        "",
+        ""
+    );
+    getDataFromServer(
+        "./Server/update_customer.php",
+        { update_customer: update_customer },
+        function (response) {
+            console.log(response);
+            alert(response.Message);
         }
-    } else {
-        alert("Vui lòng cập nhật đầy đủ thông tin");
-    }
+    );
+    // let update_birthday = document.getElementById("update-birthday");
+    // let update_contact = document.getElementById("update-contact");
+    // let update_name = document.getElementById("update-name");
+    // let name = update_name.value;
+    // let birthday = update_birthday.value;
+    // let contact = update_contact.value.replace("+84", "0");
+    // let sex = "";
+    // let s = document.getElementsByName("sex");
+    // for (let i = 3; i < s.length; i++) {
+    //     if (s[i].checked) {
+    //         sex = document
+    //             .getElementById("update-in4")
+    //             .getElementsByTagName("label")[i - 3].textContent;
+    //     }
+    // }
+    // let correct = true;
+    // data.customer.forEach((element) => {
+    //     if (element.number_phone == contact && element.id != currentUser.id) {
+    //         alert("Số điện thoại này đã tồn tại");
+    //         correct = false;
+    //         return;
+    //     }
+    // });
+    // if (!correct) {
+    //     return;
+    // }
+    // if (
+    //     update_name.value != "" &&
+    //     update_contact.value != "" &&
+    //     update_birthday.value != "" &&
+    //     sex != ""
+    // ) {
+    //     if (checkValidNameU(update_name.value, "")) {
+    //         if (checkValidPhoneNumber(update_contact.value)) {
+    //             if (checkDate(update_birthday.value)) {
+    //                 if (tdmk) {
+    //                     if (
+    //                         checkUpdatePassword(
+    //                             document.getElementById("mkht").value,
+    //                             document.getElementById("mkm").value,
+    //                             document.getElementById("xnmkm").value
+    //                         )
+    //                     ) {
+    //                         currentUser.name = name;
+    //                         currentUser.birth_day =
+    //                             birthday.split("-")[2] +
+    //                             "-" +
+    //                             birthday.split("-")[1] +
+    //                             "-" +
+    //                             birthday.split("-")[0];
+    //                         currentUser.sex = sex;
+    //                         currentUser.number_phone = contact;
+    //                         currentUser.image = imgLinkChange;
+    //                         currentUser.password =
+    //                             document.getElementById("xnmkm").value;
+    //                         document.getElementById("mkht").value = "";
+    //                         document.getElementById("mkm").value = "";
+    //                         document.getElementById("xnmkm").value = "";
+    //                         localStorage.setItem("data", JSON.stringify(data));
+    //                         alert("Cập nhật thông tin thành công");
+    //                     } else {
+    //                         alert("Vui lòng kiểm tra lại mật khẩu");
+    //                     }
+    //                 } else {
+    //                     currentUser.name = name;
+    //                     currentUser.birth_day =
+    //                         birthday.split("-")[2] +
+    //                         "-" +
+    //                         birthday.split("-")[1] +
+    //                         "-" +
+    //                         birthday.split("-")[0];
+    //                     currentUser.sex = sex;
+    //                     currentUser.number_phone = contact;
+    //                     currentUser.image = imgLinkChange;
+    //                     document.getElementById("mkht").value = "";
+    //                     document.getElementById("mkm").value = "";
+    //                     document.getElementById("xnmkm").value = "";
+    //                     localStorage.setItem("data", JSON.stringify(data));
+    //                     alert("Cập nhật thông tin thành công");
+    //                 }
+    //             } else {
+    //                 alert("Ngày sinh chưa hợp lệ");
+    //             }
+    //         } else {
+    //             alert("Số điện thoại không hợp lệ");
+    //         }
+    //     } else {
+    //         alert("Tên không được chứa kí tự đặc biệt hoặc chữ số");
+    //     }
+    // } else {
+    //     alert("Vui lòng cập nhật đầy đủ thông tin");
+    // }
 };
 
 // function initIdReceipt() {

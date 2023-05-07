@@ -6,18 +6,18 @@
         try {
             // bắt đầu phiên
             $conn -> beginTransaction();
-            $name = $_POST["product"]["name"];
-            $id = $_POST["product"]["id"];
-            $made_in = $_POST["product"]["made_in"];
-            $description = $_POST["product"]["description"];
-            $status = $_POST["product"]["status"];
+            $name = $_POST["name"];
+            $id = $_POST["id"];
+            $made_in = $_POST["made_in"];
+            $description = $_POST["description"];
+            $status = $_POST["status"];
             // Kiểm tra quyền
-            $username = $_POST["user"]["username"];
-            if (!check_name($conn, $name, $id)) {
-                die("Tên không được trùng lặp với các sản phẩm khác!");
-            }
+            $username = $_POST["id_user"];
             if (check_privilege($username, $conn, $action,'product')) {
-                // hoàn tất giao dịch
+                if (!check_name($conn, $name, $id)) {
+                    die("Tên không được trùng lặp với các sản phẩm khác!");
+                }
+                // Kiểm tra xuất xứ
                 check_input_country($conn, $made_in);
                 // thiết lập query
                 $query = "UPDATE product 
@@ -31,13 +31,11 @@
                 $stmt -> bindParam(":idstatus", $status);
                 // thực thi query
                 if ($stmt -> execute()) {
-                    $json_response = ["Trạng thái" => "thành công", "Thông báo" => "Dữ liệu đã được sửa"];
-                    echo json_encode($json_response);
+                    echo 'Dữ liệu đã được thay đổi!';
                 }
                 else {
-                    $json_response = ["Trạng thái" => "không thành công", "Thông báo" => "Dữ liệu không được sửa"];
                     $conn -> rollBack();
-                    die(json_encode($json_response));
+                    die('Có lỗi xảy ra! Dữ liệu chưa được thay đổi!');
                 }
                 $conn -> commit();
             }
@@ -49,8 +47,7 @@
         catch (Exception $e) {
             //giao dịch thất bại, rollback
             $conn -> rollBack();
-            $json_response = ["Trạng thái" => "không thành công", "Thông báo" => "Dữ liệu không được sửa", "Lỗi người phát triển" => $e];
-            die(json_encode($json_response));
+            die('Có lỗi trong quá trình thay đổi dữ liệu!');
         }
     }
     if ($_SERVER('REQUEST_METHOD') === 'PUT') {

@@ -252,7 +252,9 @@ function suasanpham() {
 }
 
 
-
+function checkNamePromote(name) {
+    
+}
 // Thêm khuyến mãi
 function themkhuyenmai() {
     let id = `KM` + length11;
@@ -275,8 +277,9 @@ function themkhuyenmai() {
                         return
                     }
                 }
-                if (batdau > getCurrentDate().split(" ")[0]) {
-                    if (batdau < ketthuc) {
+                console.log(new Date(batdau))
+                if (new Date(batdau) > new Date(getCurrentDate().split(" ")[0])) {
+                    if (new Date(batdau) < new Date(ketthuc)) {
                         let promotion = {
                             id: id,
                             name: ten.toLowerCase(),
@@ -304,7 +307,7 @@ function themkhuyenmai() {
                             detail_promotion: detail_promotion
                         }
                         let toJSON = JSON.stringify(dataUpServer)
-                        postJSON(toJSON,'./Server/promotion/create_promotion.php')
+                        alert(postJSON(toJSON,'./Server/promotion/create_promotion.php'))
                         document.getElementById("KhuyenMai-Background").remove()
                         renderTable2()
                     } else {

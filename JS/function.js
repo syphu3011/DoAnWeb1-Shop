@@ -17,15 +17,14 @@ function Cart(
     this.cost = cost;
     this.price_sale = price_sale;
 }
-
-function Customer(
+function upCustomer(
     id,
     name,
-    number_phone,
+    numberphone,
     username,
     password,
-    sex,
-    birth_day,
+    gender,
+    birthday,
     address = "",
     image = "",
     cart = [],
@@ -33,11 +32,37 @@ function Customer(
 ) {
     this.id = id;
     this.name = name;
-    this.number_phone = number_phone;
+    this.numberphone = numberphone;
     this.username = username;
     this.password = password;
-    this.sex = sex;
-    this.birth_day = birth_day;
+    this.gender = gender;
+    this.birthday = birthday;
+    this.address = address;
+    this.image = image;
+    this.cart = cart;
+    this.status = status;
+    this.date_init = getCurrentDate();
+}
+function Customer(
+    id,
+    name,
+    numberphone,
+    username,
+    password,
+    gender,
+    birthday,
+    address = "",
+    image = "",
+    cart = [],
+    status = "Còn hoạt động"
+) {
+    this.id = id;
+    this.name = name;
+    this.numberphone = numberphone;
+    this.username = username;
+    this.password = password;
+    this.gender = gender;
+    this.birthday = birthday;
     this.address = address;
     this.image = image;
     this.cart = cart;
@@ -100,7 +125,7 @@ function format_date(params) {
     );
 }
 function getDataFromServer(url, data, callback) {
-    // console.log(data);
+    console.log(data);
     const xhr = new XMLHttpRequest();
     xhr.open("POST", url);
     xhr.setRequestHeader("Content-Type", "application/json");

@@ -4,7 +4,7 @@
         require_once('../same_function.php');
         $data_from_client = json_decode(file_get_contents('php://input'), true);
         $username = $data_from_client["user"]["username"];
-        // if (check_privilege($username,$conn,'them','promotion')) {
+        if (check_privilege($username,$conn,'them','promotion')) {
             try {
                 require_once('../../../init.php');
                 $conn->beginTransaction();
@@ -78,10 +78,10 @@
                 echo 'Đã xảy ra lỗi!';
                 $conn->rollBack();
             }
-        // }
-        // else {
-        //     die("Bạn không được cấp quyền!");
-        // }
+        }
+        else {
+            die("Bạn không được cấp quyền!");
+        }
     }
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         require_once('../../../init.php');

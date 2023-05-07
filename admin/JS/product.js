@@ -535,7 +535,7 @@ function getUsername() {
     return ''
 }
 async function addProd(Prod) {
-    refreshData();
+    await refreshData();
     console.log(JSON.stringify(Prod));
 
     if (checkConstraintAddProd(Prod)) {
@@ -544,8 +544,10 @@ async function addProd(Prod) {
 
         // Prod.images = totalfiles
         form_data = to_form_data_have_image(Prod, "images_ar[]", totalfiles);
-
-        post(form_data,'./Server/product/create_product.php')
+        form_data.append('id_user','USR001')
+        let response = await post(form_data,'./Server/product/create_product.php');
+        alert(response);
+        document.getElementById('choose-img-prod').value = ''
     }
 
     await fillProd();
@@ -660,7 +662,7 @@ document.getElementById("submit").onclick = function() {
         addProd(prod)
         blank("inp-name")
         // blank("inp-price")
-        blank("inp-made-in")
+        blank("inp-madein")
         blank("add-des")
         document.getElementById("add-pro-type").innerHTML = ""
         // arrImageAdd = arrImageAdd.filter(e => true == false)
@@ -1071,7 +1073,6 @@ function fillDetail(id) {
     })
     document.getElementById("detail-id").value = prod.id
     document.getElementById("detail-name").value = prod.name
-    document.getElementById("detail-price").value = prod.price
     document.getElementById("detail-made-in").value = prod.made_in
     let table_amount = document.getElementById("amount-table")
     let thead = document.createElement("thead")
@@ -1090,7 +1091,8 @@ function fillDetail(id) {
     document.getElementById("image-div1").innerHTML = ""
     remove_all_image()
     let count = 0
-    prod.images.forEach(element => {
+    let images = prod.images.split(',')
+    images.forEach(element => {
         addImg("../Image/"+element, "image-div1", count)
         count += 1
     })
