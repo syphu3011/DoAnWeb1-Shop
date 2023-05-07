@@ -41,7 +41,7 @@ class Table {
 				ON $childTable.$childkey = $parentTable.$parentkey WHERE $condition;";
 		// echo $query . "</br>";	
 		$query_statement = $conn->prepare($query);
-3		$query_statement->execute();
+		$query_statement->execute();
 
 		// $return_val =  $query_statement->fetchAll(PDO::FETCH_ASSOC);
 		// foreach ($return_val as $key1 => $value1) {
