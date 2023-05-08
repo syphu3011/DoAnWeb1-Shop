@@ -268,5 +268,3 @@ document.getElementById("div-ctdh").onclick = function (e) {
     }
   }
 };
-document.getElementById("mailorphone").value = "syphu";
-document.getElementById("passwd").value = "123123";
