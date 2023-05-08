@@ -48,7 +48,7 @@ async function put(data,dir) {
         url: dir,
         type: 'PUT',
         data: data,
-        dataType: 'json',
+        dataType: 'text',
         contentType: false,
         processData: false,
     }).then(function(responseData) {
