@@ -1343,10 +1343,11 @@ document.getElementById("thaydoi-mk").onclick = function () {
 document.getElementById("home-page").onclick = function () {
     localStorage.setItem("current_page", "");
     document.getElementById("main").innerHTML = "";
-    getDataFromServer("./Server/homepage.php", "", function (response) {
-        // console.log("Data from homepage.php: ", response);
-        create_Homepage(response);
-    });
+    // getDataFromServer("./Server/homepage.php", "", function (response) {
+    //     // console.log("Data from homepage.php: ", response);
+    //     create_Homepage(response);
+    // });
+    function_homepage();
 };
 // document.getElementById("home-page").onclick = function () {
 //   document.getElementById("selected-type").innerHTML = "Tất cả";

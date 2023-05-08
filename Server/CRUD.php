@@ -1,6 +1,51 @@
 <?php
 class CRUD
 {
+    // read
+    public function read_data_homepage($conn){
+        $sql = "SELECT classify.id_big_classify,product.idstatus,
+	product.name,
+                    classify.id,
+                    promotion.name AS name_promotion,
+                    classify.name AS name_classify,
+                    product_list_classify.id_product,
+                    product_list.id_size,
+                    product_list.price,
+                    (
+                	SELECT image_product.link_image 
+                    FROM image_product
+                    WHERE image_product.id_product=product.id
+                    limit 1
+                ) AS link_image,
+                    promotion.content,
+                    promotion.discount_price,
+                    promotion.discount_percent,
+                    promotion.begin_date,
+                    promotion.finish_date
+                FROM 
+                                                classify
+                                LEFT JOIN product_list_classify ON product_list_classify.id_classify=classify.id
+                                LEFT JOIN product_list ON product_list.id_product = product_list_classify.id_product
+				LEFT JOIN product ON product.id = product_list_classify.id_product
+
+                LEFT JOIN detail_promotion ON detail_promotion.id_product = product_list.id_product
+                LEFT JOIN promotion ON promotion.id = detail_promotion.id_promotion
+                WHERE 
+                   (
+                        (promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10')
+                        OR promotion.id IS NULL)
+                    AND product.idstatus = 'TT01'
+                    AND product_list.id_size IS NOT NULL
+                    AND product_list.id_color IS NOT NULL
+                GROUP BY product_list_classify.id_product
+
+            ";
+            $stmt = $conn -> prepare($sql);
+            $stmt -> execute();
+            $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+            $conn = null;
+            return $result;
+    }
     //Tai khoan
     public function read_data_account($conn, $username, $password, &$status)
     {
@@ -144,6 +189,7 @@ class CRUD
                         OR promotion.id IS NULL)
                     AND product.idstatus = 'TT01'
                     AND product_list.id_size IS NOT NULL
+                    AND product_list.id_color IS NOT NULL
                 GROUP BY product_list_classify.id_product
                 LIMIT ".$begin.", ". $total_product_on_page;
         $stmt = $conn->prepare($sql);
@@ -243,26 +289,10 @@ class CRUD
     public function read_data_promotion($conn)
     {
         # code...
-        $sql = "SELECT 
-                        promotion.id, 
-                        promotion.content, 
-                        promotion.name, 
-                        promotion.discount_price, 		
-                        promotion.discount_percent, 
-                        promotion.begin_date,
-                        promotion.finish_date,
-                        detail_promotion.id_product,
-                        status_promotion.name,
-                        product_list.price
-                    FROM 
-                        promotion, 
-                        detail_promotion,
-                        status_promotion,
-                        product_list
-                    WHERE 
-                        promotion.id = detail_promotion.id_promotion
-                        AND promotion.id_status = status_promotion.id
-                        AND detail_promotion.id_product = product_list.id_product";
+        $sql = "SELECT * 
+                FROM promotion
+                WHERE promotion.finish_date >= CURRENT_DATE()
+                AND promotion.id_status = 'TT10'";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);

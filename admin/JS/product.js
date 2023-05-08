@@ -287,12 +287,17 @@ function findSumAmount(id) {
 
 function fillEdit(prod) {
     let image_delete = []
+    let classify_delete = []
+    let classify_add = []
     document.getElementById("edit-id").value = prod.id
     document.getElementById("edit-name").value = prod.name
     document.getElementById("edit-made-in").value = prod.made_in
     document.getElementById("edit-des").value = prod.description
+    document.getElementById("add-type-pro-e").onclick = function () {
+        BoxSelect()
+    }
     document.getElementById("confirm").onclick = function() {
-        createPopUpYesNo("Bạn có muốn sửa lại thông tin không ?", function() {
+        createPopUpYesNo("Bạn có muốn sửa lại thông tin không ?", async function() {
             document.getElementById("image-div2").innerHTML = ""
             document.getElementById("edit_pro").style.visibility = "hidden";
             prod.name = document.getElementById("edit-name").value
@@ -303,11 +308,11 @@ function fillEdit(prod) {
             prod.idstatus = 'TT01'
             tag_type_edit = []
             document.getElementById("add-type-edit").innerHTML = ""
-            updateProd(prod, image_delete)
+            await updateProd(prod, image_delete, classify_delete, classify_add)
             arrImageEdit = arrImageEdit.filter(() => true == false)
             countt=0
             CloseDialog();
-            fillProd(obj.product)
+            await fillProd()
         }, function() {})
     };
     let classifies = prod.clasify.split(',')
@@ -570,7 +575,7 @@ async function addProd(Prod) {
 }
 
 
-async function updateProd(Prod, remove_image = null) {
+async function updateProd(Prod, remove_image = null, classify_delete = [], classify_add = []) {
     await refreshData();
     // if (checkConstraintUpdateProd(Prod)) {
     //     obj.product.forEach(function(part, index) {
@@ -587,6 +592,12 @@ async function updateProd(Prod, remove_image = null) {
     // Prod.images = totalfiles
     form_data = to_form_data_have_image(Prod, "images_ar[]", totalfiles);
     form_data.append('id_user','USR001')
+    classify_add.forEach (e => {
+        form_data.append('classify_add',e)
+    })  
+    classify_delete.forEach (e => {
+        form_data.append('classify_delete',e)
+    })
     if (remove_image != null) {
         remove_image.forEach(e => {
             form_data.append('image_delete', e)    
