@@ -700,7 +700,7 @@ function FillHistoryFind(find) {
     for (let j = tagtable.rows.length - 1; j > 0; j--)
         tagtable.deleteRow(j);
     for (var i = 0; i < find.length; i++) {
-        if (receipt[find[i]].id_status.toLowerCase() == "TT09") {
+        if (receipt[find[i]].id_status == "TT09") {
             continue
         } else {
             
