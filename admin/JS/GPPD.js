@@ -46,7 +46,7 @@ async function postJSON(data,dir) {
 async function put(data,dir) {
     let data_response = await $.ajax({
         url: dir,
-        type: 'PUT',
+        type: 'POST',
         data: data,
         dataType: 'text',
         contentType: false,

@@ -10,10 +10,26 @@
             $id = $_POST["id"];
             $made_in = $_POST["made_in"];
             $description = $_POST["description"];
-            $status = $_POST["status"];
+            $classify_add = $_POST["classify_add"];
+            $classify_delete = $_POST["classify_delete"];
+            $status = $_POST["idstatus"];
             // Kiểm tra quyền
-            $username = $_POST["id_user"];
-            if (check_privilege($username, $conn, $action,'product')) {
+            $id_user = $_POST["id_user"];
+            if ($id_user == null) {
+                $data_json = json_decode(file_get_contents('php://input'), true);
+                $id_user = $data_json['id_user'];
+                $id = $data_json['id'];
+            }
+            if (check_privilege($id_user, $conn, $action,'product')) {
+                if ($action == 'xoa') {
+                    $query = "UPDATE product 
+                    SET idstatus = :idstatus
+                    WHERE id = :id";
+                    $stmt_delete = $conn -> prepare($query);
+                    $stmt_delete -> bindParam(':idstatus', 'TT02');
+                    $stmt_delete -> bindParam(':id', $id);
+                    $stmt_delete -> excute();
+                }
                 if (!check_name($conn, $name, $id)) {
                     die("Tên không được trùng lặp với các sản phẩm khác!");
                 }
@@ -32,20 +48,28 @@
                 $stmt -> bindParam(":id", $id);
                 // thực thi query
                 if ($stmt -> execute()) {
+                    // Xóa loại 
+                    $query = 'DELETE FROM product_list_classify WHERE id_product = :id and id_classify = :id_classify';
+                    $stmt_delete = $conn -> prepare($query);
+                    $classify_delete = array($classify_delete);
+                    foreach($classify_delete as $class_delete) {
+                        // $stmtt$class_delete
+                    }
                     //Upload ảnh
                     // $errors= array();
                     $stmt_image = $conn->prepare("INSERT INTO image_product(id_product,link_image) VALUES(:id,:name_img)");
                     $desired_dir="../../Image";
-                    $absolute_dir = realpath($desired_dir);
+                    $absolute_dir = substr(realpath($desired_dir),1);
                     foreach($_FILES['images_ar']['tmp_name'] as $key => $tmp_name ){
                         $file_name = $key.$_FILES['images_ar']['name'][$key];
                         $file_tmp =$_FILES['images_ar']['tmp_name'][$key];
                         $file_type=$_FILES['images_ar']['type'][$key]; 
                         $name_image = $file_name;
                         if(is_dir("$desired_dir/".$file_name)==false){
-                            chmod($desired_dir.'/'.$file_name, 0777);
+                            chmod($desired_dir, 0777);
                             move_uploaded_file($file_tmp,$desired_dir.'/'.$file_name);
-                            chmod($desired_dir.'/'.$file_name, 0644);
+                            chmod($desired_dir.'/'.$file_name, 0777);
+                            chmod($desired_dir, 0644);
                             //Thêm vào cơ sở dữ liệu
                             $_POST_image = ['id' => $id, 'name_img' => $name_image];
                             $stmt_image->execute($_POST_image);
@@ -54,13 +78,18 @@
                     //Xóa ảnh
                     $stmt_delete_image = $conn->prepare("DELETE FROM image_product WHERE id_product = :id_product and link_image = :link_image");
                     $image_delete = $_POST["image_delete"];
+                    if (!is_array($image_delete)) {
+                        $image_delete = array($image_delete);
+                    }
                     foreach($image_delete as $value) {
                         $data_image_delete = array('id_product' => $id, 'link_image' => $value);
                         $stmt_delete_image->execute($data_image_delete);
-                        chmod($desired_dir.'/'.$file_name, 0777);
-                        $delete_file_status = unlink($absolute_dir);
+                        chmod($desired_dir, 0777);
+
+                        $link_to_image = $desired_dir.'/'.$value;
+                        $delete_file_status = unlink($link_to_image);
                         if (!$delete_file_status) {
-                            chmod($desired_dir.'/'.$file_name, 0644);
+                            chmod($desired_dir, 0644);
                             $conn -> rollBack();
                             die ('Xóa ảnh không thành công!');
                         }
@@ -85,7 +114,7 @@
             die('Có lỗi trong quá trình thay đổi dữ liệu!');
         }
     }
-    if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES)) {
         update_product($conn,'sua');
     }
     else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
