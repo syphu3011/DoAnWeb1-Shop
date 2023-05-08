@@ -1,14 +1,14 @@
-// if (localStorage.getItem("checkLogin") == "true") {
 
-// let current_staff = JSON.parse(localStorage.getItem("currentStaff"));
-
-
-//test
 let d = JSON.parse(localStorage.getItem("currentStaff"));
 current_staff = d;
 
-// let d = JSON.parse(localStorage.getItem("data"));
-// current_staff = d.staff[2];
+function GetUserFromCookie(){
+
+  return user
+}
+function GetData(){
+  return $.ajax
+}
 
 
 let contentDiv = document.getElementById("content");
