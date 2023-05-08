@@ -296,6 +296,7 @@ function fillEdit(prod) {
             prod.description = document.getElementById("edit-des").value
             prod.clasify = tag_type_edit
             prod.images = arrImageEdit
+            prod.idstatus = 'TT01'
             tag_type_edit = []
             document.getElementById("add-type-edit").innerHTML = ""
             updateProd(prod, image_delete)
@@ -311,14 +312,18 @@ function fillEdit(prod) {
     })
     remove_all_image()
     let count = 0
-    let images = prod.images.split(',')
-    images.forEach(e => {
-        add_item_of_image("./Image/"+e, 'image-div2',count,'btn_rm_'+e, function(){image_delete.push(e)})
-        // document.getElementById('btn_rm_'+e).onclick = function() {
-        //     image_delete.push(e);
-        // }
-        count += 1
-    })
+    if (typeof prod.images == 'string') {
+        let images = prod.images.split(',')
+        images.forEach(e => {
+            add_item_of_image("./Image/"+e, 'image-div2',count,'btn_rm_'+e, function(){
+                image_delete.push(e)
+            })
+            // document.getElementById('btn_rm_'+e).onclick = function() {
+            //     image_delete.push(e);
+            // }
+            count += 1
+        })
+    }
 }
 
 async function fillProd(product = null) {
@@ -748,7 +753,7 @@ function add_item_of_image(name_img, div, count, id_button = '', func = function
     btnRemove.style.width = "10px"
     btnRemove.style.height = "10px"
     btnRemove.onclick = function(){
-        func
+        func()
         remove_image(img_div1, btnRemove, name_img)
     }
 }
