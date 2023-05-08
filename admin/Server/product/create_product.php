@@ -46,11 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES)) {
                     mkdir("$desired_dir", 0700);    // Create directory if it does not exist
                 }
                 if(is_dir("$desired_dir/".$file_name)==false){
+                    chmod($desired_dir.'/'.$file_name, 0777);
                     move_uploaded_file($file_tmp,$desired_dir.'/'.$file_name);
                     chmod($desired_dir.'/'.$file_name, 0644);
                 }else{                  
                     //đặt tên lại khi trùng lặp
                     $new_dir=$desired_dir.'/'.$file_name.time();
+                    chmod($desired_dir.'/'.$file_name, 0777);
                     rename($file_tmp,$new_dir) ;   
                     $name_image .= time();
                     chmod($desired_dir.'/'.$file_name, 0644);      

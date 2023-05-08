@@ -33,7 +33,7 @@
                 // thực thi query
                 if ($stmt -> execute()) {
                     //Upload ảnh
-                    $errors= array();
+                    // $errors= array();
                     $stmt_image = $conn->prepare("INSERT INTO image_product(id_product,link_image) VALUES(:id,:name_img)");
                     $desired_dir="../../Image";
                     $absolute_dir = realpath($desired_dir);
@@ -43,6 +43,7 @@
                         $file_type=$_FILES['images_ar']['type'][$key]; 
                         $name_image = $file_name;
                         if(is_dir("$desired_dir/".$file_name)==false){
+                            chmod($desired_dir.'/'.$file_name, 0777);
                             move_uploaded_file($file_tmp,$desired_dir.'/'.$file_name);
                             chmod($desired_dir.'/'.$file_name, 0644);
                             //Thêm vào cơ sở dữ liệu
@@ -56,12 +57,21 @@
                     foreach($image_delete as $value) {
                         $data_image_delete = array('id_product' => $id, 'link_image' => $value);
                         $stmt_delete_image->execute($data_image_delete);
+                        chmod($desired_dir.'/'.$file_name, 0777);
+                        $delete_file_status = unlink($absolute_dir);
+                        if (!$delete_file_status) {
+                            chmod($desired_dir.'/'.$file_name, 0644);
+                            $conn -> rollBack();
+                            die ('Xóa ảnh không thành công!');
+                        }
+                        chmod($desired_dir.'/'.$file_name, 0644);
                     }
                 }
                 else {
                     $conn -> rollBack();
                     die('Có lỗi xảy ra! Dữ liệu chưa được thay đổi!');
                 }
+                echo 'Dữ liệu đã được thay đổi!';
                 $conn -> commit();
             }
             else {
@@ -75,10 +85,10 @@
             die('Có lỗi trong quá trình thay đổi dữ liệu!');
         }
     }
-    if ($_SERVER('REQUEST_METHOD') === 'PUT') {
+    if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
         update_product($conn,'sua');
     }
-    else if ($_SERVER('REQUEST_METHOD') === 'DELETE') {
+    else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
         update_product($conn,'xoa');
     }
 ?>

@@ -313,10 +313,10 @@ function fillEdit(prod) {
     let count = 0
     let images = prod.images.split(',')
     images.forEach(e => {
-        add_item_of_image("./Image/"+e, 'image-div2',count,'btn_rm_+'+'e')
-        document.getElementById('btn_remove_'+'e').onclick = function() {
-            image_delete.push(e);
-        }
+        add_item_of_image("./Image/"+e, 'image-div2',count,'btn_rm_'+e, function(){image_delete.push(e)})
+        // document.getElementById('btn_rm_'+e).onclick = function() {
+        //     image_delete.push(e);
+        // }
         count += 1
     })
 }
@@ -580,7 +580,8 @@ async function updateProd(Prod, remove_image = null) {
             form_data.append('image_delete', e)    
         })
     }
-    return false;
+    alert(await put(form_data, './Server/product/update_product.php'))
+    // return false;
 }
 //event thêm sản phẩm
 document.getElementById("add").onclick = function() {
@@ -731,10 +732,10 @@ async function addType() {
         add_img_files(inp.files, 0)
     };
 }
-function add_item_of_image(name_img, div, count, id_buttton = '') {
+function add_item_of_image(name_img, div, count, id_button = '', func = function() {}) {
     let btnRemove = document.createElement("button")
-    if (id_button == '') {
-        btnRemove.id = id_buttton
+    if (id_button != '') {
+        btnRemove.id = id_button
     }
     btnRemove.className = "add_type remove_img"
     btnRemove.style.position = "absolute"
@@ -747,6 +748,7 @@ function add_item_of_image(name_img, div, count, id_buttton = '') {
     btnRemove.style.width = "10px"
     btnRemove.style.height = "10px"
     btnRemove.onclick = function(){
+        func
         remove_image(img_div1, btnRemove, name_img)
     }
 }
