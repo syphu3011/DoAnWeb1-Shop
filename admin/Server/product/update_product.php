@@ -10,6 +10,8 @@
             $id = $_POST["id"];
             $made_in = $_POST["made_in"];
             $description = $_POST["description"];
+            $classify_add = $_POST["classify_add"];
+            $classify_delete = $_POST["classify_delete"];
             $status = $_POST["idstatus"];
             // Kiểm tra quyền
             $id_user = $_POST["id_user"];
@@ -46,11 +48,18 @@
                 $stmt -> bindParam(":id", $id);
                 // thực thi query
                 if ($stmt -> execute()) {
+                    // Xóa loại 
+                    $query = 'DELETE FROM product_list_classify WHERE id_product = :id and id_classify = :id_classify';
+                    $stmt_delete = $conn -> prepare($query);
+                    $classify_delete = array($classify_delete);
+                    foreach($classify_delete as $class_delete) {
+                        // $stmtt$class_delete
+                    }
                     //Upload ảnh
                     // $errors= array();
                     $stmt_image = $conn->prepare("INSERT INTO image_product(id_product,link_image) VALUES(:id,:name_img)");
                     $desired_dir="../../Image";
-                    $absolute_dir =  substr(realpath($desired_dir),1);
+                    $absolute_dir = substr(realpath($desired_dir),1);
                     foreach($_FILES['images_ar']['tmp_name'] as $key => $tmp_name ){
                         $file_name = $key.$_FILES['images_ar']['name'][$key];
                         $file_tmp =$_FILES['images_ar']['tmp_name'][$key];

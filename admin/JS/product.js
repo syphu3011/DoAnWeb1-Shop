@@ -546,10 +546,13 @@ function getUsername() {
 async function addProd(Prod) {
     await refreshData();
     console.log(JSON.stringify(Prod));
-
+    let totalfiles = document.getElementById('choose-img-prod').files;
+    if (totalfiles.length == 0) {
+        alert('Không thể thiếu hình ảnh!');
+        return
+    }
     if (checkConstraintAddProd(Prod)) {
         var form_data = new FormData();
-        let totalfiles = document.getElementById('choose-img-prod').files;
 
         // Prod.images = totalfiles
         form_data = to_form_data_have_image(Prod, "images_ar[]", totalfiles);
