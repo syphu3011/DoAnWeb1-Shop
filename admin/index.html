@@ -303,7 +303,7 @@
                                 </div>
                                 <div class="edit_type">
                                     <label>Loại:</label>
-                                    <button class="add_type" onclick=BoxSelect()>Thêm loại</button>
+                                    <button class="add_type" id="add-type-pro-a">Thêm loại</button>
                                 </div>
                                 <div class="type_list" id="add-pro-type">
 
@@ -364,7 +364,7 @@
                                 </div>
                                 <div class="edit_type">
                                     <label>Loại</label>
-                                    <button class="add_type" onclick=BoxSelect()>Thêm loại</button>
+                                    <button class="add_type" id="add-type-pro-e">Thêm loại</button>
 
                                 </div>
                                 <div class="type_list" id="add-type-edit">
@@ -451,9 +451,11 @@
                 <div class="HeadButton">
                     <button class="btn-left" id="add_type">Thêm loại sản phẩm</button>
                     <button class="btn-left" id="delete33" onclick=OpenDeType()>Xóa nhiều</button>
-                    <button class="btn-left" id="cancel33" onclick=OpenDeType()>Hủy</button>
+                    <button class="btn-left" id="cancel33" onclick=CloseDeType()>Hủy</button>
                 </div>
                 <div class="find_bar">
+
+
                     <input type="text" class="text" id="inp-lookup33">
                     <div class="icon_find" id="lookup-btn33">
                         <img src="Image/icon_search.png" class="icon">
@@ -486,9 +488,10 @@
                 </div>
                 <div class="Bottom">
                     <table id="myTable33" cellspacing="pixels" style="width: 80%;">
-                        <tr class="row-class">
+                        <tr class="row-class33">
                             <th>id</th>
                             <th>Tên loại</th>
+                            <th></th>
                         </tr>
                     </table>
                 </div>
@@ -1204,6 +1207,7 @@
     <script src="./JS/thongso.js"></script>
     <script src="./JS/GPPD.js"></script>
     <script src="./JS/Test.js"></script>
+    <script src="./JS/classify.js"></script>
 </body>
 
 </html>

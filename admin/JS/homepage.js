@@ -92,13 +92,14 @@ function changeToOrder() {
   hideCurrent();
   appearDiv(document.getElementById("background_order"));
   // timtheokhoang();
-Promise.all([get_DataOrder(), get_DataCus(), get_DataDetailO(), get_DataProd()])
+Promise.all([get_DataOrder(), get_DataCus(), get_DataDetailO(), get_DataProd(), get_DataPromo()])
   .then(function(results) {
  
     console.log(results[0]); // receipt
     console.log(results[1]); // customer
     console.log(results[2]); // detail_receipt
     console.log(results[3]);
+    console.log(results[4]);
     FillOrder();
   })
   .catch(function(error) {
@@ -127,9 +128,10 @@ function changeToPromote() {
   appearDiv(document.getElementById("bgr-km"));
   renderTable2()
 }
-function changeToClassify(){
+async function changeToClassify(){
   hideCurrent();
   appearDiv(document.getElementById("background-classify"));
+  await FillClassify();
 }
 
 function changeToStats() {

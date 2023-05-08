@@ -3,6 +3,7 @@ let arrImageEdit = []
 let arRemove = []
 let prodToEdit
 let checkClickClose = false
+let countt=0
 function arrayToString(arr) {
     let result;
     for (let i = 0; i < arr.length; i++) {
@@ -97,6 +98,7 @@ document.getElementById("close2").onclick = function() {
     tag_type_edit = []
     arrImageEdit = arrImageEdit.filter(() => true == false)
     document.getElementById("add-type-edit").innerHTML = ""
+    countt==0
     CloseDialog();
 };
 
@@ -223,11 +225,13 @@ function openFilter() {
 
     background_prod.appendChild(element);
     tag_type_find.forEach(e => {
+        countt ++
         let ele = document.createElement("p");
         ele.classList.add("item-tag");
         ele.appendChild(document.createTextNode(e));
         let tag = document.createElement("button");
         tag.classList.add("close_type");
+        tag.id="type" + countt
         tag.appendChild(document.createTextNode("X"));
         ele.appendChild(tag);
         tag.style.cursor = "pointer"
@@ -300,7 +304,7 @@ function fillEdit(prod) {
             document.getElementById("add-type-edit").innerHTML = ""
             updateProd(prod, image_delete)
             arrImageEdit = arrImageEdit.filter(() => true == false)
-
+            countt=0
             CloseDialog();
             fillProd(obj.product)
         }, function() {})
@@ -691,6 +695,7 @@ document.getElementById("submit").onclick = function() {
             element.remove()
         })
         document.getElementById("add_pro").style.visibility = "";
+        countt = 0
         CloseDialog()
 
     }, function() {
@@ -703,6 +708,7 @@ document.getElementById("submit").onclick = function() {
 
 document.getElementById("close").onclick = function() {
     document.getElementById("add_pro").style.visibility = "hidden";
+    countt =0
     CloseDialog();
 };
 
@@ -998,8 +1004,10 @@ function AddTagType(idtag, a, useList = false, content = "") {
     let ele = document.createElement("p");
     ele.classList.add("item-tag");
     if (content != "") {
+        countt++
         ele.appendChild(document.createTextNode(content));
         let tag = document.createElement("button");
+        tag.id= "type"+ countt
         tag.classList.add("close_type");
         tag.appendChild(document.createTextNode("X"));
         ele.appendChild(tag);
@@ -1020,9 +1028,11 @@ function AddTagType(idtag, a, useList = false, content = "") {
             return;
         } 
         else {
+            countt ++
             ele.appendChild(document.createTextNode(document.getElementById("select_classify").selectedOptions[0].getAttribute("name")));
             let tag = document.createElement("button");
             tag.classList.add("close_type");
+            tag.id= "type"+ countt
             tag.appendChild(document.createTextNode("X"));
             ele.appendChild(tag);
             tag.onclick = function() {

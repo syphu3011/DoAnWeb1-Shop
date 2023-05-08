@@ -4,6 +4,7 @@ let receipt
 let detail_receipt
 let customer
 let product
+let promotion
 let length1
 let length2
 let length3
@@ -21,6 +22,23 @@ function get_DataOrder() {
         success: function(data) {
             receipt = data;
             length1 = receipt.length;
+            // FillOrder();
+        //   console.log(receipt);
+        },
+        error: function(xhr, status, error) {
+          // Xử lý lỗi ở đây
+          console.error(error);
+        }
+      });
+}
+function get_DataPromo() {
+    return $.ajax({
+        url: './Server/promotion/promotions.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            promotion = data;
+            // length1 = receipt.length;
             // FillOrder();
         //   console.log(receipt);
         },
@@ -162,7 +180,6 @@ function ConfirmOrder(x) {
             data:JSON.stringify( {
                 id: receipt[x].id,
                 id_status: "TT07",
-                date_confirm:receipt[x].date_confirm
             }),
             success: function (response) {
                 console.log(response);
@@ -378,7 +395,6 @@ function DetailOr(x) {
 function CloseDetailOr() {
     document.getElementById("box_detail").style.visibility = 'hidden';
     CloseDialog1();
-    writeToLocalStorage(obj12)
 };
 
 
@@ -822,17 +838,7 @@ function timtheokhoangLS() {
 }
 
 
-function timKm(id) {
-    let km = ""
-    obj12.promote.forEach(element => {
-        element.products.forEach(e => {
-            if (e.id == id) {
-                km = element
-            }
-        })
-    })
-    return km
-}
+
 
 // function tongtienHD(od) {
 //     let tong = 0
@@ -851,38 +857,20 @@ function timKm(id) {
 //     return tong
 // }
 
-function GetTotal(x) {
-    let tong = 0
-    for (var i = 0; i < length3; i++) {
-        let id = obj12.product[i]
-        if (x.idProd == id.id) {
-            if (timKm(x.idProd) != "") {
-                tong = parseInt(id.price) * parseInt(x.amount) - (parseInt(id.price) * parseInt(x.amount) * timKm(x.idProd).discount_percent / 100 - timKm(x.idProd).discount_price)
-                return tong
-            } else {
-                tong = parseInt(id.price) * parseInt(x.amount)
-                return tong
-            }
-        }
-    }
-}
+// function GetTotal(x) {
+//     let tong = 0
+//     for (var i = 0; i < length3; i++) {
+//         let id = obj12.product[i]
+//         if (x.idProd == id.id) {
+//             if (timKm(x.idProd) != "") {
+//                 tong = parseInt(id.price) * parseInt(x.amount) - (parseInt(id.price) * parseInt(x.amount) * timKm(x.idProd).discount_percent / 100 - timKm(x.idProd).discount_price)
+//                 return tong
+//             } else {
+//                 tong = parseInt(id.price) * parseInt(x.amount)
+//                 return tong
+//             }
+//         }
+//     }
+// }
 
 
-// timtheokhoang()
-// get_DataDetailO()
-// get_DataCus()
-// get_DataOrder() 
-// Promise.all([get_DataOrder(), get_DataCus(), get_DataDetailO()])
-//   .then(function(results) {
-//     // Tất cả các promise đã được giải quyết thành công
-//     // Làm gì đó với kết quả trả về của các promise
-//     console.log(results[0]); // receipt
-//     console.log(results[1]); // customer
-//     console.log(results[2]); // detail_receipt
-//     FillOrder();
-//   })
-//   .catch(function(error) {
-//     // Một trong các promise bị từ chối
-//     // Xử lý lỗi ở đây
-//     console.error(error);
-//   });
