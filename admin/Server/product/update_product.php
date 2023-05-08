@@ -53,7 +53,16 @@
                     $stmt_delete = $conn -> prepare($query);
                     $classify_delete = array($classify_delete);
                     foreach($classify_delete as $class_delete) {
-                        // $stmtt$class_delete
+                        $stmt_delete -> bindParam(':id', $id);
+                        $stmt_delete -> bindParam(':id_classify', $class_delete);
+                    }
+                    // Thêm loại 
+                    $query = 'INSERT INTO product_list_classify VALUES (:id, :id_classify)';
+                    $stmt_add = $conn -> prepare($query);
+                    $classify_add = array($classify_delete);
+                    foreach($classify_add as $class_add) {
+                        $stmt_add -> bindParam(':id', $id);
+                        $stmt_add -> bindParam(':id_classify', $class_add);
                     }
                     //Upload ảnh
                     // $errors= array();
