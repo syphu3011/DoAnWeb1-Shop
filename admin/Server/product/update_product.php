@@ -48,8 +48,9 @@
                 // thực thi query
                 if ($stmt -> execute()) {
                     // Xóa loại 
-                    $query = 'DELETE FROM product_list_classify WHERE true';
+                    $query = 'DELETE FROM product_list_classify WHERE id_product = :id_product';
                     $stmt_delete = $conn -> prepare($query);
+                    $stmt_delete -> bindParam(':id_product', $id);
                     $stmt_delete -> excute();
                     // Thêm loại 
                     $query = 'INSERT INTO product_list_classify VALUES (:id, :id_classify)';
@@ -60,11 +61,11 @@
                         $stmt_add -> bindParam(':id_classify', $class);
                         $stmt_add -> excute();
                     }
+                    $desired_dir="../../Image";
+                    $absolute_dir = substr(realpath($desired_dir),1);
                     //Upload ảnh
                     // $errors= array();
                     $stmt_image = $conn->prepare("INSERT INTO image_product(id_product,link_image) VALUES(:id,:name_img)");
-                    $desired_dir="../../Image";
-                    $absolute_dir = substr(realpath($desired_dir),1);
                     foreach($_FILES['images_ar']['tmp_name'] as $key => $tmp_name ){
                         $file_name = $key.$_FILES['images_ar']['name'][$key];
                         $file_tmp =$_FILES['images_ar']['tmp_name'][$key];
@@ -73,7 +74,6 @@
                         if(is_dir("$desired_dir/".$file_name)==false){
                             chmod($desired_dir, 0777);
                             move_uploaded_file($file_tmp,$desired_dir.'/'.$file_name);
-                            chmod($desired_dir.'/'.$file_name, 0777);
                             chmod($desired_dir, 0644);
                             //Thêm vào cơ sở dữ liệu
                             $_POST_image = ['id' => $id, 'name_img' => $name_image];
@@ -87,18 +87,23 @@
                         $image_delete = array($image_delete);
                     }
                     foreach($image_delete as $value) {
-                        $data_image_delete = array('id_product' => $id, 'link_image' => $value);
-                        $stmt_delete_image->execute($data_image_delete);
-                        chmod($desired_dir, 0777);
+                        if (is_dir("$desired_dir/".$value)) {
+                            $data_image_delete = array('id_product' => $id, 'link_image' => $value);
+                            $stmt_delete_image->execute($data_image_delete);
+                            chmod($desired_dir, 0777);
 
-                        $link_to_image = $desired_dir.'/'.$value;
-                        $delete_file_status = unlink($link_to_image);
-                        if (!$delete_file_status) {
+                            $link_to_image = $desired_dir.'/'.$value;
+                            $delete_file_status = unlink($link_to_image);
+                            if (!$delete_file_status) {
+                                chmod($desired_dir, 0644);
+                                $conn -> rollBack();
+                                die ('Xóa ảnh không thành công!');
+                            }
                             chmod($desired_dir, 0644);
-                            $conn -> rollBack();
-                            die ('Xóa ảnh không thành công!');
                         }
-                        chmod($desired_dir.'/'.$file_name, 0644);
+                        $stmt_delete_image -> bindParam(':id_product', $id);
+                        $stmt_delete_image -> bindParam(':link_image', $value);
+                        $stmt_delete_image -> excute();
                     }
                 }
                 else {

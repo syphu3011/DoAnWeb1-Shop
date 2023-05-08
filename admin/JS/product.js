@@ -287,8 +287,6 @@ function findSumAmount(id) {
 
 function fillEdit(prod) {
     let image_delete = []
-    let classify_delete = []
-    let classify_add = []
     document.getElementById("edit-id").value = prod.id
     document.getElementById("edit-name").value = prod.name
     document.getElementById("edit-made-in").value = prod.made_in
@@ -298,6 +296,20 @@ function fillEdit(prod) {
     }
     document.getElementById("confirm").onclick = function() {
         createPopUpYesNo("Bạn có muốn sửa lại thông tin không ?", async function() {
+            if (document.getElementById("edit-name").value.trim() == "") {
+                alert("Không thể bỏ trống tên!")
+                return 
+            }
+            if (tag_type_edit.length == 0) {
+                alert("Không thể bỏ trống loại!")
+                return 
+            }
+            if (arrImageEdit.length == 0) {
+                alert("Không thể bỏ trống hình ảnh!")
+                return 
+            }
+            // image 
+            // if ()
             document.getElementById("image-div2").innerHTML = ""
             document.getElementById("edit_pro").style.visibility = "hidden";
             prod.name = document.getElementById("edit-name").value
@@ -306,9 +318,9 @@ function fillEdit(prod) {
             prod.clasify = tag_type_edit
             prod.images = arrImageEdit
             prod.idstatus = 'TT01'
-            tag_type_edit = []
             document.getElementById("add-type-edit").innerHTML = ""
-            await updateProd(prod, image_delete, classify_delete, classify_add)
+            await updateProd(prod, image_delete)
+            tag_type_edit = []
             arrImageEdit = arrImageEdit.filter(() => true == false)
             countt=0
             CloseDialog();
@@ -324,8 +336,10 @@ function fillEdit(prod) {
     if (typeof prod.images == 'string') {
         let images = prod.images.split(',')
         images.forEach(e => {
+            arrImageEdit.push(e)
             add_item_of_image("./Image/"+e, 'image-div2',count,'btn_rm_'+e, function(){
                 image_delete.push(e)
+                arrImageEdit = arrImageEdit.filter(value => value != e)
             })
             // document.getElementById('btn_rm_'+e).onclick = function() {
             //     image_delete.push(e);
@@ -557,7 +571,7 @@ async function addProd(Prod) {
     console.log(JSON.stringify(Prod));
     let totalfiles = document.getElementById('choose-img-prod').files;
     if (totalfiles.length == 0) {
-        alert('Không thể thiếu hình ảnh!');
+        alert('Không thể bỏ trống hình ảnh!');
         return
     }
     if (checkConstraintAddProd(Prod)) {
@@ -575,7 +589,7 @@ async function addProd(Prod) {
 }
 
 
-async function updateProd(Prod, remove_image = null, classify_delete = [], classify_add = []) {
+async function updateProd(Prod, remove_image = null) {
     await refreshData();
     // if (checkConstraintUpdateProd(Prod)) {
     //     obj.product.forEach(function(part, index) {
@@ -586,18 +600,13 @@ async function updateProd(Prod, remove_image = null, classify_delete = [], class
     //     }, obj.product);
     //     // writeToLocalStorage(obj);
     // }
+    Prod.clasify
     var form_data = new FormData();
     let totalfiles = document.getElementById('choose-img-prod').files;
 
     // Prod.images = totalfiles
     form_data = to_form_data_have_image(Prod, "images_ar[]", totalfiles);
     form_data.append('id_user','USR001')
-    classify_add.forEach (e => {
-        form_data.append('classify_add',e)
-    })  
-    classify_delete.forEach (e => {
-        form_data.append('classify_delete',e)
-    })
     if (remove_image != null) {
         remove_image.forEach(e => {
             form_data.append('image_delete', e)    
@@ -695,8 +704,11 @@ document.getElementById("submit").onclick = function() {
         let name = document.getElementById("inp-name").value.toLowerCase()
         let des = document.getElementById("add-des").value.toLowerCase()
         if (name == "") {
-            alert("Không thể bỏ trống tên, giá và xuất xứ")
+            alert("Không thể bỏ trống tên!")
             return
+        }
+        if (tag_type_add.length == 0) {
+            alert('Không thể bỏ trống loại sản phẩm!')
         }
         let prod = new Prod(initId1(tag_type_add[0]), name, made_in, des, 0, "", tag_type_add, 1)
         addProd(prod)
@@ -744,17 +756,33 @@ function add_img_files(files, count) {
     reader.readAsDataURL(files[count]);
     reader.onload = function() {
         add_item_of_image(reader.result, 'image-div',count)
+        arrImageEdit.push(reader.result)
         if (files.length > count + 1) {
             add_img_files(files, count + 1)
         }
     }
 }
-async function addType() {
+async function addType(is_editing = false) {
     let inp = document.getElementById("choose-img-prod");
     inp.click();
     inp.onchange = function() {
         remove_all_image()
         add_img_files(inp.files, 0)
+    };
+}
+//đang làm ở đây
+function addTypeEdit() {
+    document.querySelectorAll(".remove_img").forEach(function(e){
+        e.click()
+    })
+    let inp = document.getElementById("choose-img-prod");
+    inp.click();
+    inp.onchange = function() {
+        let name_img = String(inp.value);
+        // console.log(`C:\\fakepath\\`);
+        // name_img = name_img.replace(`C:\\fakepath\\`, ``);
+        // console.log(name_img);
+        add_item_of_image(name_img)
     };
 }
 function add_item_of_image(name_img, div, count, id_button = '', func = function() {}) {
@@ -787,20 +815,6 @@ function remove_all_image() {
         e.click()
     })
 }
-// function addTypeEdit() {
-//     document.querySelectorAll(".remove_img").forEach(function(e){
-//         e.click()
-//     })
-//     let inp = document.getElementById("choose-img-prod");
-//     inp.click();
-//     inp.onchange = function() {
-//         let name_img = String(inp.value);
-//         // console.log(`C:\\fakepath\\`);
-//         // name_img = name_img.replace(`C:\\fakepath\\`, ``);
-//         // console.log(name_img);
-//         add_item_of_image(name_img)
-//     };
-// }
 
 function addImg(name_img, idDiv = "image-div", count) {
     let img_div = document.getElementById(idDiv);
@@ -817,8 +831,8 @@ function addImg(name_img, idDiv = "image-div", count) {
 }
 let btn_add_img = document.getElementById("add-img");
 btn_add_img.onclick = addType;
-// let btn_add_img_edit = document.getElementById("add-img12");
-// btn_add_img_edit.onclick = addTypeEdit;
+let btn_add_img_edit = document.getElementById("add-img12");
+btn_add_img_edit.onclick = addTypeEdit;
 
 function addProdBtnEven() {
     let id = addProd;
@@ -1000,8 +1014,8 @@ let tag_type_add = [];
 let tag_type_find = [];
 let tag_type_edit = [];
 
-function CheckTagType(type, a) {
-    if (a.length > 0) {
+function CheckTagType(type, a, isEditing = false) {
+    if (a.length > 0 && !isEditing) {
         for(const classify of obj.largeClassify) {
             if (a[0].toLowerCase().indexOf(classify.id.toLowerCase()) == 0) {
                 if (type.toLowerCase().indexOf(classify.id.toLowerCase()) != 0 || type.toLowerCase().indexOf(classify.id.toLowerCase()) == -1) {
@@ -1031,7 +1045,7 @@ function AddTagType(idtag, a, useList = false, content = "") {
         tag.appendChild(document.createTextNode("X"));
         ele.appendChild(tag);
         tag.onclick = function() {
-            a.splice(CheckTagType(type, a), 1);
+            a.splice(CheckTagType(type, a, true), 1);
             ele.remove();
             checkClickClose = true
         };
