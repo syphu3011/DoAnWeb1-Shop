@@ -10,8 +10,7 @@
             $id = $_POST["id"];
             $made_in = $_POST["made_in"];
             $description = $_POST["description"];
-            $classify_add = $_POST["classify_add"];
-            $classify_delete = $_POST["classify_delete"];
+            $classify = $_POST["classify"];
             $status = $_POST["idstatus"];
             // Kiểm tra quyền
             $id_user = $_POST["id_user"];
@@ -49,20 +48,17 @@
                 // thực thi query
                 if ($stmt -> execute()) {
                     // Xóa loại 
-                    $query = 'DELETE FROM product_list_classify WHERE id_product = :id and id_classify = :id_classify';
+                    $query = 'DELETE FROM product_list_classify WHERE true';
                     $stmt_delete = $conn -> prepare($query);
-                    $classify_delete = array($classify_delete);
-                    foreach($classify_delete as $class_delete) {
-                        $stmt_delete -> bindParam(':id', $id);
-                        $stmt_delete -> bindParam(':id_classify', $class_delete);
-                    }
+                    $stmt_delete -> excute();
                     // Thêm loại 
                     $query = 'INSERT INTO product_list_classify VALUES (:id, :id_classify)';
                     $stmt_add = $conn -> prepare($query);
-                    $classify_add = array($classify_delete);
-                    foreach($classify_add as $class_add) {
+                    $classify = array($classify);
+                    foreach($classify as $class) {
                         $stmt_add -> bindParam(':id', $id);
-                        $stmt_add -> bindParam(':id_classify', $class_add);
+                        $stmt_add -> bindParam(':id_classify', $class);
+                        $stmt_add -> excute();
                     }
                     //Upload ảnh
                     // $errors= array();

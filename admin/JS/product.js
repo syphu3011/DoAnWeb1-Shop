@@ -293,6 +293,9 @@ function fillEdit(prod) {
     document.getElementById("edit-name").value = prod.name
     document.getElementById("edit-made-in").value = prod.made_in
     document.getElementById("edit-des").value = prod.description
+    document.getElementById("add-type-pro-e").onclick = function () {
+        BoxSelect()
+    }
     document.getElementById("confirm").onclick = function() {
         createPopUpYesNo("Bạn có muốn sửa lại thông tin không ?", async function() {
             document.getElementById("image-div2").innerHTML = ""
