@@ -1,12 +1,5 @@
 
-// function writeToLocalStorage(arr) {
-//     let setlocal = JSON.stringify(arr)
-//     localStorage.setItem("data", setlocal)
-// }
 
-
-// let objk = JSON.parse(JSON.stringify(data))
-// localStorage.setItem("data", JSON.stringify(data))
 let receipt
 let detail_receipt
 let customer
@@ -14,12 +7,7 @@ let product
 let length1
 let length2
 let length3
-// let length4
 
-// let length2 = obj12.prodInStock.length
-// let length3 = obj12.product.length
-// let length4 = obj12.customer.length
-// console.log(obj12)
 document.getElementById("date-init-first").value="1971-01-01"
 document.getElementById("date-init-last").value=CurrentDate()
 document.getElementById("date-confirm-first").value = "1971-01-01"
@@ -170,12 +158,12 @@ function ConfirmOrder(x) {
         $.ajax({
             url: "./Server/receipt/receipt.php?action=update",
             method: "POST",
-            dataType: "json",
-            data: {
+            contentType: "application/json",
+            data:JSON.stringify( {
                 id: receipt[x].id,
                 id_status: "TT07",
                 date_confirm:receipt[x].date_confirm
-            },
+            }),
             success: function (response) {
                 console.log(response);
             },
@@ -555,7 +543,7 @@ function FindIDO(tring) {
 function FindIDCus(tring) {
     var array = []
     for (let i = 0; i < length1; i++) {
-        if (receipt[i].idCustomer.toLowerCase().indexOf(tring) != -1) {
+        if (receipt[i].id_customer.toLowerCase().indexOf(tring) != -1) {
             array.push(i)
         }
     }
@@ -565,7 +553,7 @@ function FindIDCus(tring) {
 function FindNameCus(tring) {
     var array = []
     for (let i = 0; i < length1; i++) {
-        if (GetNameCus(receipt[i].idCustomer).toLowerCase().indexOf(tring) != -1) {
+        if (GetNameCus(receipt[i].id_customer).toLowerCase().indexOf(tring) != -1) {
             array.push(i)
         }
     }
@@ -575,7 +563,7 @@ function FindNameCus(tring) {
 function FindIDStaff(tring) {
     var array = []
     for (let i = 0; i < length1; i++) {
-        if (receipt[i].idStaff.toLowerCase().indexOf(tring) != -1) {
+        if (receipt[i].id_staff.toLowerCase().indexOf(tring) != -1) {
             array.push(i)
         }
     }
@@ -616,7 +604,7 @@ function FindDateComfirm(tring) {
 function FindTotalMoney(min, max) {
     var array = []
     for (let i = 0; i < length1; i++) {
-        if (CompareTotal(min, max, tongtienHD(receipt[i].list_prod))) {
+        if (CompareTotal(min, max, TotalMoney(receipt[i].id))) {
             array.push(i)
         }
     }
@@ -645,7 +633,7 @@ function CompareArr(ar1,ar2) {
 function FindAllO(tring) {
     var array = []
     for (let i = 0; i < length1; i++) {
-        let total = tongtienHD(receipt[i].list_prod).toString()
+        let total = TotalMoney(receipt[i].id).toString()
         if (receipt[i].id.toLowerCase().indexOf(tring) != -1 ||
             receipt[i].idCustomer.toLowerCase().indexOf(tring) != -1 ||
             GetNameCus(receipt[i].idCustomer).toLowerCase().indexOf(tring) != -1 ||
@@ -660,13 +648,13 @@ function FindAllO(tring) {
 function FindAllOH(tring) {
     let array = []
     for (let i = 0; i < length1; i++) {
-        let total = tongtienHD(receipt[i].list_prod).toString()
+        let total = TotalMoney(receipt[i].id).toString()
         if (receipt[i].id.toLowerCase().indexOf(tring) != -1 ||
-            receipt[i].idCustomer.toLowerCase().indexOf(tring) != -1 ||
-            GetNameCus(receipt[i].idCustomer).toLowerCase().indexOf(tring) != -1 ||
+            receipt[i].id_customer.toLowerCase().indexOf(tring) != -1 ||
+            GetNameCus(receipt[i].id_customer).toLowerCase().indexOf(tring) != -1 ||
             receipt[i].date_confirm.indexOf(tring) != -1 ||
             total.indexOf(tring) != -1 ||
-            receipt[i].idStaff.toLowerCase().indexOf(tring) != -1 ||
+            receipt[i].id_staff.toLowerCase().indexOf(tring) != -1 ||
             receipt[i].id_status.toLowerCase().indexOf(tring) != -1) {
             array.push(i)
         }
@@ -694,10 +682,10 @@ function FillOrderFind(find) {
             // tagrow.className = "first-row"
             tagrow.innerHTML = `
             <td>` + receipt[find[i]].id + `</td>
-            <td>` + receipt[find[i]].idCustomer + `</td>
-            <td>` + GetNameCus(receipt[find[i]].idCustomer) + `</td>
+            <td>` + receipt[find[i]].id_customer + `</td>
+            <td>` + GetNameCus(receipt[find[i]].id_customer) + `</td>
             <td>` + receipt[find[i]].date_init + `</td>
-            <td>` + calculated(tongtienHD(receipt[find[i]].list_prod)) + ` VNĐ</td>
+            <td>` + calculated(TotalMoney(receipt[find[i]].id)) + ` VNĐ</td>
             <td class = detail_o onclick=DetailOr(` + find[i] + `)>Chi tiết</td>
             <td>` + receipt[find[i]].id_status + `</td>
             <td> <button onclick=ConfirmOrder(` + find[i] + `) >Xác nhận</button>  <button onclick=CancelOrder(` + find[i] + `)>Hủy</button>  </td>`
@@ -717,13 +705,13 @@ function FillHistoryFind(find) {
             let tagrow = document.createElement("tr")
             tagrow.innerHTML = `
             <td>` + receipt[find[i]].id + `</td>
-            <td>` + receipt[find[i]].idCustomer + `</td>
-            <td>` + GetNameCus(receipt[find[i]].idCustomer) + `</td>
+            <td>` + receipt[find[i]].id_customer + `</td>
+            <td>` + GetNameCus(receipt[find[i]].id_customer) + `</td>
             <td>` + receipt[find[i]].date_confirm + `</td>
-            <td>` + calculated(tongtienHD(receipt[find[i]].list_prod)) + ` VNĐ</td>
+            <td>` + calculated(TotalMoney(receipt[find[i]].id)) + ` VNĐ</td>
             <td class = detail_h onclick=DetailHis(` + find[i] + `)>Chi tiết</td>
             <td>` + receipt[find[i]].id_status + `</td>
-            <td> ` + receipt[find[i]].idStaff + ` </td>`
+            <td> ` + receipt[find[i]].id_staff + ` </td>`
             tagtable.appendChild(tagrow)
         }
     }
