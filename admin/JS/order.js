@@ -635,8 +635,8 @@ function FindAllO(tring) {
     for (let i = 0; i < length1; i++) {
         let total = TotalMoney(receipt[i].id).toString()
         if (receipt[i].id.toLowerCase().indexOf(tring) != -1 ||
-            receipt[i].idCustomer.toLowerCase().indexOf(tring) != -1 ||
-            GetNameCus(receipt[i].idCustomer).toLowerCase().indexOf(tring) != -1 ||
+            receipt[i].id_customer.toLowerCase().indexOf(tring) != -1 ||
+            GetNameCus(receipt[i].id_customer).toLowerCase().indexOf(tring) != -1 ||
             receipt[i].date_init.indexOf(tring) != -1 ||
             total.indexOf(tring) != -1) {
             array.push(i)
@@ -675,7 +675,7 @@ function FillOrderFind(find) {
     for (let i = tagtable.rows.length - 1; i > 0; i--)
         tagtable.deleteRow(i);
     for (var i = 0; i < find.length; i++) {
-        if (receipt[find[i]].id_status == "xác nhận" || receipt[find[i]].id_status == "đã hủy") {
+        if (receipt[find[i]].id_status == "TT07" || receipt[find[i]].id_status == "TT08") {
             continue
         } else {
             let tagrow = document.createElement("tr")
@@ -687,7 +687,7 @@ function FillOrderFind(find) {
             <td>` + receipt[find[i]].date_init + `</td>
             <td>` + calculated(TotalMoney(receipt[find[i]].id)) + ` VNĐ</td>
             <td class = detail_o onclick=DetailOr(` + find[i] + `)>Chi tiết</td>
-            <td>` + receipt[find[i]].id_status + `</td>
+            <td>` + "chưa xử lý"+ `</td>
             <td> <button onclick=ConfirmOrder(` + find[i] + `) >Xác nhận</button>  <button onclick=CancelOrder(` + find[i] + `)>Hủy</button>  </td>`
             tagtable.appendChild(tagrow)
         }
@@ -696,12 +696,20 @@ function FillOrderFind(find) {
 
 function FillHistoryFind(find) {
     let tagtable = document.getElementById("table-history")
+    let status
     for (let j = tagtable.rows.length - 1; j > 0; j--)
         tagtable.deleteRow(j);
     for (var i = 0; i < find.length; i++) {
-        if (receipt[find[i]].id_status.toLowerCase() == "chờ xác nhận") {
+        if (receipt[find[i]].id_status.toLowerCase() == "TT09") {
             continue
         } else {
+            
+            if(receipt[find[i]].id_status=="TT08"){
+                status="đã hủy"
+            }
+            else{
+                status="đã xác nhận"
+            }
             let tagrow = document.createElement("tr")
             tagrow.innerHTML = `
             <td>` + receipt[find[i]].id + `</td>
@@ -710,7 +718,7 @@ function FillHistoryFind(find) {
             <td>` + receipt[find[i]].date_confirm + `</td>
             <td>` + calculated(TotalMoney(receipt[find[i]].id)) + ` VNĐ</td>
             <td class = detail_h onclick=DetailHis(` + find[i] + `)>Chi tiết</td>
-            <td>` + receipt[find[i]].id_status + `</td>
+            <td>` + status + `</td>
             <td> ` + receipt[find[i]].id_staff + ` </td>`
             tagtable.appendChild(tagrow)
         }
@@ -776,10 +784,10 @@ function timtheokhoang() {
     else{
         if (check2D(ngayBD, ngayKT)) {
             for(var i=0; i<length1;i++) {
-                let date = receipt[i].date_init.split(" ")[0].split("/")
-                if (check2D(ngayBD, date[2] + "-" + date[1] + "-" + date[0]) &&
-                    check2D(date[2] + "-" + date[1] + "-" + date[0], ngayKT) &&
-                    receipt[i].id_status.toLowerCase() == "chờ xác nhận") {
+                let date = receipt[i].date_init.split(" ")[0]
+                if (check2D(ngayBD, date) &&
+                    check2D(date, ngayKT) &&
+                    receipt[i].id_status == "TT09") {
                     arOder.push(i)
                 }
             }
@@ -799,10 +807,10 @@ function timtheokhoangLS() {
     else{
         if (check2D(ngayBD, ngayKT)) {
             for(var i=0; i<length1;i++) {
-                let date = receipt[i].date_confirm.split(" ")[0].split("/")
-                if (check2D(ngayBD, date[2] + "-" + date[1] + "-" + date[0]) &&
-                    check2D(date[2] + "-" + date[1] + "-" + date[0], ngayKT) &&
-                    receipt[i].id_status.toLowerCase() != "chờ xác nhận"
+                let date = receipt[i].date_confirm.split(" ")[0]
+                if (check2D(ngayBD, date) &&
+                    check2D(date, ngayKT) &&
+                    receipt[i].id_status != "TT09"
                 ) {
                     arOder.push(i)
                 }
