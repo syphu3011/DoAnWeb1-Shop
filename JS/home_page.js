@@ -17,15 +17,24 @@ function get_data(res) {
     //Danh sách sản phẩm
     data.product_list = res.product_list;
 }
-getDataFromServer("./Server/homepage.php", "", function (response) {
-    console.log(response);
+function_homepage();
+function function_homepage() {
+    getDataFromServer("./Server/homepage.php", "", function (response) {
+        // console.log(data.largeClassify);
+        // response.push(largeClassify);
+        let largeClassify = new Array();
+        // data.largeClassify.;
+        largeClassify.push(
+            response.data.filter((product) => product.id_big_classify == "AO"),
+            response.data.filter((product) => product.id_big_classify == "QU")
+        );
+        // console.log("Data from homepage.php: ", response);
+        // get_data(response);
 
-    // console.log("Data from homepage.php: ", response);
-    get_data(response);
-    create_Homepage(response);
-    create_filter();
-});
-
+        create_Homepage(largeClassify);
+        create_filter();
+    });
+}
 // var xhttp = new XMLHttpRequest();
 // //load trang chủ
 // xhttp.onreadystatechange = function () {
@@ -48,77 +57,84 @@ function price_from_dis(price, discount_percent, discount_price) {
 //
 
 function create_filter(params) {
-    console.log(data);
-    //
-    // Thanh chọn loại sản phẩm
-    document.getElementById(
-        "clothing-type"
-    ).innerHTML = `<option >Tất cả</option>`;
-    for (let i = 0; i < data.largeClassify.length; i++) {
-        for (let j = 0; j < data.largeClassify[i].miniClassify.length; j++) {
-            document.getElementById("clothing-type").innerHTML +=
+    getDataFromServer("./Server/get_promotion.php", {}, function (response) {
+        console.log(response);
+        // document.getElementById(
+        //     "clothing-type"
+        // ).innerHTML = `<option >Tất cả</option>`;
+        // for (let i = 0; i < data.largeClassify.length; i++) {
+        //     for (
+        //         let j = 0;
+        //         j < data.largeClassify[i].miniClassify.length;
+        //         j++
+        //     ) {
+        //         document.getElementById("clothing-type").innerHTML +=
+        //             `<option id="` +
+        //             data.largeClassify[i].miniClassify[j].id +
+        //             `">` +
+        //             data.largeClassify[i].miniClassify[j].name +
+        //             `</option>`;
+        //     }
+        // }
+        //
+        // Thanh chọn loại giảm giá
+        document.getElementById(
+            "sale-select"
+        ).innerHTML = `<option>Tất cả</option>`;
+        for (let i = 0; i < response.data.length; i++) {
+            document.getElementById("sale-select").innerHTML +=
                 `<option id="` +
-                data.largeClassify[i].miniClassify[j].id +
+                response.data[i].id +
                 `">` +
-                data.largeClassify[i].miniClassify[j].name +
+                response.data[i].name +
                 `</option>`;
         }
-    }
-    //
-    // Thanh chọn loại giảm giá
-    document.getElementById(
-        "sale-select"
-    ).innerHTML = `<option>Tất cả</option>`;
-    for (let i = 0; i < data.data_promotion.length; i++) {
-        document.getElementById("sale-select").innerHTML +=
-            `<option id="` +
-            data.data_promotion[i].id +
-            `">` +
-            data.data_promotion[i].content +
-            `</option>`;
-    }
-    //
-    // Thanh chọn khoảng giá
-    noUiSlider.create(slider, {
-        start: [
-            0,
-            data.product_list[data.product_list.length - 1].price + 10000,
-        ],
-        connect: true,
-        range: {
-            min: data.product_list[0].price,
-            max: data.product_list[data.product_list.length - 1].price,
-        },
-        validate: true,
-        step: 5000, // Set the step value to 10
-    });
-    // var slider = document.getElementById("slider");
-    // var minValue = document.getElementById("min-value");
-    // var maxValue = document.getElementById("max-value");
-    // // noUiSlider.create(slider, {
-    // //     start: [20, 80],
-    // //     connect: true,
-    // //     range: {
-    // //         min: 0,
-    // //         max: 10000,
-    // //     },
-    // //     validate: true,
-    // //     step: 10, // Set the step value to 10
-    // // });
+        //
+        // Thanh chọn khoảng giá
+        // noUiSlider.create(slider, {
+        //     start: [
+        //         0,
+        //         data.product_list[data.product_list.length - 1].price + 10000,
+        //     ],
+        //     connect: true,
+        //     range: {
+        //         min: data.product_list[0].price,
+        //         max: data.product_list[data.product_list.length - 1].price,
+        //     },
+        //     validate: true,
+        //     step: 5000, // Set the step value to 10
+        // });
+        // // var slider = document.getElementById("slider");
+        // // var minValue = document.getElementById("min-value");
+        // // var maxValue = document.getElementById("max-value");
+        // // // noUiSlider.create(slider, {
+        // // //     start: [20, 80],
+        // // //     connect: true,
+        // // //     range: {
+        // // //         min: 0,
+        // // //         max: 10000,
+        // // //     },
+        // // //     validate: true,
+        // // //     step: 10, // Set the step value to 10
+        // // // });
 
-    slider.noUiSlider.on("update", function (values, handle) {
-        if (handle) {
-            max_value_slider = Math.round(values[handle]);
-            maxValue.innerHTML = calculated(max_value_slider) + " VNĐ";
-        } else {
-            min_value_silder = Math.round(values[handle]);
-            minValue.innerHTML = calculated(min_value_silder) + " VNĐ";
-        }
+        // slider.noUiSlider.on("update", function (values, handle) {
+        //     if (handle) {
+        //         max_value_slider = Math.round(values[handle]);
+        //         maxValue.innerHTML = calculated(max_value_slider) + " VNĐ";
+        //     } else {
+        //         min_value_silder = Math.round(values[handle]);
+        //         minValue.innerHTML = calculated(min_value_silder) + " VNĐ";
+        //     }
         // let type_item = document.getElementById("clothing-type").value;
         // let sale_item = document.getElementById("sale-select").value;
         // console.log(sale_item);
         // timkiem(type_item, sale_item, max_value_slider, min_value_silder);
+        // });
     });
+    console.log(data);
+    //
+    // Thanh chọn loại sản phẩm
 }
 function pagination(data) {
     // document.getElementById('main').innerHTML+=
@@ -151,79 +167,108 @@ function pagination(data) {
     }
 }
 function create_Homepage(data_res) {
-    //Theo loại
-    data_res.largeClassify.forEach((element) => {
+    // //Theo loại
+    console.log(data_res);
+    data_res.forEach((element) => {
+        console.log(element);
         var str = "";
         //Sản phẩm trong loại
-        let data_product = data_res.product;
+        // let element = data_res.product;
         let count_i = 0;
-        for (let k = 0; k < data_product.length; k++) {
+        for (let k = 0; k < element.length; k++) {
             if (count_i == 6) {
                 break;
-            } else if (
-                data_product[k].id.indexOf(element.id) != -1 &&
-                data_product[k].idstatus == "TT01"
-            ) {
+            } else {
                 count_i++;
-                let link_image = "";
-                let price_product = ``;
-                let current_product = data_res.product_list.find(
-                    (product) => product.id_product === data_product[k].id
-                );
-                if (current_product) {
-                    price_product = calculated(current_product.price) + ` VNĐ`;
-                }
+                // let link_image = "";
+                // let price_product = ``;
+                // let current_product = data_res.product_list.find(
+                //     (product) => product.id_product === element[k].id
+                // );
+                // if (current_product) {
+                //     price_product = calculated(current_product.price) + ` VNĐ`;
+                // }
 
                 // console.log();
                 //Link image
-                for (let i = 0; i < data_res.image_product.length; i++) {
-                    if (
-                        data_res.image_product[i].id_product ==
-                        data_product[k].id
-                    ) {
-                        link_image = data_res.image_product[i].link_image;
-                    }
-                }
+                // for (let i = 0; i < data_res.image_product.length; i++) {
+                //     if (data_res.image_product[i].id_product == element[k].id) {
+                //         link_image = data_res.image_product[i].link_image;
+                //     }
+                // }
                 //Giá sản phẩm
-                // for (let i = 0; i < data_res.product_list.length; i++) {
+                let div_price = "";
+                let div_stamp = "";
+                // for (let i = 0; i < element.length; i++) {
                 //     if (
                 //         data_res.image_product[i].id_product ==
-                //         data_product[k].id
+                //         element[k].id
                 //     ) {
                 //         price_product =
                 //             calculated(data_res.product_list[i].price) + " VND";
                 //     }
                 // }
+                if (element[k].name_promotion != null) {
+                    // div_stamp = ;
+                    div_stamp =
+                        `<div
+                            class="promo_stamp"
+                            id="stamp_` +
+                        element[k].id +
+                        `"
+                        >
+                            ` +
+                        element[k].name_promotion +
+                        `
+                        </div>`;
+
+                    div_price =
+                        `<del class="del_price" id="del_` +
+                        element[k].id +
+                        `">` +
+                        calculated(element[k].price) +
+                        ` VNĐ</del><label id="price_` +
+                        element[k].id +
+                        `">` +
+                        calculated(
+                            price_from_dis(
+                                element[k].price,
+                                element[k].discount_percent,
+                                element[k].discount_price
+                            )
+                        ) +
+                        ` VNĐ</label>`;
+                } else {
+                    div_price =
+                        `<label id="price_` +
+                        element[k].id +
+                        `">` +
+                        calculated(element[k].price) +
+                        ` VNĐ</label>`;
+                }
                 //danh sách sản phẩm
                 str +=
                     `
       <li class="main_list_product_product" id="` +
-                    data_product[k].id +
+                    element[k].id +
                     `">
-        <div class="promo_stamp" id="stamp_` +
-                    data_product[k].id +
-                    `">
-        </div>
+                ` +
+                    div_stamp +
+                    `
         <img class="main_list_product_product_image"
           style=""
           src="` +
-                    link_image +
+                    element[k].link_image +
                     `"alt=""
         />
-       <div class="main_list_product_product_infor"> 
+       <div class="main_list_product_product_infor">
        <label class="product_infor_name">` +
-                    data_product[k].name +
+                    element[k].name +
                     `</label>
          <div>
-         <del class="del_price" id="del_` +
-                    data_product[k].id +
-                    `">
-         </del>
-         <label id="price_` +
-                    data_product[k].id +
-                    `">` +
-                    price_product +
-                    `</label>
+         ` +
+                    div_price +
+                    `
          </div>
         </div>
       </li>
@@ -235,7 +280,7 @@ function create_Homepage(data_res) {
         document.getElementById("main").innerHTML +=
             `<div class="main_product">
         <div class="main_name_class_product">` +
-            element.name +
+            element[0].name_classify +
             `
         </div>
         <ul class="main_list_product">
@@ -245,34 +290,34 @@ function create_Homepage(data_res) {
         </ul>
         <div style="display: flex; justify-content: center;">
           <button id="` +
-            element.id +
+            element[0].id_big_classify +
             `" class="button_show_more">Xem thêm
         </button>
         </div>
       </div>`;
     });
     // console.log(data_res.promotion);
-    for (let i = 0; i < data_res.promotion.length; i++) {
-        let tmp = data_res.promotion[i];
+    // for (let i = 0; i < data_res.promotion.length; i++) {
+    //     let tmp = data_res.promotion[i];
 
-        if (compareDates(get_currentDate(), tmp.finish_date)) {
-            let id = "stamp_" + tmp.id_product;
-            // console.log(id);
+    //     if (compareDates(get_currentDate(), tmp.finish_date)) {
+    // let id = "stamp_" + tmp.id_product;
+    //         // console.log(id);
 
-            document.getElementById(id).innerHTML = tmp.content;
-            document.getElementById(id).style.display = "block";
-            document.getElementById("del_" + tmp.id_product).innerHTML =
-                calculated(tmp.price) + " VND";
-            document.getElementById("price_" + tmp.id_product).innerHTML =
-                calculated(
-                    price_from_dis(
-                        tmp.price,
-                        tmp.discount_percent,
-                        tmp.discount_price
-                    )
-                ) + " VND";
-        }
-    }
+    // document.getElementById(id).innerHTML = tmp.content;
+    //         document.getElementById(id).style.display = "block";
+    //         document.getElementById("del_" + tmp.id_product).innerHTML =
+    //             calculated(tmp.price) + " VND";
+    //         document.getElementById("price_" + tmp.id_product).innerHTML =
+    //             calculated(
+    //                 price_from_dis(
+    //                     tmp.price,
+    //                     tmp.discount_percent,
+    //                     tmp.discount_price
+    //                 )
+    //             ) + " VND";
+    //     }
+    // }
     detail_product();
     //Bắt sk click sản phẩm
     let button_show_more = document.getElementsByClassName("button_show_more");
@@ -284,9 +329,7 @@ function create_Homepage(data_res) {
     }
 }
 let screen = "";
-function color_pagination(index){
-
-}
+function color_pagination(index) {}
 function show_more(page) {
     getDataFromServer(
         "./Server/list_product_by_large_classify.php",
