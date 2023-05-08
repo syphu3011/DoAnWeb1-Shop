@@ -143,8 +143,8 @@ function pagination(data) {
             if (localStorage.getItem("current_page") == "is_search") {
                 callback_search(btn[i].id);
             } else {
-                if (localStorage.getItem("current_page")=="is_show_more"){
-                    
+                if (localStorage.getItem("current_page") == "is_show_more") {
+                    show_more(i);
                 }
             }
         };
@@ -174,7 +174,7 @@ function create_Homepage(data_res) {
                     price_product = calculated(current_product.price) + ` VNĐ`;
                 }
 
-                console.log();
+                // console.log();
                 //Link image
                 for (let i = 0; i < data_res.image_product.length; i++) {
                     if (
@@ -278,23 +278,31 @@ function create_Homepage(data_res) {
     let button_show_more = document.getElementsByClassName("button_show_more");
     for (let i = 0; i < button_show_more.length; i++) {
         button_show_more[i].onclick = function () {
-            getDataFromServer(
-                "./Server/list_product_by_large_classify.php",
-                {
-                    id_large_classify: button_show_more[i].id,
-                    current_page: 1,
-                    total_product_on_page: total_product_on_page,
-                },
-                function (respone) {
-                    localStorage.setItem("current_page", "is_show_more");
-                    console.log(respone);
-                    create(respone);
-                    detail_product();
-                    // pagination(respone);
-                }
-            );
+            screen = button_show_more[i].id;
+            show_more(1);
         };
     }
+}
+let screen = "";
+function color_pagination(index){
+
+}
+function show_more(page) {
+    getDataFromServer(
+        "./Server/list_product_by_large_classify.php",
+        {
+            id_large_classify: screen,
+            current_page: page,
+            total_product_on_page: total_product_on_page,
+        },
+        function (respone) {
+            localStorage.setItem("current_page", "is_show_more");
+            console.log(respone);
+            create(respone);
+            detail_product();
+            // pagination(respone);
+        }
+    );
 }
 function detail_product() {
     let click_product = document.getElementsByClassName(
