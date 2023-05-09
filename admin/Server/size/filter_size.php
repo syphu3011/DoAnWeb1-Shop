@@ -3,7 +3,9 @@
         try {
             require_once('../../../init.php');
             require_once('../same_function.php');
-            if (check_privilege($id_user, $conn, 'xem', 'product')) {  
+            $id_user = $_POST['id_user'];
+            $password_user = $_POST['password'];
+            if (check_privilege($id_user, $password_user, $conn, 'xem', 'product')) {  
                 $query_get_promotions = "
                 SELECT *
                 FROM size

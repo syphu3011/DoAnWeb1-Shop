@@ -3,8 +3,9 @@
     require_once('../same_function.php');
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $id_user = $_POST['id_user'];
+        $password_user = $_POST['password'];
         try {
-            if (check_privilege($id_user, $conn, 'xem', 'product')) {
+            if (check_privilege($id_user, $password_user, $conn, 'xem', 'product')) {
                 //Sản phẩm
                 $sql = "SELECT product.id, product.name, input_country.name made_in, description, idstatus, GROUP_CONCAT(DISTINCT classify.name SEPARATOR ', ') clasify,GROUP_CONCAT(DISTINCT link_image SEPARATOR ',') images, MIN(price) price 
                 FROM product 

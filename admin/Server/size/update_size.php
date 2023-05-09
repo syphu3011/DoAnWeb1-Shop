@@ -5,9 +5,9 @@
             require_once('../../../init.php');
             require_once('../same_function.php');
             $id_user = $_POST['id_user'];
-            if (check_privilege($id_user, $conn, $action,'product')) {
+            $password_user = $_POST['password'];
+            if (check_privilege($id_user, $password_user, $conn, $action,'product')) {
                 $username = $_POST["user"]["username"];
-                if (check_privilege($username,$conn,$action,'size'))
                 $conn->beginTransaction();
                 $query_update_size = "
                 UPDATE `size`
