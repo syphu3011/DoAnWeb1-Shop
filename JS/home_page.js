@@ -280,7 +280,8 @@ function pagination(data) {
 function create_Homepage(data_res) {
     // //Theo loại
     console.log(data_res);
-    data_res.forEach((element) => {
+    for (let e = 0; e < data_res.length;e++){
+        element = data_res[e];
         console.log(element);
         var str = "";
         //Sản phẩm trong loại
@@ -406,7 +407,134 @@ function create_Homepage(data_res) {
         </button>
         </div>
       </div>`;
-    });
+    }
+    // data_res.forEach((element) => {
+    //     console.log(element);
+    //     var str = "";
+    //     //Sản phẩm trong loại
+    //     // let element = data_res.product;
+    //     let count_i = 0;
+    //     for (let k = 0; k < element.length; k++) {
+    //         if (count_i == 6) {
+    //             break;
+    //         } else {
+    //             count_i++;
+    //             // let link_image = "";
+    //             // let price_product = ``;
+    //             // let current_product = data_res.product_list.find(
+    //             //     (product) => product.id_product === element[k].id
+    //             // );
+    //             // if (current_product) {
+    //             //     price_product = calculated(current_product.price) + ` VNĐ`;
+    //             // }
+
+    //             // console.log();
+    //             //Link image
+    //             // for (let i = 0; i < data_res.image_product.length; i++) {
+    //             //     if (data_res.image_product[i].id_product == element[k].id) {
+    //             //         link_image = data_res.image_product[i].link_image;
+    //             //     }
+    //             // }
+    //             //Giá sản phẩm
+    //             let div_price = "";
+    //             let div_stamp = "";
+    //             // for (let i = 0; i < element.length; i++) {
+    //             //     if (
+    //             //         data_res.image_product[i].id_product ==
+    //             //         element[k].id
+    //             //     ) {
+    //             //         price_product =
+    //             //             calculated(data_res.product_list[i].price) + " VND";
+    //             //     }
+    //             // }
+    //             if (element[k].name_promotion != null) {
+    //                 // div_stamp = ;
+    //                 // div_stamp =
+    //                 //     `<div
+    //                 //         class="promo_stamp"
+    //                 //         id="stamp_` +
+    //                 //     element[k].id +
+    //                 //     `"
+    //                 //     >
+    //                 //         ` +
+    //                 //     element[k].name_promotion +
+    //                 //     `
+    //                 //     </div>`;
+
+    //                 div_price =
+    //                     `<del class="del_price" id="del_` +
+    //                     element[k].id +
+    //                     `">` +
+    //                     calculated(element[k].price) +
+    //                     ` VNĐ</del><label id="price_` +
+    //                     element[k].id +
+    //                     `">` +
+    //                     calculated(
+    //                         price_from_dis(
+    //                             element[k].price,
+    //                             element[k].discount_percent,
+    //                             element[k].discount_price
+    //                         )
+    //                     ) +
+    //                     ` VNĐ</label>`;
+    //             } else {
+    //                 div_price =
+    //                     `<label id="price_` +
+    //                     element[k].id +
+    //                     `">` +
+    //                     calculated(element[k].price) +
+    //                     ` VNĐ</label>`;
+    //             }
+    //             //danh sách sản phẩm
+    //             str +=
+    //                 `
+    //   <li class="main_list_product_product" id="` +
+    //                 element[k].id_product +
+    //                 `">
+    //             ` +
+    //                 div_stamp +
+    //                 `
+    //     <img class="main_list_product_product_image"
+    //       style=""
+    //       src="` +
+    //                 element[k].link_image +
+    //                 `"alt=""
+    //     />
+    //    <div class="main_list_product_product_infor">
+    //    <label class="product_infor_name">` +
+    //                 element[k].name +
+    //                 `</label>
+    //      <div>
+    //      ` +
+    //                 div_price +
+    //                 `
+    //      </div>
+    //     </div>
+    //   </li>
+    //   `;
+    //         }
+    //     }
+
+    //     // element.
+    //     document.getElementById("main").innerHTML +=
+    //         `<div class="main_product">
+    //     <div class="main_name_class_product">` +
+    //         element[0].name_classify +
+    //         `
+    //     </div>
+    //     <ul class="main_list_product">
+    //     ` +
+    //         str +
+    //         `
+    //     </ul>
+    //     <div style="display: flex; justify-content: center;">
+    //       <button id="` +
+    //         element[0].id_big_classify +
+    //         `" class="button_show_more">Xem thêm
+    //     </button>
+    //     </div>
+    //   </div>`;
+    // });
     // console.log(data_res.promotion);
     // for (let i = 0; i < data_res.promotion.length; i++) {
     //     let tmp = data_res.promotion[i];

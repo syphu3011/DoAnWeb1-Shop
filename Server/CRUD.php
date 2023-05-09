@@ -31,10 +31,7 @@ class CRUD
                 LEFT JOIN detail_promotion ON detail_promotion.id_product = product_list.id_product
                 LEFT JOIN promotion ON promotion.id = detail_promotion.id_promotion
                 WHERE 
-                   (
-                        (promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10')
-                        OR promotion.id IS NULL)
-                    AND product.idstatus = 'TT01'
+                    product.idstatus = 'TT01'
                     AND product_list.id_size IS NOT NULL
                     AND product_list.id_color IS NOT NULL
                 ORDER BY product_list.price
