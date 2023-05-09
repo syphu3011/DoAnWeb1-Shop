@@ -453,11 +453,15 @@ function Prod(id, name, made_in, description, price, images, classify, status) {
 }
 //thêm sửa sản phẩm code
 async function get_Data() {
-    return await get('./Server/product/products.php')
+    let data_server = {id_user: 'USR001'}
+    data_server = to_form_data(data_server);
+    return await get(data_server,'./Server/product/products.php')
 }
 async function refreshData() {
     try {
-        obj = await get('./Server/product/products.php')
+        let data_server = {id_user: 'USR001'}
+        data_server = to_form_data(data_server);
+        obj = await get(data_server,'./Server/product/products.php')
         console.log(obj);
     } catch (error) {
         console.log(error);

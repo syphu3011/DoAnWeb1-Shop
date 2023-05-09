@@ -72,6 +72,7 @@
         catch(Exception $exception){
             set_status_product($conn, $id);
             echo "Xóa sản phẩm không thành công vì sản phẩm này đã được mua hoặc nhập! Đặt trạng thái về ngưng bán!";
+            $conn -> commit();
         }
     }
     function set_status_product($conn, $id) {

@@ -1,9 +1,22 @@
 <?php
+// dữ liệu được post lên bằng form data với kiểu
+// {
+//     id: "",
+//     breast: "",
+//     waist: "",
+//     butt: "",
+//     foot: "",
+//     hand: "",
+//     thigh: "",
+//     back: "",
+//     id_user: "",
+// }
+// để convert về form data thì dùng to_form_data bên product.js
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         require_once('../../../init.php');
         require_once('../same_function.php');
-        $username = $_POST["user"]["username"];
-        if (check_privilege($username,$conn,'them','size')) {
+        $id_user = $_POST["id_user"];
+        if (check_privilege($id_user,$conn,'them','product')) {
             try {
                 require_once('../../../init.php');
                 $conn->beginTransaction();
@@ -21,7 +34,7 @@
                 :id_status)
                 ";
                 $stmt = $conn->prepare($query_insert_size);
-                $data_size = $_POST["size"];
+                $data_size = $_POST;
                 $id_status = 'TT12';
                 $stmt->bindParam(':id', $data_size['id']);
                 $stmt->bindParam(':breast', $data_size['breast']);
