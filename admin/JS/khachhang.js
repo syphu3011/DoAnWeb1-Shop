@@ -938,6 +938,11 @@ function filterCusWithParameters () {
         cell2.innerHTML = customer.date_created;
         cell3.innerHTML = customer.name;
         cell4.innerHTML = customer.username;
+        // let tempStr = customer.password;
+        // if (tempStr.length > 5) {
+        //   cell5.innerHTML = tempStr.slice(0, 2) + "...";
+        // } else
+        //   cell5.innerHTML = customer.password;
         cell5.innerHTML = customer.password;
         cell6.innerHTML = customer.privilege;
         cell7.innerHTML = `<button id="button-customer-status-${customer.id}-${customer.id_user}">${customer.status}</button>`;
