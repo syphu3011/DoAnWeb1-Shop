@@ -6,10 +6,11 @@
         try {
             if (check_privilege($id_user, $conn, 'xem', 'product')) {
                 //Sản phẩm
-                $sql = "SELECT product.id, product.name, input_country.name made_in, description, idstatus, GROUP_CONCAT(DISTINCT id_classify SEPARATOR ',') clasify,GROUP_CONCAT(DISTINCT link_image SEPARATOR ',') images, MIN(price) price 
+                $sql = "SELECT product.id, product.name, input_country.name made_in, description, idstatus, GROUP_CONCAT(DISTINCT classify.name SEPARATOR ', ') clasify,GROUP_CONCAT(DISTINCT link_image SEPARATOR ',') images, MIN(price) price 
                 FROM product 
                 left join image_product on product.id = image_product.id_product 
                 left join product_list_classify on product.id = product_list_classify.id_product 
+                left join classify on product_list_classify.id_classify = classify.id
                 left join product_list on product.id = product_list.id_product 
                 left join input_country on product.madein = input_country.id
                 where product.idstatus = 'TT01'
@@ -20,8 +21,8 @@
                 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 // Chuyển chuỗi các link ảnh và loại sản phẩm thành mảng
                 foreach ($products as $product) {
-                    $product['images'] = explode(',', $product['images']);
-                    $product['clasify'] = explode(',', $product['clasify']);
+                    $product['images'] = explode(', ', $product['images']);
+                    $product['clasify'] = explode(', ', $product['clasify']);
                     
                 }
 

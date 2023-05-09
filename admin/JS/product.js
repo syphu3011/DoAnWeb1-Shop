@@ -394,7 +394,7 @@ async function fillProd(product = null) {
                     "</th><th>" +
                     clasify +
                     "</th><th>" + calculated(findSumAmount(prod.id)) + "</th><th>" +
-                    calculated(prod.price) + " VND" +
+                    (prod.price != null ? calculated(prod.price) + " VND" : "Chưa có") +
                     "</th>" +
                     '<th id="detail-' +
                     prod.id +

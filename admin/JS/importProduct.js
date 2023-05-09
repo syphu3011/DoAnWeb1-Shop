@@ -80,11 +80,9 @@ function updateListID() {
         li.onclick = function() {
             if (element.id.includes("AO")) {
                 updateListSize("AO")
-            } else if (element.id.includes("QUAN")) {
-                updateListSize("QUAN")
-            } else {
-                updateListSize("PK")
-            }
+            } else if (element.id.includes("QU")) {
+                updateListSize("QU")
+            } 
             selected.innerText = li.innerText
             selected.value = choosing ? type + li.innerText : li.innerText
         }
