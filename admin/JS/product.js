@@ -412,11 +412,14 @@ async function fillProd(product = null) {
                     fillDetail(prod.id)
                 }
                 document.getElementById("remove" + prod.id).onclick = function() {
-                    createPopUpYesNo("Bạn có muốn xóa sản phẩm này hay không ?", function() {
-                        if (!removeProd(prod.id)) {
+                    createPopUpYesNo("Bạn có muốn xóa sản phẩm này hay không ?", async function() {
+                        if (prod.amount > 0) {
                             alert("Bạn không thể xóa sản phẩm còn hàng!")
                         }
-                        fillProd()
+                        let data_post_server = {id: prod.id, id_user: "USR001"}
+                        let form_data = to_form_data(data_post_server)
+                        alert(await delete_data(form_data, './Server/product/delete_product.php'))
+                        await fillProd()
                     }, function() {})
 
                 }
@@ -782,7 +785,9 @@ function addTypeEdit() {
         // console.log(`C:\\fakepath\\`);
         // name_img = name_img.replace(`C:\\fakepath\\`, ``);
         // console.log(name_img);
-        add_item_of_image(name_img)
+        arrImageEdit = arrImageEdit.filter(e => true == false)
+        remove_all_image()
+        add_img_files(inp.files, 0)
     };
 }
 function add_item_of_image(name_img, div, count, id_button = '', func = function() {}) {
@@ -838,23 +843,23 @@ function addProdBtnEven() {
     let id = addProd;
 }
 // Xóa sản phẩm
-function removeProd(id) {
-    let returnVar = true
-    obj.product.forEach(function(part, index) {
-        if (compareTwoVar(id, this[index].id)) {
-            if (findSumAmount(id) == 0) {
-                this[index].status = "0";
-                returnVar = returnVar == false ? false : true
-                writeToLocalStorage(obj)
-                return
-            } else {
-                returnVar = false
-                return
-            }
-        }
-    }, obj.product);
-    return returnVar
-}
+// function removeProd(id) {
+//     let returnVar = true
+//     obj.product.forEach(function(part, index) {
+//         if (compareTwoVar(id, this[index].id)) {
+//             if (findSumAmount(id) == 0) {
+//                 this[index].status = "0";
+//                 returnVar = returnVar == false ? false : true
+//                 writeToLocalStorage(obj)
+//                 return
+//             } else {
+//                 returnVar = false
+//                 return
+//             }
+//         }
+//     }, obj.product);
+//     return returnVar
+// }
 
 async function removeSomeProd(ids) {
     refreshData()

@@ -63,8 +63,8 @@ async function delete_data(data,dir) {
     let data_response = await $.ajax({
         url: dir,
         data: data,
-        type: 'DELETE',
-        dataType: 'json',
+        type: 'POST',
+        dataType: 'text',
         contentType: false,
         processData: false,
     }).then(function(responseData) {
