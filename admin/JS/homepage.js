@@ -6,9 +6,22 @@ function GetUserFromCookie(){
 
   return user
 }
-function GetData(){
-  return $.ajax
+function GetDataUs(user_id){
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      // Parse JSON response
+      var data = this.responseText;
+      
+      // Do something with data
+      console.log(data);
+    }
+  };
+  xhttp.open("GET", "./Server/privilege/privilege.php?user_id=" + user_id, true);
+  xhttp.send();
+
 }
+GetDataUs("USR001");
 
 
 let contentDiv = document.getElementById("content");

@@ -49,6 +49,7 @@ async function getCustomers() {
     let cell6 = row.insertCell(6);
     let cell7 = row.insertCell(7);
     let cell8 = row.insertCell(8);
+    let cell9 = row.insertCell(9);
     cell0.innerHTML = customer.id;
     cell1.innerHTML = customer.id_user;
     cell2.innerHTML = customer.date_created;
@@ -58,6 +59,7 @@ async function getCustomers() {
     cell6.innerHTML = customer.privilege;
     cell7.innerHTML = `<button id="button-customer-status-${customer.id}-${customer.id_user}">${customer.status}</button>`;
     cell8.innerHTML = `<button id="button-customer-detail-${customer.id}-${customer.id_user}">Chi tiết</button>`;
+    cell9.innerHTML = `<button id="edit-but-${customer.id}-${customer.id_user}" onclick=renderEditCustomerDetail(this.id)>Chỉnh sửa</button>`;
     $("#button-customer-detail-" + customer.id + '-' + customer.id_user).on("click", function () {
       $("#dialog").css("display", "flex");
       $("#detail-customer-open").css("display", "flex");
@@ -75,7 +77,6 @@ async function getCustomers() {
             `);
       $("#btn-detail-edit-customer-group").html(`
             <button id="save-but-${customer.id}-${customer.id_user}" style="display:none" onclick=saveCustomerDetail(this.id)>Lưu lại</button>
-            <button id="edit-but-${customer.id}-${customer.id_user}" onclick=renderEditCustomerDetail(this.id)>Chỉnh sửa</button>
             <button id="canc-but-${customer.id}" onclick=closeCustomerPopupDetail(this.id)>Thoát</button>
             `);
     });
@@ -834,7 +835,8 @@ function filterCusWithParameters () {
         cell5.innerHTML = customer.password;
         cell6.innerHTML = customer.privilege;
         cell7.innerHTML = `<button id="button-customer-status-${customer.id}-${customer.id_user}">${customer.status}</button>`;
-        cell8.innerHTML = `<button id="button-customer-detail-${customer.id}-${customer.id_user}">Chi tiết</button>`;
+        cell8.innerHTML = `<button id="button-customer-detail-${customer.id}-${customer.id_user}">Chi tiết</button> `;
+        cell9.innerHTML = `<button id="edit-but-${customer.id}-${customer.id_user}" onclick=renderEditCustomerDetail(this.id)>Chỉnh sửa</button>`;
         $("#button-customer-detail-" + customer.id + '-' + customer.id_user).on("click", function () {
           $("#dialog").css("display", "flex");
           $("#detail-customer-open").css("display", "flex");
@@ -852,7 +854,6 @@ function filterCusWithParameters () {
                 `);
           $("#btn-detail-edit-customer-group").html(`
                 <button id="save-but-${customer.id}-${customer.id_user}" style="display:none" onclick=saveCustomerDetail(this.id)>Lưu lại</button>
-                <button id="edit-but-${customer.id}-${customer.id_user}" onclick=renderEditCustomerDetail(this.id)>Chỉnh sửa</button>
                 <button id="canc-but-${customer.id}" onclick=closeCustomerPopupDetail(this.id)>Thoát</button>
                 `);
         });
