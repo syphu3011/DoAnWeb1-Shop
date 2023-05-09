@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng nhập quản trị viên</title>
+  <link rel="stylesheet" type="text/css" href="./CSS/sign_in.css">
+</head>
+<body class="fade-in">
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js" integrity="sha256-WCzAhd2P6gRJF9Hv3oOOd+hFJi/QJbv+Azn4CGB8gfY=" crossorigin="anonymous">
+  </script>
+  <script src="../JS/jquery-3.6.4.min.js"></script>
+  <script src="./JS/sign_in.js" defer></script>
+
+  <div id="notification-wrapper">
+    <img src="./img/circle-exclamation-solid.svg" alt="">
+    <div id="sign-in-noti-content">Đăng nhập thành công</div>
+  </div>
+  
+  </div>
+  <div class="sign-in-container">
+  
+    <h1>ĐĂNG NHẬP</h1>
+    <form action="/admin/login" method="post">
+      <label for="username">(*) Tên đăng nhập:</label>
+      <input class="zoom" type="text" id="username" name="username"><br>
+      <label for="password">(*) Mật khẩu:</label>
+      <input class="zoom" type="password" id="password" name="password" autocomplete><br>
+      <div id="remember-me-container">
+        <label for="remember">Remember me</label>
+        <input type="checkbox" id="remember" value="my-value-wtf">
+      </div>
+    </form>
+    <button id="log-but">Đăng nhập</button>
+  </div>
+  
+  <div id="login-redirect">
+    <div id="log-re-not">
+      <div>Tiếp tục phiên đăng nhập đã có?</div>
+      <div id="but-re-group">
+        <button id="manage">Quản lý</button>
+        <button id="log-out-but">Đăng xuất</button>
+      </div>
+    </div>
+  </div>
+  
+</body>
+</html>
+
+
