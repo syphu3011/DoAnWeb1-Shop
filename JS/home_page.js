@@ -21,6 +21,7 @@ function_homepage();
 function function_homepage() {
     getDataFromServer("./Server/homepage.php", "", function (response) {
         // console.log(data.largeClassify);
+        console.log(response);
         // response.push(largeClassify);
         let largeClassify = new Array();
         // data.largeClassify.;
@@ -30,9 +31,10 @@ function function_homepage() {
         );
         // console.log("Data from homepage.php: ", response);
         // get_data(response);
-
+        data = response.data;
+        // get_data(response);
         create_Homepage(largeClassify);
-        create_filter();
+        create_filter(response);
     });
 }
 // var xhttp = new XMLHttpRequest();
@@ -57,6 +59,81 @@ function price_from_dis(price, discount_percent, discount_price) {
 //
 
 function create_filter(params) {
+    getDataFromServer("./Server/get_classify.php", {}, function (response) {
+        console.log(response);
+        document.getElementById(
+            "clothing-type"
+        ).innerHTML = `<option >Tất cả</option>`;
+        for (let i = 0; i < response.data.length; i++) {
+            //  for (
+            //      let j = 0;
+            //      j < data.largeClassify[i].miniClassify.length;
+            //      j++
+            //  ) {
+            document.getElementById("clothing-type").innerHTML +=
+                `<option id="` +
+                response.data[i].id +
+                `">` +
+                response.data[i].name +
+                `</option>`;
+            //  }
+        }
+        //
+        // Thanh chọn loại giảm giá
+        //  document.getElementById(
+        //      "sale-select"
+        //  ).innerHTML = `<option>Tất cả</option>`;
+        //  for (let i = 0; i < response.data.length; i++) {
+        //      document.getElementById("sale-select").innerHTML +=
+        //          `<option id="` +
+        //          response.data[i].id +
+        //          `">` +
+        //          response.data[i].name +
+        //          `</option>`;
+        //  }
+        //
+        // Thanh chọn khoảng giá
+        // noUiSlider.create(slider, {
+        //     start: [
+        //         0,
+        //         data.product_list[data.product_list.length - 1].price + 10000,
+        //     ],
+        //     connect: true,
+        //     range: {
+        //         min: data.product_list[0].price,
+        //         max: data.product_list[data.product_list.length - 1].price,
+        //     },
+        //     validate: true,
+        //     step: 5000, // Set the step value to 10
+        // });
+        // // var slider = document.getElementById("slider");
+        // // var minValue = document.getElementById("min-value");
+        // // var maxValue = document.getElementById("max-value");
+        // // // noUiSlider.create(slider, {
+        // // //     start: [20, 80],
+        // // //     connect: true,
+        // // //     range: {
+        // // //         min: 0,
+        // // //         max: 10000,
+        // // //     },
+        // // //     validate: true,
+        // // //     step: 10, // Set the step value to 10
+        // // // });
+
+        // slider.noUiSlider.on("update", function (values, handle) {
+        //     if (handle) {
+        //         max_value_slider = Math.round(values[handle]);
+        //         maxValue.innerHTML = calculated(max_value_slider) + " VNĐ";
+        //     } else {
+        //         min_value_silder = Math.round(values[handle]);
+        //         minValue.innerHTML = calculated(min_value_silder) + " VNĐ";
+        //     }
+        // let type_item = document.getElementById("clothing-type").value;
+        // let sale_item = document.getElementById("sale-select").value;
+        // console.log(sale_item);
+        // timkiem(type_item, sale_item, max_value_slider, min_value_silder);
+        // });
+    });
     getDataFromServer("./Server/get_promotion.php", {}, function (response) {
         console.log(response);
         // document.getElementById(
@@ -131,6 +208,40 @@ function create_filter(params) {
         // console.log(sale_item);
         // timkiem(type_item, sale_item, max_value_slider, min_value_silder);
         // });
+    });
+    // Thanh chọn khoảng giá
+    noUiSlider.create(slider, {
+        start: [0, params.data[params.data.length - 1].price + 20000],
+        connect: true,
+        range: {
+            min: params.data[0].price - 10000,
+            max: params.data[params.data.length - 1].price + 5000,
+        },
+        validate: true,
+        step: 5000, // Set the step value to 10
+    });
+    // var slider = document.getElementById("slider");
+    // var minValue = document.getElementById("min-value");
+    // var maxValue = document.getElementById("max-value");
+    // // noUiSlider.create(slider, {
+    // //     start: [20, 80],
+    // //     connect: true,
+    // //     range: {
+    // //         min: 0,
+    // //         max: 10000,
+    // //     },
+    // //     validate: true,
+    // //     step: 10, // Set the step value to 10
+    // // });
+
+    slider.noUiSlider.on("update", function (values, handle) {
+        if (handle) {
+            max_value_slider = Math.round(values[handle]);
+            maxValue.innerHTML = calculated(max_value_slider) + " VNĐ";
+        } else {
+            min_value_silder = Math.round(values[handle]);
+            minValue.innerHTML = calculated(min_value_silder) + " VNĐ";
+        }
     });
     console.log(data);
     //
@@ -210,17 +321,17 @@ function create_Homepage(data_res) {
                 // }
                 if (element[k].name_promotion != null) {
                     // div_stamp = ;
-                    div_stamp =
-                        `<div
-                            class="promo_stamp"
-                            id="stamp_` +
-                        element[k].id +
-                        `"
-                        >
-                            ` +
-                        element[k].name_promotion +
-                        `
-                        </div>`;
+                    // div_stamp =
+                    //     `<div
+                    //         class="promo_stamp"
+                    //         id="stamp_` +
+                    //     element[k].id +
+                    //     `"
+                    //     >
+                    //         ` +
+                    //     element[k].name_promotion +
+                    //     `
+                    //     </div>`;
 
                     div_price =
                         `<del class="del_price" id="del_` +
@@ -250,7 +361,7 @@ function create_Homepage(data_res) {
                 str +=
                     `
       <li class="main_list_product_product" id="` +
-                    element[k].id +
+                    element[k].id_product +
                     `">
                 ` +
                     div_stamp +

@@ -82,13 +82,13 @@ function create(data) {
                         )
                     ) +
                     ` VND</label>`;
-                str_stamp =
-                    `<div class="promo_stamp" id="stamp_` +
-                    data_product[i].id_product +
-                    `" style="display: block;">
-                    ` +
-                    data_product[i].content +
-                    `</div>`;
+                // str_stamp =
+                //     `<div class="promo_stamp" id="stamp_` +
+                //     data_product[i].id_product +
+                //     `" style="display: block;">
+                //     ` +
+                //     data_product[i].content +
+                //     `</div>`;
             }
             li +=
                 `<li class="main_list_product_product" id="` +

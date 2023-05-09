@@ -37,9 +37,10 @@ class CRUD
                     AND product.idstatus = 'TT01'
                     AND product_list.id_size IS NOT NULL
                     AND product_list.id_color IS NOT NULL
-                GROUP BY product_list_classify.id_product
-
+                ORDER BY product_list.price
             ";
+                // -- GROUP BY product_list_classify.id_product
+
             $stmt = $conn -> prepare($sql);
             $stmt -> execute();
             $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
@@ -99,6 +100,18 @@ class CRUD
                     WHERE id_big_classify = ?";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$id]);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = null;
+        return $result;
+    }
+    public function read_data_classify($conn)
+    {
+        # code...
+        $sql = "SELECT * 
+            FROM classify 
+            WHERE classify.id_big_classify IS NOT NULL";
+        $stmt = $conn -> prepare($sql);
+        $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt = null;
         return $result;
@@ -403,7 +416,7 @@ class CRUD
         }
         if ($sale != "Tất cả") {
             // $sale = trim($sale);
-            $sale_value = "AND promotion.content = '" . $sale ."'";
+            $sale_value = "AND promotion.name = '" . $sale ."'";
             // $params[] = $sale;
         }
         // if ($key == '') {
@@ -427,13 +440,41 @@ class CRUD
                     WHERE image_product.id_product=product.id
                     LIMIT 1
                         ) AS link_image,
-                   promotion.name AS name_promotion,
-                   promotion.image,
-                   promotion.content,
-                   promotion.discount_price,
-                   promotion.discount_percent,
-                   promotion.begin_date,
-                   promotion.finish_date
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.name
+                        ELSE NULL 
+                    END AS name_promotion,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.image
+                        ELSE NULL 
+                    END AS image,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.content
+                        ELSE NULL 
+                    END AS content,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.discount_price
+                        ELSE NULL 
+                    END AS discount_price,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.discount_percent
+                        ELSE NULL 
+                    END AS discount_percent,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.begin_date
+                        ELSE NULL 
+                    END AS begin_date,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.finish_date
+                        ELSE NULL 
+                    END AS finish_date
                FROM 
                    product_list_classify
                    LEFT JOIN product_list ON product_list_classify.id_product=product_list.id_product
@@ -449,6 +490,8 @@ class CRUD
                     AND (
                         (promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10')
                     OR promotion.id IS NULL)
+                    AND product_list.id_size IS NOT NULL
+                    AND product_list.id_color IS NOT NULL
                     AND classify.name LIKE '$type_value'
                     $sale_value
                     AND product.name LIKE '$key_value'

@@ -713,8 +713,8 @@ btnprodw.onmouseleave = function () {
 btnprodm.onmouseenter = function () {
     prod.style.display = "block";
     createListType("nam");
-    mouse_enter_gender_product = "nam";
 
+    mouse_enter_gender_product = "nam";
     showuser.style.display = "";
     showcart.style.display = "";
     offlist();
@@ -732,23 +732,48 @@ let isProductShow = false;
 //
 //
 function createListType(gender) {
-    // document.getElementById("")
-    for (let i = 0; i < data.largeClassify.length; i++) {
-        let largeClassify = data.largeClassify[i];
-        document.getElementsByClassName("ul_list_container")[i].innerHTML = "";
-        for (let j = 0; j < largeClassify.miniClassify.length; j++) {
-            let miniClassify = largeClassify.miniClassify[j];
-            document.getElementsByClassName("ul_list_container")[i].innerHTML +=
+    getDataFromServer("./Server/get_classify.php", {}, function (response) {
+        let list = response.data.filter((product) => product.gender == gender);
+        console.log(list);
+        let list_ao = list.filter((product) => product.id_big_classify == "AO");
+        let list_qu = list.filter((product) => product.id_big_classify == "QU");
+        console.log(list_ao, list_qu);
+        document.getElementsByClassName("ul_list_container")[0].innerHTML = "";
+        for (let i = 0; i < list_ao.length; i++) {
+            // let largeClassify = response.data[i];
+
+            // for (let j = 0; j < largeClassify.miniClassify.length; j++) {
+            //     let miniClassify = largeClassify.miniClassify[j];
+            document.getElementsByClassName("ul_list_container")[0].innerHTML +=
                 `<li id="` +
-                miniClassify.id +
+                list_ao[i].id +
                 `" class="list-item-container">
                                         ` +
-                miniClassify.name +
+                list_ao[i].name +
                 `
                                     </li>`;
+            // }
         }
-    }
-    choice_type_product(gender);
+        document.getElementsByClassName("ul_list_container")[1].innerHTML = "";
+        for (let i = 0; i < list_qu.length; i++) {
+            // let largeClassify = response.data[i];
+
+            // for (let j = 0; j < largeClassify.miniClassify.length; j++) {
+            //     let miniClassify = largeClassify.miniClassify[j];
+            document.getElementsByClassName("ul_list_container")[1].innerHTML +=
+                `<li id="` +
+                list_qu[i].id +
+                `" class="list-item-container">
+                                        ` +
+                list_qu[i].name +
+                `
+                                    </li>`;
+            // }
+        }
+        choice_type_product(gender);
+    });
+    // document.getElementById("")
+
     // let sp = document.createElement("div");
     // sp.id = "sanpham";
     // //
@@ -864,6 +889,7 @@ function createListType(gender) {
     // };
 }
 function choice_type_product(gender) {
+    console.log(1);
     let classify = document.getElementsByClassName("list-item-container");
     for (let i = 0; i < classify.length; i++) {
         classify[i].onclick = function () {
@@ -1015,14 +1041,15 @@ function create_main_onclick_classify(data) {
 //
 //thanh toán giỏ hàng
 function ttGioHang(thanhtoansp) {
+    console.log(thanhtoansp);
     document.getElementById("body_product_table").innerHTML = "";
     console.log(product_in_cart);
     for (let i = 0; i < thanhtoansp.product_is_selected.length; i++) {
         document.getElementById("body_product_table").innerHTML +=
             `<tr class="product-row">
                                 <td>` +
-            data.product.find(
-                (product) => product.id === thanhtoansp.product_is_selected[i]
+            data.find(
+                (product) => product.id_product === thanhtoansp.product_is_selected[i]
             ).name +
             `</td>
                                 <td>` +

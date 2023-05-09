@@ -119,6 +119,7 @@ function fill_price_in_cart() {
         }
     }
 }
+
 localStorage.setItem("is_update_cart", false);
 
 function sukien(data_product) {
