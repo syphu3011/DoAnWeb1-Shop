@@ -52,6 +52,11 @@
                 $stmt = $conn->prepare($sql_made_in);
                 $stmt->execute();
                 $made_in = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                //Kích thước
+                $sql_size = "SELECT id, name FROM input_country";
+                $stmt = $conn->prepare($sql_made_in);
+                $stmt->execute();
+                $made_in = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 //tạo json 
                 $result = array('product' => $products, 'prodInStock' => $prodInStock, 'largeClassify' => $big_classify, 'input_country' => $made_in);
                 //Chuyển kết quả thành JSON và xuất ra

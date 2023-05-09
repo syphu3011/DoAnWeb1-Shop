@@ -1,9 +1,10 @@
 <?php
     function check_privilege($id_user, $hash_pass,$conn, $action, $privilege_group) {
         $query ="
-        SELECT id
+        SELECT account.id_user, id_feature
         FROM privilege_general_detail, account
         WHERE 
+        privilege_general_detail.id_user = account.id_user and
         username = :username and 
         password = :hash_pass and
         id_table = :privilege_group

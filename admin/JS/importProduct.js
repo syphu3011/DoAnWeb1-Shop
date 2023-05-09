@@ -11,7 +11,14 @@ let importList = []
 let data = JSON.parse(localStorage.getItem('data'))
 // let inp_prod = data.input_product
 let checkClickOutsideDetail = false
-
+async function getProduct() {
+    let response = await get(to_form_data(getCurrentUser()), './Server/product/products.php')
+    return response.product;
+}
+async function getSize() {
+    let response = await get(to_form_data(getCurrentUser()), './Server/size/sizes.php')
+    return response.sizes;
+}
 function getCurrentDate() {
     function formatNumber(number) {
         return number < 10 ? "0" + number : number
@@ -61,7 +68,7 @@ let btn_select_id = document.getElementById("select-id")
 let btn_size = document.getElementById("select-size")
 let list_id = document.getElementById("list-drop-down-id")
 
-function updateListID() {
+async function updateListID() {
     // <li class="li-drop-down">SP00000000001</li>
     //                         <li class="li-drop-down">SP00000000001</li>
     //                         <li class="li-drop-down">SP00000000001</li>
@@ -69,29 +76,31 @@ function updateListID() {
     //                         <li class="li-drop-down">SP00000000001</li>
     //                         <li class="li-drop-down">SP00000000001</li>
     //                         <li class="li-drop-down">SP00000000001</li>
-    updateData()
+    // updateData()
+    let product = await getProduct()
     let dropdown = document.getElementById("list-drop-down-id")
     dropdown.innerHTML = ""
-    data.product.forEach(element => {
+    product.forEach(element => {
         let li = document.createElement('li')
         li.className = "li-drop-down"
-        li.appendChild(document.createTextNode(element.id))
+        li.innerText = element.id
         dropdown.appendChild(li)
-        li.onclick = function() {
+        li.onclick = async function() {
             if (element.id.includes("AO")) {
-                updateListSize("AO")
+                await updateListSize("AO")
             } else if (element.id.includes("QU")) {
-                updateListSize("QU")
+                await updateListSize("QU")
             } 
-            selected.innerText = li.innerText
-            selected.value = choosing ? type + li.innerText : li.innerText
+            selected.innerText = li.innerHTML
+            selected.value = choosing ? type + li.innerHTML : li.innerHTML
         }
     })
 
 }
 
-function updateListSize(type) {
-    updateData()
+async function updateListSize(type) {
+    // updateData()
+    let size = await getSize()
     let dropdown = document.getElementById("list-drop-down-size")
     let sizeP = document.getElementById("size-p")
     dropdown.innerHTML = ""
@@ -111,7 +120,7 @@ function updateListSize(type) {
         sizeP.style.opacity = 0
         return ""
     }
-    for (element of data.size) {
+    for (element of size) {
         if (element.id.charAt(0) == firstLetter) {
             let sizeString = document.getElementById("p-size")
             sizeString.innerText = element.id
@@ -119,21 +128,23 @@ function updateListSize(type) {
             break
         }
     }
-    data.size.forEach((element) => {
+    size.forEach((element) => {
         if (element.id.charAt(0) == firstLetter) {
             let li = document.createElement('li')
             li.className = "li-drop-down"
             li.appendChild(document.createTextNode(element.id))
             dropdown.appendChild(li)
             li.onclick = function() {
-                selected.innerText = li.innerText
-                selected.value = choosing ? type + li.innerText : li.innerText
+                selected.innerText = li.innerHTML
+                selected.value = choosing ? type + li.innerHTML : li.innerHTML
             }
         }
     })
 }
+let is_click_on_select = false
 btn_select_id.onclick = function() {
     if (list_id.style.visibility == "") {
+        is_click_on_select = true
         updateListID()
         list_id.style.zIndex = "1"
         list_id.style.visibility = "visible";
@@ -144,6 +155,7 @@ btn_select_id.onclick = function() {
     } else {
         list_id.style.visibility = "";
         list_id.style.opacity = "0";
+        is_click_on_select = false
         // list_id.style.transition = "all 0.3s ease-in-out 0s, visibility 0s linear 0.3s, z-index 1s linear 0.01s;"
     }
 }
@@ -173,6 +185,32 @@ function openImportPage() {
     let back_import = document.getElementById("back-import-page-importprod")
     back_import.style.visibility = "visible";
     back_import.style.opacity = "1"
+    let input_id = document.getElementById("input-id")
+    input_id.onchange = async function() {
+        let two_first_letter = input_id.innerText.substring(0,2)
+        if (two_first_letter.toUpperCase().includes("AO")) {
+            await updateListSize("AO")
+        } else if (two_first_letter.toUpperCase().includes("QU")) {
+            await updateListSize("QU")
+        } 
+    }
+    input_id.onblur = async function() {
+        if (!is_click_on_select) {
+            let product = await getProduct()
+            product = Array.from(product)
+            let check_correct = false
+            for (e of product) {
+                if (e.id == input_id.innerText) {
+                    check_correct = true
+                    break
+                }
+            }
+            if (!check_correct) {
+                input_id.focus()
+                alert("Bạn phải nhập đúng ID!");
+            }
+        }
+    }
 }
 let submit_import = document.getElementById("submit-import")
 
