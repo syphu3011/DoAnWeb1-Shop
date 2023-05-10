@@ -14,7 +14,7 @@ function GetDataUs(user_id){
       var data = this.responseText;
       
       // Do something with data
-      console.log(data);
+      // console.log(data);
     }
   };
   xhttp.open("GET", "./Server/privilege/privilege.php?user_id=" + user_id, true);
@@ -128,6 +128,11 @@ async function changeToInput() {
   await getProduct()
 }
 
+function changeToPrivilege() {
+  hideCurrent();
+  appearDiv(document.getElementById("bgr-privilege"));
+}
+
 function changeToStaff() {
   hideCurrent();
   appearDiv(document.getElementById("bgr-nv"));
@@ -230,6 +235,14 @@ document.getElementById("input").onclick = function () {
   openCloseLeftBar();
   location.href = fullPathPage + 'nhaphang'
 };
+
+$("#privilege").click(function () {
+  $("#content").css("display", "block");
+  $("#div-thongso").css("display", "none");
+  openCloseLeftBar();
+  changeToPrivilege();
+})
+
 document.getElementById("staff").onclick = function () {
   document.getElementById("content").style.display = "block";
   document.getElementById("div-thongso").style.display = "none";

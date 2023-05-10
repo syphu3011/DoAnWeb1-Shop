@@ -130,3 +130,52 @@
     margin-right: 2rem;
     width: 20rem;
 }
+
+#popup-content-pane-privilege {
+    display: flex;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.975);
+    overflow: auto;
+}
+
+.popup-content-pane-privilege-board {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    height: 10rem;
+    width: 56rem;
+    /* padding: 1.5rem; */
+    /* margin-top: 5rem; */
+    padding-top: 60rem;
+    overflow: scroll;
+    border: 1px solid transparent;
+}
+
+#privilege-detail-banner {
+    text-align: center;
+    width: 100%;
+    padding-bottom: 1rem;
+    z-index: 5;
+}
+
+#pri-detail-gr {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid transparent;
+}
+
+#pri-detail-gr > button {
+    margin: 1rem;
+}
