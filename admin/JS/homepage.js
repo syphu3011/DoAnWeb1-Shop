@@ -134,6 +134,7 @@ function changeToStaff() {
 function changeToSize() {
   hideCurrent();
   appearDiv(document.getElementById("bgr-size"));
+  FillSize();
 }
 
 function changeToPromote() {
