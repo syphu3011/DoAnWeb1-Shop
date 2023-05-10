@@ -1,0 +1,181 @@
+#login-redirect {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #d2d2d2;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right:0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  padding: 2rem;
+}
+
+#log-re-not {
+  width: 25rem;
+  height: 10rem;
+  background-color: #aaaaaae0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#log-re-not > div {
+  align-items: center;
+  padding :1rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+#but-re-group {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+
+#remember-me-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-bottom: .75rem;
+}
+
+#notification-wrapper {
+  /* display: flex; */
+  display: none;
+  flex-direction: row;
+  justify-content: space-around;
+  position: fixed;
+  right: 1rem;
+  top: 1rem;
+  width: 17rem;
+  height: 2.5rem;
+  font-weight: bold;
+  /* color: black; */
+  background-color: #FFFFFF;
+  border-radius: 2rem;
+  border: 1px solid transparent;
+  padding-bottom: .5rem;
+  padding-top: .5rem;
+}
+
+@media screen and (max-width: 480px) {
+  .notification-wrapper {
+    left: 50%;
+    right: 50%;
+    top: 1rem;
+  }
+}
+
+#sign-in-noti-content {
+  color: #000000;
+  text-align: center;
+  padding-top: .75rem;
+  margin-right: .25rem;
+  height: 10px;
+}
+
+.notification-wrapper img {
+  width: 2rem;
+  height: 2rem;
+}
+
+.fade-in {
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.fade-in.show {
+  opacity: .85;
+}
+
+html {
+
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-image: url("../img/sundown_by_aenami_da6vc8x.jpg");
+  background-size: cover;
+  opacity: 0.65;
+  filter: alpha(opacity=65); /* For IE8 and earlier */
+}
+
+h1 {
+  text-align: center;
+}
+
+.sign-in-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #FFFFFF;
+  padding: 5rem;
+  padding-top: 1.5rem;
+  padding-bottom: 2.5rem;
+  opacity: 0.85;
+  filter: alpha(opacity=85); /* For IE8 and earlier */
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+form * {
+  display: inline;
+  font-size: 14px;
+}
+
+form > label {
+  margin-bottom: .25 rem;
+  font-weight: bold;
+}
+
+form > input {
+  margin-top: 0.5rem;
+  height: 30px;
+  padding: 5px;
+  border: 1px solid #000000;
+}
+
+form input[type="text"] {
+  background-color: #FFFFFF;
+}
+
+button {
+  background-color: #d2d2d2;
+  height: 30px;
+  font-weight: bold;
+  border: 2px solid transparent;
+}
+
+button:hover {
+  border: 2px solid black;
+}
+
+.zoom {
+  transition: transform 0.2s ease-in-out;
+}
+
+.zoom:hover {
+  transform: scale(1.1);
+}
+
+.zoom:focus {
+  transform: scale(1.1);
+}
+

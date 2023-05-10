@@ -350,11 +350,8 @@ function fillEdit(prod) {
 }
 
 async function fillProd(product = null) {
-    if (product == null) {
-        await refreshData()
-        product = obj.product
-        console.log(product)
-    }
+    await refreshData()
+    product = obj.product
     let table = document.getElementById("table-prod");
     table.innerHTML = ""
     let row_head = document.createElement("tr")
@@ -394,7 +391,7 @@ async function fillProd(product = null) {
                     "</th><th>" +
                     clasify +
                     "</th><th>" + calculated(findSumAmount(prod.id)) + "</th><th>" +
-                    calculated(prod.price) + " VND" +
+                    (prod.price != null ? calculated(prod.price) + " VND" : "Chưa có") +
                     "</th>" +
                     '<th id="detail-' +
                     prod.id +
@@ -412,11 +409,15 @@ async function fillProd(product = null) {
                     fillDetail(prod.id)
                 }
                 document.getElementById("remove" + prod.id).onclick = function() {
-                    createPopUpYesNo("Bạn có muốn xóa sản phẩm này hay không ?", function() {
-                        if (!removeProd(prod.id)) {
+                    createPopUpYesNo("Bạn có muốn xóa sản phẩm này hay không ?", async function() {
+                        if (prod.amount > 0) {
                             alert("Bạn không thể xóa sản phẩm còn hàng!")
                         }
-                        fillProd()
+                        let current_user = getCurrentUser()
+                        let data_post_server = {id: prod.id, id_user: current_user.id_user, password: current_user.password}
+                        let form_data = to_form_data(data_post_server)
+                        alert(await delete_data(form_data, './Server/product/delete_product.php'))
+                        await fillProd()
                     }, function() {})
 
                 }
@@ -450,11 +451,20 @@ function Prod(id, name, made_in, description, price, images, classify, status) {
 }
 //thêm sửa sản phẩm code
 async function get_Data() {
-    return await get('./Server/product/products.php')
+    let data_server = {id_user: 'USR001'}
+    data_server = to_form_data(data_server);
+    return await get(data_server,'./Server/product/products.php')
 }
+
 async function refreshData() {
     try {
-        obj = await get('./Server/product/products.php')
+        let current_user = getCurrentUser()
+        data_server = to_form_data(current_user);
+        obj = await get(data_server,'./Server/product/products.php')
+        if (obj == errors) {
+            block_access('Bạn không có quyền truy cập vào sản phẩm!')
+            return
+        }
         console.log(obj);
     } catch (error) {
         console.log(error);
@@ -578,8 +588,10 @@ async function addProd(Prod) {
         var form_data = new FormData();
 
         // Prod.images = totalfiles
+        let current_user = getCurrentUser();
         form_data = to_form_data_have_image(Prod, "images_ar[]", totalfiles);
-        form_data.append('id_user','USR001')
+        form_data.append('id_user',current_user.id_user)
+        form_data.append('password',current_user.password)
         let response = await post(form_data,'./Server/product/create_product.php');
         alert(response);
         document.getElementById('choose-img-prod').value = ''
@@ -605,8 +617,10 @@ async function updateProd(Prod, remove_image = null) {
     let totalfiles = document.getElementById('choose-img-prod').files;
 
     // Prod.images = totalfiles
+    let current_user = getCurrentUser();
     form_data = to_form_data_have_image(Prod, "images_ar[]", totalfiles);
-    form_data.append('id_user','USR001')
+    form_data.append('id_user',current_user.id_user)
+    form_data.append('id_password',current_user.password)
     if (remove_image != null) {
         remove_image.forEach(e => {
             form_data.append('image_delete', e)    
@@ -782,7 +796,9 @@ function addTypeEdit() {
         // console.log(`C:\\fakepath\\`);
         // name_img = name_img.replace(`C:\\fakepath\\`, ``);
         // console.log(name_img);
-        add_item_of_image(name_img)
+        arrImageEdit = arrImageEdit.filter(e => true == false)
+        remove_all_image()
+        add_img_files(inp.files, 0)
     };
 }
 function add_item_of_image(name_img, div, count, id_button = '', func = function() {}) {
@@ -838,23 +854,23 @@ function addProdBtnEven() {
     let id = addProd;
 }
 // Xóa sản phẩm
-function removeProd(id) {
-    let returnVar = true
-    obj.product.forEach(function(part, index) {
-        if (compareTwoVar(id, this[index].id)) {
-            if (findSumAmount(id) == 0) {
-                this[index].status = "0";
-                returnVar = returnVar == false ? false : true
-                writeToLocalStorage(obj)
-                return
-            } else {
-                returnVar = false
-                return
-            }
-        }
-    }, obj.product);
-    return returnVar
-}
+// function removeProd(id) {
+//     let returnVar = true
+//     obj.product.forEach(function(part, index) {
+//         if (compareTwoVar(id, this[index].id)) {
+//             if (findSumAmount(id) == 0) {
+//                 this[index].status = "0";
+//                 returnVar = returnVar == false ? false : true
+//                 writeToLocalStorage(obj)
+//                 return
+//             } else {
+//                 returnVar = false
+//                 return
+//             }
+//         }
+//     }, obj.product);
+//     return returnVar
+// }
 
 async function removeSomeProd(ids) {
     refreshData()

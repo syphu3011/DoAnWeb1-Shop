@@ -6,10 +6,22 @@ function GetUserFromCookie(){
 
   return user
 }
-function GetData(){
-  return $.ajax
-}
+function GetDataUs(user_id){
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      // Parse JSON response
+      var data = this.responseText;
+      
+      // Do something with data
+      console.log(data);
+    }
+  };
+  xhttp.open("GET", "./Server/privilege/privilege.php?user_id=" + user_id, true);
+  xhttp.send();
 
+}
+GetDataUs("USR001");
 
 let contentDiv = document.getElementById("content");
 let left_bar = document.getElementById("back-left-bar");
@@ -19,6 +31,7 @@ let direct = false;
 let isMoving = false;
 let current = document.getElementById("background-history-admin");
 let img_ham = document.getElementById("img-ham");
+current.display = 'none'
 img_ham.onclick = function () {
   if (!isMoving) {
     openCloseLeftBar();
@@ -80,6 +93,7 @@ function appearDivFlex(div) {
 function changeToHomepage() {
   hideCurrent();
   appearDivFlex(document.getElementById("background-history-admin"));
+  
 }
 
 function changeToConsumer() {
@@ -108,9 +122,10 @@ Promise.all([get_DataOrder(), get_DataCus(), get_DataDetailO(), get_DataProd(), 
   });
 }
 
-function changeToInput() {
+async function changeToInput() {
   hideCurrent();
   appearDiv(document.getElementById("body-input"));
+  await getProduct()
 }
 
 function changeToStaff() {
@@ -149,20 +164,62 @@ async function changeToProduct() {
   await fillProd();
   // fillType()
 }
-
+const startPath = '/DoAnWeb1-Shop/admin/'
+const startPathPage = '/DoAnWeb1-Shop/admin/?page='
+const fromm = location.href.indexOf(startPath)
+const relativePath = location.href.slice(fromm);
+const firstPath = location.href.slice(0, fromm)
+const fullPathPage = firstPath+startPathPage
+function runOnLoad() {
+  switch (relativePath) {
+    case startPathPage+"sanpham":
+      changeToProduct()
+      break
+    case startPathPage+"loaisanpham":
+      changeToClassify()
+      break
+    case startPathPage+"donhang":
+      changeToOrder()
+      break
+    case startPathPage+"nhaphang":
+      changeToInput()
+      break
+    case startPathPage+"kichco":
+      changeToSize()
+      break
+    case startPathPage+"khachhang":
+      changeToConsumer()
+      break
+    case startPathPage+"khuyenmai":
+      changeToPromote()
+      break
+    case startPathPage+"thongke":
+      changeToStats()
+      break
+    case startPathPage+"trangchu":
+      changeToHomepage()
+      break
+    case startPathPage+"nhanvien":
+      changeToStaff()
+      break
+    default: 
+      changeToConsumer()
+      break
+  }
+}
 document.getElementById("orderr").onclick = function () {
   document.getElementById("content").style.display = "block";
   document.getElementById("div-thongso").style.display = "none";
 
   openCloseLeftBar();
-  changeToOrder();
+  location.href = fullPathPage + 'donhang'
 };
 document.getElementById("consumer").onclick = function () {
   document.getElementById("content").style.display = "block";
   document.getElementById("div-thongso").style.display = "none";
 
   openCloseLeftBar();
-  changeToConsumer();
+  location.href = fullPathPage + 'khachhang'
 };
 
 document.getElementById("input").onclick = function () {
@@ -170,56 +227,62 @@ document.getElementById("input").onclick = function () {
   document.getElementById("div-thongso").style.display = "none";
 
   openCloseLeftBar();
-  changeToInput();
+  location.href = fullPathPage + 'nhaphang'
 };
 document.getElementById("staff").onclick = function () {
   document.getElementById("content").style.display = "block";
   document.getElementById("div-thongso").style.display = "none";
 
   openCloseLeftBar();
-  changeToStaff();
+  location.href = fullPathPage + 'nhanvien'
 };
 document.getElementById("size").onclick = function () {
   document.getElementById("content").style.display = "block";
   document.getElementById("div-thongso").style.display = "none";
 
   openCloseLeftBar();
-  changeToSize();
+  location.href = fullPathPage + 'kichco'
 };
 document.getElementById("promote").onclick = function () {
   document.getElementById("content").style.display = "block";
   document.getElementById("div-thongso").style.display = "none";
 
   openCloseLeftBar();
-  changeToPromote();
+  location.href = fullPathPage + 'khuyenmai'
 };
 document.getElementById("product").onclick = async function () {
   document.getElementById("content").style.display = "block";
   document.getElementById("div-thongso").style.display = "none";
 
   openCloseLeftBar();
-  changeToProduct();
+  location.href = fullPathPage + 'sanpham'
 };
 document.getElementById("classify").onclick= function(){
   document.getElementById("content").style.display = "block";
   document.getElementById("div-thongso").style.display = "none";
 
   openCloseLeftBar();
-  changeToClassify();
+  location.href = fullPathPage + 'loaisanpham'
 }
 document.getElementById("stats").onclick = function () {
   document.getElementById("content").style.display = "block";
   document.getElementById("div-thongso").style.display = "none";
 
   openCloseLeftBar();
-  changeToStats();
+  location.href = fullPathPage + 'thongke'
 };
 document.getElementById("homepage").onclick = function () {
   document.getElementById("content").style.display = "block";
   document.getElementById("div-thongso").style.display = "none";
   openCloseLeftBar();
-  changeToHomepage();
+  location.href = fullPathPage + 'trangchu'
 };
+
+function block_access(message) {
+  document.body.innerHTML = message
+  document.body.style.marginTop = '10px'
+  document.body.style.marginLeft = '10px'
+}
 // }
 // else {
     // window.location.href = "../index.html"

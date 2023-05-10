@@ -63,7 +63,7 @@ class Table {
 			// }
 			return $query_statement->fetchAll(PDO::FETCH_ASSOC);
 		} catch (Exception $e) {
-			self::json_fire_exception($e, $query);
+			self::json_fire_exception($e);
 		}
 	}
 

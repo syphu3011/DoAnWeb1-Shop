@@ -19,37 +19,49 @@ class ReqHandling {
 	// * update just 1 property
 	public static function updateDb($conn, $tableName, $id, $property, $value) {
 		try {
+			$conn->beginTransaction();
 			$query = "UPDATE " . $tableName . " SET " . $property . " = '" . $value . "'" 
 				. " WHERE id = " . "'" . $id . "'";
 			// echo $query . "</br>";
 			$query_statement = $conn->prepare($query);
 			$query_statement->execute();
+			$conn->commit();
 		} catch (Exception $e) {
 			Table::json_fire_exception($e);
+			$conn->rollback();
+			exit();
 		}
 	}
 
 	public static function updateDbOnProperty($conn, $tableName, $propertySet, $valueSet, $propertyCondition, $conditionVal) {
 		try {
+			$conn->beginTransaction();
 			$query = "UPDATE " . $tableName . " SET " . $propertySet . " = '" . $valueSet . "'" 
 				. " WHERE $propertyCondition = " . "'" . $conditionVal . "'";
-			// echo $query . "</br>";
-			$query_statement = $conn->prepare($query);
-			$query_statement->execute();
-		} catch (Exception $e) {
-			echo "Please change key value in parameters." . "</br>";
+				$query_statement = $conn->prepare($query);
+				$query_statement->execute();
+				// echo json_encode(array("query" => $query), JSON_UNESCAPED_UNICODE);
+				$conn->commit();		
+			} catch (Exception $e) {
+			Table::json_fire_exception($e);
+			$conn->rollback();
+			exit();
 		}
 	}
 
 	// ? DELETE SECTION DEFAULT ON ID (DEFAULT)
 	public static function deleteRow($conn, $tableName, $id) {
 		try {
+			$conn->beginTransaction();
 			$query = "DELETE FROM " . $tableName . " WHERE id = " . "'" . $id . "'";
-			// echo $query . "</br>";
 			$query_statement = $conn->prepare($query);
 			$query_statement->execute();
+			// echo json_encode(array("query" => $query), JSON_UNESCAPED_UNICODE);
+			$conn->commit();
 		} catch (Exception $e) {
 			echo "Please specify correct id." . "</br>";
+			$conn->rollback();
+			exit();
 		}
 	}
 
