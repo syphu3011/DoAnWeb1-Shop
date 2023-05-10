@@ -169,6 +169,7 @@ button:hover .img-button{
 #div-input-id {
     width: calc(80% - 35px);
     position: relative;
+    margin-left: 20px;
 }
 /* #div-second {
     display: flex;
