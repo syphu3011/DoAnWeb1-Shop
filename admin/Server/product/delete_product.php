@@ -9,12 +9,13 @@
             $id = $_POST["id"];
             // Kiểm tra quyền
             $id_user = $_POST["id_user"];
+            $password_user = $_POST["password"];
             if ($id_user == null) {
                 $data_json = json_decode(file_get_contents('php://input'), true);
                 $id_user = $data_json['id_user'];
                 $id = $data_json['id'];
             }
-            if (check_privilege($id_user, $conn, $action,'product')) {
+            if (check_privilege($id_user, $password_user, $conn, $action,'product')) {
                 $query_delete_classify = 'DELETE FROM product_list_classify WHERE id_product = :id';
                 $query_get_image = 'SELECT link_image FROM image_product WHERE id_product = :id';
                 $query_delete_image = 'DELETE FROM image_product WHERE id_product = :id';
@@ -72,6 +73,7 @@
         catch(Exception $exception){
             set_status_product($conn, $id);
             echo "Xóa sản phẩm không thành công vì sản phẩm này đã được mua hoặc nhập! Đặt trạng thái về ngưng bán!";
+            $conn -> commit();
         }
     }
     function set_status_product($conn, $id) {

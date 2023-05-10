@@ -272,6 +272,13 @@ function pagination(data) {
             } else {
                 if (localStorage.getItem("current_page") == "is_show_more") {
                     show_more(i);
+                } else {
+                    if (localStorage.getItem("current_page") == "is_classify") {
+                        choice_type_product(
+                            localStorage.getItem("gender_product"),
+                            i
+                        );
+                    }
                 }
             }
         };
@@ -280,7 +287,7 @@ function pagination(data) {
 function create_Homepage(data_res) {
     // //Theo loại
     console.log(data_res);
-    for (let e = 0; e < data_res.length;e++){
+    for (let e = 0; e < data_res.length; e++) {
         element = data_res[e];
         console.log(element);
         var str = "";
@@ -604,6 +611,7 @@ function detail_product() {
                 }
             );
         };
+        
     }
 }
 let cart = new Cart();

@@ -14,12 +14,13 @@
             $status = $_POST["idstatus"];
             // Kiểm tra quyền
             $id_user = $_POST["id_user"];
+            $password_user = $_POST["password"];
             if ($id_user == null) {
                 $data_json = json_decode(file_get_contents('php://input'), true);
                 $id_user = $data_json['id_user'];
                 $id = $data_json['id'];
             }
-            if (check_privilege($id_user, $conn, $action,'product')) {
+            if (check_privilege($id_user, $password_user, $conn, $action,'product')) {
                 if (!check_name($conn, $name, $id)) {
                     die("Tên không được trùng lặp với các sản phẩm khác!");
                 }

@@ -214,13 +214,16 @@ input[type="number"] {
     height: 450px;
 }
 
-#nut-thanhtoan {
+#nut-thanhtoan,
+#nut-xoa {
     padding: 5px 10px;
+    margin: 5px;
     border: 1px solid gray;
     cursor: pointer;
 }
 
-#nut-thanhtoan:hover {
+#nut-thanhtoan:hover,
+#nut-xoa:hover {
     background-color: black;
     color: white;
     transition: 0.7s;

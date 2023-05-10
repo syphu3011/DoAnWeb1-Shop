@@ -1,9 +1,12 @@
 let errors = 'Có lỗi xảy ra!'
-async function get(dir) {
+async function get(data, dir) {
     let data_response = await $.ajax({
         url: dir,
-        type: 'GET',
-        dataType: 'json'
+        type: 'POST',
+        data: data,
+        dataType: 'json',
+        contentType: false,
+        processData: false,
     }).then(function(responseData) {
         return responseData
     }).catch(function(error) {

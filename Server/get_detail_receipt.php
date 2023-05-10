@@ -13,7 +13,8 @@
     } else {
         $response = array(
             'success' => false,
-            'error' => "No data found."
+            'error' => "No data found.",
+            "message" => "Không tìm thấy đơn hàng"
         );
     }
     echo json_encode($response);

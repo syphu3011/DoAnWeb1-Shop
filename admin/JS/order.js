@@ -536,7 +536,7 @@ function SearchConfirm() {
     if (init == "") {
         return FindAllOH("")
     } else {
-        return FindDateComfirm(getDate(init))
+        return FindDateComfirm(init)
     }
 }
 
