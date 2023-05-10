@@ -1,33 +1,23 @@
 
-function GetDataSize(){
-    return $.ajax({
-        type: "POST",
-        url: './Server/size/sizes.php',
-        data: {id_user: "USR001"},
-        dataType: "json",
-        success: function(response) {
-            console.log(response.sizes);
-        },
-        error: function() {
-            alert('Lỗi khi lấy danh sách kích thước!');
-        }
-    });
+async function GetDataSize() {
+    let response = await get(to_form_data(getCurrentUser()), './Server/size/sizes.php')
+    return response.sizes;
 }
-function FillSize(){
-    GetDataSize().then(function(size) {
+async function FillSize(){
+        let size = await GetDataSize()
         let table = document.getElementById("myTable2")
         if(table.rows.length>0){
             for(let i = table.rows.length - 1; i  > 0; i--)
             table.deleteRow(i);
-            for(let i = 0; i < size.sizes.length; i++){
+            for(let i = 0; i < size.length; i++){
                 let row = table.insertRow();
                 let cell0 = row.insertCell(0);
                 let cell1 = row.insertCell(1);
                 let cell2 = row.insertCell(2);
                 let cell3 = row.insertCell(3);
         
-                cell0.innerHTML = size.sizes[i].id;
-                cell1.innerHTML = size.sizes[i].id.substring(2);
+                cell0.innerHTML = size[i].id;
+                cell1.innerHTML = size[i].id.substring(2);
                 cell2.innerHTML = `<p class="detail" onclick=onDetail(this)>chi tiết</p>`
                 cell3.innerHTML = `<button onclick='onDel(this)'>Xóa</button>  
                 <button id="edit">Sửa</button>`;
@@ -35,22 +25,19 @@ function FillSize(){
         }
         else{
             let table = document.getElementById("myTable2")
-            for(let i = 0; i < size.sizes.length; i++){
+            for(let i = 0; i < size.length; i++){
                 let row = table.insertRow();
                 let cell0 = row.insertCell(0);
                 let cell1 = row.insertCell(1);
                 let cell2 = row.insertCell(2);
                 let cell3 = row.insertCell(3);
         
-                cell0.innerHTML = size.sizes[i].id;
-                cell1.innerHTML = size.sizes[i].id.substring(2);
+                cell0.innerHTML = size[i].id;
+                cell1.innerHTML = size[i].id.substring(2);
                 cell2.innerHTML = `<p class="detail" onclick=onDetail(this)>chi tiết</p>`
                 cell3.innerHTML = "<button onclick='onDel(this)'>Xóa</button>";
             }
         }
-    }).catch(function(error) {
-       console.log(error)
-    });
 }
 // document.getElementById("delete1").onclick = function () {
 //     let table = document.getElementById("myTable2")
@@ -229,9 +216,10 @@ async function themKichThuocAo(){
     //     alert("ID đã tồn tại")
     // }
     // else{
-        let data_post_server = {id: id,breast: soDoBung,hand:chieuDaiTay, back:soDoLung , id_user: "USR001"}
+        let CurrentUser = getCurrentUser()
+        let data_post_server = {breast: soDoBung,hand:chieuDaiTay, back:soDoLung ,id_user: CurrentUser.id_user, password:CurrentUser.password }
         let form_data = to_form_data(data_post_server)
-        alert(await delete_data(form_data, './Server/size/create_size.php'))
+        alert(await post(form_data, './Server/size/create_size.php'))
         document.getElementById("dialog1").remove();
         FillSize()
 }
