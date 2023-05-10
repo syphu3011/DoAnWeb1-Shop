@@ -350,11 +350,8 @@ function fillEdit(prod) {
 }
 
 async function fillProd(product = null) {
-    if (product == null) {
-        await refreshData()
-        product = obj.product
-        console.log(product)
-    }
+    await refreshData()
+    product = obj.product
     let table = document.getElementById("table-prod");
     table.innerHTML = ""
     let row_head = document.createElement("tr")
@@ -458,11 +455,16 @@ async function get_Data() {
     data_server = to_form_data(data_server);
     return await get(data_server,'./Server/product/products.php')
 }
+
 async function refreshData() {
     try {
         let current_user = getCurrentUser()
         data_server = to_form_data(current_user);
         obj = await get(data_server,'./Server/product/products.php')
+        if (obj == errors) {
+            block_access('Bạn không có quyền truy cập vào sản phẩm!')
+            return
+        }
         console.log(obj);
     } catch (error) {
         console.log(error);

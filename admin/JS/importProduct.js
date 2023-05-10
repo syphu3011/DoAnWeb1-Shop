@@ -13,6 +13,10 @@ let data = JSON.parse(localStorage.getItem('data'))
 let checkClickOutsideDetail = false
 async function getProduct() {
     let response = await get(to_form_data(getCurrentUser()), './Server/product/products.php')
+    if (response == errors) {
+        block_access('Bạn không có quyền truy cập vào nhập hàng!')
+        return
+    }
     return response.product;
 }
 async function getSize() {

@@ -1,5 +1,13 @@
 // import * as config from "./config.js";
 function statistics() {
+    async function getDataStat() {
+        let response = await get(to_form_data(getCurrentUser()), './Server/statistic/statistic.php')
+        if (response == errors) {
+            block_access()
+            return
+        }
+        return response
+    }
     let select_type_statistics = document.getElementById("select-type-statistic")
     function openList(list) {
         list.style.visibility = 'visible'

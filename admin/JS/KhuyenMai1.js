@@ -4,7 +4,12 @@ let length11
 let obj10 = {"promote": [], "detail_promotion": []}
 async function refreshPromotion() {
     obj10 = await get('./Server/promotion/promotions.php')
+    if (obj10 == errors) {
+        block_access()
+        return
+    }
     length11 = obj10.promote.length
+
 }
 function Themkhuyenmai() {
     document.getElementById("PageUp").innerHTML = `

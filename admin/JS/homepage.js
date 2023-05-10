@@ -23,7 +23,6 @@ function GetDataUs(user_id){
 }
 GetDataUs("USR001");
 
-
 let contentDiv = document.getElementById("content");
 let left_bar = document.getElementById("back-left-bar");
 let left_bar_list = document.getElementById("leftbar-list");
@@ -121,9 +120,10 @@ Promise.all([get_DataOrder(), get_DataCus(), get_DataDetailO(), get_DataProd(), 
   });
 }
 
-function changeToInput() {
+async function changeToInput() {
   hideCurrent();
   appearDiv(document.getElementById("body-input"));
+  await getProduct()
 }
 
 function changeToStaff() {
@@ -233,6 +233,51 @@ document.getElementById("homepage").onclick = function () {
   openCloseLeftBar();
   changeToHomepage();
 };
+const startPath = '/DoAnWeb1-Shop/admin/'
+const startPathPage = '/DoAnWeb1-Shop/admin/?page='
+const relativePath = location.href.slice(location.href.indexOf(startPath) );
+function runOnLoad() {
+  switch (relativePath) {
+    case startPath+"sanpham":
+      changeToProduct()
+      break
+    case startPath+"loaisanpham":
+      changeToClassify()
+      break
+    case startPath+"donhang":
+      changeToOrder()
+      break
+    case startPath+"nhaphang":
+      changeToInput()
+      break
+    case startPath+"kichco":
+      changeToSize()
+      break
+    case startPath+"khachhang":
+      changeToConsumer()
+      break
+    case startPath+"khuyenmai":
+      changeToPromote()
+      break
+    case startPath+"thongke":
+      changeToStats()
+      break
+    case startPath+"trangchu":
+      changeToHomepage()
+      break
+    case startPath+"nhanvien":
+      changeToStaff()
+      break
+    default: 
+      changeToConsumer()
+      break
+  }
+}
+function block_access(message) {
+  document.body.innerHTML = message
+  document.body.style.marginTop = '10px'
+  document.body.style.marginLeft = '10px'
+}
 // }
 // else {
     // window.location.href = "../index.html"
