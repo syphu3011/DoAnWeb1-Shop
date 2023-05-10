@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_user = $_POST['id_user'];
     $password_user = $_POST['password'];
     try {
-        if (check_privilege($id_user, $password_user, $conn, 'xem','product')) {
+        if (check_privilege($id_user, $password_user, $conn, 'xem','product') || check_privilege($id_user, $password_user, $conn, 'xem','statistic')) {
             $query = 'SELECT * FROM classify WHERE id_big_classify is not null';
             $stmt = $conn -> prepare(($query));
             if ($stmt -> execute()) {

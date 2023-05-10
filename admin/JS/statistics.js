@@ -1,6 +1,6 @@
 // import * as config from "./config.js";
 function statistics() {
-    async function getDataStat(from, to, orderby='id_product', direction = 'ASC') {
+    async function getDataStat(from = null, to = null, orderby, direction) {
         let data_response = to_form_data(getCurrentUser())
         data_response.append('begin_date', from)
         data_response.append('end_date', to)
@@ -9,9 +9,31 @@ function statistics() {
         let response = await get(data_response, './Server/statistic/statistic.php')
         if (response == errors) {
             block_access()
-            return
+            return null
         }
         return response
+    }
+    async function getClassifyUsed() {
+        let data_response = to_form_data(getCurrentUser())
+        let response = await get(data_response, './Server/classify/classifies.php')
+        if (response == errors) {
+            block_access()
+            return null
+        }
+        return response
+    }
+    async function refreshDataStat(from, to, orderby='revenue', direction = '') {
+        let data_stat = await getDataStat(from,to,orderby,direction)
+        if (data_stat != null) {
+            let data_class = await getClassifyUsed()
+            if (data_class == null) {return}
+            let statistic = data_stat.statistic
+            let classify = data_class.clasify
+            return {statistic, classify}
+        }
+        else {
+            return
+        }
     }
     // let select_type_statistics = document.getElementById("select-type-statistic")
     function openList(list) {
@@ -213,28 +235,29 @@ function statistics() {
     // }
     //
      //statistics prod
-    let data = JSON.parse(localStorage.getItem("data"))
+    // let data = refreshDataStat()
     let date1 = document.getElementById("inp-date-begin")
     let date2 = document.getElementById("inp-date-end")
     let sum1 = 0
     let sum2 = 0
     let prevDate1 = date1
     let prevDate2 = date2
-    let from = new Date("1/1/1971")
+    let from = new Date("1970/1/1")
     let to = new Date()
     let type1 = ""
     let prodsStat = []
-    function setUpType() {
+    async function setUpType() {
         let ul = document.getElementById("list-drop-down-choose-statistics")
         ul.innerHTML = ""
         let li1 = createLi("", "tất cả")
         ul.appendChild(li1)
-        data.largeClassify.forEach(element => {
-            element.miniClassify.forEach(element1 => {
-                let li = createLi(element1.id, element1.name)
-                ul.appendChild(li)
-            })
+        let data = await refreshDataStat(from, to)
+        // data.classify.forEach(element => {
+        data.classify.forEach(element1 => {
+            let li = createLi(element1.id, element1.name)
+            ul.appendChild(li)
         })
+        // })
     }
     function createLi(value, output) {
         let li = document.createElement("li")
@@ -268,49 +291,52 @@ function statistics() {
         });
 
     }
-    function statisticProd(from, to, type23) {
-        createStartProds(type23)
-        data.input_product.forEach(element => {
-            const date = new Date(element.date_input)
-            if (date >= from && date <= to) {
-                element.detail.forEach(proInDetail => {
-                    if (prodsStat[proInDetail.id] != null) {
-                        prodsStat[proInDetail.id].expenditure += parseInt(proInDetail.total_price )
-                        prodsStat[proInDetail.id].profit -= parseInt(proInDetail.total_price) 
-                        sum2 += parseInt(proInDetail.total_price)
-                    }
-                }) 
-            }
-        })
-        data.receipt.forEach(element => {
-            const date = new Date(element.date_init)
-            if ((date >= from && date <= to) && element.status.toLowerCase() == "chờ xác nhận") {
-                element.list_prod.forEach(prod => {
-                    if (prodsStat[prod.idProd] != null) {
-                        prodsStat[prod.idProd].revenue += prod.price * prod.amount
-                        prodsStat[prod.idProd].profit += prod.price * prod.amount
-                        sum1 += prod.price * prod.amount
-                    }
-                })
-            }
-        })
-    }
-    function statisticProdUI(from, to, type24) {
-        statisticProd(from, to, type24)
+    // function statisticProd(from, to, type23) {
+    //     createStartProds(type23)
+    //     data.input_product.forEach(element => {
+    //         const date = new Date(element.date_input)
+    //         if (date >= from && date <= to) {
+    //             element.detail.forEach(proInDetail => {
+    //                 if (prodsStat[proInDetail.id] != null) {
+    //                     prodsStat[proInDetail.id].expenditure += parseInt(proInDetail.total_price )
+    //                     prodsStat[proInDetail.id].profit -= parseInt(proInDetail.total_price) 
+    //                     sum2 += parseInt(proInDetail.total_price)
+    //                 }
+    //             }) 
+    //         }
+    //     })
+    //     data.receipt.forEach(element => {
+    //         const date = new Date(element.date_init)
+    //         if ((date >= from && date <= to) && element.status.toLowerCase() == "chờ xác nhận") {
+    //             element.list_prod.forEach(prod => {
+    //                 if (prodsStat[prod.idProd] != null) {
+    //                     prodsStat[prod.idProd].revenue += prod.price * prod.amount
+    //                     prodsStat[prod.idProd].profit += prod.price * prod.amount
+    //                     sum1 += prod.price * prod.amount
+    //                 }
+    //             })
+    //         }
+    //     })
+    // }
+    async function statisticProdUI(from, to, type24 = null) {
+        // statisticProd(from, to, type24)
+        let data = await refreshDataStat(from, to)
         document.getElementById("head-stat").innerHTML = `<tr class="first-row"><th>Mã sản phẩm</th>
         <th>Tên sản phẩm</th>
         <th>Thu</th>
         <th>Chi</th>
         <th>Lợi nhuận</th></tr>`
         let body = ``
-        data.product.forEach(elementt => {
-            if (prodsStat[elementt.id] != null) {
-                let element = prodsStat[elementt.id]
-                body += `<tr><th>`+element.id+`</th><th>` + element.name+`</th><th>`+calculated(element.revenue) + " VND"+`</th><th>`+calculated(element.expenditure) + " VND"+`</th><th>`+calculated(element.profit) + " VND"+`</th></tr>`
+        data.statistic.forEach(element => {
+            // if (prodsStat[elementt.id] != null) {
+            //     let element = prodsStat[elementt.id]
+            if (type24 == null || type24.trim() == "" || element.classify == type24) {
+                body += `<tr><th>`+element.id+`</th><th>` + element.name+`</th><th>`+calculated(element.revenue) + " VND"+`</th><th>`+calculated(element.expense) + " VND"+`</th><th>`+calculated(element.profit) + " VND"+`</th></tr>`
             }
+            // }
         })
         document.getElementById("body-stat").innerHTML = body
-        setUpSum()
+        // setUpSum()
     }
     function LocaleDateFix(dateStr) {
         let splitStr = dateStr.toLocaleDateString().split("/")
