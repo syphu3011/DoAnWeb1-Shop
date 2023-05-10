@@ -14,7 +14,8 @@
                 FROM
                     (
                     SELECT
-                        id,
+                        id, 
+                        name,
                         id_classify
                     FROM
                         product_list_classify
@@ -72,7 +73,7 @@
                 $stmt->bindParam(":endDate", $end_date);
                 $response_array = new stdClass();
                 if ($stmt->execute()) {
-                    $response_array->sizes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    $response_array -> statistic = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     $json = json_encode($response_array, JSON_UNESCAPED_UNICODE);
                     header('Content-Type: application/json; charset=utf-8');
                     echo $json;

@@ -890,7 +890,7 @@ function createListType(gender) {
 }
 function choice_type_product(gender, page) {
     console.log(1);
-    localStorage.setItem("gender_product", gender)
+    localStorage.setItem("gender_product", gender);
     let classify = document.getElementsByClassName("list-item-container");
     for (let i = 0; i < classify.length; i++) {
         classify[i].onclick = function () {
@@ -902,8 +902,8 @@ function choice_type_product(gender, page) {
                 {
                     id_classify: classify[i].id,
                     gender: gender,
-                    page:page,
-                    total_product_on_page: total_product_on_page
+                    page: page,
+                    total_product_on_page: total_product_on_page,
                 },
                 function (respone) {
                     console.log(respone);
@@ -927,7 +927,7 @@ function create_main_onclick_classify(data) {
                 calculated(data_product[i].price) +
                 ` VND</label>`;
             let str_stamp = "";
-            if (data_product[i].name_promotion!= null) {
+            if (data_product[i].name_promotion != null) {
                 // let data_promotion = data_product[i].promotion[0];
                 str_price =
                     `<del class="del_price" id="del_` +
@@ -1043,11 +1043,79 @@ function create_main_onclick_classify(data) {
 //
 //
 //thanh toán giỏ hàng
+// function PayReceipt(product){
+//     this.product.id_product = product.id_product
+//     this.product.id_size=product.id_size
+//     this.product.
+// }
+class Product {
+    constructor(idProduct, idSize, idColor, amount, price) {
+        this.idProduct = idProduct;
+        this.idSize = idSize;
+        this.idColor = idColor;
+        this.amount = amount;
+        this.price = price;
+    }
+
+    getIDProduct() {
+        return this.idProduct;
+    }
+
+    setIDProduct(newIDProduct) {
+        this.idProduct = newIDProduct;
+    }
+
+    getIDSize() {
+        return this.idSize;
+    }
+
+    setIDSize(newIDSize) {
+        this.idSize = newIDSize;
+    }
+
+    getIDColor() {
+        return this.idColor;
+    }
+
+    setIDColor(newIDColor) {
+        this.idColor = newIDColor;
+    }
+
+    getAmount() {
+        return this.amount;
+    }
+
+    setAmount(newAmount) {
+        this.amount = newAmount;
+    }
+
+    getPrice() {
+        return this.price;
+    }
+
+    setPrice(newPrice) {
+        this.price = newPrice;
+    }
+}
+
 function ttGioHang(thanhtoansp) {
-    console.log(thanhtoansp);
+    document.getElementById("btn_pay").onclick = function () {};
+    console.log("ttGioHang", thanhtoansp);
     document.getElementById("body_product_table").innerHTML = "";
     console.log(product_in_cart);
     for (let i = 0; i < thanhtoansp.product_is_selected.length; i++) {
+        let product_is_select = product_in_cart.find(
+            (product) =>
+                product.id_product === thanhtoansp.product_is_selected[i]
+        );
+        let product = new Product(
+            product_is_select.id_product,
+            product_is_select.id_size,
+            product_is_select.id_color,
+            product_is_select.amount,
+            product_is_select.price
+        );
+        console.log(product);
         document.getElementById("body_product_table").innerHTML +=
             `<tr class="product-row">
                                 <td>` +
@@ -1057,16 +1125,10 @@ function ttGioHang(thanhtoansp) {
             ).name +
             `</td>
                                 <td>` +
-            product_in_cart.find(
-                (product) =>
-                    product.id_product === thanhtoansp.product_is_selected[i]
-            ).amount +
+            product_is_select.amount +
             `</td>
                                 <td>` +
-            product_in_cart.find(
-                (product) =>
-                    product.id_product === thanhtoansp.product_is_selected[i]
-            ).id_size +
+            product_is_select.id_size.substring(2) +
             `</td>
                                 <td>Đen</td>
                                 <td>` +
@@ -2124,17 +2186,17 @@ document.getElementById("show_product").onclick = function (e) {
 // let c = 0;
 // let curPageSearch = 1;
 
-function checkUpdatePassword(mkht, mkm, xnmkm) {
-    if (mkht != currentUser.password) {
-        return false;
-    } else {
-        if (mkm != xnmkm && mkm != "") {
-            return false;
-        } else {
-            return true;
-        }
-    }
-}
+// function checkUpdatePassword(mkht, mkm, xnmkm) {
+//     if (mkht != currentUser.password) {
+//         return false;
+//     } else {
+//         if (mkm != xnmkm && mkm != "") {
+//             return false;
+//         } else {
+//             return true;
+//         }
+//     }
+// }
 let saveUpdate = document.getElementById("save-update");
 document.getElementById("btn-addimg").onclick = function () {
     let chooseImg = document.getElementById("choose-img");
