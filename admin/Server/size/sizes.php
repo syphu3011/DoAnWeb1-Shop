@@ -4,7 +4,8 @@
         require_once('../same_function.php');
         try {
             $id_user = $_POST['id_user'];
-            if (check_privilege($id_user, $conn, 'xem', 'product')) {
+            $password_user = $_POST['password'];
+            if (check_privilege($id_user, $password_user, $conn, 'xem', 'product')) {
                 $query_get_sizes = "
                 SELECT *
                 FROM size

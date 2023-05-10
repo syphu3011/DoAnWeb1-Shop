@@ -10,13 +10,15 @@
 //     thigh: "",
 //     back: "",
 //     id_user: "",
+//     password: ""
 // }
 // để convert về form data thì dùng to_form_data bên product.js
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         require_once('../../../init.php');
         require_once('../same_function.php');
         $id_user = $_POST["id_user"];
-        if (check_privilege($id_user,$conn,'them','product')) {
+        $password_user = $_POST["password"];
+        if (check_privilege($id_user, $password_user,$conn,'them','product')) {
             try {
                 require_once('../../../init.php');
                 $conn->beginTransaction();

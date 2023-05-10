@@ -3,8 +3,9 @@
     require_once('../same_function.php');
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $id_user = $_POST['id_user'];
+        $password_user = $_POST['password'];
         try {
-            if (check_privilege($id_user, $conn, 'xem', 'product')) {
+            if (check_privilege($id_user, $password_user, $conn, 'xem', 'product')) {
                 //Sản phẩm
                 $sql = "SELECT product.id, product.name, input_country.name made_in, description, idstatus, GROUP_CONCAT(DISTINCT classify.name SEPARATOR ', ') clasify,GROUP_CONCAT(DISTINCT link_image SEPARATOR ',') images, MIN(price) price 
                 FROM product 
@@ -48,6 +49,11 @@
                     $value['miniClassify'] = $mini_classify;
                 }//Xuất xứ
                 $sql_made_in = "SELECT id, name FROM input_country";
+                $stmt = $conn->prepare($sql_made_in);
+                $stmt->execute();
+                $made_in = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                //Kích thước
+                $sql_size = "SELECT id, name FROM input_country";
                 $stmt = $conn->prepare($sql_made_in);
                 $stmt->execute();
                 $made_in = $stmt->fetchAll(PDO::FETCH_ASSOC);
