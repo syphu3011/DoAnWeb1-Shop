@@ -13,8 +13,6 @@ function GetDataSize(){
         }
     });
 }
-GetDataSize();
-
 function FillSize(){
     GetDataSize().then(function(size) {
         let table = document.getElementById("myTable2")

@@ -62,7 +62,6 @@ ul {
 .btn-right {
     margin-left: 10px;
     display: inline-block;
-    float: left;
     margin-bottom: 5px;
 }
 
@@ -125,14 +124,8 @@ ul {
     flex-direction: column;
     padding: 10px;
 }
-#div-id {
-    display: flex;
-    width: 100%;
-    height: 25px;
-    margin-top: 15px;
-}
 .label-input {
-    width: 20%;
+    width: 30%;
     margin-left: 15px;
     margin-right: 5px;
     padding-top: 5px;
@@ -169,7 +162,7 @@ button:hover .img-button{
     border-right: none;
     width: 90%;
 }
-#div-input-id, #div-input-amount {
+#div-input-id {
     display: flex;
     justify-content: center ;
 } 
@@ -177,18 +170,15 @@ button:hover .img-button{
     width: calc(80% - 35px);
     position: relative;
 }
-#div-second {
+/* #div-second {
     display: flex;
     margin-top: 15px;
-    /* justify-content: space-evenly; */
     align-items: center; 
     width: 100%;
 
-}
+} */
 
-#div-input-amount {
-    width: 30%;
-}
+
 #div-input-size {
     width: calc(40% - 55px);
     position: relative;
@@ -262,27 +252,26 @@ button:hover .img-button{
     justify-content: space-between;
     align-items: center;
 }
-#input-amount {
+/* #input-amount {
     border-radius: 5px;
     border-width: 1px;
     width: 100%;
     border-color: black;
-}
-#div-price {
+} */
+/* #div-price {
     width: 100%;
     display: flex;
-    /* margin-top: 15px; */
     margin-bottom: 15px;
-}
-#div-input-price {
+} */
+/* #div-input-price {
     width: calc(80% - 35px);
-}
-#input-price {
+} */
+/* #input-price {
     width: 100%;
     border-radius: 5px;
     border-color: black;
     border-width: 1px;
-}
+} */
 .list-drop-down {
     position: absolute;
     background-color: white;
