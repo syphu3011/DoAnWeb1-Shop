@@ -8,6 +8,11 @@
             $conn, 
             $data_send["id_customer"], 
             $data_send["id_product"]);
+    // $crud -> 
+    //     delete_product_in_cartById(
+    //         $conn, 
+    //         'KH001', 
+    //         ["AO00000001","QU00000001"]);
     $respone = [
         "success" => true,
         "data received" => $data_send

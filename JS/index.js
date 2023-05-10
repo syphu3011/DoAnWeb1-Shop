@@ -770,7 +770,7 @@ function createListType(gender) {
                                     </li>`;
             // }
         }
-        choice_type_product(gender);
+        choice_type_product(gender, 1);
     });
     // document.getElementById("")
 
@@ -888,8 +888,9 @@ function createListType(gender) {
     //     }
     // };
 }
-function choice_type_product(gender) {
+function choice_type_product(gender, page) {
     console.log(1);
+    localStorage.setItem("gender_product", gender)
     let classify = document.getElementsByClassName("list-item-container");
     for (let i = 0; i < classify.length; i++) {
         classify[i].onclick = function () {
@@ -901,6 +902,8 @@ function choice_type_product(gender) {
                 {
                     id_classify: classify[i].id,
                     gender: gender,
+                    page:page,
+                    total_product_on_page: total_product_on_page
                 },
                 function (respone) {
                     console.log(respone);
@@ -912,6 +915,7 @@ function choice_type_product(gender) {
 }
 
 function create_main_onclick_classify(data) {
+    console.log(data);
     if (data.success) {
         let data_product = data.data.product;
         let li = "";
@@ -923,32 +927,32 @@ function create_main_onclick_classify(data) {
                 calculated(data_product[i].price) +
                 ` VND</label>`;
             let str_stamp = "";
-            if (data_product[i].promotion.length > 0) {
-                let data_promotion = data_product[i].promotion[0];
+            if (data_product[i].name_promotion!= null) {
+                // let data_promotion = data_product[i].promotion[0];
                 str_price =
                     `<del class="del_price" id="del_` +
                     data_product[i].id_product +
                     `">` +
-                    calculated(data_promotion.price) +
+                    calculated(data_product[i].price) +
                     ` VND</del>
                 <label id="price_` +
                     data_product[i].id_product +
                     `">` +
                     calculated(
                         price_from_dis(
-                            data_promotion.price,
-                            data_promotion.discount_percent,
-                            data_promotion.discount_price
+                            data_product[i].price,
+                            data_product[i].discount_percent,
+                            data_product[i].discount_price
                         )
                     ) +
                     ` VND</label>`;
-                str_stamp =
-                    `<div class="promo_stamp" id="stamp_` +
-                    data_product[i].id_product +
-                    `" style="display: block;">
-                    ` +
-                    data_promotion.content +
-                    `</div>`;
+                // str_stamp =
+                //     `<div class="promo_stamp" id="stamp_` +
+                //     data_product[i].id_product +
+                //     `" style="display: block;">
+                //     ` +
+                //     data_promotion.content +
+                //     `</div>`;
             }
             li +=
                 `<li class="main_list_product_product" id="` +
@@ -994,7 +998,6 @@ function create_main_onclick_classify(data) {
     } else {
         alert("Comming soon");
     }
-
     detail_product();
 }
 // function pushAmount(value) {
@@ -1049,7 +1052,8 @@ function ttGioHang(thanhtoansp) {
             `<tr class="product-row">
                                 <td>` +
             data.find(
-                (product) => product.id_product === thanhtoansp.product_is_selected[i]
+                (product) =>
+                    product.id_product === thanhtoansp.product_is_selected[i]
             ).name +
             `</td>
                                 <td>` +

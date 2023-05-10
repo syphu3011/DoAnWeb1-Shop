@@ -17,11 +17,41 @@ class CRUD
                     WHERE image_product.id_product=product.id
                     limit 1
                 ) AS link_image,
-                    promotion.content,
-                    promotion.discount_price,
-                    promotion.discount_percent,
-                    promotion.begin_date,
-                    promotion.finish_date
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.name
+                        ELSE NULL 
+                    END AS name_promotion,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.image
+                        ELSE NULL 
+                    END AS image,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.content
+                        ELSE NULL 
+                    END AS content,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.discount_price
+                        ELSE NULL 
+                    END AS discount_price,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.discount_percent
+                        ELSE NULL 
+                    END AS discount_percent,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.begin_date
+                        ELSE NULL 
+                    END AS begin_date,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.finish_date
+                        ELSE NULL 
+                    END AS finish_date
                 FROM 
                                                 classify
                                 LEFT JOIN product_list_classify ON product_list_classify.id_classify=classify.id
@@ -131,34 +161,79 @@ class CRUD
         return $result;
     }
     //lay du lieu san pham theo gioi tinh, ma loai
-    public function read_productByIdClassify($conn, $gender, $id_classify)
+    public function read_productByIdClassify($conn, $gender, $id_classify, $begin, $total)
     {
         $sql = "SELECT 
-                product_list_classify.id_product, 
-                product.name, 
-                product_list.price, (
+	product.name,
+                    classify.name AS name_classify,
+                    product_list_classify.id_product,
+                    product_list.id_size,
+                    product_list.price,
+                    (
                 	SELECT image_product.link_image 
                     FROM image_product
-                    WHERE image_product.id_product=product.id
+                    WHERE image_product.id_product = product.id
                     limit 1
                 ) AS link_image,
-                classify.name as name_classify,
-                classify.gender
-            FROM 
-                product_list_classify, 
-                product, 
-                product_list,
-                classify
-                 
-            WHERE product_list_classify.id_classify=classify.id
-                AND product_list_classify.id_product=product.id
-                AND product.idstatus = 'TT01'
-                AND product_list.id_product = product_list_classify.id_product
-                AND classify.gender = ?
-                AND classify.id = ?
-                    ";
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.name
+                        ELSE NULL 
+                    END AS name_promotion,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.image
+                        ELSE NULL 
+                    END AS image,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.content
+                        ELSE NULL 
+                    END AS content,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.discount_price
+                        ELSE NULL 
+                    END AS discount_price,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.discount_percent
+                        ELSE NULL 
+                    END AS discount_percent,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.begin_date
+                        ELSE NULL 
+                    END AS begin_date,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.finish_date
+                        ELSE NULL 
+                    END AS finish_date
+                FROM 
+                                                classify
+                                LEFT JOIN product_list_classify ON product_list_classify.id_classify=classify.id
+                                LEFT JOIN product_list ON product_list.id_product = product_list_classify.id_product
+				LEFT JOIN product ON product.id = product_list_classify.id_product
+                LEFT JOIN detail_promotion ON detail_promotion.id_product = product_list.id_product
+                LEFT JOIN promotion ON promotion.id = detail_promotion.id_promotion
+                WHERE 
+                    product.idstatus = 'TT01'
+                    AND product_list.id_size IS NOT NULL
+                    AND product_list.id_color IS NOT NULL
+                    AND classify.gender = '$gender'
+                    AND classify.id = '$id_classify'
+                        LIMIT $begin, $total
+                    "; 
+                    // echo $sql;
+                    // echo 'lll';
         $stmt = $conn->prepare($sql);
-        $stmt->execute([$gender, $id_classify]);
+        // $stmt->execute([$gender, $id_classify, (int)$begin, (int)$total]);
+        // $stmt->bind_param($gender, $id_classify, (int)$begin, (int)$total);
+        $stmt->execute();
+//         echo "<pre>";
+// $stmt->debugDumpParams();
+// echo "</pre>";
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt = null;
         return $result;
@@ -179,11 +254,41 @@ class CRUD
                     WHERE image_product.id_product=product.id
                     limit 1
                 ) AS link_image,
-                    promotion.content,
-                    promotion.discount_price,
-                    promotion.discount_percent,
-                    promotion.begin_date,
-                    promotion.finish_date
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.name
+                        ELSE NULL 
+                    END AS name_promotion,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.image
+                        ELSE NULL 
+                    END AS image,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.content
+                        ELSE NULL 
+                    END AS content,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.discount_price
+                        ELSE NULL 
+                    END AS discount_price,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.discount_percent
+                        ELSE NULL 
+                    END AS discount_percent,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.begin_date
+                        ELSE NULL 
+                    END AS begin_date,
+                    CASE 
+                        WHEN promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10' 
+                            THEN promotion.finish_date
+                        ELSE NULL 
+                    END AS finish_date
                 FROM 
                                                 classify
                                 LEFT JOIN product_list_classify ON product_list_classify.id_classify=classify.id
@@ -194,9 +299,6 @@ class CRUD
                 LEFT JOIN promotion ON promotion.id = detail_promotion.id_promotion
                 WHERE 
                     classify.id_big_classify = ?
-                    AND (
-                        (promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10')
-                        OR promotion.id IS NULL)
                     AND product.idstatus = 'TT01'
                     AND product_list.id_size IS NOT NULL
                     AND product_list.id_color IS NOT NULL
@@ -484,9 +586,6 @@ class CRUD
                    LEFT JOIN classify ON classify.id = product_list_classify.id_classify
                WHERE 
                     product_list.price BETWEEN '$min_price' AND '$max_price'
-                    AND (
-                        (promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10')
-                    OR promotion.id IS NULL)
                     AND product_list.id_size IS NOT NULL
                     AND product_list.id_color IS NOT NULL
                     AND classify.name LIKE '$type_value'
@@ -738,9 +837,6 @@ class CRUD
                    LEFT JOIN classify ON classify.id = product_list_classify.id_classify
                WHERE 
                     product_list.price BETWEEN '$min_price' AND '$max_price'
-                    AND (
-                        (promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10')
-                    OR promotion.id IS NULL)
                     AND classify.name LIKE '$type_value'
                     $sale_value
                     AND product.name LIKE '$key_value'
@@ -910,7 +1006,7 @@ class CRUD
 
                     WHERE 
                          promotion.id_status = status_promotion.id
-";
+                    ";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -938,6 +1034,7 @@ class CRUD
                         product_list
                     WHERE 
                         promotion.id = detail_promotion.id_promotion
+                        AND promotion.finish_date > CURRENT_DATE()
                         AND promotion.id_status = status_promotion.id
                         AND detail_promotion.id_product = product_list.id_product
                         AND detail_promotion.id_product = ?";
@@ -964,13 +1061,15 @@ class CRUD
                     SUM(detail_receipt.amount*detail_receipt.price) as Tong, 
                     status_receipt.name AS name_status,
                     receipt.date_init,
-                    receipt.date_confirm
+                    receipt.date_confirm,
+                    receipt.address
                 FROM 
                     detail_receipt, receipt, status_receipt 
                 WHERE 
                         detail_receipt.id_receipt = receipt.id
                     AND status_receipt.id = receipt.id_status
-                    AND receipt.id_customer = ? ;";
+                    AND receipt.id_customer = ? ;
+                    AND ";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$id]);
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -980,19 +1079,34 @@ class CRUD
     public function read_data_detail_receiptById($conn, $id)
     {
         $sql = "SELECT 
-                        id_size, 
-                        id_color, 
-                        id_product, 
-                        amount, price, 
-                        (amount*price) AS Tong
+                id_size, 
+                id_color, 
+                id_product, 
+                amount, 
+                price, 
+                (amount * price) AS Tong, 
+                (
+                    SELECT 
+                    image_product.link_image 
                     FROM 
-                        detail_receipt, receipt, status_receipt 
+                    image_product 
                     WHERE 
-                            detail_receipt.id_receipt = ? 
-                        AND 
-                            receipt.id=detail_receipt.id_receipt
-                        AND 
-                            receipt.id_status = status_receipt.id";
+                    image_product.id_product = detail_receipt.id_product 
+                    LIMIT 
+                    1
+                ) AS link_image ,
+                product.name,
+                color.name AS name_color
+                FROM 
+                detail_receipt 
+                LEFT JOIN receipt ON receipt.id = detail_receipt.id_receipt 
+                LEFT JOIN status_receipt ON receipt.id_status = status_receipt.id 
+                LEFT JOIN product ON product.id = detail_receipt.id_product
+                LEFT JOIN color ON detail_receipt.id_color = color.id
+                WHERE 
+                detail_receipt.id_receipt = ?
+
+";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$id]);
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -1048,7 +1162,6 @@ class CRUD
                     product_list
                 WHERE cart.id_customer= ?
                     AND cart.id_product=product.id
-
                     AND product_in_stock.id_product=cart.id_product
                     AND product_in_stock.id_size = cart.id_size
                     AND product_in_stock.id_color = cart.id_color
@@ -1208,17 +1321,22 @@ class CRUD
 
     // xoa san pham trong gio
     public function delete_product_in_cartById($conn, $username, $id_product)
-    {
-        # code...
-        $sql = "DELETE FROM cart
-                WHERE cart.id_customer = ? 
-                AND cart.id_product = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$username, $id_product]);
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $stmt = null;
-        return $result;
+{
+    $where_sql = "";
+    for ($i=0; $i < count($id_product); $i++) { 
+        $where_sql .= "'".$id_product[$i] ."', ";
     }
+    $where_sql = rtrim($where_sql, ", ");
+    $sql = "DELETE FROM cart
+            WHERE cart.id_customer = ? 
+            AND id_product IN (". $where_sql .")";
+            // echo $sql;
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$username]);
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = null;
+    return $result;
+}
     // public function check_username($conn, $username)
     // {
     //     # code...

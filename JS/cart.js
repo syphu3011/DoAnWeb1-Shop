@@ -125,16 +125,19 @@ localStorage.setItem("is_update_cart", false);
 function sukien(data_product) {
     fill_price_in_cart();
     let tongtien = 0;
-    let btnXoa = document.getElementsByClassName("xoa-sp");
-    for (let i = 0; i < btnXoa.length; i++) {
-        btnXoa[i].onclick = function () {
+    let btnXoa = document.getElementById("nut-xoa");
+    // for (let i = 0; i < btnXoa.length; i++) {
+    btnXoa.onclick = function () {
+        if (total_price_onclick().product_is_selected.length > 0) {
+            console.log(total_price_onclick().product_is_selected);
             getDataFromServer(
                 "./Server/delete_product_in_cart.php",
                 {
                     id_customer: currentUser.id,
-                    id_product: product_in_cart[i].id_product,
+                    id_product: total_price_onclick().product_is_selected,
                 },
-                function (respone) {
+                function (response) {
+                    console.log(response);
                     showacc(document.getElementById("tranggiohang"), 0, 1200);
                     setTimeout(() => {
                         document.getElementsByClassName(
@@ -157,35 +160,65 @@ function sukien(data_product) {
                     //     );
                 }
             );
+        }
+        // getDataFromServer(
+        //     "./Server/delete_product_in_cart.php",
+        //     {
+        //         id_customer: currentUser.id,
+        //         id_product: product_in_cart[i].id_product,
+        //     },
+        //     function (respone) {
+        //         showacc(document.getElementById("tranggiohang"), 0, 1200);
+        //         setTimeout(() => {
+        //             document.getElementsByClassName(
+        //                 "table-giohang"
+        //             )[0].innerHTML = "";
+        //             document.getElementById(
+        //                 "hienthigiohang"
+        //             ).style.display = "";
+        //             create_cart_from_server();
+        //         }, 400);
 
-            // console.log(product_in_cart[i].id);
-            // while (
-            //     document.getElementsByClassName("table-giohang")[0].rows
-            //         .length > 0
-            // ) {
-            //     document
-            //         .getElementsByClassName("table-giohang")[0]
-            //         .deleteRow(0);
-            // }
-            // console.log(pro[i])
-            // currentUser.cart.splice(i, 1);
-            // localStorage.setItem("data", JSON.stringify(data));
-            // document.getElementById("hienthigiohang").style.display = "";
-            // document.getElementById("noti").style.display = "flex";
-            // document.getElementById("noti-noti").innerHTML =
-            //     "đã xoá Thành công";
-            // showacc(document.getElementById("noti-noti"), -500, 0);
-            // document.getElementById("noti-noti").style.display = "flex";
-            // setTimeout(() => {
-            //     document.getElementById("noti").style.display = "";
-            //     tongtien = 0;
-            //     document.getElementById("tongthanhtoan").textContent =
-            //         calculated(tongtien) + " VND";
-            //     createCart();
-            // }, 700);
-            // document.getElementsByClassName("table-giohang")[0].deleteRow(i)
-        };
-    }
+        //         //     console.log(respone);
+        //         //     getDataFromServer(
+        //         //         "./Server/get_cart_byID.php",
+        //         //         { idkh: currentUser.id },
+        //         //         function (respone) {
+        //         //             createCart(respone.data.product);
+        //         //             console.log(respone);
+        //         //         }
+        //         //     );
+        //     }
+        // );
+
+        // console.log(product_in_cart[i].id);
+        // while (
+        //     document.getElementsByClassName("table-giohang")[0].rows
+        //         .length > 0
+        // ) {
+        //     document
+        //         .getElementsByClassName("table-giohang")[0]
+        //         .deleteRow(0);
+        // }
+        // console.log(pro[i])
+        // currentUser.cart.splice(i, 1);
+        // localStorage.setItem("data", JSON.stringify(data));
+        // document.getElementById("hienthigiohang").style.display = "";
+        // document.getElementById("noti").style.display = "flex";
+        // document.getElementById("noti-noti").innerHTML =
+        //     "đã xoá Thành công";
+        // showacc(document.getElementById("noti-noti"), -500, 0);
+        // document.getElementById("noti-noti").style.display = "flex";
+        // setTimeout(() => {
+        //     document.getElementById("noti").style.display = "";
+        //     tongtien = 0;
+        //     document.getElementById("tongthanhtoan").textContent =
+        //         calculated(tongtien) + " VND";
+        //     createCart();
+        // }, 700);
+        // document.getElementsByClassName("table-giohang")[0].deleteRow(i)
+    };
+    // }
     let btnCheckBox = document.getElementsByClassName("checkboxIncart");
     function total_price_onclick() {
         let product_is_select = new Array();
@@ -254,7 +287,6 @@ function sukien(data_product) {
                 //         .deleteRow(0);
                 // }
                 console.log(product_in_cart);
-
                 ttGioHang(total_price_onclick());
 
                 document.getElementsByClassName("table-giohang")[0].innerHTML =
@@ -553,7 +585,7 @@ function createCart(data_respone) {
                         element.id_size +
                         `" class="size" style="border-color: red;">
                          ` +
-                        element.id_size +
+                        element.id_size.substring(2) +
                         `
                                   </div>`;
                 } else {
@@ -692,9 +724,7 @@ function createCart(data_respone) {
                                     display: flex;
                                     justify-content: space-evenly;
                                     flex-direction: column;">
-                        <div class="xoa-sp">
-                            Xoá
-                        </div>
+                       
                         <label for="checkbox_` +
                 product.id_product +
                 `" class="checkbox-label">Chọn</label>
