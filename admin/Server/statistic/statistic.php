@@ -10,7 +10,7 @@
             if (check_privilege($id_user, $password_user, $conn, 'xem','statistic')) {
                 $query_statistic = "
                 SELECT
-                    *, (price_output * amount_output) revenue, (price_input * amount_input) expense, (price_output * amount_output - price_input * amount_input) profit
+                    *, (price_output * amount_output) revenue, (price_input * amount_input) expense, (isnull(price_output * amount_output, 0) - isnull(price_input * amount_input,0)) profit
                 FROM
                     (
                     SELECT

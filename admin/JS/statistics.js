@@ -242,8 +242,8 @@ function statistics() {
     let sum2 = 0
     let prevDate1 = date1
     let prevDate2 = date2
-    let from = new Date("1970/1/1")
-    let to = new Date()
+    let from = LocaleDateFix(new Date("1970/1/1"))
+    let to = LocaleDateFix(new Date())
     let type1 = ""
     let prodsStat = []
     async function setUpType() {
@@ -331,7 +331,7 @@ function statistics() {
             // if (prodsStat[elementt.id] != null) {
             //     let element = prodsStat[elementt.id]
             if (type24 == null || type24.trim() == "" || element.classify == type24) {
-                body += `<tr><th>`+element.id+`</th><th>` + element.name+`</th><th>`+calculated(element.revenue) + " VND"+`</th><th>`+calculated(element.expense) + " VND"+`</th><th>`+calculated(element.profit) + " VND"+`</th></tr>`
+                body += `<tr><th>`+element.id+`</th><th>` + element.name+`</th><th>`+(element.revenue == null ? 0 : calculated(element.revenue)) + " VND"+`</th><th>`+(element.expense == null ? 0 : calculated(element.expense)) + " VND"+`</th><th>`+(element.profit == null ? 0 :calculated(element.profit)) + " VND"+`</th></tr>`
             }
             // }
         })
@@ -339,8 +339,13 @@ function statistics() {
         // setUpSum()
     }
     function LocaleDateFix(dateStr) {
-        let splitStr = dateStr.toLocaleDateString().split("/")
-        return splitStr[2].padStart(4,"0") + "-" + splitStr[1].padStart(2,"0") + "-" + splitStr[0].padStart(2,"0")
+        try {
+            let splitStr = dateStr.toLocaleDateString().split("/")
+            return splitStr[2].padStart(4,"0") + "-" + splitStr[1].padStart(2,"0") + "-" + splitStr[0].padStart(2,"0")
+        }
+        catch (e){
+            return dateStr
+        }
     }
     function firstSetup() {
         date1.value = LocaleDateFix(from)
@@ -355,7 +360,7 @@ function statistics() {
     function dateChange1() {
         sum1 = 0
         sum2 = 0
-        from = new Date(this.value)
+        from = LocaleDateFix(new Date(this.value))
         if (from > to) {
             alert("Ngày không hợp lệ")
             from = prevDate1
@@ -367,7 +372,7 @@ function statistics() {
     function dateChange2() {
         sum1 = 0
         sum2 = 0
-        to = new Date(this.value)
+        to = LocaleDateFix(new Date(this.value))
         if (from > to) {
             alert("Ngày không hợp lệ")
             to = prevDate2

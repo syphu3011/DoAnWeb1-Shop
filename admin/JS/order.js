@@ -104,7 +104,7 @@ function calculated(price) {
         price = price.toString()
         let ar = new Array()
         for (let i = 0; i < price.length; i++) {
-            if (i % 3 == 0 && i != 0) {
+            if (i % 3 == 0 && i != 0 && price[price.length - i - 1] != '-') {
                 ar.push(".")
             }
             ar.push(price[price.length - i - 1])
