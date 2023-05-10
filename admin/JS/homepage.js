@@ -31,6 +31,7 @@ let direct = false;
 let isMoving = false;
 let current = document.getElementById("background-history-admin");
 let img_ham = document.getElementById("img-ham");
+current.display = 'none'
 img_ham.onclick = function () {
   if (!isMoving) {
     openCloseLeftBar();
@@ -92,6 +93,7 @@ function appearDivFlex(div) {
 function changeToHomepage() {
   hideCurrent();
   appearDivFlex(document.getElementById("background-history-admin"));
+  
 }
 
 function changeToConsumer() {

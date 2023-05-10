@@ -1,13 +1,16 @@
 <?php
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         require_once('../../../init.php');
+        require_once('../same_function.php');
         $id_user = $_POST['id_user'];
         $password_user = $_POST['password'];
+        $order = $_POST['order'];
+        $direction = $_POST['direction'];
         try {
             if (check_privilege($id_user, $password_user, $conn, 'xem','statistic')) {
                 $query_statistic = "
                 SELECT
-                    *
+                    *, (price_output * amount_output) revenue, (price_input * amount_input) expense, (price_output * amount_output - price_input * amount_input) profit
                 FROM
                     (
                     SELECT
@@ -54,10 +57,16 @@
                 ) product_with_price
                 ON
                     product_with_classify.id = product_with_price.id_product
-                ORDER BY amount_output DESC
+                ORDER BY $order $direction
                 ";
                 $begin_date = $_POST['begin_date'];
                 $end_date = $_POST['end_date'];
+                if ($begin_date == null) {
+                    $begin_date = '1970-01-01 00:00:00';
+                }
+                if (($end_date == null)) {
+                    $end_date = date('Y/m/d h:i:sa');
+                }
                 $stmt = $conn->prepare($query_statistic);
                 $stmt->bindParam(":beginDate", $begin_date);
                 $stmt->bindParam(":endDate", $end_date);

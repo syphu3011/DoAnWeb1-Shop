@@ -1,14 +1,19 @@
 // import * as config from "./config.js";
 function statistics() {
-    async function getDataStat() {
-        let response = await get(to_form_data(getCurrentUser()), './Server/statistic/statistic.php')
+    async function getDataStat(from, to, orderby='id_product', direction = 'ASC') {
+        let data_response = to_form_data(getCurrentUser())
+        data_response.append('begin_date', from)
+        data_response.append('end_date', to)
+        data_response.append('order', orderby)
+        data_response.append('direction', direction)
+        let response = await get(data_response, './Server/statistic/statistic.php')
         if (response == errors) {
             block_access()
             return
         }
         return response
     }
-    let select_type_statistics = document.getElementById("select-type-statistic")
+    // let select_type_statistics = document.getElementById("select-type-statistic")
     function openList(list) {
         list.style.visibility = 'visible'
         list.style.opacity = '1'
@@ -27,10 +32,10 @@ function statistics() {
             closeList(list)
         }
     } 
-    select_type_statistics.onclick = function() {
-        let list_type_statistics =  document.getElementById("list-drop-down-choose-statistics")
-        openOrCloseList(list_type_statistics)
-    }
+    // select_type_statistics.onclick = function() {
+    //     let list_type_statistics =  document.getElementById("list-drop-down-choose-statistics")
+    //     openOrCloseList(list_type_statistics)
+    // }
     window.addEventListener('click', function(e) {
         let list_type_statistics =  document.getElementById("list-drop-down-choose-statistics")
         function closeClickOutSide(btn, list) {

@@ -9,6 +9,7 @@ let arrRemove = []
 let detaill = []
 let importList = []
 let data = JSON.parse(localStorage.getItem('data'))
+let reg_color = /^#[0-9A-F]{6}$/i
 // let inp_prod = data.input_product
 let checkClickOutsideDetail = false
 async function getProduct() {
@@ -735,8 +736,8 @@ function eventImport() {
     let size = document.getElementById("p-size").value
     let price = document.getElementById("input-price").value
     let total_price = price * amount
-    if (name == "") {
-        alert("ID không chính xác")
+    if (id == "") {
+        alert("ID không được bỏ trống")
     } else {
         if (amount == "") {
             alert("Số lượng không được bỏ trống")
