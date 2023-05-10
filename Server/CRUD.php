@@ -3,13 +3,12 @@ class CRUD
 {
     // read
     public function read_data_homepage($conn){
-        $sql = "SELECT classify.id_big_classify,product.idstatus,
+        $sql = "SELECT DISTINCT classify.id_big_classify,product.idstatus,
 	product.name,
                     classify.id,
                     promotion.name AS name_promotion,
                     classify.name AS name_classify,
                     product_list_classify.id_product,
-                    product_list.id_size,
                     product_list.price,
                     (
                 	SELECT image_product.link_image 
@@ -1143,29 +1142,31 @@ class CRUD
     public function read_data_cartById($conn, $id_kh)
     {
         # code...
-        $sql = "SELECT 
-                    cart.id_product,
-                    product.name, 
-                    (
-                	SELECT image_product.link_image 
-                    FROM image_product
-                    WHERE image_product.id_product=product.id
-                    limit 1
-                ) AS link_image,
-                    product_in_stock.amount as amount_in_stock,
-                    product_list.price as cost,
-                    cart.id_color, 
-                    cart.id_size,
-                    cart.amount,
-                    cart.price
-                FROM cart, product, product_in_stock,
-                    product_list
-                WHERE cart.id_customer= ?
-                    AND cart.id_product=product.id
-                    AND product_in_stock.id_product=cart.id_product
-                    AND product_in_stock.id_size = cart.id_size
-                    AND product_in_stock.id_color = cart.id_color
-                    AND product_list.id_product=cart.id_product";
+        $sql = "SELECT cart.id_product,
+            product_list.id_size,
+            product_list.id_color,
+            product.name, 
+                            (
+                            SELECT image_product.link_image 
+                            FROM image_product
+                            WHERE image_product.id_product=product.id
+                            limit 1
+                        ) AS link_image,
+                        product_in_stock.amount as amount_in_stock,
+                            product_list.price as cost,
+                            cart.id_color, 
+                            cart.id_size,
+                            cart.amount,
+                            cart.price
+        FROM cart
+        LEFT JOIN product ON product.id = cart.id_product
+        LEFT JOIN product_list ON product_list.id_product = cart.id_product 
+            AND product_list.id_size = cart.id_size
+            AND product_list.id_color = cart.id_color
+        LEFT JOIN product_in_stock ON product_in_stock.id_product = cart.id_product
+            AND product_in_stock.id_size = cart.id_size
+            AND product_in_stock.id_color = cart.id_color
+        WHERE cart.id_customer = ?";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$id_kh]);
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
