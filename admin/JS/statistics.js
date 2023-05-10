@@ -395,4 +395,4 @@ function statistics() {
     //     statisticProdUI(from, to, type)
     // }
 }
-statistics()
+// statistics()
