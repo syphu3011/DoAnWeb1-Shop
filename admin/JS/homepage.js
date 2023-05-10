@@ -170,8 +170,8 @@ async function changeToProduct() {
   await fillProd();
   // fillType()
 }
-const startPath = '/DoAnWeb1-Shop/admin/'
-const startPathPage = '/DoAnWeb1-Shop/admin/?page='
+const startPath = '/admin/'
+const startPathPage = '/admin/?page='
 const fromm = location.href.indexOf(startPath)
 const relativePath = location.href.slice(fromm);
 const firstPath = location.href.slice(0, fromm)
