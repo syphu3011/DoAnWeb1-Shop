@@ -728,6 +728,7 @@ async function eventImport() {
     let price_output = document.getElementById("inp-price-sell").value
     // let total_price = price * amount
     let color = document.getElementById("inp-color").value
+
     if (checkPriceInOut()) {
 
     }
@@ -765,6 +766,11 @@ async function eventImport() {
             }
         }
 
+    }
+}
+function checkPriceInOut(product) {
+    for (prod of detaill) {
+        // if (prod.idProd == product.idProd && prod.idSize == product.idSize
     }
 }
 //event remove
