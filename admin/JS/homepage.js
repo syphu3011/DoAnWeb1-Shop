@@ -97,6 +97,7 @@ function changeToHomepage() {
 }
 
 function changeToConsumer() {
+  verifyCookie();
   hideCurrent();
   appearDiv(document.getElementById("Background"));
   getCustomers();
@@ -293,9 +294,9 @@ document.getElementById("homepage").onclick = function () {
 };
 
 function block_access(message) {
-  document.body.innerHTML = message
-  document.body.style.marginTop = '10px'
-  document.body.style.marginLeft = '10px'
+  // document.body.innerHTML = message
+  // document.body.style.marginTop = '10px'
+  // document.body.style.marginLeft = '10px'
 }
 // }
 // else {

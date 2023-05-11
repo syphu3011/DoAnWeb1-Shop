@@ -16,7 +16,7 @@ class ReqHandling {
 	}
 
 	// ? POST UPDATE SECTION
-	// * update just 1 property
+	// * just 1 property
 	public static function updateDb($conn, $tableName, $id, $property, $value) {
 		try {
 			$conn->beginTransaction();
@@ -38,6 +38,39 @@ class ReqHandling {
 			$conn->beginTransaction();
 			$query = "UPDATE " . $tableName . " SET " . $propertySet . " = '" . $valueSet . "'" 
 				. " WHERE $propertyCondition = " . "'" . $conditionVal . "'";
+				$query_statement = $conn->prepare($query);
+				$query_statement->execute();
+				// echo json_encode(array("query" => $query), JSON_UNESCAPED_UNICODE);
+				$conn->commit();		
+			} catch (Exception $e) {
+			Table::json_fire_exception($e);
+			$conn->rollback();
+			exit();
+		}
+	}
+
+	public static function subtractSession($conn, $tableName, $propertySet, $valueSet, $propertyCondition, $conditionVal) {
+		try {
+			$conn->beginTransaction();
+			$query = "UPDATE " . $tableName . " SET " . $propertySet . " = '" . $valueSet . "'" 
+				. " WHERE $propertyCondition = " . "'" . $conditionVal . "'";
+				$query_statement = $conn->prepare($query);
+				$query_statement->execute();
+				// echo json_encode(array("query" => $query), JSON_UNESCAPED_UNICODE);
+				$conn->commit();		
+			} catch (Exception $e) {
+			Table::json_fire_exception($e);
+			$conn->rollback();
+			exit();
+		}
+	}
+
+	public static function concatSession($conn, $tableName, $propertySet, $valueSet, $propertyCondition, $conditionVal) {
+		try {
+			$conn->beginTransaction();
+			$query = "UPDATE $tableName 
+				SET $propertySet = CONCAT($propertySet, '$valueSet')
+				WHERE $propertyCondition = '$conditionVal'";
 				$query_statement = $conn->prepare($query);
 				$query_statement->execute();
 				// echo json_encode(array("query" => $query), JSON_UNESCAPED_UNICODE);
