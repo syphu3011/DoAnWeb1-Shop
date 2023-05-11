@@ -1,7 +1,7 @@
 // * Author: Huynh Kha Phi
 // * Thank you for spending your valuable time reviewing my code. 
 
-
+console.log(document.cookie);
 
 let dictionaryForHash = {
   123123: "96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e",
@@ -111,16 +111,12 @@ function sha256(ascii) {
 };
 
 
-let readyToSubmit = false;
 let sizeOfTable = 0;
 let selectedCustomer = {};
 let wantToDeleteCustomer = [];
 let toggleDelete = false;
 let keyListener = false;
 
-let readyToUsername = false;
-let readyToPassword = false;
-let readyToPasswordAgain = false;
 
 function clearTable() {
   let table = document.getElementById("myTable");
@@ -161,7 +157,11 @@ async function getCustomers() {
     cell2.innerHTML = customer.date_created;
     cell3.innerHTML = customer.name;
     cell4.innerHTML = customer.username;
-    cell5.innerHTML = customer.password;
+    let tempStr = customer.password;
+        if (tempStr.length > 5) {
+          cell5.innerHTML = tempStr.slice(0, 2) + "...";
+        } else
+          cell5.innerHTML = customer.password;
     cell6.innerHTML = customer.privilege;
     cell7.innerHTML = `<button id="button-customer-status-${customer.id}-${customer.id_user}">${customer.status}</button>`;
     cell8.innerHTML = `<button id="button-customer-detail-${customer.id}-${customer.id_user}">Chi tiết</button>`;
@@ -233,6 +233,22 @@ function bindStatusButList() {
 }
 
 function saveCustomerDetail(idButton) {
+  let username = $("#edit-customer-username").val();
+  let password = $("#edit-customer-password").val();
+  let passwordAgain = $("#edit-customer-password-again").val();
+  if (username.length < 4) {
+    alert("Username quá ngắn");
+    return;
+  } else
+  if (password < 4) {
+    alert("password quá ngắn");
+    return;
+  } else
+  if (password !== passwordAgain) {
+    alert("password không trùng khớp");
+    return;
+  }
+
   let splitIdButton = idButton.split("-");
   let customerId = splitIdButton[2];
   let accountId = splitIdButton[3];
@@ -377,14 +393,11 @@ function bindEditNotiIntoBox() {
     if (inputValue.length > 12) {
       warnUsernameDiv.css("display", "block");
       warnUsernameDiv.html(`--> quá dài`);
-      readyToUsername = false;
     } else if (inputValue.length > 3 || inputValue.length == 0){
       warnUsernameDiv.css("display", "none");
-      readyToUsername = true;
     } else {
       warnUsernameDiv.css("display", "block");
       warnUsernameDiv.html(`--> quá ngắn`);
-      readyToUsername = false;
     }
   })
   passwordBox.on('input', function (e) {
@@ -393,15 +406,12 @@ function bindEditNotiIntoBox() {
     if (inputValue.length > 12) {
       warnPasswordDiv.css("display", "block");
       warnPasswordDiv.html(`--> quá dài`);
-      readyToPassword = false;
     } else 
     if (inputValue.length > 3 || inputValue.length == 0) {
       warnPasswordDiv.css("display", "none");
-      readyToPassword = true;
     } else {
       warnPasswordDiv.css("display", "block");
       warnPasswordDiv.html(`--> quá ngắn`);
-      readyToPassword = false;
     }
   })
   passwordAgainBox.on('input', function (e) {
@@ -410,10 +420,8 @@ function bindEditNotiIntoBox() {
     if (inputValue !== previousInputValue) {
       warnPasswordAgainDiv.css("display", "block");
       warnPasswordAgainDiv.html(`--> không trùng mk`);
-      readyToPasswordAgain = false;
     } else {
       warnPasswordAgainDiv.css("display", "none");
-      readyToPasswordAgain = true;
     }
   })
 
@@ -431,7 +439,6 @@ function componentToHex(c) {
 }
 
 function renderAddNewCusInterface() {
-  readyToSubmit = false;
   keyListener = true;
   // * GUI * //
   $("#dialog").css("display", "flex");
@@ -547,26 +554,7 @@ function renderAddNewCusInterface() {
     <button style="width:30rem;" id="save-but-add-${expectedId}" onclick=saveNewCustomer(this.id)>Thêm</button>
     <button style="margin-left: 2rem;" id="canc-but-add" onclick=closeAddCustomer(this.id)>Thoát</button>
   `);
-  if (!readyToSubmit) {
-    $(`#save-but-add-${expectedId}`).prop("disabled", true);
-  }
 
-  window.addEventListener("keypress", (e) => {
-    console.log({
-      username: readyToUsername ? "True" : "False",
-      password: readyToPassword ? "True" : "False",
-      passagain: readyToPasswordAgain ? "True" : "False",
-    })
-    readyToSubmit = 
-      readyToUsername &&
-      readyToPassword && 
-      readyToPasswordAgain;
-    if (readyToSubmit) {
-      $(`#save-but-add-${expectedId}`).prop("disabled", false);
-    } else {
-      $(`#save-but-add-${expectedId}`).prop("disabled", true);
-    }
-  });
 
   $("#btn-detail-add-customer-group").css("display", "block");
   $("#btn-detail-add-customer-group").css("padding-bottom", "1rem");
@@ -670,7 +658,11 @@ async function renderDeleteCus() {
     cell2.innerHTML = customer.date_created;
     cell3.innerHTML = customer.name;
     cell4.innerHTML = customer.username;
-    cell5.innerHTML = customer.password;
+    let tempStr = customer.password;
+        if (tempStr.length > 5) {
+          cell5.innerHTML = tempStr.slice(0, 2) + "...";
+        } else
+          cell5.innerHTML = customer.password;
     cell6.innerHTML = customer.privilege;
     cell7.innerHTML = `<button id="button-customer-status-${customer.id}-${customer.id_user}">${customer.status}</button>`;
     cell8.innerHTML = `<button id="button-customer-detail-${customer.id}-${customer.id_user}">Chi tiết</button>`;
@@ -939,12 +931,11 @@ function filterCusWithParameters () {
         cell2.innerHTML = customer.date_created;
         cell3.innerHTML = customer.name;
         cell4.innerHTML = customer.username;
-        // let tempStr = customer.password;
-        // if (tempStr.length > 5) {
-        //   cell5.innerHTML = tempStr.slice(0, 2) + "...";
-        // } else
-        //   cell5.innerHTML = customer.password;
-        cell5.innerHTML = customer.password;
+        let tempStr = customer.password;
+        if (tempStr.length > 5) {
+          cell5.innerHTML = tempStr.slice(0, 2) + "...";
+        } else
+          cell5.innerHTML = customer.password;
         cell6.innerHTML = customer.privilege;
         cell7.innerHTML = `<button id="button-customer-status-${customer.id}-${customer.id_user}">${customer.status}</button>`;
         cell8.innerHTML = `<button id="button-customer-detail-${customer.id}-${customer.id_user}">Chi tiết</button> `;
@@ -1012,8 +1003,22 @@ function closeCustomerPopupDetail() {
 
 function saveNewCustomer(id) {
   $(window).off("keypress");
-  if (!readyToSubmit)
-    return
+
+  let username = $("#customer-username").val();
+  let password = $("#customer-password").val();
+  let passwordAgain = $("#customer-password-again").val();
+  if (username.length < 4) {
+    alert("Username quá ngắn");
+    return;
+  } else
+  if (password < 4) {
+    alert("password quá ngắn");
+    return;
+  } else
+  if (password !== passwordAgain) {
+    alert("password không trùng khớp");
+    return;
+  }
   // TODO Chưa insert được hình ảnh
   let data = {
     action: 'create',
@@ -1037,7 +1042,6 @@ function saveNewCustomer(id) {
   $.post(url, data, (data, status) => {
     // TODO chua co thông báo thêm người dùng mới
     console.log("Saved new customer.");
-    readyToSubmit = false;
     // * GUI * //
     $("#dialog").css("display", "none");
     $("#add-new-cus-box").css("display", "none");
@@ -1050,12 +1054,11 @@ function saveNewCustomer(id) {
 function closeAddCustomer() {
   // remove form attachment from button
   $("#btn-detail-add-customer-group").removeAttr("form");
-  readyToSubmit = false;
-  window.removeEventListener("keypress", (e) => {
-    if (readyToSubmit) {
-      $(`#save-but-add-${expectedId}`).prop("disabled", false);
-    }
-  });
+  // window.removeEventListener("keypress", (e) => {
+  //   if (readyToSubmit) {
+  //     $(`#save-but-add-${expectedId}`).prop("disabled", false);
+  //   }
+  // });
   $("#add-new-cus-box").css("display", "none")
   $("#dialog").css("display", "none");
 }

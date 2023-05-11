@@ -34,6 +34,7 @@ function verifyCredential($conn, $tableName = "account", $username, $password, $
     exit();
   } else if (strpos($arrFromDb[0]["session"], $ses) === false) {
     echo json_encode(array("message" => "Bạn đang làm giả cookie. Session không đúng so với CSDL."), JSON_UNESCAPED_UNICODE);
+    
     exit();
   } else if ($privilege === "customer") {
     echo json_encode(array("message" => "Bạn đang làm giả cookie. Khách hàng không đăng nhập tại đây."), JSON_UNESCAPED_UNICODE);
