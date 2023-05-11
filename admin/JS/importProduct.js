@@ -459,7 +459,6 @@ function updateListHistory() {
                                 <th>Số lượng</th>
                                 <th>Size</th>
                                 <th>Giá nhập</th>
-                                <th>Giá bán</th>
                                 <th>Thành tiền</th>
                             </tr>
                         </thead>
@@ -574,14 +573,13 @@ window.addEventListener("click", function(e) {
 
 // event
 
-function Stuff(id, name, amount, size, price, price_output, color) {
+function Stuff(id, name, amount, size, price, color) {
     this.idProd = id
     this.idColor = color
     this.name = name
     this.amount = amount
     this.idSize = size
     this.price = price
-    this.price_output = price_output
     // this.
     // this.toJSON = {
     //     "idProd": this.id,
@@ -594,8 +592,7 @@ function Stuff(id, name, amount, size, price, price_output, color) {
 
 }
 
-function InputProduct(id, idStaff, note) {
-    this.id = id
+function InputProdct(idStaff, note) {
     this.idStaff = idStaff
     this.note = note
 }
@@ -628,7 +625,7 @@ function fillStuff() {
         detaill.forEach(element => {
             let rowTable = document.createElement("tr")
             rowTable.className = "row-table-admin"
-            rowTable.id = element.idProd + element.idSize + element.idColor + element.idColor + element.price + element.price_output
+            rowTable.id = element.idProd + element.idSize + element.idColor
             rowTable.innerHTML = `
             <th >` + element.idProd + `</th>
             <th >` + element.name + `</th>
@@ -636,10 +633,9 @@ function fillStuff() {
             <th >` + element.idSize + `</th>` +
             `<th >` + element.idColor + `</th>
             <th >` + calculated(element.price) + " VND" + `</th>` +
-            `<th >` + calculated(element.price_output) + " VND" + `</th>` + 
 
             `<th >` + calculated(parseFloat(element.price) * parseFloat(element.amount)) + " VND" + `</th>
-            <th><button class="delete-import-1-prod" value="` + element.idProd + element.idSize + element.idColor + element.idColor + element.price + element.price_output + `">Xóa</button></th>
+            <th><button class="delete-import-1-prod" value="` + element.idProd + element.idSize + element.idColor + `">Xóa</button></th>
             `
             sum += parseFloat(element.price) * parseFloat(element.amount)
             body_stuff.appendChild(rowTable)
@@ -669,15 +665,15 @@ function writeToLocalStorageInputProduct(data) {
 
 }
 
-function addStuff(id, name, amount, size, price, price_output, total_price) {
-    let stuff = new Stuff(id, name, amount, size, price, price_output, total_price)
+function addStuff(id, name, amount, size, price, total_price) {
+    let stuff = new Stuff(id, name, amount, size, price, total_price)
     detaill.push(stuff)
 }
 
 function removeStuff(idandidSize) {
     for (let index = 0; index < detaill.length; index++) {
         const element = detaill[index];
-        if (element.idProd + element.idSize + element.idColor + element.idColor + element.price + element.price_output == idandidSize) {
+        if (element.idProd + element.idSize + element.idColor == idandidSize) {
             detaill.splice(index, 1)
             index -= 1
         }
@@ -696,12 +692,15 @@ function initId() {
     return 'NHAP' + String(maxID + 1).padStart(4, '0')
 }
 
-function inputProd(detail) {
+async function inputProd(detail) {
     let note = document.getElementById("note").value
-    let inp = new InputProduct(initId(), idLogin, getCurrentDate(), detail, note)
-    addProdInStock(inp.id, detail)
-    data.input_product.push(inp.toJSON)
-    localStorage.setItem("data", JSON.stringify(data))
+    let user = await getCurrentUser()
+    let inp = new InputProduct(idLogin, note)
+    let data = to_form_data({InputProduct:inp,})
+    alert(await post('./Server/input_product/input_product.php', data))
+    // addProdInStock(inp.id, detail)
+    // data.input_product.push(inp.toJSON)
+    // localStorage.setItem("data", JSON.stringify(data))
 }
 
 function addProdInStock(idInput, detail) {
@@ -725,7 +724,6 @@ async function eventImport() {
     let amount = document.getElementById("input-amount").value
     let size = document.getElementById("p-size").value
     let price = document.getElementById("input-price").value
-    let price_output = document.getElementById("inp-price-sell").value
     // let total_price = price * amount
     let color = document.getElementById("inp-color").value
 
@@ -743,7 +741,7 @@ async function eventImport() {
             } else {
                 if (checkNumber(amount)) {
                     if (checkNumber(price)) {
-                        let st = new Stuff(id, name, amount, size, price, price_output, color)
+                        let st = new Stuff(id, name, amount, size, price, color)
                         let haveInit = false
                         detaill.forEach(function(element, index) {
                             if (element.idProd == st.idProd && element.idSize == st.idSize) {
