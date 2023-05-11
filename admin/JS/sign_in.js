@@ -57,7 +57,9 @@ $(document).ready(function () {
     url: "../admin/Server/account/login.php",
     method: "POST",
     success: function (response) {
-      console.log(response);
+      if (response.message === 'Bạn đang làm giả cookie. Session không đúng so với CSDL.') {
+        $("#login-redirect").css("display", "none");
+      }
     },
     error: function (response) {
       console.log(response)
