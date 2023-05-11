@@ -1,10 +1,11 @@
 // import * as config from "./config.js";
 function statistics() {
-    async function getDataStat(from = null, to = null, orderby, direction) {
+    async function getDataStat(from = null, to = null, classify, orderby, direction) {
         let data_response = to_form_data(getCurrentUser())
         data_response.append('begin_date', from)
         data_response.append('end_date', to)
         data_response.append('order', orderby)
+        data_response.append('classify', classify)
         data_response.append('direction', direction)
         let response = await get(data_response, './Server/statistic/statistic.php')
         if (response == errors) {
@@ -22,8 +23,8 @@ function statistics() {
         }
         return response
     }
-    async function refreshDataStat(from, to, orderby='revenue', direction = '') {
-        let data_stat = await getDataStat(from,to,orderby,direction)
+    async function refreshDataStat(from, to, classify_choose, orderby='revenue', direction = '') {
+        let data_stat = await getDataStat(from,to, classify_choose,orderby,direction)
         if (data_stat != null) {
             let data_class = await getClassifyUsed()
             if (data_class == null) {return}
@@ -58,15 +59,15 @@ function statistics() {
     //     let list_type_statistics =  document.getElementById("list-drop-down-choose-statistics")
     //     openOrCloseList(list_type_statistics)
     // }
-    window.addEventListener('click', function(e) {
-        let list_type_statistics =  document.getElementById("list-drop-down-choose-statistics")
-        function closeClickOutSide(btn, list) {
-            if (!btn.contains(e.target) &&  list.style.visibility != 'hidden' && list.style.visibility != '') {
-                closeList(list)
-            }
-        }
-        closeClickOutSide(select_type_statistics, list_type_statistics)
-    })
+    // window.addEventListener('click', function(e) {
+    //     let list_type_statistics =  document.getElementById("list-drop-down-choose-statistics")
+    //     function closeClickOutSide(btn, list) {
+    //         if (!btn.contains(e.target) &&  list.style.visibility != 'hidden' && list.style.visibility != '') {
+    //             closeList(list)
+    //         }
+    //     }
+    //     // closeClickOutSide(select_type_statistics, list_type_statistics)
+    // })
 
     // //statistics
     // //data
@@ -244,20 +245,32 @@ function statistics() {
     let prevDate2 = date2
     let from = LocaleDateFix(new Date("1970/1/1"))
     let to = LocaleDateFix(new Date())
+    let orderby = 'revenue'
+    let direction = 'desc'
     let type1 = ""
     let prodsStat = []
     async function setUpType() {
-        let ul = document.getElementById("list-drop-down-choose-statistics")
-        ul.innerHTML = ""
-        let li1 = createLi("", "tất cả")
-        ul.appendChild(li1)
+        // let ul = document.getElementById("list-drop-down-choose-statistics")
+        // ul.innerHTML = ""
+        // let li1 = createLi("", "tất cả")
+        // ul.appendChild(li1)
         let data = await refreshDataStat(from, to)
-        // data.classify.forEach(element => {
-        data.classify.forEach(element1 => {
-            let li = createLi(element1.id, element1.name)
-            ul.appendChild(li)
-        })
+        // // data.classify.forEach(element => {
+        // data.classify.forEach(element1 => {
+        //     let li = createLi(element1.id, element1.name)
+        //     ul.appendChild(li)
         // })
+        // })
+        let stringInner = '<option value = "">Tất cả</>'
+        data.classify.forEach(element => {
+            let stringOption = '<option value = '+element.id+'>'+element.name+'</>'
+            stringInner += stringOption
+        })
+        let select = document.getElementById("sl-statistics")
+        select.innerHTML = stringInner
+        select.onchange = function() {
+            statisticProdUI(from, to, select.value)
+        }
     }
     function createLi(value, output) {
         let li = document.createElement("li")
@@ -276,9 +289,9 @@ function statistics() {
     }
     function setUpSum() {
         let total = sum1 - sum2
-            // document.getElementById("sum-revenue").innerHTML = "Tổng thu: "+sum1
-            // document.getElementById("sum-expend").innerHTML = "Tổng chi: "+sum2
-            // document.getElementById("total1").innerHTML = "Tổng cộng: "+total
+        // document.getElementById("sum-revenue").innerHTML = "Tổng thu: "+sum1
+        // document.getElementById("sum-expend").innerHTML = "Tổng chi: "+sum2
+        // document.getElementById("total1").innerHTML = "Tổng cộng: "+total
         document.getElementById("body-stat").innerHTML += `<tr class="first-row"><th>Tổng cộng</th><th id="for-remove"></th><th>`+calculated(sum1) + " VND"+`</th><th>`+calculated(sum2)+" VND"+`</th><th>`+calculated(total) + " VND"+`</th></tr>`
     }
     setUpType()
@@ -320,7 +333,7 @@ function statistics() {
     // }
     async function statisticProdUI(from, to, type24 = null) {
         // statisticProd(from, to, type24)
-        let data = await refreshDataStat(from, to)
+        let data = await refreshDataStat(from, to, type24)
         document.getElementById("head-stat").innerHTML = `<tr class="first-row"><th>Mã sản phẩm</th>
         <th>Tên sản phẩm</th>
         <th>Thu</th>
@@ -330,13 +343,14 @@ function statistics() {
         data.statistic.forEach(element => {
             // if (prodsStat[elementt.id] != null) {
             //     let element = prodsStat[elementt.id]
-            if (type24 == null || type24.trim() == "" || element.classify == type24) {
-                body += `<tr><th>`+element.id+`</th><th>` + element.name+`</th><th>`+(element.revenue == null ? 0 : calculated(element.revenue)) + " VND"+`</th><th>`+(element.expense == null ? 0 : calculated(element.expense)) + " VND"+`</th><th>`+(element.profit == null ? 0 :calculated(element.profit)) + " VND"+`</th></tr>`
-            }
+            body += `<tr><th>`+element.id+`</th><th>` + element.name+`</th><th>`+(element.revenue == null ? 0 : calculated(element.revenue)) + " VND"+`</th><th>`+(element.expense == null ? 0 : calculated(element.expense)) + " VND"+`</th><th>`+(element.profit == null ? 0 :calculated(element.profit)) + " VND"+`</th></tr>`
+            sum1 += parseFloat(element.revenue)
+            sum2 += parseFloat(element.expense)
             // }
         })
-        document.getElementById("body-stat").innerHTML = body
-        // setUpSum()
+        setUpSum()
+        document.getElementById("body-stat").innerHTML += body
+        setUpSum()
     }
     function LocaleDateFix(dateStr) {
         try {
@@ -364,10 +378,11 @@ function statistics() {
         if (from > to) {
             alert("Ngày không hợp lệ")
             from = prevDate1
+            firstSetup()
             return
         }
         prevDate1 = from
-        statisticProdUI(from, to, document.getElementById("title-type").name)
+        statisticProdUI(from, to, document.getElementById("sl-statistics").value)
     }
     function dateChange2() {
         sum1 = 0
@@ -380,7 +395,7 @@ function statistics() {
             return
         }
         prevDate2 = to
-        statisticProdUI(from, to, document.getElementById("title-type").name)
+        statisticProdUI(from, to, document.getElementById("sl-statistics").value)
     }
     // document.getElementById("back-chart-page").onclick = function() {
     //     if (from > to) {
