@@ -156,7 +156,6 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 	if (isset($_REQUEST["action"])){
 		if ($_REQUEST["action"] === "update" ){
 			try {
-				$conn->beginTransaction();
 				$receiptArr = Table::describe($conn, "receipt");
 				$statusArr = Table::describe($conn, "status_receipt");
 				if (isset($_POST["id"])) 
@@ -173,7 +172,6 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 							"message" => "Vui lòng thêm status cần sửa. (status)"
 						), JSON_UNESCAPED_UNICODE
 					);
-					$conn->rollback();
 					exit();
 				}
 				$tempArr = Table::tableQueryPropertyWithColSel($conn, "status_receipt", "name", $_POST["status"], "id");
@@ -182,16 +180,13 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 					ReqHandling::updateDb($conn, "receipt", $id, "id_status", $tempArr);
 				} catch (Exception $e) {
 					Table::json_fire_exception($e);
-					$conn->rollback();
 					exit();
 				}
 				echo json_encode(array(
 					"message" => "Update trạng thái đơn hàng thành công."
 				), JSON_UNESCAPED_UNICODE);
-				$conn->commit();
 			} catch (Exception $e) {
 				Table::json_fire_exception($e);
-				$conn->rollback();
 			}
 		}
 	}
