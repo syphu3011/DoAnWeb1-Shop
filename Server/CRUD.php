@@ -76,7 +76,7 @@ class CRUD
     //Tai khoan
     public function read_data_account($conn, $username, $password, &$status)
     {
-        $sql = "SELECT * FROM `account` WHERE `username` = ? AND `password`= ?";
+        $sql = "SELECT * FROM account WHERE username = ? AND password= ?";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$username, $password]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
