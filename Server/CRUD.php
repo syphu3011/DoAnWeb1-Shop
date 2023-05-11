@@ -402,8 +402,7 @@ class CRUD
         # code...
         $sql = "SELECT * 
                 FROM promotion
-                WHERE promotion.finish_date >= CURRENT_DATE()
-                AND promotion.id_status = 'TT10'";
+";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -576,7 +575,6 @@ class CRUD
                FROM 
                    product_list_classify
                    LEFT JOIN product_list ON product_list_classify.id_product=product_list.id_product
-
                    LEFT JOIN detail_promotion ON detail_promotion.id_product = product_list.id_product
                    LEFT JOIN promotion ON promotion.id = detail_promotion.id_promotion
                    LEFT JOIN product ON product.id = product_list_classify.id_product
@@ -587,6 +585,9 @@ class CRUD
                     product_list.price BETWEEN '$min_price' AND '$max_price'
                     AND product_list.id_size IS NOT NULL
                     AND product_list.id_color IS NOT NULL
+                    AND (
+                        (promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10')
+                        OR promotion.id IS NULL)
                     AND classify.name LIKE '$type_value'
                     $sale_value
                     AND product.name LIKE '$key_value'

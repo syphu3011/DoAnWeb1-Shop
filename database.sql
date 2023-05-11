@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `shop`
 --
+-- CREATE Database shop;
+-- use shop;
 
 -- --------------------------------------------------------
 

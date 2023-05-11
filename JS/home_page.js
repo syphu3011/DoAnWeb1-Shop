@@ -155,16 +155,19 @@ function create_filter(params) {
         // }
         //
         // Thanh chọn loại giảm giá
-        document.getElementById(
-            "sale-select"
-        ).innerHTML = `<option>Tất cả</option>`;
-        for (let i = 0; i < response.data.length; i++) {
-            document.getElementById("sale-select").innerHTML +=
-                `<option id="` +
-                response.data[i].id +
-                `">` +
-                response.data[i].name +
-                `</option>`;
+        if (response.success){
+            document.getElementById(
+                "sale-select"
+            ).innerHTML = `<option>Tất cả</option>`;
+            console.log(response);
+            for (let i = 0; i < response.data.length; i++) {
+                document.getElementById("sale-select").innerHTML +=
+                    `<option id="` +
+                    response.data[i].id +
+                    `">` +
+                    response.data[i].name +
+                    `</option>`;
+            }
         }
         //
         // Thanh chọn khoảng giá

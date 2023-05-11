@@ -269,6 +269,26 @@ function sukien(data_product) {
             //     //     calculated(tongtien) + " VND";
         };
     }
+    let select_size = document.getElementsByClassName("cart_size");
+    for (let i = 0; i < select_size.length; i++) {
+        // console.log(select_size[i]);
+        console.log(i);
+        select_size[i].onclick = function () {
+            console.log(1);
+        };
+        // select_size[i].onclick = function () {
+        //     console.log(1)
+        //     let id = select_size[i].id.split("-");
+        //     console.log(select_size[i].id);
+        //     // getDataFromServer(
+        //     //     "./Server/get_product_instock.php",
+        //     //     { id_product: id[0], id_size: id[1], id_color: id[2] },
+        //     //     function (response) {
+        //     //         console.log(response);
+        //     //     }
+        //     // );
+        // };
+    }
     document.getElementById("nut-thanhtoan").onclick = function () {
         // let isCheck = new Array();
         // for (let i = 0; i < btnCheckBox.length; i++) {
@@ -605,7 +625,7 @@ function createCart(data_response) {
                         element.id_size +
                         "-" +
                         element.id_color +
-                        `" class="size">
+                        `" class="cart_size">
                          ` +
                         element.id_size.substring(2) +
                         `
@@ -755,23 +775,7 @@ function createCart(data_response) {
                     </td>
                 </tr>`;
         }
-        let select_size = document.getElementsByClassName("size");
-        for (let i = 0; i < select_size.length; i++) {
-            // console.log(select_size[i]);
-
-            select_size[i].onclick = function () {
-                console.log(1)
-                let id = select_size[i].id.split("-");
-                console.log(select_size[i].id);
-                // getDataFromServer(
-                //     "./Server/get_product_instock.php",
-                //     { id_product: id[0], id_size: id[1], id_color: id[2] },
-                //     function (response) {
-                //         console.log(response);
-                //     }
-                // );
-            };
-        }
+        
         sukien(data_response);
     } else {
         alert("Giỏ hàng đang trống");
