@@ -41,9 +41,9 @@
                 $stmt_get_product_in_stock -> bindParam(":id_product", $id_product);
                 $stmt_get_product_in_stock -> bindParam(":id_size", $id_size);
                 $stmt_get_product_in_stock -> bindParam(":id_color", $id_color);
-                if ($stmt_get_product_in_stock -> execute()) {
+                if ($stmt_get_product_in_stock -> execute() && $stmt_get_product_in_stock -> rowCount() > 0) {
                     $list_product_in_stock = $stmt_get_product_in_stock -> fetchAll(PDO::FETCH_ASSOC);
-                    $list_product_in_stock = array($list_product_in_stock);
+                    // $list_product_in_stock = $list_product_in_stock;
                     foreach($list_product_in_stock as $value) {
                         $amount_update = 0;
                         $use_loop = false;
