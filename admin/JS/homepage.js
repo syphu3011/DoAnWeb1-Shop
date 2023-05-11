@@ -107,21 +107,7 @@ function changeToOrder() {
   hideCurrent();
   appearDiv(document.getElementById("background_order"));
   // timtheokhoang();
-Promise.all([get_DataOrder(), get_DataCus(), get_DataDetailO(),
-   get_DataProd(), get_DataPromo()])
-  .then(function(results) {
- 
-    console.log(results[0]); // receipt
-    console.log(results[1]); // customer
-    console.log(results[2]); // detail_receipt
-    console.log(results[3]); // product
-    console.log(results[4]); // get_DataPromo
-    FillOrder();
-  })
-  .catch(function(error) {
-    
-    console.error(error);
-  });
+  RefreshFillOrder();
 }
 
 async function changeToInput() {

@@ -14,6 +14,24 @@ document.getElementById("date-init-last").value=CurrentDate()
 document.getElementById("date-confirm-first").value = "1971-01-01"
 document.getElementById("date-confirm-last").value = CurrentDate()
 
+
+function RefreshFillOrder(){
+    Promise.all([get_DataOrder(), get_DataCus(), get_DataDetailO(),
+        get_DataProd(), get_DataPromo()])
+       .then(function(results) {
+      
+         console.log(results[0]); // receipt
+         console.log(results[1]); // customer
+         console.log(results[2]); // detail_receipt
+         console.log(results[3]); // product
+         console.log(results[4]); // get_DataPromo
+         FillOrder();
+       })
+       .catch(function(error) {
+         
+         console.error(error);
+       });
+}
 function get_DataOrder() {
     return $.ajax({
         url: './Server/receipt/receipt.php',
@@ -186,6 +204,7 @@ function ConfirmOrder(x) {
                         SetAmount(sl,idprod,size,color)
                     }
                 }
+                RefreshFillOrder()
             },
             error: function (xhr, status, error) {
                 console.log(error);
@@ -197,7 +216,7 @@ function ConfirmOrder(x) {
 
     // if(document.getElementById("date-init-first").value==""||
     // document.getElementById("date-init-last").value==""){
-        FillOrder()
+    // FillOrder()
     // }
     // else{
     //     timtheokhoang()
@@ -216,6 +235,7 @@ function CancelOrder(x) {
         }),
         success: function (response) {
             console.log(response);
+            RefreshFillOrder()
         },
         error: function (xhr, status, error) {
             console.log(error);
@@ -224,7 +244,7 @@ function CancelOrder(x) {
 
     // if(document.getElementById("date-init-first").value==""||
     // document.getElementById("date-init-last").value==""){
-        FillOrder()
+    // FillOrder()
     // }
     // else{
     //     timtheokhoang()
