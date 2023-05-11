@@ -177,41 +177,51 @@ function ConfirmOrder(x) {
             }),
             success: function (response) {
                 console.log(response);
+                for (let i = 0; i < length2; i++) {
+                    if(detail_receipt[i].id_receipt==x){
+                        let idprod = detail_receipt[i].id_product_detail_receipt
+                        let color = detail_receipt[i].id_color_detail_receipt 
+                        let size = detail_receipt[i].id_size_detail_receipt
+                        let sl= GetAmount(idprod,color,size)-detail_receipt[i].amount_detail_receipt
+                        SetAmount(sl,idprod,size,color)
+                    }
+                }
             },
             error: function (xhr, status, error) {
                 console.log(error);
             },
         });
-        for (let i = 0; i < length2; i++) {
-            if(detail_receipt[i].id_receipt==x){
-                let idprod = detail_receipt[i].id_product_detail_receipt
-                let color = detail_receipt[i].id_color_detail_receipt 
-                let size = detail_receipt[i].id_size_detail_receipt
-                let sl= GetAmount(idprod,color,size)-detail_receipt[i].amount_detail_receipt
-                SetAmount(sl,idprod,size,color)
-            }
-        }
-        
     } else {
         alert("Số lượng trong kho không đủ")
     }
 
-    if(document.getElementById("date-init-first").value==""||
-    document.getElementById("date-init-last").value==""){
+    // if(document.getElementById("date-init-first").value==""||
+    // document.getElementById("date-init-last").value==""){
         FillOrder()
-    }
-    else{
-        timtheokhoang()
-    }
+    // }
+    // else{
+    //     timtheokhoang()
+    // }
 }
 
 // Hủy đơn
 
 function CancelOrder(x) {
-    receipt[x].date_confirm = getCurrentDate2()
-    receipt[x].id_status = "đã hủy"
-    receipt[x].idStaff = JSON.parse(localStorage.getItem("currentStaff")).id
-    // writeToLocalStorage(obj12)
+    $.ajax({
+        url: "./Server/receipt/receiptStatus.php?action=update",
+        method: "POST",
+        data:( {
+            id_receipt: x,
+            status: "Đã hủy"
+        }),
+        success: function (response) {
+            console.log(response);
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        },
+    });
+
     // if(document.getElementById("date-init-first").value==""||
     // document.getElementById("date-init-last").value==""){
         FillOrder()
@@ -293,7 +303,6 @@ function FillHistory() {
 // Chi tết đơn hang và chi tiết lịch sử đơn hàng
 
 function FillDetailO(x) {
-    // let leng = receipt[x].list_prod.length
     document.getElementById("Text-detail-order").innerHTML = `Chi tiết đơn hàng ` + x
     let tagtable = document.getElementById("Table-detail-order")
     for (let i = tagtable.rows.length - 1; i > 0; i--)
