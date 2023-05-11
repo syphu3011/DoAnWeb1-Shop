@@ -176,8 +176,19 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 				}
 				$tempArr = Table::tableQueryPropertyWithColSel($conn, "status_receipt", "name", $_POST["status"], "id");
 				$tempArr = $tempArr[0]["id"];
+
+				date_default_timezone_set('Asia/Ho_Chi_Minh');
+				$today = gmdate('Y-m-d H:i:s', time());
+				// * Y : year with 4 digits
+				// * y : year with 2 digits
+				// * m : month with 2 digits
+				// * M : month with name
+				// * H : format 24h
+				// * h : format 12h
+
 				try {
 					ReqHandling::updateDb($conn, "receipt", $id, "id_status", $tempArr);
+					ReqHandling::updateDb($conn, "receipt", $id, "date_confirm", $today);
 				} catch (Exception $e) {
 					Table::json_fire_exception($e);
 					exit();
