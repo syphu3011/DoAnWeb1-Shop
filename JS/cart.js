@@ -128,6 +128,7 @@ localStorage.setItem("is_update_cart", false);
 
 function sukien(data_product) {
     fill_price_in_cart();
+
     let tongtien = 0;
     let btnXoa = document.getElementById("nut-xoa");
     // for (let i = 0; i < btnXoa.length; i++) {
@@ -310,89 +311,77 @@ function sukien(data_product) {
             // }
         }
     };
-    let select_size = document.getElementsByClassName("size");
-    for (let i = 0; i < select_size.length; i++) {
-        select_size[i].onclick = function () {
-            let id = select_size[i].id.split("-");
-            console.log(select_size[i].id);
-            getDataFromServer(
-                "./Server/get_product_instock.php",
-                { id_product: id[0], id_size: id[1], id_color: id[2] },
-                function (response) {
-                    console.log(response);
-                }
-            );
-        };
-        // let doiSize = document.getElementsByClassName("size")
 
-        //     if (proSize[i].textContent.length != 0) {
-        //         for (
-        //             let j = 0;
-        //             j < proSize[i].getElementsByClassName("size").length;
-        //             j++
-        //         ) {
-        //             // console.log(i, j)
+    // let doiSize = document.getElementsByClassName("size")
 
-        //             proSize[i].getElementsByClassName("size")[j].onclick =
-        //                 function () {
-        //                     let ind = false;
-        //                     prInStock.forEach((el) => {
-        //                         if (
-        //                             el.idSize == sizeP[i][j].id &&
-        //                             el.idProd == currentUser.cart[i].idProd &&
-        //                             parseInt(el.amount) > 0
-        //                         ) {
-        //                             // console.log("1")
-        //                             ind = true;
-        //                         }
-        //                     });
-        //                     if (ind) {
-        //                         if (currentUser.cart[i].amount == 0) {
-        //                             currentUser.cart[i].amount = 1;
-        //                             currentUser.cart[i].price = pro[i].price;
-        //                         }
-        //                         currentUser.cart[i].idSize = sizeP[i][j].id;
-        //                         // localStorage.setItem("data", JSON.stringify(data))
-        //                         while (
-        //                             document.getElementsByClassName(
-        //                                 "table-giohang"
-        //                             )[0].rows.length > 0
-        //                         ) {
-        //                             document
-        //                                 .getElementsByClassName("table-giohang")[0]
-        //                                 .deleteRow(0);
-        //                         }
-        //                         localStorage.setItem("data", JSON.stringify(data));
-        //                         document.getElementById(
-        //                             "hienthigiohang"
-        //                         ).style.display = "";
-        //                         document.getElementById("noti").style.display =
-        //                             "flex";
-        //                         document.getElementById("noti-noti").innerHTML =
-        //                             "cập nhật giỏ hàng Thành công";
-        //                         showacc(
-        //                             document.getElementById("noti-noti"),
-        //                             -500,
-        //                             0
-        //                         );
-        //                         document.getElementById("noti-noti").style.display =
-        //                             "flex";
-        //                         setTimeout(() => {
-        //                             document.getElementById("noti").style.display =
-        //                                 "";
-        //                             tongtien = 0;
-        //                             document.getElementById(
-        //                                 "tongthanhtoan"
-        //                             ).textContent = calculated(tongtien) + " VND";
-        //                             createCart();
-        //                         }, 700);
-        //                     } else {
-        //                         alert("Số lượng sản phẩm không khả dụng");
-        //                     }
-        //                 };
-        //         }
-        //     }
-    }
+    //     if (proSize[i].textContent.length != 0) {
+    //         for (
+    //             let j = 0;
+    //             j < proSize[i].getElementsByClassName("size").length;
+    //             j++
+    //         ) {
+    //             // console.log(i, j)
+
+    //             proSize[i].getElementsByClassName("size")[j].onclick =
+    //                 function () {
+    //                     let ind = false;
+    //                     prInStock.forEach((el) => {
+    //                         if (
+    //                             el.idSize == sizeP[i][j].id &&
+    //                             el.idProd == currentUser.cart[i].idProd &&
+    //                             parseInt(el.amount) > 0
+    //                         ) {
+    //                             // console.log("1")
+    //                             ind = true;
+    //                         }
+    //                     });
+    //                     if (ind) {
+    //                         if (currentUser.cart[i].amount == 0) {
+    //                             currentUser.cart[i].amount = 1;
+    //                             currentUser.cart[i].price = pro[i].price;
+    //                         }
+    //                         currentUser.cart[i].idSize = sizeP[i][j].id;
+    //                         // localStorage.setItem("data", JSON.stringify(data))
+    //                         while (
+    //                             document.getElementsByClassName(
+    //                                 "table-giohang"
+    //                             )[0].rows.length > 0
+    //                         ) {
+    //                             document
+    //                                 .getElementsByClassName("table-giohang")[0]
+    //                                 .deleteRow(0);
+    //                         }
+    //                         localStorage.setItem("data", JSON.stringify(data));
+    //                         document.getElementById(
+    //                             "hienthigiohang"
+    //                         ).style.display = "";
+    //                         document.getElementById("noti").style.display =
+    //                             "flex";
+    //                         document.getElementById("noti-noti").innerHTML =
+    //                             "cập nhật giỏ hàng Thành công";
+    //                         showacc(
+    //                             document.getElementById("noti-noti"),
+    //                             -500,
+    //                             0
+    //                         );
+    //                         document.getElementById("noti-noti").style.display =
+    //                             "flex";
+    //                         setTimeout(() => {
+    //                             document.getElementById("noti").style.display =
+    //                                 "";
+    //                             tongtien = 0;
+    //                             document.getElementById(
+    //                                 "tongthanhtoan"
+    //                             ).textContent = calculated(tongtien) + " VND";
+    //                             createCart();
+    //                         }, 700);
+    //                     } else {
+    //                         alert("Số lượng sản phẩm không khả dụng");
+    //                     }
+    //                 };
+    //         }
+    //     }
+    // }
     function set_color_onclick(list_button, index) {
         for (let i = 0; i < list_button.length; i++) {
             list_button[i].style.borderColor = "black";
@@ -765,6 +754,23 @@ function createCart(data_response) {
                 `" class="checkboxIncart" type="checkbox" name="" id="">
                     </td>
                 </tr>`;
+        }
+        let select_size = document.getElementsByClassName("size");
+        for (let i = 0; i < select_size.length; i++) {
+            // console.log(select_size[i]);
+
+            select_size[i].onclick = function () {
+                console.log(1)
+                let id = select_size[i].id.split("-");
+                console.log(select_size[i].id);
+                // getDataFromServer(
+                //     "./Server/get_product_instock.php",
+                //     { id_product: id[0], id_size: id[1], id_color: id[2] },
+                //     function (response) {
+                //         console.log(response);
+                //     }
+                // );
+            };
         }
         sukien(data_response);
     } else {
