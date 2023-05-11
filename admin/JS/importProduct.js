@@ -98,6 +98,12 @@ async function updateListID() {
             } 
             selected.innerText = li.innerHTML
             selected.value = choosing ? type + li.innerHTML : li.innerHTML
+            let product = await getProduct()
+            let selected_product = product.filter(e => 
+                e.id == selected.value
+                )[0]
+            let name_input = document.getElementById("inp-name-product") 
+            name_input.value = selected_product.name
         }
     })
 
@@ -116,7 +122,7 @@ async function updateListSize(type) {
     sizeP.style.opacity = 1
     if (type == "AO") {
         firstLetter = "A"
-    } else if (type == "QUAN") {
+    } else if (type == "QU") {
         firstLetter = "Q"
     } else {
         btn_size.style.opacity = 0
@@ -211,8 +217,8 @@ function openImportPage() {
                 }
             }
             if (!check_correct) {
-                input_id.focus()
                 alert("Bạn phải nhập đúng ID!");
+                // input_id.focus()
             }
         }
     }
@@ -453,6 +459,7 @@ function updateListHistory() {
                                 <th>Số lượng</th>
                                 <th>Size</th>
                                 <th>Giá nhập</th>
+                                <th>Giá bán</th>
                                 <th>Thành tiền</th>
                             </tr>
                         </thead>
@@ -567,53 +574,39 @@ window.addEventListener("click", function(e) {
 
 // event
 
-function Stuff(id, name, amount, size, price, total_price) {
-    this.id = id
+function Stuff(id, name, amount, size, price, price_output, color) {
+    this.idProd = id
+    this.idColor = color
     this.name = name
     this.amount = amount
-    this.size = size
+    this.idSize = size
     this.price = price
-    this.total_price = total_price
-    this.toJSON = {
-        "idProd": this.id,
-        "name": this.name,
-        "amount": this.amount,
-        "idSize": this.size,
-        "price": this.price,
-        "total": this.total_price
-    }
+    this.price_output = price_output
+    // this.
+    // this.toJSON = {
+    //     "idProd": this.id,
+    //     "name": this.name,
+    //     "amount": this.amount,
+    //     "idSize": this.size,
+    //     "price": this.price,
+    //     "total": this.total_price
+    // }
 
 }
 
-function InputProduct(id, idStaff, dateInput, detail, note) {
+function InputProduct(id, idStaff, note) {
     this.id = id
     this.idStaff = idStaff
-    this.dateInput = dateInput
-    this.detail = detail
     this.note = note
-    this.toJSON = {
-        "id": this.id,
-        "idStaff": this.idStaff,
-        "date_input": this.dateInput,
-        "detail": this.detail,
-        "note": this.note
-    }
 }
 
-function ProdInStock(idInput, idProd, idSize, amount, price) {
-    this.idInput = idInput
-    this.idProd = idProd
-    this.idSize = idSize
-    this.amount = amount
-    this.price = price
-    this.toJSON = {
-        "idInput": this.idInput,
-        "idProd": this.idProd,
-        "idSize": this.idSize,
-        "amount": this.amount,
-        "price": this.price
-    }
-}
+// function ProdInStock(idInput, idProd, idSize, amount, price) {
+//     this.idInput = idInput
+//     this.idProd = idProd
+//     this.idSize = idSize
+//     this.amount = amount
+//     this.price = price
+// }
 // let arrStuff = Array.prototype.slice.call(localStorage.getItem("input-product"))
 
 
@@ -635,17 +628,20 @@ function fillStuff() {
         detaill.forEach(element => {
             let rowTable = document.createElement("tr")
             rowTable.className = "row-table-admin"
-            rowTable.id = element.id + element.size
+            rowTable.id = element.idProd + element.idSize + element.idColor + element.idColor + element.price + element.price_output
             rowTable.innerHTML = `
-            <th >` + element.id + `</th>
+            <th >` + element.idProd + `</th>
             <th >` + element.name + `</th>
             <th >` + calculated(element.amount) + `</th>
-            <th >` + element.size + `</th>
-            <th >` + calculated(element.price) + " VND" + `</th>
-            <th >` + calculated(element.total_price) + " VND" + `</th>
-            <th><button class="delete-import-1-prod" value="` + element.id + element.size + `">Xóa</button></th>
+            <th >` + element.idSize + `</th>` +
+            `<th >` + element.idColor + `</th>
+            <th >` + calculated(element.price) + " VND" + `</th>` +
+            `<th >` + calculated(element.price_output) + " VND" + `</th>` + 
+
+            `<th >` + calculated(parseFloat(element.price) * parseFloat(element.amount)) + " VND" + `</th>
+            <th><button class="delete-import-1-prod" value="` + element.idProd + element.idSize + element.idColor + element.idColor + element.price + element.price_output + `">Xóa</button></th>
             `
-            sum += element.total_price
+            sum += parseFloat(element.price) * parseFloat(element.amount)
             body_stuff.appendChild(rowTable)
 
         })
@@ -673,15 +669,15 @@ function writeToLocalStorageInputProduct(data) {
 
 }
 
-function addStuff(id, name, amount, size, price, total_price) {
-    let stuff = new Stuff(id, name, amount, size, price, total_price)
+function addStuff(id, name, amount, size, price, price_output, total_price) {
+    let stuff = new Stuff(id, name, amount, size, price, price_output, total_price)
     detaill.push(stuff)
 }
 
 function removeStuff(idandidSize) {
     for (let index = 0; index < detaill.length; index++) {
         const element = detaill[index];
-        if (element.id + element.size == idandidSize) {
+        if (element.idProd + element.idSize + element.idColor + element.idColor + element.price + element.price_output == idandidSize) {
             detaill.splice(index, 1)
             index -= 1
         }
@@ -716,26 +712,25 @@ function addProdInStock(idInput, detail) {
 }
 // inputProd(detaill)
 //event import
-function eventImport() {
-
+async function eventImport() {
+    let product = await getProduct()
     let id = document.getElementById("input-id").value
-    let name = ""
+    let name = document.getElementById("inp-name-product").value
         // Array.prototype.splice.call(data.product).forEach(element => {
         //     console.log("ok")
         //     if (element.id == id) {
         //         name = element.name
         //     }
         // })
-    data.product.forEach(element => {
-        console.log("ok")
-        if (element.id == id) {
-            name = element.name
-        }
-    })
     let amount = document.getElementById("input-amount").value
     let size = document.getElementById("p-size").value
     let price = document.getElementById("input-price").value
-    let total_price = price * amount
+    let price_output = document.getElementById("inp-price-sell").value
+    // let total_price = price * amount
+    let color = document.getElementById("inp-color").value
+    if (checkPriceInOut()) {
+
+    }
     if (id == "") {
         alert("ID không được bỏ trống")
     } else {
@@ -747,10 +742,10 @@ function eventImport() {
             } else {
                 if (checkNumber(amount)) {
                     if (checkNumber(price)) {
-                        let st = new Stuff(id, name, amount, size, price, total_price)
+                        let st = new Stuff(id, name, amount, size, price, price_output, color)
                         let haveInit = false
                         detaill.forEach(function(element, index) {
-                            if (element.id == st.id && element.size == st.size) {
+                            if (element.idProd == st.idProd && element.idSize == st.idSize) {
                                 detaill[index].amount = Number(detaill[index].amount) + Number(st.amount)
                                 detaill[index].total_price = Number(detaill[index].amount) * Number(detaill[index].price)
                                 haveInit = true

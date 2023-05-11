@@ -4,8 +4,8 @@
             require_once('../../../init.php');
             $conn -> beginTransaction();
             $query_import_coupon = "
-            INSERT INTO `import_coupon`(`id`, `date_init`, `id_staff`)
-            VALUES (:id,:date_init,:id_staff)";
+            INSERT INTO `import_coupon`(`id`, `date_init`, `id_staff`, `note`)
+            VALUES (:id,:date_init,:id_staff, :note)";
             $query_import_detail = "
             INSERT INTO `detail_import_coupon`(`id_import_coupon`, `id_product`, `id_size`, `id_color`, `amount`, `price_input`)
             VALUES (:idInput,:idProd,:idSize,:idColor,:amount,:price)
@@ -28,11 +28,15 @@
             ";
             // Xử lý thêm phiếu nhập
             $stmt = $conn->prepare($query_import_coupon);
-            $import_product = $_POST['InputProduct'];
+            $input_product = $_POST['InputProduct'];
             $date_init = date('Y-m-d H:i:s');
-            $stmt->bindParam(':id',$input_product['id']);
+            $id_input = $input_product['id'];
+            $id_staff = $input_product['idStaff'];
+            $note = $input_product['note'];
+            $stmt->bindParam(':id',$id_input);
             $stmt->bindParam(':date_init', $date_init);
-            $stmt->bindParam(':id_staff', $input_product['id_staff']);
+            $stmt->bindParam(':id_staff', $id_staff);
+            $stmt->bindParam(':note', $note);
             $stmt->execute();
             // Xử lý thêm chi tiết
             $stmt = $conn->prepare($query_import_detail);
@@ -61,13 +65,19 @@
 
             // Xử lý thêm hàng vào kho
             $stmt = $conn->prepare($query_product_in_stock);
-            foreach($_POST['ProdInStock'] as $prod_in_stock) {
-                $stmt->bindParam(':idInput', $prod_in_stock['id']);
-                $stmt->bindParam(':idProd', $prod_in_stock['idProd']);
-                $stmt->bindParam(':idSize', $prod_in_stock['idSize']);
-                $stmt->bindParam(':idColor', $prod_in_stock['idColor']);
-                $stmt->bindParam(':amount', $prod_in_stock['amount']);
-                $stmt->bindParam(':price', $prod_in_stock['price']);
+            foreach($_POST['Stuff'] as $prod_in_stock) {
+                $id_input = $import_product['id'];
+                $id_prod = $import_product['idProd'];
+                $id_size = $import_product['idSize'];
+                $id_color = $import_product['idColor'];
+                $amount['amount'];
+                $price = $import_product['price'];
+                $stmt->bindParam(':idInput', $id_input);
+                $stmt->bindParam(':idProd', $id_prod);
+                $stmt->bindParam(':idSize', $id_size);
+                $stmt->bindParam(':idColor', $id_color);
+                $stmt->bindParam(':amount', $amount);
+                $stmt->bindParam(':price', $price);
                 $stmt->execute();
             }
             // Xử lý thêm và cập nhật hàng
