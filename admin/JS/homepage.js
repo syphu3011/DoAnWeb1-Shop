@@ -14,7 +14,7 @@ function GetDataUs(user_id){
       var data = this.responseText;
       
       // Do something with data
-      console.log(data);
+      // console.log(data);
     }
   };
   xhttp.open("GET", "./Server/privilege/privilege.php?user_id=" + user_id, true);
@@ -97,6 +97,7 @@ function changeToHomepage() {
 }
 
 function changeToConsumer() {
+  verifyCookie();
   hideCurrent();
   appearDiv(document.getElementById("Background"));
   getCustomers();
@@ -126,6 +127,11 @@ async function changeToInput() {
   hideCurrent();
   appearDiv(document.getElementById("body-input"));
   await getProduct()
+}
+
+function changeToPrivilege() {
+  hideCurrent();
+  appearDiv(document.getElementById("bgr-privilege"));
 }
 
 function changeToStaff() {
@@ -165,8 +171,8 @@ async function changeToProduct() {
   await fillProd();
   // fillType()
 }
-const startPath = '/DoAnWeb1-Shop/admin/'
-const startPathPage = '/DoAnWeb1-Shop/admin/?page='
+const startPath = '/admin/'
+const startPathPage = '/admin/?page='
 const fromm = location.href.indexOf(startPath)
 const relativePath = location.href.slice(fromm);
 const firstPath = location.href.slice(0, fromm)
@@ -230,6 +236,14 @@ document.getElementById("input").onclick = function () {
   openCloseLeftBar();
   location.href = fullPathPage + 'nhaphang'
 };
+
+$("#privilege").click(function () {
+  $("#content").css("display", "block");
+  $("#div-thongso").css("display", "none");
+  openCloseLeftBar();
+  changeToPrivilege();
+})
+
 document.getElementById("staff").onclick = function () {
   document.getElementById("content").style.display = "block";
   document.getElementById("div-thongso").style.display = "none";
@@ -280,9 +294,9 @@ document.getElementById("homepage").onclick = function () {
 };
 
 function block_access(message) {
-  document.body.innerHTML = message
-  document.body.style.marginTop = '10px'
-  document.body.style.marginLeft = '10px'
+  // document.body.innerHTML = message
+  // document.body.style.marginTop = '10px'
+  // document.body.style.marginLeft = '10px'
 }
 // }
 // else {

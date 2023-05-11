@@ -10,9 +10,9 @@ function get_DataStaff() {
         dataType: 'json',
         success: function(data) {
           arrNhanVien = data;
-          console.log(arrNhanVien);
+        //   console.log(arrNhanVien);
           renderTable1();
-          console.log(data);
+        //   console.log(data);
         },
         error: function(xhr, status, error) {
           // Xử lý lỗi ở đây

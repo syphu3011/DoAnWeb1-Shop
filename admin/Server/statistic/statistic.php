@@ -6,21 +6,26 @@
         $password_user = $_POST['password'];
         $order = $_POST['order'];
         $direction = $_POST['direction'];
+        $classify = $_POST['classify'];
+        if ($classify == '' || $classify == null) {
+            $classify = '%%';
+        }
         try {
             if (check_privilege($id_user, $password_user, $conn, 'xem','statistic')) {
                 $query_statistic = "
                 SELECT
-                    *, (price_output * amount_output) revenue, (price_input * amount_input) expense, (price_output * amount_output - price_input * amount_input) profit
+                *, (ifnull(price_output,0) * ifnull(amount_output,0)) revenue, (ifnull(price_input,0) * ifnull(amount_input, 0)) expense, (ifnull(price_output,0) * ifnull(amount_output,0) - ifnull(price_input,0) * ifnull(amount_input, 0)) profit
                 FROM
                     (
                     SELECT
-                        id, 
-                        name,
-                        id_classify
+                    id, 
+                    name,
+                    GROUP_CONCAT(DISTINCT product_list_classify.id_classify SEPARATOR ', ') id_classify
                     FROM
                         product_list_classify
                     LEFT JOIN product ON product.id = product_list_classify.id_product
-                    WHERE  product_list_classify.id_classify LIKE '%%'
+                    WHERE  product_list_classify.id_classify LIKE :classify
+                    GROUP BY id
                 ) product_with_classify
                 LEFT JOIN(
                     SELECT detail_import_coupon_price.id_product,
@@ -71,6 +76,7 @@
                 $stmt = $conn->prepare($query_statistic);
                 $stmt->bindParam(":beginDate", $begin_date);
                 $stmt->bindParam(":endDate", $end_date);
+                $stmt->bindParam(":classify", $classify);
                 $response_array = new stdClass();
                 if ($stmt->execute()) {
                     $response_array -> statistic = $stmt->fetchAll(PDO::FETCH_ASSOC);

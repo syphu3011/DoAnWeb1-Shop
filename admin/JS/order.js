@@ -48,21 +48,14 @@ function get_DataPromo() {
         }
       });
 }
-function get_DataProd() {
-    return $.ajax({
-        url: './Server/product/products.php',
-        method: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            product = data;
-            // FillOrder();
-        //   console.log(receipt);
-        },
-        error: function(xhr, status, error) {
-          // Xử lý lỗi ở đây
-          console.error(error);
+async function get_DataProd() {
+    let current_user = getCurrentUser()
+        data_server = to_form_data(current_user);
+        product = await get(data_server,'./Server/product/products.php')
+        if (product == errors) {
+            block_access('Bạn không có quyền truy cập vào sản phẩm!')
+            return
         }
-      });
 }
 function get_DataCus() {
     return $.ajax({
@@ -104,7 +97,7 @@ function calculated(price) {
         price = price.toString()
         let ar = new Array()
         for (let i = 0; i < price.length; i++) {
-            if (i % 3 == 0 && i != 0) {
+            if (i % 3 == 0 && i != 0 && price[price.length - i - 1] != '-') {
                 ar.push(".")
             }
             ar.push(price[price.length - i - 1])
@@ -170,16 +163,14 @@ function ConfirmOrder(x) {
     // }
     // if (temp == lengt) {
 
-        receipt[x].id_status = "TT07"
         // receipt[x].idStaff = JSON.parse(localStorage.getItem("currentStaff")).id
         receipt[x].date_confirm = getCurrentDate2()
         $.ajax({
-            url: "./Server/receipt/receipt.php?action=update",
+            url: "./Server/receipt/receiptStatus.php?action=update",
             method: "POST",
-            contentType: "application/json",
-            data:JSON.stringify( {
-                id: receipt[x].id,
-                id_status: "TT07",
+            data:( {
+                id_receipt: receipt[x].id,
+                status: "Đã xác nhận"
             }),
             success: function (response) {
                 console.log(response);
@@ -477,7 +468,7 @@ function SearchInit() {
     if (init =="") {
         return FindAllO("")
     } else {
-        return FindDateInit(getDate(init))
+        return FindDateInit(init)
     }
 }
 
@@ -536,7 +527,7 @@ function SearchConfirm() {
     if (init == "") {
         return FindAllOH("")
     } else {
-        return FindDateComfirm(getDate(init))
+        return FindDateComfirm(init)
     }
 }
 

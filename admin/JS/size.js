@@ -57,13 +57,6 @@ async function FillSize(){
 //         cell3.innerHTML = "<button onclick='onDel(this)'>Xóa</button>";
 //     }
 // };
-function onDel(el){
-    let row = el.parentElement.parentElement;
-    let iD = row.cells[0].innerText;
-    let table = document.getElementById("myTable2");
-    
-    
-}
 
 document.getElementById("add1").onclick = function () {
     document.getElementById("newScr").innerHTML =`
@@ -138,7 +131,7 @@ function shirt(){
 function pants(){
     document.getElementById("newScr").innerHTML = `
     <div id="dialog1">
-        <form id="add_size">
+        <div id="add_size">
             <div class="box" id="add_pants">
                     <button class="close" id="close23">X</button>
                     <label class="title" for="">Thêm kích thước quần</label>
@@ -176,7 +169,7 @@ function pants(){
                         <button  class="button_add" id="ok" onclick = 'themKichThuocQuan()'>Thêm kích thước</button>
                     </div>
                 </div>
-        </form>
+        </div>
     </div>
     `
         document.getElementById("dialog1").onclick = function(t){
@@ -217,7 +210,7 @@ async function themKichThuocAo(){
     // }
     // else{
         let CurrentUser = getCurrentUser()
-        let data_post_server = {breast: soDoBung,hand:chieuDaiTay, back:soDoLung ,id_user: CurrentUser.id_user, password:CurrentUser.password }
+        let data_post_server = {id: id,breast: soDoBung,hand:chieuDaiTay, back:soDoLung ,id_user: CurrentUser.id_user, password: CurrentUser.password }
         let form_data = to_form_data(data_post_server)
         alert(await post(form_data, './Server/size/create_size.php'))
         document.getElementById("dialog1").remove();
@@ -226,7 +219,7 @@ async function themKichThuocAo(){
 }       
 
 //ham them du lieu quan
-function themKichThuocQuan(){
+async function themKichThuocQuan(){
     //them id, name, type, detail o day
     let table = document.getElementById("myTable2");
     let tenKichThuoc = document.getElementById("tenKichThuoc").value;
@@ -239,41 +232,16 @@ function themKichThuocQuan(){
     if(tenKichThuoc==""||soDoVongChan==""||soDoVongDui==""||chieuDaiChan==""||soDoMong==""){
         alert("Cần nhập đủ thông tin")
     }
-    else if(CheckIDS(id)){
-        alert("ID đã tồn tại")
-    }
+    // else if(CheckIDS(id)){
+    //     alert("ID đã tồn tại")
+    // }
     else{
-        let objsT = {
-            id: id,
-            name:tenKichThuoc ,
-            shoulderIndex: "",
-            backIndex: "",
-            bellyIndex: "",
-            legLength: chieuDaiChan,
-            armLength: "",
-            thighLength: soDoVongDui,
-            calfIndex: soDoVongChan,
-            buttIndex: soDoMong
-        }
-        arrKT.push(objsT);
-        objs.size = arrKT
-        writeToLocalStorage(objs)
-        for(let i = table.rows.length - 1; i  > 0; i--)
-        table.deleteRow(i);
-    //them du lieu o day
-        for(let i = 0; i < arrKT.length; i++)
-        {
-            let obj = arrKT[i];
-            let row = table.insertRow();
-            let cell0 = row.insertCell(0);
-            let cell1 = row.insertCell(1);
-            let cell2 = row.insertCell(2);
-    
-            cell0.innerHTML = obj.id;
-            cell1.innerHTML = obj.name;
-            cell2.innerHTML = `<p class="detail" onclick=onDetail(this)>chi tiết</p>`
-        }
+        let CurrentUser = getCurrentUser()
+        let data_post_server = {id: id, waist:soDoVongChan ,foot:chieuDaiChan, thigh:soDoVongDui , butt:soDoMong,id_user: CurrentUser.id_user, password: CurrentUser.password }
+        let form_data = to_form_data(data_post_server)
+        alert(await post(form_data, './Server/size/create_size.php'))
         document.getElementById("dialog1").remove();
+        FillSize()
     }
    
 }
@@ -322,7 +290,7 @@ function onEdit(el){
             document.getElementById("newScr").innerHTML = 
         `
         <div id="dialog1">
-        <form class="box" id="edit-pants">
+        <div class="box" id="edit-pants">
           <button class="close" id="close23">X</button>
           <label class="title" for="">Sửa kích thước quần</label>
           <div class="ID2">
@@ -358,7 +326,7 @@ function onEdit(el){
           <div class="button">
             <button class="button_add" onclick="xacNhanSuaQuan()">Xác nhận sửa</button>
           </div>
-        </form>
+        </div>
       </div>
       
         `
@@ -378,7 +346,7 @@ function onEdit(el){
     document.getElementById("newScr").innerHTML = 
         `
         <div id="dialog1">
-            <form class="box" id="edit_shirt">
+            <div class="box" id="edit_shirt">
                 <button class="close" id="close23">X</button>
                 <label class="title" for="">Sửa kích thước áo</label>
                 <div class="ID2">
@@ -414,7 +382,7 @@ function onEdit(el){
                 <div class="button">
                     <button class="button_add" onclick="xacNhanSuaAo()">xác nhận sửa</button>
                 </div>
-            </form>    
+            </div>    
         </div>
         `
     for(let i = 0; i < arrKT.length; i++){
@@ -440,7 +408,8 @@ function onEdit(el){
     }
 }
 // Mở chi tiết
-function onDetail(el){
+async function onDetail(el){
+    let size = await GetDataSize()
     let thisRow = el.parentElement.parentElement;
     let id = thisRow.cells[0].innerText;
     if(id.toLowerCase().indexOf("qu")!=-1)
@@ -485,27 +454,21 @@ function onDetail(el){
             </div>
         </div>
         `
-        GetDataSize().then(function(size) {
-            for(let i = 0; i < size.sizes.length; i++){
+            for(let i = 0; i < size.length; i++){
                 if(size.sizes[i].id == id){
-                document.getElementById("idsize").value = size.sizes[i].id;
-                document.getElementById("tenKichThuoc").value = size.sizes[i].id.substring(2);
-                document.getElementById("soDoVongDui").value = size.sizes[i].thigh;
-                document.getElementById("chieuDaiChan").value = size.sizes[i].foot
-                document.getElementById("soDoVongChan").value = size.sizes[i].waist;
-                document.getElementById("soDoMong").value = size.sizes[i].butt;
+                document.getElementById("idsize").value = size[i].id;
+                document.getElementById("tenKichThuoc").value = size[i].id.substring(2);
+                document.getElementById("soDoVongDui").value = size[i].thigh;
+                document.getElementById("chieuDaiChan").value = size[i].foot
+                document.getElementById("soDoVongChan").value = size[i].waist;
+                document.getElementById("soDoMong").value = size[i].butt;
                 }
             }
-        }).catch(function(error) {
-           console.log(error)
-        });
-   
-    }
+        }
     else if(id.toLowerCase().indexOf("ao")!=-1){
     document.getElementById("newScr").innerHTML = 
         `
         <div id="dialog1">
-            <!-- Chỉnh sửa kính thước -->
             <div class="box" id="edit_shirt">
             <button class="close" id="close23">X</button>
             <label class="title" for="">Chi tiết kích thước áo</label>
@@ -538,19 +501,15 @@ function onDetail(el){
         </div>
         `
     
-        GetDataSize().then(function(size) {
-            for(let i = 0; i < size.sizes.length; i++){
-                if(size.sizes[i].id == id){
-                document.getElementById("idsize").value = size.sizes[i].id;
-                document.getElementById("tenKichThuoc").value = size.sizes[i].id.substring(2);
-                document.getElementById("soDoLung").value = size.sizes[i].back 
-                document.getElementById("soDoBung").value = size.sizes[i].breast;
-                document.getElementById("chieuDaiTay").value = size.sizes[i].hand;
+            for(let i = 0; i < size.length; i++){
+                if(size[i].id == id){
+                document.getElementById("idsize").value=size[i].id;
+                document.getElementById("tenKichThuoc").value = size[i].id.substring(2);
+                document.getElementById("soDoLung").value = size[i].back 
+                document.getElementById("soDoBung").value = size[i].breast;
+                document.getElementById("chieuDaiTay").value = size[i].hand;
                 }
             }
-        }).catch(function(error) {
-            console.log(error)
-        });   
     }
 
     document.getElementById("dialog1").onclick = function(t){
