@@ -1,3 +1,11 @@
+<!-- {
+    idProd:"",
+    idSize:"",
+    idColor:"",
+    amount:"",
+    id_user:"",
+    password:""
+} -->
 <?php
     require_once('../../../init.php');
     require_once('../same_function.php');
@@ -14,16 +22,49 @@
             FROM product_in_stock, import_coupon
             WHERE product_in_stock.id_import_coupon = import_coupon.id 
             and id_product = :id_product
+            and id_size = :id_size
+            and id_color = :id_color
+            and amount > 0
             ";
             $query_update_product_in_stock = "
-            UPDATE `product_in_stock`(`id_import_coupon`, `id_product`, `id_size`, `id_color`, `amount`, `price_input`)
+            UPDATE `product_in_stock`
             SET amount = :amount
-            WHERE id_product
+            WHERE id_product = :id_product
+            and id_size = :id_size
+            and id_color = :id_color
+            and id_import_coupon = :id_import_coupon
+            order by date_init asc
             ";
             $stmt_get_product_in_stock = $conn -> prepare($query_get_product_in_stock);
+            $stmt_get_product_in_stock -> bindParam(":id_product", $id_product);
+            $stmt_get_product_in_stock -> bindParam(":id_size", $id_size);
+            $stmt_get_product_in_stock -> bindParam(":id_color", $id_color);
             if ($stmt_get_product_in_stock -> execute()) {
                 $list_product_in_stock = $stmt_get_product_in_stock -> fetchAll(PDO::FETCH_ASSOC);
-
+                $list_product_in_stock = array($list_product_in_stock);
+                foreach($list_product_in_stock as $value) {
+                    $amount_update = 0;
+                    $use_loop = false;
+                    if ($value["amount"] - $amount >= 0) {
+                        $amount_update = $value["amount"] - $amount;
+                        $amount = 0;
+                    }
+                    else {
+                        $amount_update = 0;
+                        $amount -= $value["amount"];
+                    }
+                    $id_import_coupon = $value["id_import_coupon"];
+                    $stmt_update_product_in_stock = $conn -> prepare($query_update_product_in_stock);
+                    $stmt_update_product_in_stock -> bindParam(":amount", $amount_update);
+                    $stmt_update_product_in_stock -> bindParam(":id_product", $id_product);
+                    $stmt_update_product_in_stock -> bindParam(":id_size", $id_size);
+                    $stmt_update_product_in_stock -> bindParam(":id_color", $id_color);
+                    $stmt_update_product_in_stock -> bindParam(":id_import_coupon", $id_import_coupon);
+                    $stmt_update_product_in_stock -> execute();
+                    if (!$use_loop) {
+                        break;
+                    }
+                }
             }
         }
     }
