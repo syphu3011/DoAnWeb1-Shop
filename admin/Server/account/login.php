@@ -33,7 +33,10 @@ function verifyCredential($conn, $tableName = "account", $username, $password, $
     echo json_encode(array("message" => "Đã hết hạn phiên đăng nhập."), JSON_UNESCAPED_UNICODE);
     exit();
   } else if (strpos($arrFromDb[0]["session"], $ses) === false) {
-    echo json_encode(array("message" => "Session không đúng so với CSDL."), JSON_UNESCAPED_UNICODE);
+    echo json_encode(array("message" => "Bạn đang làm giả cookie. Session không đúng so với CSDL."), JSON_UNESCAPED_UNICODE);
+    exit();
+  } else if ($privilege === "customer") {
+    echo json_encode(array("message" => "Bạn đang làm giả cookie. Khách hàng không đăng nhập tại đây."), JSON_UNESCAPED_UNICODE);
     exit();
   } else {
     echo json_encode(array(
@@ -56,8 +59,8 @@ function setCookieLogin($conn, $username, $password, $privilege) {
   // $_SESSION[$username] = $password;
   $exp = time() + (86400 * 30);
   $token = bin2hex(random_bytes(16));
-  setcookie('login_cookie', base64_encode("$username:password:$privilege:$exp:$token"), time() + (86400 * 30), '/doan/admin/');
-  ReqHandling::updateDbOnProperty($conn, "account", "session", $token, "username", $username);
+  setcookie('login_cookie', base64_encode("$username:$password:$privilege:$exp:$token"), time() + (86400 * 30), '/doan/admin/');
+  ReqHandling::concatSession($conn, "account", "session", $token, "username", $username);
 }
 
 
@@ -113,6 +116,9 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     exit();
   } else if ($password != $arrFromDb[0]["password"]) {
     echo json_encode(array("message" => "Sai mật khẩu."), JSON_UNESCAPED_UNICODE);
+    exit();
+  } else if ($arrFromDb[0]["privilege"] === "customer") {
+    echo json_encode(array("message" => "Khách hàng không đăng nhập tại đây."), JSON_UNESCAPED_UNICODE);
     exit();
   } else if ($remember == "true"){
     setCookieLogin($conn, $username, $password, $arrFromDb[0]["privilege"]);

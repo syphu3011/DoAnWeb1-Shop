@@ -71,9 +71,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   );
   $username = $afterCredential["username"];
   // * clear the token on server side
-  ReqHandling::updateDbOnProperty($conn, "account", "session", "", "username", $username);
+  $clientSession = $afterCredential["client_session"];
+  $serverSession = $afterCredential["server_session"];
+  $newServerSession = 
+  str_replace($clientSession, "", $serverSession);  
+
+  // echo $serverSession;
+  ReqHandling::subtractSession($conn, "account", "session", $newServerSession, "username", $username);
   // * clear the cookie on client side
   setcookie("login_cookie", "");
+  // *
   echo json_encode(array("message" => "Đã xóa cookie."), JSON_UNESCAPED_UNICODE);
   exit();
 } else {
