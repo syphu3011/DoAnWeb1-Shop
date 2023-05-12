@@ -1,6 +1,8 @@
 let obj33
 async function FillClassify(){
-     obj33 = await get_Data()
+    let current_user = getCurrentUser()
+    data_server = to_form_data(current_user);
+    obj33 = await get(data_server,'./Server/product/products.php')
     console.log(obj);
     let tagtable = document.getElementById("myTable33")
     for (let i = tagtable.rows.length - 1; i > 0; i--)
