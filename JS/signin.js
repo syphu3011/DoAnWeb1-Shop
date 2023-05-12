@@ -114,7 +114,7 @@ document
                             console.log(response);
                             if (response.success) {
                                 if (response.message == "Đăng nhập thành công. Đã tạo phiên đăng nhập mới.") {
-                                    document.cookie = response.cookie
+                                    document.cookie["login"] = response.cookie
                                     currentUser = response.data.customer;
                                     showacc(signin, 0, 1200);
                                     setTimeout(() => {

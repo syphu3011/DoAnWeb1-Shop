@@ -6,7 +6,24 @@
             $id_user = $_POST["id_user"];
             $password_user = $_POST["password"];
             if (check_privilege($id_user, $password_user, $conn, 'xem','product')) {
-                $query = "SELECT * FROM product_list";
+                $query = "SELECT 
+                product_list.id_product, 
+                product_list.id_size, 
+                product_list.id_color, 
+                ifnull(price_input,0) price_input,
+                ifnull(product_list.price,0) price 
+                FROM product_list
+                LEFT JOIN 
+                (SELECT id_product, id_size, id_color, max(price_input) price_input
+                FROM product_in_stock
+                GROUP BY id_product, id_size, id_color
+                ) product_in_stock
+                ON 
+                product_list.id_product = product_in_stock.id_product and
+                product_list.id_size = product_in_stock.id_size and 
+                product_list.id_color = product_in_stock.id_color and 
+                product_list.price = product_in_stock.price_input
+                ";
                 $stmt = $conn -> prepare($query);
                 if ($stmt -> execute()) {
                     $response = $stmt -> fetchAll(PDO::FETCH_ASSOC);
