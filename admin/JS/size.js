@@ -20,7 +20,7 @@ async function FillSize(){
                 cell1.innerHTML = size[i].id.substring(2);
                 cell2.innerHTML = `<p class="detail" onclick=onDetail(this)>chi tiết</p>`
                 cell3.innerHTML = `<button onclick=onDel(this)>Xóa</button>  
-                <button onclick=onEdit(`+size[i].id+`) id="edit">Sửa</button>`;
+                <button onclick=onEdit(this) id="edit">Sửa</button>`;
             }
         }
         else{
@@ -36,7 +36,7 @@ async function FillSize(){
                 cell1.innerHTML = size[i].id.substring(2);
                 cell2.innerHTML = `<p class="detail" onclick=onDetail(this)>chi tiết</p>`
                 cell3.innerHTML = `<button onclick='onDel(this)'>Xóa</button>
-                <button onclick=onEdit(`+size[i].id+`) id="edit">Sửa</button>`;
+                <button onclick=onEdit(this) id="edit">Sửa</button>`;
             }
         }
 }
@@ -246,7 +246,10 @@ async function themKichThuocQuan(){
     }
    
 }
-function onEdit(id){
+async function onEdit(el){
+    let size = await GetDataSize()
+    let thisRow = el.parentElement.parentElement;
+    let id = thisRow.cells[0].innerText;
     if(id.toLowerCase().indexOf("qu")!=-1)
     {
             document.getElementById("newScr").innerHTML = 
@@ -292,15 +295,15 @@ function onEdit(id){
       </div>
       
         `
-    for(let i = 0; i < arrKT.length; i++){
-        if(arrKT[i].id == id){
+    for(let i = 0; i < size.length; i++){
+        if(size[i].id == id){
         selectedIndex = i;
         document.getElementById("idsize").value=id;
-        document.getElementById("tenKichThuoc").value = arrKT[i].name;
-        document.getElementById("soDoVongDui").value = arrKT[i].thighLength;
-        document.getElementById("chieuDaiChan").value = arrKT[i].legLength 
-        document.getElementById("soDoVongChan").value = arrKT[i].calfIndex;
-        document.getElementById("soDoMong").value = arrKT[i].buttIndex;
+        document.getElementById("tenKichThuoc").value = size[i].id.substring(2);
+        document.getElementById("soDoVongDui").value = size[i].thigh;
+        document.getElementById("chieuDaiChan").value = size[i].foot
+        document.getElementById("soDoVongChan").value = size[i].waist;
+        document.getElementById("soDoMong").value = size[i].butt;
         }
     }
     }
@@ -321,10 +324,6 @@ function onEdit(id){
                 </div>
                 <div class="number_size">
                     <div class="num_detail_left">
-                        <div class="num1">
-                            <label for="">Số đo vai</label>
-                            <input id="soDoVai" type="text">
-                        </div>
                         <div class="num2">
                             <label for="">Số đo bụng</label>
                             <input id="soDoBung" type="text">
@@ -347,15 +346,14 @@ function onEdit(id){
             </div>    
         </div>
         `
-    for(let i = 0; i < arrKT.length; i++){
-        if(arrKT[i].id == id){
+    for(let i = 0; i < size.length; i++){
+        if(size[i].id == id){
         selectedIndex = i;
         document.getElementById("idsize").value=id;
-        document.getElementById("tenKichThuoc").value = arrKT[i].name;
-        document.getElementById("soDoVai").value = arrKT[i].shoulderIndex;
-        document.getElementById("soDoLung").value = arrKT[i].backIndex 
-        document.getElementById("soDoBung").value = arrKT[i].bellyIndex;
-        document.getElementById("chieuDaiTay").value = arrKT[i].armLength;
+        document.getElementById("tenKichThuoc").value = size[i].id.substring(2);
+        document.getElementById("soDoLung").value = size[i].back 
+        document.getElementById("soDoBung").value = size[i].breast;
+        document.getElementById("chieuDaiTay").value = size[i].hand;
         }
     }
     }
