@@ -10,9 +10,10 @@
                 SELECT name 
                 FROM account, staff
                 WHERE 
-                account.id = staff.id and 
+                account.id_user = staff.id_user and 
                 account.username = :username";
                 $stmt = $conn -> prepare($query);
+                $stmt -> bindParam(":username", $id_user);
                 if ($stmt -> execute()) {
                     $response = $stmt -> fetchAll(PDO::FETCH_ASSOC);
                     $json = json_encode($response, JSON_UNESCAPED_UNICODE);

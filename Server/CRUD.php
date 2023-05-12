@@ -1308,31 +1308,39 @@ class CRUD
         $stmt = null;
         return $result;
     }
-    public function insert_data_to_receipt($conn, $id, $date_init, $date_confirm, $address, $note, $id_staff, $id_customer, $id_status){
+    public function insert_data_to_receipt($conn, $data){
         $sql="INSERT INTO receipt 
             (id, date_init, date_confirm, address, note, id_staff, id_customer, id_status)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
         $stmt = $conn -> prepare($sql);
-        $stmt -> execute([$id, $date_init, $date_confirm, $address, $note, $id_staff, $id_customer, $id_status]);
+        $stmt->execute([
+            $data['id'],
+            $data['date_init'],
+            $data['date_confirm'],
+            $data['address'],
+            $data['note'],
+            $data['id_staff'],
+            $data['id_customer'],
+            $data['id_status']
+        ]);
         $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
         $stmt = null;
         return $result;
     }
-    public function insert_data_to_detail_receipt($conn, $id_receipt, $id_size, $id_color, $id_product, $id_import_coupon, $amount, $price)
+    public function insert_data_to_detail_receipt($conn, $product)
     {
         # code...
         $sql = "INSERT INTO detail_receipt (id_receipt, id_size, id_color, id_product, id_import_coupon, amount, price)
         VALUES ( ?, ?, ?, ?, ?, ?, ?);";
         $stmt = $conn -> prepare($sql);
-        $stmt -> execute([
-            $id_receipt,
-            $id_size,
-            $id_color,
-            $id_product,
-            $id_import_coupon,
-            $amount,
-            $price
-            ]);
+        $result = $stmt->execute([
+        $product['id_receipt'],
+        $product['id_size'],
+        $product['id_color'],
+        $product['id_product'],
+        $product['amount'],
+        $product['price']
+    ]);
         $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
         $stmt = null;
         return $result;

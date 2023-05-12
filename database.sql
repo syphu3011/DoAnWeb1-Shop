@@ -22,7 +22,8 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
-
+-- CREATE database shop;
+-- use shop;
 --
 -- Cấu trúc bảng cho bảng `account`
 --
@@ -217,7 +218,7 @@ CREATE TABLE `detail_receipt` (
   `id_size` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `id_color` varchar(7) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `id_product` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `id_import_coupon` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `id_import_coupon` varchar(10) DEFAULT NULL,
   `amount` int(11) DEFAULT NULL,
   `price` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -904,8 +905,7 @@ ALTER TABLE `detail_promotion`
 -- Chỉ mục cho bảng `detail_receipt`
 --
 ALTER TABLE `detail_receipt`
-  ADD PRIMARY KEY (`id_receipt`,`id_import_coupon`,`id_product`,`id_size`,`id_color`),
-  ADD KEY `id_import_coupon` (`id_import_coupon`),
+  ADD PRIMARY KEY (`id_receipt`,`id_product`,`id_size`,`id_color`),
   ADD KEY `id_product` (`id_product`),
   ADD KEY `id_size` (`id_size`),
   ADD KEY `id_color` (`id_color`);
@@ -1130,7 +1130,6 @@ ALTER TABLE `detail_promotion`
 --
 ALTER TABLE `detail_receipt`
   ADD CONSTRAINT `detail_receipt_ibfk_1` FOREIGN KEY (`id_receipt`) REFERENCES `receipt` (`id`),
-  ADD CONSTRAINT `detail_receipt_ibfk_2` FOREIGN KEY (`id_import_coupon`) REFERENCES `product_in_stock` (`id_import_coupon`),
   ADD CONSTRAINT `detail_receipt_ibfk_3` FOREIGN KEY (`id_product`) REFERENCES `product_in_stock` (`id_product`),
   ADD CONSTRAINT `detail_receipt_ibfk_4` FOREIGN KEY (`id_size`) REFERENCES `product_in_stock` (`id_size`),
   ADD CONSTRAINT `detail_receipt_ibfk_5` FOREIGN KEY (`id_color`) REFERENCES `product_in_stock` (`id_color`);

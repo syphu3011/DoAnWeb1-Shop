@@ -539,40 +539,7 @@ function initId1(clasify) {
     return id + String(max + 1).padStart(8, "0")
     // return "1";
 }
-function to_form_data(object) {
-    var formData = new FormData();
 
-    for (var key in object) {
-        if (object.hasOwnProperty(key)) {
-            formData.append(key, object[key]);
-        }
-    }
-
-    return formData;
-}
-
-function to_form_data_with_name(objects, name) {
-    var formData = new FormData();
-
-    for (const key in objects) {
-        formData.append(name, objects[key]);
-    }
-
-    return formData;
-}
-function to_form_data_have_image(object, name_form_for_images, files) {
-    var formData = new FormData();
-
-    for (var key in object) {
-        if (object.hasOwnProperty(key)) {
-            formData.append(key, object[key]);
-        }
-    }
-    for (var index = 0; index < files.length; index++) {
-        formData.append(name_form_for_images, files[index]);
-     }
-    return formData;
-}
 function getUsername() {
     return ''
 }
