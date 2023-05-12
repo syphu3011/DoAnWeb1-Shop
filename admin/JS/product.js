@@ -304,6 +304,10 @@ document.getElementById("add-type-pro-a").onclick = function () {
     console.log(1);
     BoxSelect();
 };
+document.getElementById("add-type-pro-e").onclick = function () {
+    console.log(1);
+    BoxSelect();
+};
 function fillEdit(prod) {
     let image_delete = [];
     document.getElementById("edit-id").value = prod.id;
@@ -1024,7 +1028,7 @@ document.getElementById("close5").onclick = function () {
 // Chọn loại
 function BoxSelect() {
     document.getElementById("select").style.visibility = "visible";
-    document.getElementById("dialog-s").style.display = "block";
+    document.getElementById("dialog-s").style.display = "flex";
     let select_big = document.getElementById("select_big");
     for (const i = 0; i < select_big.options.length; ) {
         select_big.options[i].remove();

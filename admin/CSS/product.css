@@ -35,7 +35,9 @@ button:hover{
     color: white;
 }
 
-
+.cursorlabel {
+    cursor: pointer;
+}
 table,th,td{
     border:1px solid black;
     border-collapse: collapse;
@@ -326,6 +328,8 @@ option{
     left: 0;
     right: 0;
     display: none;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Thêm sản phẩm */
