@@ -973,21 +973,6 @@ function hidePopup() {
 
 // }
 
-// Thêm loại
-document.getElementById("add_type").onclick = function () {
-    document.getElementById("add_type_pro").style.display = "flex";
-    OpenDialog33();
-};
-
-document.getElementById("accept").onclick = function () {
-    document.getElementById("add_type_pro").style.display = "none";
-    CloseDialog33();
-    // AddType();
-};
-document.getElementById("close5").onclick = function () {
-    document.getElementById("add_type_pro").style.display = "none";
-    CloseDialog33();
-};
 // function initId123(type, name, index) {
 //     if (type == null || type == "" || name == null || name == "") return
 //     let s = ""
@@ -1491,6 +1476,9 @@ function FillPrice() {
             <td><input type="color" value="` +
             color +
             `" disabled></td>
+            <td>` +
+            calculated(listProd[i].price_input) +
+            ` VNĐ</td>
             <td>` +
             calculated(listProd[i].price) +
             ` VNĐ</td>

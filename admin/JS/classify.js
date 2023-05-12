@@ -72,3 +72,18 @@ function ConfirmDele(){
 
     CloseDeType()
 }
+// Thêm loại
+document.getElementById("add_type").onclick = function () {
+    document.getElementById("add_type_pro").style.display = "flex";
+    OpenDialog33();
+};
+
+document.getElementById("accept").onclick = function () {
+    document.getElementById("add_type_pro").style.display = "none";
+    CloseDialog33();
+
+};
+document.getElementById("close5").onclick = function () {
+    document.getElementById("add_type_pro").style.display = "none";
+    CloseDialog33();
+};
