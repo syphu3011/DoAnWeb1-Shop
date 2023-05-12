@@ -20,7 +20,7 @@ if(checkCookie('login_cookie')) {
 }
 
 $("#manage").click(function () {
-  window.location.href = "http://localhost/doan/admin/";
+  window.location.href = "./admin/";
 })
 
 $("#log-out-but").click(function () {

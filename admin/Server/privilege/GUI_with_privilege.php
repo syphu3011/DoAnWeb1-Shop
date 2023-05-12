@@ -6,6 +6,7 @@
             $id_user = $_POST["id_user"];
             $password_user = $_POST["password"];
             $response = '';
+            $first_pri = '';
             if (check_privilege($id_user, $password_user, $conn, 'xem','product')) {
                 $response .= '<li id="product">
                     <img src="./Image/Box_alt_fill.png" alt="" class="img-li"> Sản phẩm
@@ -16,6 +17,7 @@
                 <li id="size">
                     <img src="./Image/iconmonstr-ruler-16-240 1.png " alt="" class="img-li"> Kích thước
                 </li>';
+                $first_pri = 'sanpham';
             }
             if (check_privilege($id_user, $password_user, $conn, 'xem','import_product')) {
                 $response .= '
@@ -23,6 +25,7 @@
                     <img src="./Image/input_prod.png" alt="" class="img-li"> Nhập hàng
                 </li>
                 ';
+                $first_pri = $first_pri == 'nhaphang';
             }
             if (check_privilege($id_user, $password_user, $conn, 'xem','receipt')) {
                 $response .= '
