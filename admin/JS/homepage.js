@@ -24,7 +24,7 @@ current_staff = d;
 // GetDataUs("USR001");
 function checkLogin() {
   let cookie = document.cookie
-  if (cookie == "") {
+  if (cookie == "" || cookie == ".") {
     location.href = "./sign_in.html"
   }
 }
@@ -185,7 +185,7 @@ async function gui_with_privilege() {
 gui_with_privilege()
 // name_staff.innerHTML = current_staff.name;
 back_account.onclick = async function () {
-  document.cookie = ""
+  document.cookie = "."
   let current_user = await getCurrentUser()
   let data = to_form_data(current_user)
   await put(data, './Server/homepage/logout.php')
