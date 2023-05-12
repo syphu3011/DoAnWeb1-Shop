@@ -326,6 +326,8 @@ option{
     left: 0;
     right: 0;
     display: none;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Thêm sản phẩm */
