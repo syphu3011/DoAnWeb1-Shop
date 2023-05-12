@@ -189,7 +189,7 @@ back_account.onclick = async function () {
   let current_user = await getCurrentUser()
   let data = to_form_data(current_user)
   await put(data, './Server/homepage/logout.php')
-  window.location.href = "../index.html";
+  window.location.href = "./";
 };
 
 function openCloseLeftBar() {
