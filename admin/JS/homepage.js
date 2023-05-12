@@ -62,7 +62,7 @@ async function gui_with_privilege() {
   let list = split[0]
   pri = split[1]
   runOnLoad()
-  document.getElementById("leftbar-list").innerHTML += list
+  document.getElementById("leftbar-list").innerHTML = list
   try {
     document.getElementById("orderr").onclick = function () {
       document.getElementById("content").style.display = "block";
