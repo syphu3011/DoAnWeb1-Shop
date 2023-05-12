@@ -1282,6 +1282,7 @@ function CloseDialog33() {
 
 }
 
+
 /// Loại sản phẩm
 
 function OpenDeType() {
@@ -1302,33 +1303,55 @@ document.getElementById("close78").onclick = function() {
     document.getElementById("table-edit-price").style.visibility = "hidden";
     CloseDialog();
 };
+function OpenDialog78() {
+    document.getElementById("dialog78").style.display = "flex";
+}
 
+function CloseDialog78() {
+    document.getElementById("dialog78").style.display = "none";
+
+}
+document.getElementById("close79").onclick = function() {
+    document.getElementById("edit-price-new").style.visibility = "hidden";
+    CloseDialog78();
+};
+
+let listProd
 async function FillPrice() {
     let current_user = getCurrentUser()
     data_server = to_form_data(current_user);
-    price = await get(data_server,'./Server/product/product_list.php')
-    if (price == errors) {
+    listProd = await get(data_server,'./Server/product/product_list.php')
+    if (listProd == errors) {
         block_access('Bạn không có quyền truy cập vào sản phẩm!')
         return
     }
-    console.log(price)
+    console.log(listProd)
     let tagtable = document.getElementById("table-price")
     for (let i = tagtable.rows.length - 1; i > 0; i--)
         tagtable.deleteRow(i);
-    for (var i = 0; i < price.length; i++) {
-            let color = price[i].id_color;
+    for (var i = 0; i < listProd.length; i++) {
+            let color = listProd[i].id_color;
             let tagrow = document.createElement("tr")
             tagrow.innerHTML = `
-            <td>` + price[i].id_product + `</td>
-            <td>` + GetNameProduct(price[i].id_product)+ `</td>
-            <td>` + price[i].id_size.substring(2) + `</td>
+            <td>` + listProd[i].id_product + `</td>
+            <td>` + GetNameProduct(listProd[i].id_product)+ `</td>
+            <td>` + listProd[i].id_size.substring(2) + `</td>
             <td><input type="color" value="` + color + `" disabled></td>
-            <td>` + calculated(price[i].price) + ` VNĐ</td>
-            <td><button>Sửa</button></td>`
+            <td>` + calculated(listProd[i].price) + ` VNĐ</td>
+            <td><button onclick=EditPrice("`+ i +`") >Sửa</button></td>`
             tagtable.appendChild(tagrow)
     }
+}
+
+function EditPrice(v){
+    document.getElementById("edit-price-new").style.visibility = "visible";
+    OpenDialog78();
+    document.getElementById("tile-edit-price").innerHTML = `Thay Đổi giá sản phẩm `+listProd[v].id_product;
+    document.getElementById("price-old").value= listProd[v].price;
+    document.getElementById("price-new").focus();
 
 }
+
 function GetNameProduct(id){
     console.log(obj);
     for(let i=0;i<obj.product.length;i++){
@@ -1337,3 +1360,4 @@ function GetNameProduct(id){
         }
     }
 }
+

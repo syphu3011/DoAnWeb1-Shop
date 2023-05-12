@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost
--- Thời gian đã tạo: Th5 12, 2023 lúc 04:57 AM
+-- Thời gian đã tạo: Th5 12, 2023 lúc 05:03 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 8.2.0
 
@@ -22,8 +22,8 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
-CREATE database shop;
-use shop;
+-- CREATE database shop;
+-- use shop;
 --
 -- Cấu trúc bảng cho bảng `account`
 --
