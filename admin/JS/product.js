@@ -1367,7 +1367,6 @@ async function AcceptPrice(){
         document.getElementById("table-edit-price").style.visibility = "hidden";
         CloseDialog()
     }
-    
 }
 
 document.getElementById("cancel-price").onclick = function() {
