@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost
--- Thời gian đã tạo: Th5 11, 2023 lúc 06:33 PM
+-- Thời gian đã tạo: Th5 12, 2023 lúc 05:03 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 8.2.0
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `account` (
   `id_user` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `password` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `password` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `date_created` datetime DEFAULT NULL,
   `privilege` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `session` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
@@ -42,20 +42,20 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`id_user`, `username`, `password`, `date_created`, `privilege`, `session`, `status`) VALUES
-('USR001', 'admin2', '123123', '2023-04-18 16:11:15', 'admin', '', 'active'),
-('USR002', 'admin1', '123123', '2023-04-18 16:11:43', 'admin', '', 'active'),
-('USR003', 'syphu', '123123', '2023-04-28 07:16:41', 'customer', '', 'idle'),
-('USR004', 'khaphi', '123123', '2023-04-18 16:11:19', 'customer', '', 'idle'),
-('USR005', 'minhthao', '123123', '2023-04-18 16:16:08', 'customer', '', 'active'),
-('USR006', 'congmenh', '123123', '2023-04-18 16:16:06', 'customer', '', 'active'),
-('USR007', 'manager1', '123123', '2023-04-18 16:16:00', 'manager', '', 'active'),
-('USR008', 'manager2', '123123', '2023-04-18 16:15:58', 'manager', '', 'active'),
-('USR009', 'phuu', '123123', '2023-04-18 16:15:56', 'sales', '', 'active'),
-('USR010', 'phii', '123123', '2023-04-18 16:15:53', 'sales', '', 'active'),
-('USR011', 'thao', '123123', '2023-04-18 16:15:47', 'sales', '', 'active'),
-('USR012', 'menh', '123123', '2023-04-18 16:15:45', 'sales', '', 'active'),
-('USR013', 'cicada3301', 'cicada3301', '0000-00-00 00:00:00', 'customer', '', 'active'),
-('USR014', 'bbbb', 'bbbb', '0000-00-00 00:00:00', 'customer', '', 'active');
+('USR001', 'admin2', '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', '2023-04-18 16:11:15', 'admin', 'daace88f03fd5fda120ddbc932794876eb16874782827f8c6c0a00b328470676b77b0f0ed4bb07bfce1e505c446e03f1', 'active'),
+('USR002', 'admin1', '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', '2023-04-18 16:11:43', 'admin', '', 'active'),
+('USR003', 'syphu', '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', '2023-04-28 07:16:41', 'customer', '', 'idle'),
+('USR004', 'khaphi', '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', '2023-04-18 16:11:19', 'customer', '', 'idle'),
+('USR005', 'minhthao', '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', '2023-04-18 16:16:08', 'customer', '', 'active'),
+('USR006', 'congmenh', '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', '2023-04-18 16:16:06', 'customer', '', 'active'),
+('USR007', 'manager1', '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', '2023-04-18 16:16:00', 'manager', '', 'active'),
+('USR008', 'manager2', '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', '2023-04-18 16:15:58', 'manager', '', 'active'),
+('USR009', 'phuu', '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', '2023-04-18 16:15:56', 'sales', '', 'active'),
+('USR010', 'phii', '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', '2023-04-18 16:15:53', 'sales', '', 'active'),
+('USR011', 'thao', '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', '2023-04-18 16:15:47', 'sales', '', 'active'),
+('USR012', 'menh', '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', '2023-04-18 16:15:45', 'sales', '', 'active'),
+('USR013', 'cicada3301', '58f3afdf1cdd0d353fc400a3bde3e19f9656d1e347aa44a4dec0fe09dd34f310', '0000-00-00 00:00:00', 'customer', '', 'active'),
+('USR014', 'bbbb', '81cc5b17018674b401b42f35ba07bb79e211239c23bffe658da1577e3e646877', '0000-00-00 00:00:00', 'customer', '', 'active');
 
 -- --------------------------------------------------------
 

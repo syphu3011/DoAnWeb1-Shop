@@ -344,7 +344,7 @@ class CRUD
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt = null;
-        echo json_encode($result);
+        // echo json_encode($result);
         return $result[0]["max_receipt"];
     }
     public function read_data_product($conn)
@@ -1308,9 +1308,34 @@ class CRUD
         $stmt = null;
         return $result;
     }
-    public function insert_data_to_receipt($conn){
-        $sql="INSERT INTO receipt (id, date_init, date_confirm, address, note, id_staff, id_customer, id_status)
+    public function insert_data_to_receipt($conn, $id, $date_init, $date_confirm, $address, $note, $id_staff, $id_customer, $id_status){
+        $sql="INSERT INTO receipt 
+            (id, date_init, date_confirm, address, note, id_staff, id_customer, id_status)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        $stmt = $conn -> prepare($sql);
+        $stmt -> execute([$id, $date_init, $date_confirm, $address, $note, $id_staff, $id_customer, $id_status]);
+        $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+        $stmt = null;
+        return $result;
+    }
+    public function insert_data_to_detail_receipt($conn, $id_receipt, $id_size, $id_color, $id_product, $id_import_coupon, $amount, $price)
+    {
+        # code...
+        $sql = "INSERT INTO detail_receipt (id_receipt, id_size, id_color, id_product, id_import_coupon, amount, price)
+        VALUES ( ?, ?, ?, ?, ?, ?, ?);";
+        $stmt = $conn -> prepare($sql);
+        $stmt -> execute([
+            $id_receipt,
+            $id_size,
+            $id_color,
+            $id_product,
+            $id_import_coupon,
+            $amount,
+            $price
+            ]);
+        $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+        $stmt = null;
+        return $result;
     }
     public function check_account($conn, $sdt, $username)
     {

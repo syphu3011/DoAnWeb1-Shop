@@ -1048,7 +1048,7 @@ class Product {
 
 function ttGioHang(thanhtoansp) {
     document.getElementById("btn_pay").onclick = function () {
-        
+        getDataFromServer("pay_product.php"),{id_customer: currentUser.id,}
     };
     console.log("ttGioHang", thanhtoansp);
     document.getElementById("body_product_table").innerHTML = "";

@@ -60,7 +60,7 @@ function setCookieLogin($conn, $username, $password, $privilege) {
   // $_SESSION[$username] = $password;
   $exp = time() + (86400 * 30);
   $token = bin2hex(random_bytes(16));
-  setcookie('login_cookie', base64_encode("$username:$password:$privilege:$exp:$token"), time() + (86400 * 30), '/doan/admin/');
+  setcookie('login_cookie', base64_encode("$username:$password:$privilege:$exp:$token"), time() + (86400 * 30), './admin/');
   ReqHandling::concatSession($conn, "account", "session", $token, "username", $username);
 }
 
@@ -121,10 +121,12 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
   } else if ($arrFromDb[0]["privilege"] === "customer") {
     echo json_encode(array("message" => "Khách hàng không đăng nhập tại đây."), JSON_UNESCAPED_UNICODE);
     exit();
-  } else if ($remember == "true"){
-    setCookieLogin($conn, $username, $password, $arrFromDb[0]["privilege"]);
+  // } else if ($remember == "true"){
+  } else {
+    // setCookieLogin($conn, $username, $password, $arrFromDb[0]["privilege"]);
     // echo json_encode(array("cookie" => $_COOKIE, "session" => $_SESSION), JSON_UNESCAPED_UNICODE);
-    echo json_encode(array("message" => "Đăng nhập thành công. Đã tạo phiên đăng nhập mới."), JSON_UNESCAPED_UNICODE);
+    $cookie_string = "$username:$password";
+    echo json_encode(array("message" => "Đăng nhập thành công. Đã tạo phiên đăng nhập mới.", "cookie" => $cookie_string), JSON_UNESCAPED_UNICODE);
     exit();
   }
 } else {

@@ -2,27 +2,33 @@
 let d = JSON.parse(localStorage.getItem("currentStaff"));
 current_staff = d;
 
-function GetUserFromCookie(){
+// function GetUserFromCookie(){
 
-  return user
-}
-function GetDataUs(user_id){
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      // Parse JSON response
-      var data = this.responseText;
+//   return user
+// }
+// function GetDataUs(user_id){
+//   var xhttp = new XMLHttpRequest();
+//   xhttp.onreadystatechange = function() {
+//     if (this.readyState == 4 && this.status == 200) {
+//       // Parse JSON response
+//       var data = this.responseText;
       
-      // Do something with data
-      // console.log(data);
-    }
-  };
-  xhttp.open("GET", "./Server/privilege/privilege.php?user_id=" + user_id, true);
-  xhttp.send();
+//       // Do something with data
+//       // console.log(data);
+//     }
+//   };
+//   xhttp.open("GET", "./Server/privilege/privilege.php?user_id=" + user_id, true);
+//   xhttp.send();
 
+// }
+// GetDataUs("USR001");
+function checkLogin() {
+  let cookie = document.cookie
+  if (cookie == "") {
+    location.href = "./sign_in.html"
+  }
 }
-GetDataUs("USR001");
-
+checkLogin()
 let contentDiv = document.getElementById("content");
 let left_bar = document.getElementById("back-left-bar");
 let left_bar_list = document.getElementById("leftbar-list");
@@ -38,9 +44,21 @@ img_ham.onclick = function () {
   }
 };
 let back_account = document.getElementById("back-border-account");
-let name_staff = document.getElementById("name-staff");
+async function setNameStaff() {
+  let current = await getCurrentUser()
+
+  let data = to_form_data(current)
+  let data_response = awai
+  name_staff = name_staff.name
+  document.getElementById("name-staff").innerHTML = name_staff
+}
+setNameStaff()
 // name_staff.innerHTML = current_staff.name;
-back_account.onclick = function () {
+back_account.onclick = async function () {
+  document.cookie = ""
+  let current_user = await getCurrentUser()
+  let data = to_form_data(current_user)
+  await put(data, './Server/homepage/logout.php')
   window.location.href = "../index.html";
 };
 
