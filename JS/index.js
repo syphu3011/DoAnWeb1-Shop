@@ -299,113 +299,6 @@ function checkValidNameU(f_name, l_name) {
 //   }
 // });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 document.getElementById("hide-show").onclick = function () {
     if (document.getElementById("passwd").type == "password") {
         document.getElementById("passwd").type = "text";
@@ -1046,14 +939,13 @@ class Product {
     }
 }
 
+
 function ttGioHang(thanhtoansp) {
-    document.getElementById("btn_pay").onclick = function () {
-        getDataFromServer("pay_product.php"),{id_customer: currentUser.id,}
-    };
+var product_to_pay = new Array();
+    
     console.log("ttGioHang", thanhtoansp);
     document.getElementById("body_product_table").innerHTML = "";
     console.log(product_in_cart);
-    var product_to_pay=new Array()
     for (let i = 0; i < thanhtoansp.product_is_selected.length; i++) {
         let product_is_select = product_in_cart.find(
             (product) =>
@@ -1066,7 +958,7 @@ function ttGioHang(thanhtoansp) {
             product_is_select.amount,
             product_is_select.price
         );
-        product_to_pay.push(product)
+        product_to_pay.push(product);
         console.log(product);
         document.getElementById("body_product_table").innerHTML +=
             `<tr class="product-row">
@@ -1234,6 +1126,27 @@ function ttGioHang(thanhtoansp) {
     //     }, 400);
     //   }
     // };
+    document.getElementById("btn_pay").onclick = function () {
+        let address = document.getElementById("address-input").value;
+        if (address != "") {
+            getDataFromServer(
+                "./Server/pay_product.php",
+                {
+                    id_customer: currentUser.id,
+                    address: address,
+                    product: product_to_pay,
+                },
+                function (response) {
+                    console.log(response);
+                    if (response.success) {
+                        alert(response.message);
+                    }
+                }
+            );
+        } else {
+            alert("Please insert the address");
+        }
+    };
 }
 
 document.getElementById("back-btn").onclick = function () {
