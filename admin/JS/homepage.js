@@ -126,6 +126,7 @@ async function gui_with_privilege() {
       document.getElementById("div-thongso").style.display = "none";
     
       openCloseLeftBar();
+      get_DataStaff()
       location.href = fullPathPage + 'nhanvien'
     };
   }
