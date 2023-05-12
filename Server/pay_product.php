@@ -3,9 +3,9 @@ require_once('../init.php');
 require_once('CRUD.php');
 $crud = new CRUD();
 $data_received = json_decode(file_get_contents("php://input"), true);
-// $id_customer = 'KH001';
-// $id_customer = $data_received["id_customer"];
-$id_customer = "KH004";
+// // $id_customer = 'KH001';
+$id_customer = $data_received["id_customer"];
+// $id_customer = "KH004";
 // Lấy số hoá đơn lớn nhất trong danh sách
 $max_id_hd = $crud->read_max_receipt($conn);
 // Tạo chỉ số kế tiếp
@@ -20,7 +20,7 @@ $id_status = "TT09";
 $date_time = date('Y-m-d H:i:s');
 // Địa chỉ
 $address = $data_received["address"];
-$address = "kkkkkk";
+// $address = "kkkkkk";
 // Tạo mảng các thông tin cần thiết
 $data = array(
     'id' => $id_receipt,
@@ -39,21 +39,28 @@ $crud->insert_data_to_receipt(
 );
   
 for ($i = 0;$i<count($data_received["product"]);$i++){
+    // $id_product = $data_received["product"][$i]["idProduct"];
     $product = array(
-        'id_product' => $data_received["product"][$i]["id_product"],
-        'id_size' => $data_received["product"][$i]["id_size"],
-        'id_color' => $data_received["product"][$i]["id_color"],
+        'id_product' => $data_received["product"][$i]["idProduct"],
+        'id_import_coupon' => null,
+        'id_size' => $data_received["product"][$i]["idSize"],
+        'id_color' => $data_received["product"][$i]["idColor"],
         'id_receipt' => $id_receipt,
         'amount' => $data_received["product"][$i]["amount"],
         'price' => $data_received["product"][$i]["price"]
     );
-    $product = array(
-        'id_product' => $data_received["product"][$i]["id_product"],
-        'id_size' => $data_received["product"][$i]["id_size"],
-        'id_color' => $data_received["product"][$i]["id_color"],
-        'id_receipt' => $id_receipt,
-        'amount' => $data_received["product"][$i]["amount"],
-        'price' => $data_received["product"][$i]["price"]
+    // $product = array(
+    //     'id_product' => $data_received["product"][$i]["id_product"],
+    //     'id_size' => $data_received["product"][$i]["id_size"],
+    //     'id_color' => $data_received["product"][$i]["id_color"],
+    //     'id_receipt' => $id_receipt,
+    //     'amount' => $data_received["product"][$i]["amount"],
+    //     'price' => $data_received["product"][$i]["price"]
+    // );
+    $crud->delete_product_in_cartById(
+        $conn,
+        $id_customer,[
+        $data_received["product"][$i]["idProduct"]]
     );
     $crud->insert_data_to_detail_receipt(
         $conn,
@@ -77,4 +84,18 @@ for ($i = 0;$i<count($data_received["product"]);$i++){
 // );
 
 echo json_encode($response);
+// $product = array([
+//     'id_receipt' => "HD006",
+//     'id_size' => "AOS",
+//     'id_color' => "#ffffff",
+//     'id_product' => "AO00000002",
+//     'id_import_coupon' => null,
+//     'amount' => 10,
+//     'price' => 100000]
+// );
+// $crud->insert_data_to_detail_receipt(
+//     $conn,
+//     $product[0]
+//     );
+
 ?>

@@ -1,4 +1,7 @@
 document.getElementById("ls-dh").onclick = function () {
+    create_list_receipt()
+};
+function create_list_receipt(){
     var data_to_send = { id_customer: currentUser.id };
     getDataFromServer(
         "./Server/get_receipt.php",
@@ -14,8 +17,7 @@ document.getElementById("ls-dh").onclick = function () {
             }
         }
     );
-};
-
+}
 function show_receipt(data_respone) {
     document.getElementById("bang-lsmh").innerHTML = "";
     document.getElementById("show-user").style.display = "";

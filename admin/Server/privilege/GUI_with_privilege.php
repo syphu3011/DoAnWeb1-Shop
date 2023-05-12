@@ -25,7 +25,7 @@
                     <img src="./Image/input_prod.png" alt="" class="img-li"> Nhập hàng
                 </li>
                 ';
-                $first_pri = $first_pri == 'nhaphang';
+                $first_pri = $first_pri == '' ? 'nhaphang' : $first_pri;
             }
             if (check_privilege($id_user, $password_user, $conn, 'xem','receipt')) {
                 $response .= '
@@ -33,6 +33,7 @@
                     <img src="./Image/Order.png" alt="" class="img-li"> Đơn hàng
                  </li>
                 ';
+                $first_pri = $first_pri == '' ? 'donhang' : $first_pri;
             }
             if (check_privilege($id_user, $password_user, $conn, 'xem','customer')) {
                 $response .= '
@@ -40,6 +41,7 @@
                     <img src="./Image/Consumer.png" alt="" class="img-li"> Khách hàng
                 </li>
                 ';
+                $first_pri = $first_pri == '' ? 'khachhang' : $first_pri;
             }
             if (check_privilege($id_user, $password_user, $conn, 'xem','staff')) {
                 $response .= '
@@ -50,6 +52,7 @@
                     <img src="./Image/pri_icon.png" alt="" class="img-li"> Phân quyền
                 </li>
                 ';
+                $first_pri = $first_pri == '' ? 'nhanvien' : $first_pri;
             }
             if (check_privilege($id_user, $password_user, $conn, 'xem','promotion')) {
                 $response .= '
@@ -57,6 +60,7 @@
                     <img src="./Image/promote.png" alt="" class="img-li"> Khuyến mãi
                 </li>
                 ';
+                $first_pri = $first_pri == '' ? 'khuyenmai' : $first_pri;
             }
             if (check_privilege($id_user, $password_user, $conn, 'xem','statistic')) {
                 $response .= '
@@ -64,8 +68,9 @@
                     <img src="./Image/Chart_fill.png" alt="" class="img-li"> Thống kê
                 </li>
                 ';
+                $first_pri = $first_pri == '' ? 'thongke' : $first_pri;
             }
-            echo $response;
+            echo $response.'@'.$first_pri;
         }
         catch(Exception $e) {
             echo "Đã có lỗi xảy ra !";

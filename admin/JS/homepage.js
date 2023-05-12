@@ -53,11 +53,16 @@ async function setNameStaff() {
   document.getElementById("name-staff").innerHTML = name_staff
 }
 setNameStaff()
+let pri = ''
 async function gui_with_privilege() {
   let current = await getCurrentUser()
   let data = to_form_data(current)
   let data_response = await getText(data, './Server/privilege/GUI_with_privilege.php')
-  document.getElementById("leftbar-list").innerHTML += data_response
+  let split = data_response.split("@")
+  let list = split[0]
+  pri = split[1]
+  runOnLoad()
+  document.getElementById("leftbar-list").innerHTML = list
   try {
     document.getElementById("orderr").onclick = function () {
       document.getElementById("content").style.display = "block";
@@ -298,7 +303,7 @@ async function changeToProduct() {
 const startPath = '/admin/'
 const startPathPage = '/admin/?page='
 const fromm = location.href.indexOf(startPath)
-const relativePath = location.href.slice(fromm);
+let relativePath = location.href.slice(fromm);
 const firstPath = location.href.slice(0, fromm)
 const fullPathPage = firstPath+startPathPage
 function runOnLoad() {
@@ -334,7 +339,10 @@ function runOnLoad() {
       changeToStaff()
       break
     default: 
-      changeToConsumer()
+      if (pri != "") {
+        relativePath += "?page="+pri
+        runOnLoad()
+      }
       break
   }
 }

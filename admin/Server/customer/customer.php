@@ -127,6 +127,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 				exit();
 			}
 
+			date_default_timezone_set("Asia/Ho_Chi_Minh");
+			$today = gmdate("Y-m-d H:i:s", time());
+			// * Y : year with 4 digits
+			// * y : year with 2 digits
+			// * m : month with 2 digits
+			// * M : month with name
+			// * H : format 24h
+			// * h : format 12h
+			$_REQUEST["date_created"] = $today;
+
 			$maxIdAccount = Table::getMaxId($conn, "account", "id_user");
 			$maxIdCustomer = Table::getMaxId($conn, "customer", "id");
 
