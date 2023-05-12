@@ -703,8 +703,8 @@ async function inputProd(detail) {
     let inp = new InputProduct(idLogin, note)
     let Stuff = detail
     let data = new FormData()
-    data.append("InputProduct", inp.idStaff)
-    data.append("InputProduct", inp.note)
+    data.append("InputProduct[]", inp.idStaff)
+    data.append("InputProduct[]", inp.note)
     let dataDetail = to_form_data(detail)
     for (var pair of dataDetail.entries()) {
         data.append(pair[0], pair[1]);

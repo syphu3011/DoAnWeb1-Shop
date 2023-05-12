@@ -24,7 +24,6 @@ current_staff = d;
 // GetDataUs("USR001");
 function checkLogin() {
   let cookie = document.cookie
-  
   if (cookie == "" || cookie == ".") {
     location.href = "./sign_in.html"
   }

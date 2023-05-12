@@ -646,7 +646,7 @@ async function updateProd(Prod, remove_image = null) {
     let current_user = getCurrentUser();
     form_data = to_form_data_have_image(Prod, "images_ar[]", totalfiles);
     form_data.append("id_user", current_user.id_user);
-    form_data.append("id_password", current_user.password);
+    form_data.append("password", current_user.password);
     if (remove_image != null) {
         remove_image.forEach((e) => {
             form_data.append("image_delete", e);
