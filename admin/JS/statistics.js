@@ -333,12 +333,12 @@ function statistics() {
     // }
     async function statisticProdUI(from, to, type24 = null) {
         // statisticProd(from, to, type24)
-        let data = await refreshDataStat(from, to, type24)
+        let data = await refreshDataStat(from, to, type24, orderby, direction)
         document.getElementById("head-stat").innerHTML = `<tr class="first-row"><th>Mã sản phẩm</th>
         <th>Tên sản phẩm</th>
-        <th>Thu</th>
-        <th>Chi</th>
-        <th>Lợi nhuận</th></tr>`
+        <th class="cursorlabel" name="normal" id="revenue_th">Thu</th>
+        <th class="cursorlabel" name="normal" id="expense_th">Chi</th>
+        <th class="cursorlabel" name="normal" id="total_th">Lợi nhuận</th></tr>`
         let body = ``
         data.statistic.forEach(element => {
             // if (prodsStat[elementt.id] != null) {
@@ -348,9 +348,61 @@ function statistics() {
             sum2 += parseFloat(element.expense)
             // }
         })
+        document.getElementById("revenue_th").onclick = async function() {
+            if (document.getElementById("revenue_th").name == "normal" || document.getElementById("revenue_th").name == "desc") {
+                document.getElementById("revenue_th").name = "asc"
+                document.getElementById("revenue_th").innerHTML = "Thu ^"
+            }
+            else {
+                document.getElementById("revenue_th").name = "desc"
+                document.getElementById("revenue_th").innerHTML = "Thu v"
+            }
+            document.getElementById("expense_th").name = "normal"
+            document.getElementById("total_th").name = "normal"
+            document.getElementById("expense_th").innerHTML = "Chi"
+            document.getElementById("total_th").innerHTML = "Lợi nhuận"
+            await changeWhenClick(from, to, type24,"revenue",document.getElementById("revenue_th").name)
+        }
+        document.getElementById("expense_th").onclick = async function() {
+            if (document.getElementById("expense_th").name == "normal" || document.getElementById("expense_th").name == "desc") {
+                document.getElementById("expense_th").name = "asc"
+                document.getElementById("expense_th").innerHTML = "Chi ^"
+            }
+            else {
+                document.getElementById("expense_th").name = "desc"
+                document.getElementById("expense_th").innerHTML = "Chi v"
+            }
+            document.getElementById("revenue_th").name = "normal"
+            document.getElementById("total_th").name = "normal"
+            document.getElementById("revenue_th").innerHTML = "Thu"
+            document.getElementById("total_th").innerHTML = "Lợi nhuận"
+            await changeWhenClick(from, to, type24,"expense",document.getElementById("expense_th").name)
+        }
+        document.getElementById("total_th").onclick = async function() {
+            if (document.getElementById("total_th").name == "normal" || document.getElementById("total_th").name == "desc") {
+                document.getElementById("total_th").name = "asc"
+                document.getElementById("total_th").innerHTML = "Lợi nhuận ^"
+            }
+            else {
+                document.getElementById("total_th").name = "desc"
+                document.getElementById("total_th").innerHTML = "Lợi nhuận v"
+            }
+            document.getElementById("revenue_th").name = "normal"
+            document.getElementById("expense_th").name = "normal"
+            document.getElementById("revenue_th").innerHTML = "Thu"
+            document.getElementById("expense_th").innerHTML = "Lợi nhuận"
+            await changeWhenClick(from, to, type24,"profit",document.getElementById("total_th").name)
+        }
         setUpSum()
-        document.getElementById("body-stat").innerHTML += body
+        document.getElementById("body-stat").innerHTML = body
         setUpSum()
+    }
+    async function changeWhenClick(from, to, type24, orderby_ref, direct) {
+        sum1 = 0
+        sum2 = 0
+        orderby = orderby_ref
+        direction = direct
+        await statisticProdUI(from, to, type24)
     }
     function LocaleDateFix(dateStr) {
         try {

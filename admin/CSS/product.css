@@ -35,7 +35,9 @@ button:hover{
     color: white;
 }
 
-
+.cursorlabel {
+    cursor: pointer;
+}
 table,th,td{
     border:1px solid black;
     border-collapse: collapse;
