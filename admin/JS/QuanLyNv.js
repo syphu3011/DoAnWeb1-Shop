@@ -2,7 +2,7 @@
 var arrNhanVien
 
 
-get_DataStaff();
+// get_DataStaff();
 function get_DataStaff() {
     return $.ajax({
         url: './Server/staff/staff.php',

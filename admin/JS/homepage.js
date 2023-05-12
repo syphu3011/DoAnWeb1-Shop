@@ -24,7 +24,6 @@ current_staff = d;
 // GetDataUs("USR001");
 function checkLogin() {
   let cookie = document.cookie
-  
   if (cookie == "" || cookie == ".") {
     location.href = "./sign_in.html"
   }
@@ -127,6 +126,7 @@ async function gui_with_privilege() {
       document.getElementById("div-thongso").style.display = "none";
     
       openCloseLeftBar();
+      get_DataStaff()
       location.href = fullPathPage + 'nhanvien'
     };
   }

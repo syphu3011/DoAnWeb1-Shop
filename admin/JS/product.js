@@ -304,17 +304,17 @@ document.getElementById("add-type-pro-a").onclick = function () {
     console.log(1);
     BoxSelect();
 };
-document.getElementById("add-type-pro-e").onclick = function () {
-    console.log(1);
-    BoxSelect();
-};
+
 function fillEdit(prod) {
     let image_delete = [];
     document.getElementById("edit-id").value = prod.id;
     document.getElementById("edit-name").value = prod.name;
     document.getElementById("edit-made-in").value = prod.made_in;
     document.getElementById("edit-des").value = prod.description;
-
+    document.getElementById("add-type-pro-e").onclick = function () {
+        console.log(1);
+        BoxSelect();
+    };
     document.getElementById("confirm").onclick = function () {
         createPopUpYesNo(
             "Bạn có muốn sửa lại thông tin không ?",
@@ -646,7 +646,7 @@ async function updateProd(Prod, remove_image = null) {
     let current_user = getCurrentUser();
     form_data = to_form_data_have_image(Prod, "images_ar[]", totalfiles);
     form_data.append("id_user", current_user.id_user);
-    form_data.append("id_password", current_user.password);
+    form_data.append("password", current_user.password);
     if (remove_image != null) {
         remove_image.forEach((e) => {
             form_data.append("image_delete", e);
@@ -800,14 +800,14 @@ function OpenDialog() {
 function CloseDialog() {
     document.getElementById("dialog4").style.display = "none";
 }
-function add_img_files(files, count) {
+function add_img_files(files, count, div = 'image-div') {
     var reader = new FileReader();
     reader.readAsDataURL(files[count]);
     reader.onload = function () {
-        add_item_of_image(reader.result, "image-div", count);
+        add_item_of_image(reader.result, div, count);
         arrImageEdit.push(reader.result);
         if (files.length > count + 1) {
-            add_img_files(files, count + 1);
+            add_img_files(files, count + 1, div);
         }
     };
 }
@@ -833,7 +833,7 @@ function addTypeEdit() {
         // console.log(name_img);
         arrImageEdit = arrImageEdit.filter((e) => true == false);
         remove_all_image();
-        add_img_files(inp.files, 0);
+        add_img_files(inp.files, 0, 'image-div2');
     };
 }
 function add_item_of_image(

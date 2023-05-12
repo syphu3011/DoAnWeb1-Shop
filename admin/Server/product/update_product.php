@@ -50,9 +50,16 @@
                     $classify = array($classify);
                     foreach($classify as $class) {
                         if ($class != null) {
-                            $stmt_add -> bindParam(':id', $id);
-                            $stmt_add -> bindParam(':id_classify', $class);
-                            $stmt_add -> execute();
+                            try {
+                                $id_class = getClassify($conn, $class);
+                                $stmt_add -> bindParam(':id', $id);
+                                $stmt_add -> bindParam(':id_classify', $id_class);
+                                $stmt_add -> execute();
+                            }
+                            catch(Exception $e) {
+
+
+                            }
                         }
                     }
                     $desired_dir="../../Image";
@@ -122,5 +129,15 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES)) {
         update_product($conn,'sua');
     }
-
+    function getClassify($conn,$name_class) {
+        $query = "SELECT id FROM classify WHERE `name` = :name_class ";
+        $stmt = $conn -> prepare($query);
+        $stmt -> bindParam(":name_class",$name_class);
+        $stmt -> execute();
+        $response = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+        if ($response[0]["id"] == null) {
+            return "AOTHUN";
+        }
+        return $response[0]["id"];
+    }
 ?>

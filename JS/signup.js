@@ -226,13 +226,13 @@ function Checkavai(){
                     birthday.value)) {
                 if (checkSamePassword(password_regis.value, same_passwd.value)) {
                     if (checkDate(birthday.value)) {
-                        let customer = new Customer(
-                            firstName.value.trim() + " " + lastName.value.trim(),
-                            number_phone.value.trim(),
-                            username.value.trim(),
-                            password_regis.value,
-                            sex,
-                            birthday.value)
+                        // let customer = new Customer(
+                        //     firstName.value.trim() + " " + lastName.value.trim(),
+                        //     number_phone.value.trim(),
+                        //     username.value.trim(),
+                        //     password_regis.value,
+                        //     sex,
+                        //     birthday.value)
                         // if (checkSDT(number_phone.value)==false
                         // || checkUSR(username.value)==false) {
                         //     showacc(signup, 0, 1200)
