@@ -74,6 +74,28 @@ class CRUD
             $conn = null;
             return $result;
     }
+    public function get_id_import_product($conn, $id_product, $id_color, $id_size)
+    {
+        # code...
+        $sql = "SELECT detail_import_coupon.id_import_coupon 
+            FROM detail_import_coupon
+            WHERE detail_import_coupon.id_product = ?
+            AND detail_import_coupon.id_color= ?
+            AND detail_import_coupon.id_size= ?";
+            $stmt=$conn->prepare(
+                $sql
+            );
+            $stmt->execute(
+                array(
+                    $id_product,
+                    $id_color,
+                    $id_size
+                    )   
+                    );
+                    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $stmt=null;
+                    return $result;
+    }
     //Tai khoan
     public function read_data_account($conn, $username, $password, &$status)
     {
@@ -633,9 +655,6 @@ class CRUD
                     product_list.price BETWEEN '$min_price' AND '$max_price'
                     AND product_list.id_size IS NOT NULL
                     AND product_list.id_color IS NOT NULL
-                    AND (
-                        (promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10')
-                        OR promotion.id IS NULL)
                     AND classify.name LIKE '$type_value'
                     $sale_value
                     AND product.name LIKE '$key_value'
@@ -1330,6 +1349,7 @@ class CRUD
     }
     public function insert_data_to_detail_receipt($conn, $product)
     {
+        // echo json_encode($product);
         # code...
         $sql = "INSERT INTO detail_receipt (id_receipt, id_size, id_color, id_product, id_import_coupon, amount, price)
         VALUES ( ?, ?, ?, ?, ?, ?, ?);";

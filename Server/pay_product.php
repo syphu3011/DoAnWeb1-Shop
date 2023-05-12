@@ -2,6 +2,7 @@
 require_once('../init.php');
 require_once('CRUD.php');
 $crud = new CRUD();
+// echo json_encode($crud->get_id_import_product($conn, "AO00000001", "#ffffff", "AOS")["id_import_coupon"]);
 $data_received = json_decode(file_get_contents("php://input"), true);
 // // $id_customer = 'KH001';
 $id_customer = $data_received["id_customer"];
@@ -25,7 +26,7 @@ $address = $data_received["address"];
 $data = array(
     'id' => $id_receipt,
     'date_init' => $date_time,
-    'date_confirm' => $date_time,
+    'date_confirm' => null,
     'address' => $address,
     'note' => null,
     'id_staff' => null,
@@ -42,7 +43,11 @@ for ($i = 0;$i<count($data_received["product"]);$i++){
     // $id_product = $data_received["product"][$i]["idProduct"];
     $product = array(
         'id_product' => $data_received["product"][$i]["idProduct"],
-        'id_import_coupon' => null,
+        'id_import_coupon' => 
+            $crud->get_id_import_product(
+                $conn,$data_received["product"][$i]["idProduct"],
+                $data_received["product"][$i]["idColor"],
+                $data_received["product"][$i]["idSize"])["id_import_coupon"],
         'id_size' => $data_received["product"][$i]["idSize"],
         'id_color' => $data_received["product"][$i]["idColor"],
         'id_receipt' => $id_receipt,

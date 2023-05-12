@@ -78,7 +78,7 @@ function show_receipt(data_respone) {
             CTDH(
                 madh[i].id,
                 data_respone.receipt[i].name_status,
-                data_respone.receipt[i].date_confirm
+                data_respone.receipt[i].date_init
             );
             document.getElementById("div-ls-muahang").style.display = "";
             document.getElementById("div-ctdh").style.display = "flex";
