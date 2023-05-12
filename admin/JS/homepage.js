@@ -48,11 +48,130 @@ async function setNameStaff() {
   let current = await getCurrentUser()
 
   let data = to_form_data(current)
-  let data_response = awai
-  name_staff = name_staff.name
+  let data_response = await get(data, './Server/homepage/homepage.php')
+  let name_staff = data_response[0].name
   document.getElementById("name-staff").innerHTML = name_staff
 }
 setNameStaff()
+async function gui_with_privilege() {
+  let current = await getCurrentUser()
+  let data = to_form_data(current)
+  let data_response = await getText(data, './Server/privilege/GUI_with_privilege.php')
+  document.getElementById("leftbar-list").innerHTML += data_response
+  try {
+    document.getElementById("orderr").onclick = function () {
+      document.getElementById("content").style.display = "block";
+      document.getElementById("div-thongso").style.display = "none";
+    
+      openCloseLeftBar();
+      location.href = fullPathPage + 'donhang'
+    };
+  }
+  catch(e){}
+  try {
+    document.getElementById("consumer").onclick = function () {
+      document.getElementById("content").style.display = "block";
+      document.getElementById("div-thongso").style.display = "none";
+    
+      openCloseLeftBar();
+      location.href = fullPathPage + 'khachhang'
+    };
+  }
+  catch(e) {}
+  try {
+    document.getElementById("input").onclick = function () {
+      document.getElementById("content").style.display = "block";
+      document.getElementById("div-thongso").style.display = "none";
+    
+      openCloseLeftBar();
+      location.href = fullPathPage + 'nhaphang'
+    };
+  }
+  catch(e) {
+
+  }
+  try {
+    $("#privilege").click(function () {
+      $("#content").css("display", "block");
+      $("#div-thongso").css("display", "none");
+      openCloseLeftBar();
+      changeToPrivilege();
+    })
+  }
+  catch(e) {
+
+  }
+  try {
+    document.getElementById("staff").onclick = function () {
+      document.getElementById("content").style.display = "block";
+      document.getElementById("div-thongso").style.display = "none";
+    
+      openCloseLeftBar();
+      location.href = fullPathPage + 'nhanvien'
+    };
+  }
+  catch(e) {}
+  try {
+    document.getElementById("size").onclick = function () {
+      document.getElementById("content").style.display = "block";
+      document.getElementById("div-thongso").style.display = "none";
+    
+      openCloseLeftBar();
+      location.href = fullPathPage + 'kichco'
+    };
+  }
+  catch(e) {}
+  try {
+    document.getElementById("promote").onclick = function () {
+      document.getElementById("content").style.display = "block";
+      document.getElementById("div-thongso").style.display = "none";
+    
+      openCloseLeftBar();
+      location.href = fullPathPage + 'khuyenmai'
+    };
+  }
+  catch(e){}
+  try {
+    document.getElementById("product").onclick = async function () {
+      document.getElementById("content").style.display = "block";
+      document.getElementById("div-thongso").style.display = "none";
+    
+      openCloseLeftBar();
+      location.href = fullPathPage + 'sanpham'
+    };
+  }
+  catch(e) {}
+  try {
+    document.getElementById("classify").onclick= function(){
+      document.getElementById("content").style.display = "block";
+      document.getElementById("div-thongso").style.display = "none";
+    
+      openCloseLeftBar();
+      location.href = fullPathPage + 'loaisanpham'
+    }
+  }
+  catch(e) {}
+  try {
+    document.getElementById("stats").onclick = function () {
+      document.getElementById("content").style.display = "block";
+      document.getElementById("div-thongso").style.display = "none";
+    
+      openCloseLeftBar();
+      location.href = fullPathPage + 'thongke'
+    };
+  }
+  catch(e){}
+  try {
+    document.getElementById("homepage").onclick = function () {
+      document.getElementById("content").style.display = "block";
+      document.getElementById("div-thongso").style.display = "none";
+      openCloseLeftBar();
+      location.href = fullPathPage + 'trangchu'
+    };
+  }
+  catch(e){}
+}
+gui_with_privilege()
 // name_staff.innerHTML = current_staff.name;
 back_account.onclick = async function () {
   document.cookie = ""
@@ -219,84 +338,6 @@ function runOnLoad() {
       break
   }
 }
-document.getElementById("orderr").onclick = function () {
-  document.getElementById("content").style.display = "block";
-  document.getElementById("div-thongso").style.display = "none";
-
-  openCloseLeftBar();
-  location.href = fullPathPage + 'donhang'
-};
-document.getElementById("consumer").onclick = function () {
-  document.getElementById("content").style.display = "block";
-  document.getElementById("div-thongso").style.display = "none";
-
-  openCloseLeftBar();
-  location.href = fullPathPage + 'khachhang'
-};
-
-document.getElementById("input").onclick = function () {
-  document.getElementById("content").style.display = "block";
-  document.getElementById("div-thongso").style.display = "none";
-
-  openCloseLeftBar();
-  location.href = fullPathPage + 'nhaphang'
-};
-
-$("#privilege").click(function () {
-  $("#content").css("display", "block");
-  $("#div-thongso").css("display", "none");
-  openCloseLeftBar();
-  changeToPrivilege();
-})
-
-document.getElementById("staff").onclick = function () {
-  document.getElementById("content").style.display = "block";
-  document.getElementById("div-thongso").style.display = "none";
-
-  openCloseLeftBar();
-  location.href = fullPathPage + 'nhanvien'
-};
-document.getElementById("size").onclick = function () {
-  document.getElementById("content").style.display = "block";
-  document.getElementById("div-thongso").style.display = "none";
-
-  openCloseLeftBar();
-  location.href = fullPathPage + 'kichco'
-};
-document.getElementById("promote").onclick = function () {
-  document.getElementById("content").style.display = "block";
-  document.getElementById("div-thongso").style.display = "none";
-
-  openCloseLeftBar();
-  location.href = fullPathPage + 'khuyenmai'
-};
-document.getElementById("product").onclick = async function () {
-  document.getElementById("content").style.display = "block";
-  document.getElementById("div-thongso").style.display = "none";
-
-  openCloseLeftBar();
-  location.href = fullPathPage + 'sanpham'
-};
-document.getElementById("classify").onclick= function(){
-  document.getElementById("content").style.display = "block";
-  document.getElementById("div-thongso").style.display = "none";
-
-  openCloseLeftBar();
-  location.href = fullPathPage + 'loaisanpham'
-}
-document.getElementById("stats").onclick = function () {
-  document.getElementById("content").style.display = "block";
-  document.getElementById("div-thongso").style.display = "none";
-
-  openCloseLeftBar();
-  location.href = fullPathPage + 'thongke'
-};
-document.getElementById("homepage").onclick = function () {
-  document.getElementById("content").style.display = "block";
-  document.getElementById("div-thongso").style.display = "none";
-  openCloseLeftBar();
-  location.href = fullPathPage + 'trangchu'
-};
 
 function block_access(message) {
   // document.body.innerHTML = message

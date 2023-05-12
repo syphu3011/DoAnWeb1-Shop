@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
   }
   
 
-  $remember = $_POST["remember"];
+  // $remember = $_POST["remember"];
   $username = $_POST["username"];
   $password = $_POST["password"];
   $password = hash("sha256", $password);
