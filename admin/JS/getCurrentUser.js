@@ -1,3 +1,4 @@
 function getCurrentUser() {
-    return {id_user: 'admin2', password: '123123'}
+    let split_cookie = document.cookie.split(":")
+    return {id_user: split_cookie[0], password: split_cookie[1]}
 }
