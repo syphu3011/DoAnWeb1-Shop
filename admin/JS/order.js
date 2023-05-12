@@ -14,6 +14,24 @@ document.getElementById("date-init-last").value=CurrentDate()
 document.getElementById("date-confirm-first").value = "1971-01-01"
 document.getElementById("date-confirm-last").value = CurrentDate()
 
+
+function RefreshFillOrder(){
+    Promise.all([get_DataOrder(), get_DataCus(), get_DataDetailO(),
+        get_DataProd(), get_DataPromo()])
+       .then(function(results) {
+      
+         console.log(results[0]); // receipt
+         console.log(results[1]); // customer
+         console.log(results[2]); // detail_receipt
+         console.log(results[3]); // product
+         console.log(results[4]); // get_DataPromo
+         FillOrder();
+       })
+       .catch(function(error) {
+         
+         console.error(error);
+       });
+}
 function get_DataOrder() {
     return $.ajax({
         url: './Server/receipt/receipt.php',
@@ -38,9 +56,7 @@ function get_DataPromo() {
         dataType: 'json',
         success: function(data) {
             promotion = data;
-            // length1 = receipt.length;
-            // FillOrder();
-        //   console.log(receipt);
+            
         },
         error: function(xhr, status, error) {
           // Xử lý lỗi ở đây
@@ -52,6 +68,7 @@ async function get_DataProd() {
     let current_user = getCurrentUser()
         data_server = to_form_data(current_user);
         product = await get(data_server,'./Server/product/products.php')
+        console.log(product)
         if (product == errors) {
             block_access('Bạn không có quyền truy cập vào sản phẩm!')
             return
@@ -109,9 +126,11 @@ function calculated(price) {
     }
     return price
 }
-function GetAmount(id) {
+function GetAmount(id,color,size) {
     for (var i = 0; i < product.prodInStock.length; i++) {
-        if (product.prodInStock[i].idProd == id) {
+        if (product.prodInStock[i].idProd == id&& 
+            product.prodInStock[i].idColor==color&&
+            product.prodInStock[i].idSize==size) {
             return product.prodInStock[i].amount
         }
     }
@@ -126,22 +145,14 @@ function GetNameCus(id) {
     }
 }
 
-function SetAmount(sl, id) {
-    for (var i = 0; i < length2; i++) {
-        if (obj12.prodInStock[i].idProd == id) {
-            return obj12.prodInStock[i].amount -= sl
-        }
-    }
+ async function SetAmount(sl, idprod,size,color) {
+        let CurrentUser = getCurrentUser()
+        let data_post_server = {idProd:idprod, idSize:size,idColor:color,amount:sl ,id_user: CurrentUser.id_user, password: CurrentUser.password }
+        let form_data = to_form_data(data_post_server)
+        alert(await put(form_data, './Server/product/updateProdInStock.php'))
 }
 
-// function GetPrice(id) {
-//     for (var i = 0; i < length3; i++) {
-//         if (obj12.product[i].id == id) {
-//             return obj12.product[i].price
-//         }
-//     }
-// }
-// Lấy tên sản phẩm
+
 function GetNamePro(id) {
     for (var i = 0; i < product.product.length; i++) {
         if (product.product[i].id == id) {
@@ -150,45 +161,62 @@ function GetNamePro(id) {
     }
 }
 // Xác nhận đơn
+function CountProd(id){
+    let count=0
+    for (let i = 0; i < length2; i++) {
+        if(detail_receipt[i].id_receipt==id){
+            count ++
+        }
+    }
+    return count++    
+}
 
 function ConfirmOrder(x) {
-    // console.log(x)
-    // let lengt = receipt[x].list_prod.length
-    // let temp = 0
-    // for (let i = 0; i < lengt; i++) {
-    //     if (parseInt(GetAmount(receipt[x].list_prod[i].idProd)) >
-    //         parseInt(receipt[x].list_prod[i].amount)) {
-    //         temp++
-    //     }
-    // }
-    // if (temp == lengt) {
-
-        // receipt[x].idStaff = JSON.parse(localStorage.getItem("currentStaff")).id
-        receipt[x].date_confirm = getCurrentDate2()
+    let temp =0
+    for (let i = 0; i < length2; i++) {
+        if(detail_receipt[i].id_receipt==x){
+            let idprod = detail_receipt[i].id_product_detail_receipt
+            let color = detail_receipt[i].id_color_detail_receipt 
+            let size = detail_receipt[i].id_size_detail_receipt
+            if (parseInt(GetAmount(idprod,color,size)) >
+                parseInt(detail_receipt[i].amount_detail_receipt)) {
+                temp++
+            }
+        }   
+    }
+  
+    if (temp == CountProd(x)) {
         $.ajax({
             url: "./Server/receipt/receiptStatus.php?action=update",
             method: "POST",
             data:( {
-                id_receipt: receipt[x].id,
+                id_receipt: x,
                 status: "Đã xác nhận"
             }),
             success: function (response) {
                 console.log(response);
+                for (let i = 0; i < length2; i++) {
+                    if(detail_receipt[i].id_receipt==x){
+                        let idprod = detail_receipt[i].id_product_detail_receipt
+                        let color = detail_receipt[i].id_color_detail_receipt 
+                        let size = detail_receipt[i].id_size_detail_receipt
+                        let sl= GetAmount(idprod,color,size)-detail_receipt[i].amount_detail_receipt
+                        SetAmount(sl,idprod,size,color)
+                    }
+                }
+                RefreshFillOrder()
             },
             error: function (xhr, status, error) {
                 console.log(error);
             },
         });
-        // for (let i = 0; i < lengt; i++) {
-        //     SetAmount(receipt[x].list_prod[i].amount,  receipt[x].list_prod[i].idProd)
-        // }
-    // } else {
-    //     alert("Số lượng trong kho không đủ")
-    // }
+    } else {
+        alert("Số lượng trong kho không đủ")
+    }
 
     // if(document.getElementById("date-init-first").value==""||
     // document.getElementById("date-init-last").value==""){
-        FillOrder()
+    // FillOrder()
     // }
     // else{
     //     timtheokhoang()
@@ -198,13 +226,25 @@ function ConfirmOrder(x) {
 // Hủy đơn
 
 function CancelOrder(x) {
-    receipt[x].date_confirm = getCurrentDate2()
-    receipt[x].id_status = "đã hủy"
-    receipt[x].idStaff = JSON.parse(localStorage.getItem("currentStaff")).id
-    // writeToLocalStorage(obj12)
+    $.ajax({
+        url: "./Server/receipt/receiptStatus.php?action=update",
+        method: "POST",
+        data:( {
+            id_receipt: x,
+            status: "Đã hủy"
+        }),
+        success: function (response) {
+            console.log(response);
+            RefreshFillOrder()
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        },
+    });
+
     // if(document.getElementById("date-init-first").value==""||
     // document.getElementById("date-init-last").value==""){
-        FillOrder()
+    // FillOrder()
     // }
     // else{
     //     timtheokhoang()
@@ -243,7 +283,8 @@ function FillOrder() {
             <td>` + calculated(TotalMoney(receipt[i].id)) + ` VNĐ</td>
             <td class = detail_o onclick=DetailOr("` + receipt[i].id + `")>Chi tiết</td>
             <td>` + "chưa xử lý" + `</td>
-            <td> <button onclick=ConfirmOrder(` + i + `) >Xác nhận</button> <button onclick=CancelOrder(` + i + `)>Hủy</button> </td>`
+            <td> <button onclick=ConfirmOrder("` + receipt[i].id + `") >Xác nhận</button> 
+            <button onclick=CancelOrder("` + receipt[i].id + `")>Hủy</button> </td>`
             tagtable.appendChild(tagrow)
         }
     }
@@ -282,7 +323,6 @@ function FillHistory() {
 // Chi tết đơn hang và chi tiết lịch sử đơn hàng
 
 function FillDetailO(x) {
-    // let leng = receipt[x].list_prod.length
     document.getElementById("Text-detail-order").innerHTML = `Chi tiết đơn hàng ` + x
     let tagtable = document.getElementById("Table-detail-order")
     for (let i = tagtable.rows.length - 1; i > 0; i--)
@@ -291,13 +331,16 @@ function FillDetailO(x) {
         if(detail_receipt[i].id_receipt==x){
             let tagrow = document.createElement("tr")
             let idprod = detail_receipt[i].id_product_detail_receipt
+            let color = detail_receipt[i].id_color_detail_receipt 
+            let size = detail_receipt[i].id_size_detail_receipt
             tagrow.innerHTML = `
             <td>` + detail_receipt[i].id_product_detail_receipt + `</td>
             <td>` + GetNamePro(idprod)+ `</td>
-            <td>` + detail_receipt[i].id_size_detail_receipt  + `</td>
+            <td>` + size.substring(2) + `</td>
+            <td> <input type="color" value="`+color +`" disabled> </td>
             <td>` + calculated(detail_receipt[i].price_detail_receipt) + ` VNĐ</td>
             <td>` + detail_receipt[i].amount_detail_receipt + `</td>
-            <td >` + GetAmount(idprod) + `</td>
+            <td>` + GetAmount(idprod,color,size) + `</td>
             <td>` + " " + `</td>
             <td>` + calculated(detail_receipt[i].amount_detail_receipt*detail_receipt[i].price_detail_receipt) + ` VNĐ</td>`
             tagtable.appendChild(tagrow)
@@ -329,7 +372,8 @@ function FillDetailH(x) {
             tagrow.innerHTML = `
         <td>` + idprod + `</td>
         <td>` + GetNamePro(idprod) + `</td>
-        <td>` + detail_receipt[i].id_size_detail_receipt + `</td>
+        <td>` + detail_receipt[i].id_size_detail_receipt.substring(2) + `</td>
+        <td> <input type="color" value="`+detail_receipt[i].id_color_detail_receipt +`" disabled> </td>
         <td>` + calculated(detail_receipt[i].price_detail_receipt) + ` VNĐ</td>
         <td>` + detail_receipt[i].amount_detail_receipt + `</td>
         <td>` + "" + `</td>
@@ -710,7 +754,6 @@ function FillHistoryFind(find) {
         if (receipt[find[i]].id_status == "TT09") {
             continue
         } else {
-            
             if(receipt[find[i]].id_status=="TT08"){
                 status="đã hủy"
             }

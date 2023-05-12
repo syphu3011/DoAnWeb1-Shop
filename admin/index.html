@@ -598,6 +598,7 @@
                                 <th>ID</th>
                                 <th>Tên sản phẩm</th>
                                 <th>SIZE</th>
+                                <th>Màu</th>
                                 <th>Giá</th>
                                 <th>Số lượng</th>
                                 <th>Số lượng còn</th>
@@ -620,6 +621,7 @@
                                 <th>ID</th>
                                 <th>Tên sản phẩm</th>
                                 <th>SIZE</th>
+                                <th>Màu</th>
                                 <th>Giá</th>
                                 <th>Số lượng</th>
                                 <th>Giá giảm</th>
@@ -716,7 +718,6 @@
                                     <th>size</th>
                                     <th>mã màu</th>
                                     <th>Giá nhập</th>
-                                    <th>Giá bán</th>
                                     <th>Thành tiền</th>
                                     <th>Xóa</th>
                                 </tr>
@@ -752,6 +753,11 @@
                             <label for="inp-name-product" class="label-input">Tên sản phẩm:</label>
                             <input disabled type="text" style="height: 25px;margin:0px" id="inp-name-product">
                         </div>
+                        <div class="div-made30">
+                            <label for="inp-price-sell" class="label-input">Màu sắc:</label>
+                            <input type="text" style="height: 25px;margin:0px" id="inp-color">
+                            <input type="color" id="change-color" >
+                        </div>
                         <div id="div-second"  class="div-made30">
                             <label class="label-input">Số lượng</label>
                             <input type="number" id="input-amount" name="import-amount" min="1" style="height: 25px;margin-left: 70px;">
@@ -780,15 +786,12 @@
                             </label>
                             <input type="number" min="1000" step="500" id="input-price" name="import-price" style="height: 25px;margin:0px">
                         </div>
-                        <div class="div-made30">
+                        <p style="color: orangered; font-size:xx-small; margin-bottom: 15px;">Giá nhập của mặt hàng chỉ hữu hiệu khi là giá nhập đầu tiên được nhập trong phiên!</p>
+                        <p style="color: orangered; font-size:xx-small; margin-bottom: 15px;">Nếu nhập sai giá nhập vui lòng nhập xóa đi và thêm lại!</p>
+                        <!-- <div class="div-made30">
                             <label for="inp-price-sell" class="label-input">giá bán:</label>
                             <input type="text" style="height: 25px;margin:0px" id="inp-price-sell">
-                        </div>
-                        <div class="div-made30">
-                            <label for="inp-price-sell" class="label-input">Màu sắc:</label>
-                            <input type="text" style="height: 25px;margin:0px" id="inp-color">
-                            <input type="color" id="change-color" >
-                        </div>
+                        </div> -->
 
                         
                         <button id="submit-import">Thêm hàng</button>
@@ -828,7 +831,7 @@
                                         <th>số lượng</th>
                                         <th>size</th>
                                         <th>Giá nhập</th>
-                                        <th>Giá bán</th>
+                                        <!-- <th>Giá bán</th> -->
                                         <th>Thành tiền</th>
                                     </tr>
                                 </thead>

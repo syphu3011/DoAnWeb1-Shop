@@ -28,7 +28,7 @@
                 }
 
                 //Sản phẩm trong kho
-                $sql_prod_in_stock = "SELECT id_import_coupon idInput, id_product idProd, id_size idSize, amount, price_input price FROM product_in_stock";
+                $sql_prod_in_stock = "SELECT id_import_coupon idInput, id_product idProd, id_size idSize, id_color idColor, amount, price_input price FROM product_in_stock";
                 $stmt_prod_in_stock = $conn -> prepare($sql_prod_in_stock);
                 $stmt_prod_in_stock->execute();
                 $prodInStock = $stmt_prod_in_stock->fetchAll(PDO::FETCH_ASSOC);
