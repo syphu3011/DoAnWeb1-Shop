@@ -368,7 +368,7 @@ async function fillProd(product = null) {
 <th></th>
 <th></th>
 `
-    hideRemove()
+    // hideRemove()
     table.appendChild(row_head)
     product.forEach((prod) => {
         if (prod.idstatus != "0") {
@@ -862,38 +862,38 @@ function createPopUpAcceptCancel(title) {
     return back_popup;
 }
 
-function appearRemove() {
-    addCheckBox1();
-    document.getElementById("cancel").style.visibility = "visible";
-    document.getElementById("delete2").innerHTML = "Xác nhận xóa";
-}
+// function appearRemove() {
+//     addCheckBox1();
+//     document.getElementById("cancel").style.visibility = "visible";
+//     // document.getElementById("delete2").innerHTML = "Xác nhận xóa";
+// }
 
-function hideRemove() {
-    document.getElementById("cancel").style.visibility = "hidden";
-    document.getElementById("delete2").innerHTML = "Xóa sản phẩm";
-    removeCheckBoxAndConfirmCancel1();
-}
+// function hideRemove() {
+//     document.getElementById("cancel").style.visibility = "hidden";
+//     document.getElementById("delete2").innerHTML = "Xóa sản phẩm";
+//     removeCheckBoxAndConfirmCancel1();
+// }
 
 function hidePopup() {
     let popup = document.getElementById("popup6");
     popup.remove();
 }
 
-document.getElementById("delete2").onclick = function() {
-    if (document.getElementById("cancel").style.visibility != "visible") {
-        appearRemove();
-    } else {
-        if (arRemove.length == 0) {
-            alert("Bạn phải chọn sản phẩm để xóa!")
-        } else {
-            createPopUpYesNo("Bạn có muốn xóa các sản phẩm này không?", function() {
-                removeSomeProd(arRemove)
-                arRemove = []
-            }, function() {})
-        }
-    }
-};
-document.getElementById("cancel").onclick = hideRemove;
+// document.getElementById("delete2").onclick = function() {
+//     if (document.getElementById("cancel").style.visibility != "visible") {
+//         appearRemove();
+//     } else {
+//         if (arRemove.length == 0) {
+//             alert("Bạn phải chọn sản phẩm để xóa!")
+//         } else {
+//             createPopUpYesNo("Bạn có muốn xóa các sản phẩm này không?", function() {
+//                 removeSomeProd(arRemove)
+//                 arRemove = []
+//             }, function() {})
+//         }
+//     }
+// };
+// document.getElementById("cancel").onclick = hideRemove;
 
 
 // for (prod in obj.product) {

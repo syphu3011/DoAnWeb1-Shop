@@ -69,8 +69,8 @@ $(document).ready(function () {
 
 // Cookies.set('admin_shop_cookie', 'anhphideptrai nek', { expires: 7, path: '/doan/admin/sign_in.html' });
 
-if (Cookies.get('login_cookie') !== undefined) {
-}
+// if (Cookies.get('login_cookie') !== undefined) {
+// }
 
 $("#log-but").click(function () {
     let data = {
