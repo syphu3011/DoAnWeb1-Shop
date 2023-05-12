@@ -1291,3 +1291,49 @@ function OpenDeType() {
 function CloseDeType() {
     document.getElementById("cancel33").style.display="none" ;
 }
+
+// Giá sản phẩm
+document.getElementById("edit-price").onclick = function() {
+    document.getElementById("table-edit-price").style.visibility = "visible";
+    OpenDialog();
+    FillPrice();
+};
+document.getElementById("close78").onclick = function() {
+    document.getElementById("table-edit-price").style.visibility = "hidden";
+    CloseDialog();
+};
+
+async function FillPrice() {
+    let current_user = getCurrentUser()
+    data_server = to_form_data(current_user);
+    price = await get(data_server,'./Server/product/product_list.php')
+    if (price == errors) {
+        block_access('Bạn không có quyền truy cập vào sản phẩm!')
+        return
+    }
+    console.log(price)
+    let tagtable = document.getElementById("table-price")
+    for (let i = tagtable.rows.length - 1; i > 0; i--)
+        tagtable.deleteRow(i);
+    for (var i = 0; i < price.length; i++) {
+            let color = price[i].id_color;
+            let tagrow = document.createElement("tr")
+            tagrow.innerHTML = `
+            <td>` + price[i].id_product + `</td>
+            <td>` + GetNameProduct(price[i].id_product)+ `</td>
+            <td>` + price[i].id_size.substring(2) + `</td>
+            <td><input type="color" value="` + color + `" disabled></td>
+            <td>` + calculated(price[i].price) + ` VNĐ</td>
+            <td><button>Sửa</button></td>`
+            tagtable.appendChild(tagrow)
+    }
+
+}
+function GetNameProduct(id){
+    console.log(obj);
+    for(let i=0;i<obj.product.length;i++){
+        if(obj.product[i].id==id){
+            return obj.product[i].name
+        }
+    }
+}
