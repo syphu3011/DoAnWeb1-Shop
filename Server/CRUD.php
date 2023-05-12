@@ -1410,7 +1410,42 @@ class CRUD
         return $result;
     }
 
+// public function update_customer($conn, $customer, $image_file)
+// {
+//     $image_path = '';
+//     if (file_exists($image_file)) {
+//         // nếu có tệp tin ảnh được tải lên
+//         $uploads_dir = '/path/to/uploads'; // thay đổi đường dẫn tới thư mục uploads của bạn
+//         $image_path = $uploads_dir . '/' . basename($image_file);
+//         copy($image_file, $image_path); // lưu trữ tệp tin ảnh vào thư mục uploads
+//     }
 
+//     $sql = "UPDATE customer 
+//             JOIN account ON account.id_user = customer.id_user
+//             SET     
+//                 account.password = IF(NULLIF(:password, '') IS NOT NULL, :password, password),
+//                 name = IF(NULLIF(:name, '') IS NOT NULL, :name, name),
+//                 birthday = IF(NULLIF(:birthday, '') IS NOT NULL, :birthday, birthday),
+//                 numberphone = IF(NULLIF(:numberphone, '') IS NOT NULL, :numberphone, numberphone),
+//                 image = IF(:image_path <> '', :image_path, image),
+//                 address = IF(NULLIF(:address, '') IS NOT NULL, :address, address),
+//                 gender = IF(NULLIF(:gender, '') IS NOT NULL, :gender, gender)
+//             WHERE id = :id";
+
+//     $stmt = $conn->prepare($sql);
+//     $stmt->bindParam(':password', $customer['password'], PDO::PARAM_STR);
+//     $stmt->bindParam(':name', $customer['name'], PDO::PARAM_STR);
+//     $stmt->bindParam(':birthday', $customer['birthday'], PDO::PARAM_STR);
+//     $stmt->bindParam(':numberphone', $customer['number_phone'], PDO::PARAM_STR);
+//     $stmt->bindParam(':image_path', $image_path, PDO::PARAM_STR);
+//     $stmt->bindParam(':address', $customer['address'], PDO::PARAM_STR);
+//     $stmt->bindParam(':gender', $customer['gender'], PDO::PARAM_INT);
+//     $stmt->bindParam(':id', $customer['id'], PDO::PARAM_INT);
+//     $stmt->execute();
+//     $result = $stmt->rowCount();
+//     $stmt = null;
+//     return $result;
+// }
     // xoa san pham trong gio
     public function delete_product_in_cartById($conn, $username, $id_product)
 {
