@@ -800,14 +800,14 @@ function OpenDialog() {
 function CloseDialog() {
     document.getElementById("dialog4").style.display = "none";
 }
-function add_img_files(files, count) {
+function add_img_files(files, count, div = 'image-div') {
     var reader = new FileReader();
     reader.readAsDataURL(files[count]);
     reader.onload = function () {
-        add_item_of_image(reader.result, "image-div", count);
+        add_item_of_image(reader.result, div, count);
         arrImageEdit.push(reader.result);
         if (files.length > count + 1) {
-            add_img_files(files, count + 1);
+            add_img_files(files, count + 1, div);
         }
     };
 }
@@ -833,7 +833,7 @@ function addTypeEdit() {
         // console.log(name_img);
         arrImageEdit = arrImageEdit.filter((e) => true == false);
         remove_all_image();
-        add_img_files(inp.files, 0);
+        add_img_files(inp.files, 0, 'image-div2');
     };
 }
 function add_item_of_image(

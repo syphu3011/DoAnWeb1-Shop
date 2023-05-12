@@ -9,7 +9,7 @@ let arrRemove = []
 let detaill = []
 let importList = []
 let data = JSON.parse(localStorage.getItem('data'))
-let reg_color = /^#[0-9A-F]{6}$/i
+let reg_color = /^#([0-9a-f]{3}){1,2}$/i
 // let inp_prod = data.input_product
 let checkClickOutsideDetail = false
 async function getProduct() {
@@ -222,6 +222,12 @@ function openImportPage() {
                 alert("Bạn phải nhập đúng ID!");
                 // input_id.focus()
             }
+        }
+    }
+    let inpColor = document.getElementById("inp-color")
+    inpColor.onblur = function() {
+        if (!reg_color.test(inpColor.value.toLowerCase())) {
+            alert("Màu sắc chưa đúng định dạng!")
         }
     }
 }
