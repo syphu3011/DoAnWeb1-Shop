@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
 			
 			if (isset($_REQUEST["id_user"])) {
-				echo "You don't need to provide ID for creating new record. Id auto-increasing is available. ";
+				echo json_encode(array("message" => "You don't need to provide ID for creating new record. Id auto-increasing is available. "), JSON_UNESCAPED_UNICODE);
 				exit();
 			}
 
@@ -91,6 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 			// * H : format 24h
 			// * h : format 12h
 			$_REQUEST["date_created"] = $today;
+			$_POST["date_created"] = $today;
 			ReqHandling::createRow($conn, 'account');
 
 		}
