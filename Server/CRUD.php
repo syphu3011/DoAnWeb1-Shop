@@ -4,7 +4,7 @@ class CRUD
     // read
     public function read_data_homepage($conn){
         $sql = "SELECT DISTINCT classify.id_big_classify,product.idstatus,
-	product.name,
+	                product.name,
                     classify.id,
                     promotion.name AS name_promotion,
                     classify.name AS name_classify,
@@ -63,6 +63,7 @@ class CRUD
                     product.idstatus = 'TT01'
                     AND product_list.id_size IS NOT NULL
                     AND product_list.id_color IS NOT NULL
+                    AND product_list.price IS NOT NULL
                 ORDER BY product_list.price
             ";
                 // -- GROUP BY product_list_classify.id_product
@@ -87,7 +88,7 @@ class CRUD
 
     public function read_data_customer($conn, $iduser)
     {
-        $sql = "SELECT * FROM `customer` WHERE `id_user` = ?";
+        $sql = "SELECT * FROM customer WHERE id_user = ?";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$iduser]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -335,6 +336,17 @@ class CRUD
         $stmt = null;
         return $result;
     }
+    public function read_max_receipt($conn)
+    {
+        # code...
+        $sql="SELECT MAX(id) AS max_receipt FROM receipt";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = null;
+        echo json_encode($result);
+        return $result[0]["max_receipt"];
+    }
     public function read_data_product($conn)
     {
         $sql = "SELECT * FROM product ";
@@ -383,6 +395,42 @@ class CRUD
         $stmt = $conn->prepare($sql);
         // $stmt->bindParam(":idproduct", $idproduct);
         $stmt->execute([$idproduct]);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = null;
+        return $result;
+    }
+    public function read_size_product($conn, $idproduct)
+    {
+        $sql = "SELECT DISTINCT id_size
+            FROM product_list 
+            WHERE id_product = ?";
+        $stmt = $conn->prepare($sql);
+        // $stmt->bindParam(":idproduct", $idproduct);
+        $stmt->execute([$idproduct]);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = null;
+        return $result;
+    }
+    public function read_colorByIdSize_product($conn, $idproduct, $id_size)
+    {
+        $sql = "SELECT id_color
+            FROM product_list 
+            WHERE id_product = ? AND id_size= ?";
+        $stmt = $conn->prepare($sql);
+        // $stmt->bindParam(":idproduct", $idproduct);
+        $stmt->execute([$idproduct, $id_size]);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = null;
+        return $result;
+    }
+    public function read_sizeByIdColor_product($conn, $idproduct, $id_color)
+    {
+        $sql = "SELECT id_size
+            FROM product_list 
+            WHERE id_product = ? AND id_color= ?";
+        $stmt = $conn->prepare($sql);
+        // $stmt->bindParam(":idproduct", $idproduct);
+        $stmt->execute([$idproduct, $id_color]);
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt = null;
         return $result;
@@ -1124,7 +1172,8 @@ class CRUD
         $sql = "SELECT 
                 product_in_stock.amount, 
                 product_in_stock.price_input ,
-                product_list.price
+                product_list.price,product_list.id_size,
+                product_list.id_color
             FROM 
                 product_in_stock, 
                 product_list
@@ -1258,6 +1307,10 @@ class CRUD
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt = null;
         return $result;
+    }
+    public function insert_data_to_receipt($conn){
+        $sql="INSERT INTO receipt (id, date_init, date_confirm, address, note, id_staff, id_customer, id_status)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
     }
     public function check_account($conn, $sdt, $username)
     {

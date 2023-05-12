@@ -282,7 +282,7 @@ function sukien(data_product) {
     //     //     console.log(select_size[i].id);
     //     //     // getDataFromServer(
     //     //     //     "./Server/get_product_instock.php",
-    //     //     //     { id_product: id[0], id_size: id[1], id_color: id[2] },
+    //     //     //     { id_product: id[0], id_size: id[1], id_size: id[2] },
     //     //     //     function (response) {
     //     //     //         console.log(response);
     //     //     //     }
@@ -416,27 +416,63 @@ function sukien(data_product) {
         list_button_size[i].onclick = function () {
             console.log(list_button_size[i]);
             let id = list_button_size[i].id.split("-");
-            console.log(id);
+            console.log(data_product);
+            let current_product = data_product.find(
+                (product) => product.id_product == id[0]
+            ).att;
+            document.getElementById("chon_size" + id[0]).innerHTML = inner(
+                current_product,
+                id[0],
+                id[1],
+                id[2],
+                "size"
+            );
+            document.getElementById("chon_mau" + id[0]).innerHTML = inner(
+                current_product,
+                id[0],
+                id[1],
+                id[2],
+                "color"
+            );
+
+            console.log(data_product);
+
+            // console.log(id);
+            // getDataFromServer(
+            //     "./Server/get_product_instock.php",
+            //     { id_product: id[0], id_size: id[1], id_color: id[2] },
+            //     function (response) {
+            //         console.log(response);
+            //         if (response.success) {
+            //             document.getElementById(
+            //                 "cart_product_instock"
+            //             ).innerHTML = response.data.product[0].amount + " ";
+            //             set_color_onclick(list_button_size, i, id[0]);
+            data_product.find(
+                (product) => product.id_product == id[0]
+            ).id_size = id[1];
+            //         } else {
+            //             alert("Sản phẩm hiện tại không còn");
+            //         }
+            //     }
+            // );
+
+            // fill_price_in_cart();
+            // create_cart_from_server()
+            console.log(product_in_cart);
             getDataFromServer(
                 "./Server/get_product_instock.php",
                 { id_product: id[0], id_size: id[1], id_color: id[2] },
                 function (response) {
                     console.log(response);
                     if (response.success) {
+                        createCart(data_product);
                         document.getElementById(
                             "cart_product_instock"
                         ).innerHTML = response.data.product[0].amount + " ";
-                        set_color_onclick(list_button_size, i, id[0]);
-                        product_in_cart.find(
-                            (product) => product.id_product == id[0]
-                        ).id_size = id[1];
-                    } else {
-                        alert("Sản phẩm hiện tại không còn");
                     }
                 }
             );
-
-            // fill_price_in_cart();
         };
     }
     let list_button_color = document.getElementsByClassName("cart_color");
@@ -444,10 +480,47 @@ function sukien(data_product) {
     for (let i = 0; i < list_button_color.length; i++) {
         button_color = list_button_color[i];
         button_color.onclick = function () {
-            console.log(button_color.id);
-            set_color_onclick(list_button_color, i);
-            product_in_cart[i].id_size = button_color.id;
-            fill_price_in_cart();
+            let id = list_button_color[i].id.split("-");
+            let current_product = data_product.find(
+                (product) => product.id_product == id[0]
+            ).att;
+            document.getElementById("chon_mau" + id[0]).innerHTML = inner(
+                current_product,
+                id[0],
+                id[1],
+                id[2],
+                "color"
+            );
+            document.getElementById("chon_size" + id[0]).innerHTML = inner(
+                current_product,
+                id[0],
+                id[1],
+                id[2],
+                "size"
+            );
+
+            data_product.find(
+                (product) => product.id_product == id[0]
+            ).id_color = id[2];
+            getDataFromServer(
+                "./Server/get_product_instock.php",
+                { id_product: id[0], id_size: id[1], id_color: id[2] },
+                function (response) {
+                    console.log(response);
+                    if (response.success) {
+                        createCart(data_product);
+                        document.getElementById(
+                            "cart_product_instock"
+                        ).innerHTML = response.data.product[0].amount + " ";
+                    }
+                }
+            );
+            // createCart(data_product);
+
+            // console.log(button_color.id);
+            // set_color_onclick(list_button_color, i);
+            // product_in_cart[i].id_size = button_color.id;
+            // fill_price_in_cart();
         };
     }
     let btnGiam = document.getElementsByClassName("giam");
@@ -579,9 +652,11 @@ function create_cart_from_server() {
     getDataFromServer(
         "./Server/get_cart_byID.php",
         { idkh: currentUser.id },
-        function (respone) {
-            if (respone.success) {
-                createCart(respone.data.product);
+        function (response) {
+            console.log(response);
+            if (response.success) {
+                console.log(response);
+                createCart(response.data.product);
             } else {
                 alert("Chưa có sản phẩm nào trong giỏ hàng");
             }
@@ -590,6 +665,7 @@ function create_cart_from_server() {
     );
 }
 function createCart(data_response) {
+    console.log(data_response);
     document.getElementsByClassName("table-giohang")[0].innerHTML = "";
     // document.getElementById("hienthigiohang").style.display = "";
     product_in_cart.length = 0;
@@ -624,65 +700,81 @@ function createCart(data_response) {
                 line_product.price / line_product.amount
             );
             product_in_cart.push(product);
-            let inner_size = "";
-            console.log(line_product);
-            for (let j = 0; j < line_product.att.length; j++) {
-                let element = line_product.att[j];
-                console.log(element);
-                if (
-                    element.id_size == line_product.id_size &&
-                    element.id_color == line_product.id_color
-                ) {
-                    inner_size +=
-                        ` <div id="` +
-                        line_product.id_product +
-                        "-" +
-                        element.id_size +
-                        "-" +
-                        element.id_color +
-                        `" class="size" style="border-color: red;">
-                         ` +
-                        element.id_size.substring(2) +
-                        `
-                                  </div>`;
-                } else {
-                    inner_size +=
-                        ` <div id="` +
-                        line_product.id_product +
-                        "-" +
-                        element.id_size +
-                        "-" +
-                        element.id_color +
-                        `" class="size">
-                         ` +
-                        element.id_size.substring(2) +
-                        `
-                                  </div>`;
-                }
-            }
-            let inner_color = "";
-            console.log(line_product.att);
-            for (let j = 0; j < line_product.att.length; j++) {
-                let element = line_product.att[j];
-                if (element.id_size == line_product.id_size)
-                    if (element.id_color == line_product.id_color) {
-                        inner_color +=
-                            ` <div id="` +
-                            element.id_color +
-                            `" class="cart_color" style="border-color: red;background-color: ` +
-                            element.id_color +
-                            `;"></div>`;
-                    } else {
-                        inner_color +=
-                            ` <div id="` +
-                            line_product.id_product +
-                            "-" +
-                            element.id_size +
-                            "-" +
-                            element.id_color +
-                            `" class="cart_color"></div>`;
-                    }
-            }
+            let inner_size = inner(
+                line_product.att,
+                line_product.id_product,
+                line_product.id_size,
+                line_product.id_color,
+                "size"
+            );
+            // console.log(line_product);
+            // let array_size = new Array();
+            // for (let j = 0; j < line_product.att.length; j++) {
+            //     let element = line_product.att[j];
+            //     if (array_size.indexOf(element.id_size) == -1) {
+            //         console.log(element);
+            //         if (
+            //             element.id_size == line_product.id_size &&
+            //             element.id_color == line_product.id_color
+            //         ) {
+            //             inner_size +=
+            //     ` <div id="` +
+            //     line_product.id_product +
+            //     "-" +
+            //     element.id_size +
+            //     "-" +
+            //     element.id_color +
+            //     `" class="size" style="border-color: red;">
+            //  ` +
+            //     element.id_size.substring(2) +
+            //     `
+            //           </div>`;
+            //         } else {
+            //             inner_size +=
+            //     ` <div id="` +
+            //     line_product.id_product +
+            //     "-" +
+            //     element.id_size +
+            //     "-" +
+            //     element.id_color +
+            //     `" class="size">
+            //  ` +
+            //     element.id_size.substring(2) +
+            //     `
+            //           </div>`;
+            //         }
+            //         array_size.push(element.id_size);
+            //     }
+            // }
+            let inner_color = inner(
+                line_product.att,
+                line_product.id_product,
+                line_product.id_size,
+                line_product.id_color,
+                "color"
+            );
+            // console.log(line_product.att);
+            // for (let j = 0; j < line_product.att.length; j++) {
+            //     let element = line_product.att[j];
+            //     if (element.id_size == line_product.id_size)
+            //         if (element.id_color == line_product.id_color) {
+            //             inner_color +=
+            //                 ` <div id="` +
+            //                 element.id_color +
+            //                 `" class="cart_color" style="border-color: red;background-color: ` +
+            //                 element.id_color +
+            //                 `;"></div>`;
+            //         } else {
+            //             inner_color +=
+            //                 ` <div id="` +
+            //                 line_product.id_product +
+            //                 "-" +
+            //                 element.id_size +
+            //                 "-" +
+            //                 element.id_color +
+            //                 `" class="cart_color"></div>`;
+            //         }
+            // }
             //   sizeP[i].forEach((element) => {
             //     if (element.id == currentUser.cart[i].idSize) {
             //       inner_size +=
@@ -764,12 +856,16 @@ function createCart(data_response) {
                         </div>
                     </td>
                     <td>
-                    <div class="chon-size">` +
+                    <div id='chon_size` +
+                product.id_product +
+                `' class="chon-size">` +
                 inner_size +
                 `</div>
                     </td>
                     <td>
-                    <div class="chon-mau">` +
+                    <div id='chon_mau` +
+                product.id_product +
+                `' class="chon-mau">` +
                 inner_color +
                 `</div>
                     </td>
@@ -829,3 +925,77 @@ document.getElementById("hienthigiohang").onclick = function (e) {
         }, 400);
     }
 };
+function inner(attribute, id_product, id_size, id_color, index) {
+    let str = "";
+    let arr = new Array();
+    if (index == "color") {
+        for (let i = 0; i < attribute.length; i++) {
+            if (
+                arr.indexOf(attribute[i].id_color) == -1 &&
+                attribute[i].id_size == id_size
+            ) {
+                if (attribute[i].id_color == id_color) {
+                    str +=
+                        `<div id="` +
+                        id_product +
+                        "-" +
+                        attribute[i].id_size +
+                        "-" +
+                        attribute[i].id_color +
+                        `" class="cart_color" style="border-color: red;background-color: ` +
+                        attribute[i].id_color +
+                        `;"></div>`;
+                } else {
+                    str +=
+                        ` <div id="` +
+                        id_product +
+                        "-" +
+                        attribute[i].id_size +
+                        "-" +
+                        attribute[i].id_color +
+                        `" class="cart_color" style="background-color: ` +
+                        attribute[i].id_color +
+                        `"></div>`;
+                }
+                arr.push(attribute[i].id_color);
+            }
+        }
+    } else {
+        for (let i = 0; i < attribute.length; i++) {
+            if (
+                arr.indexOf(attribute[i].id_size) == -1 &&
+                attribute[i].id_color == id_color
+            ) {
+                if (attribute[i].id_size == id_size) {
+                    str +=
+                        ` <div id="` +
+                        id_product +
+                        "-" +
+                        attribute[i].id_size +
+                        "-" +
+                        attribute[i].id_color +
+                        `" class="size" style="border-color: red;">
+                         ` +
+                        attribute[i].id_size.substring(2) +
+                        `
+                                  </div>`;
+                } else {
+                    str +=
+                        ` <div id="` +
+                        id_product +
+                        "-" +
+                        attribute[i].id_size +
+                        "-" +
+                        attribute[i].id_color +
+                        `" class="size">
+                         ` +
+                        attribute[i].id_size.substring(2) +
+                        `
+                                  </div>`;
+                }
+                arr.push(attribute[i].id_size);
+            }
+        }
+    }
+    return str;
+}
