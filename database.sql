@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost
--- Thời gian đã tạo: Th5 12, 2023 lúc 05:03 AM
+-- Thời gian đã tạo: Th5 12, 2023 lúc 08:23 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 8.2.0
 
@@ -22,8 +22,7 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
--- CREATE database shop;
--- use shop;
+
 --
 -- Cấu trúc bảng cho bảng `account`
 --
@@ -43,7 +42,7 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`id_user`, `username`, `password`, `date_created`, `privilege`, `session`, `status`) VALUES
-('USR001', 'admin2', '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', '2023-04-18 16:11:15', 'admin', 'daace88f03fd5fda120ddbc932794876eb16874782827f8c6c0a00b328470676b77b0f0ed4bb07bfce1e505c446e03f1', 'active'),
+('USR001', 'admin2', '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', '2023-04-18 16:11:15', 'admin', '', 'active'),
 ('USR002', 'admin1', '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', '2023-04-18 16:11:43', 'admin', '', 'active'),
 ('USR003', 'syphu', '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', '2023-04-28 07:16:41', 'customer', '', 'idle'),
 ('USR004', 'khaphi', '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', '2023-04-18 16:11:19', 'customer', '', 'idle'),
@@ -218,7 +217,7 @@ CREATE TABLE `detail_receipt` (
   `id_size` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `id_color` varchar(7) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `id_product` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `id_import_coupon` varchar(10) DEFAULT NULL,
+  `id_import_coupon` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `amount` int(11) DEFAULT NULL,
   `price` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -479,14 +478,17 @@ INSERT INTO `privilege_general_detail` (`id_table`, `id_feature`, `id_user`) VAL
 ('customer', 'sua', 'USR001'),
 ('customer', 'them', 'USR001'),
 ('customer', 'xem', 'USR001'),
+('customer', 'xem', 'USR002'),
 ('customer', 'xoa', 'USR001'),
 ('import_product', 'sua', 'USR001'),
 ('import_product', 'them', 'USR001'),
 ('import_product', 'xem', 'USR001'),
+('import_product', 'xem', 'USR002'),
 ('import_product', 'xoa', 'USR001'),
 ('product', 'sua', 'USR001'),
 ('product', 'them', 'USR001'),
 ('product', 'xem', 'USR001'),
+('product', 'xem', 'USR002'),
 ('product', 'xoa', 'USR001'),
 ('promotion', 'sua', 'USR001'),
 ('promotion', 'them', 'USR001'),
@@ -580,7 +582,7 @@ CREATE TABLE `product_list` (
 
 INSERT INTO `product_list` (`id_product`, `id_size`, `id_color`, `price`) VALUES
 ('AO00000001', 'AOS', '#000000', 320000),
-('AO00000002', 'AOXL', '#ffffff', 400000),
+('AO00000002', 'AOXL', '#ffffff', 500000),
 ('QU00000001', 'QUS', '#000000', 560000),
 ('QU00000002', 'QUXL', '#ffffff', 240000);
 
@@ -720,7 +722,9 @@ INSERT INTO `staff` (`id`, `name`, `birthday`, `gender`, `phone`, `address`, `no
 ('NV001', 'Sỹ Phú', '2002-11-30 00:00:00', 'nam', '828049515', 'HCM', NULL, 'USR009'),
 ('NV002', 'Khả Phi', '2002-06-28 00:00:00', 'nam', '828049516', 'HCM', NULL, 'USR010'),
 ('NV003', 'Cỏng Mềnh', '2002-02-18 00:00:00', 'nam', '828049517', 'Đồng Nai', NULL, 'USR012'),
-('NV004', 'Minh Thao', '2002-07-29 00:00:00', 'nam', '828049518', 'Long AN', NULL, 'USR011');
+('NV004', 'Minh Thao', '2002-07-29 00:00:00', 'nam', '828049518', 'Long AN', NULL, 'USR011'),
+('NV005', 'Sỹ Phú', '2002-11-30 00:00:00', 'nam', '828049516', 'HCM', NULL, 'USR001'),
+('NV006', 'Minh Thao', '2002-07-29 00:00:00', 'nam', '828049518', 'Long AN', NULL, 'USR002');
 
 -- --------------------------------------------------------
 
@@ -905,7 +909,8 @@ ALTER TABLE `detail_promotion`
 -- Chỉ mục cho bảng `detail_receipt`
 --
 ALTER TABLE `detail_receipt`
-  ADD PRIMARY KEY (`id_receipt`,`id_product`,`id_size`,`id_color`),
+  ADD PRIMARY KEY (`id_receipt`,`id_import_coupon`,`id_product`,`id_size`,`id_color`),
+  ADD KEY `id_import_coupon` (`id_import_coupon`),
   ADD KEY `id_product` (`id_product`),
   ADD KEY `id_size` (`id_size`),
   ADD KEY `id_color` (`id_color`);
@@ -1130,6 +1135,7 @@ ALTER TABLE `detail_promotion`
 --
 ALTER TABLE `detail_receipt`
   ADD CONSTRAINT `detail_receipt_ibfk_1` FOREIGN KEY (`id_receipt`) REFERENCES `receipt` (`id`),
+  ADD CONSTRAINT `detail_receipt_ibfk_2` FOREIGN KEY (`id_import_coupon`) REFERENCES `product_in_stock` (`id_import_coupon`),
   ADD CONSTRAINT `detail_receipt_ibfk_3` FOREIGN KEY (`id_product`) REFERENCES `product_in_stock` (`id_product`),
   ADD CONSTRAINT `detail_receipt_ibfk_4` FOREIGN KEY (`id_size`) REFERENCES `product_in_stock` (`id_size`),
   ADD CONSTRAINT `detail_receipt_ibfk_5` FOREIGN KEY (`id_color`) REFERENCES `product_in_stock` (`id_color`);
