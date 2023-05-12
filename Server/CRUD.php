@@ -893,7 +893,7 @@ class CRUD
 
         // $params[]=$amount;
         $sql = "SELECT 
-                   COUNT(*) AS count
+                  *
                FROM 
                    product_list_classify
                    LEFT JOIN product_list ON product_list_classify.id_product=product_list.id_product
@@ -917,7 +917,7 @@ class CRUD
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt = null;
         // echo $sql;
-        return $result[0]["count"];
+        return count($result);
     }
 
     //    public function read_data_advanced_search($conn, $key, $type, $sale, $min_price, $max_price, $begin, $amount)

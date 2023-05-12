@@ -135,13 +135,14 @@ function create(data) {
         document.getElementById("main").innerHTML =
             `<div style="margin: 40px">` + data.result + `</div>`;
     }
+
+    detail_product();
     if (data.total_product > total_product_on_page) {
         pagination(data);
     }
-    detail_product();
 }
 // function create()
-let total_product_on_page = 12;
+let total_product_on_page = 10;
 let current_page = 1;
 function timkiem(
     key_search,

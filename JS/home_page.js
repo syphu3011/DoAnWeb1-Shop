@@ -251,6 +251,7 @@ function create_filter(params) {
     // Thanh chọn loại sản phẩm
 }
 function pagination(data) {
+    console.log(123134123542)
     // document.getElementById('main').innerHTML+=
     let tag_a = ``;
     for (
