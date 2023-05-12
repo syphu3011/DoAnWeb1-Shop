@@ -1116,8 +1116,9 @@ class CRUD
                 WHERE 
                         detail_receipt.id_receipt = receipt.id
                     AND status_receipt.id = receipt.id_status
-                    AND receipt.id_customer = ? ;
-                    AND ";
+                    AND receipt.id_customer = ? 
+                                        GROUP BY receipt.id;
+                    ";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$id]);
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -1332,15 +1333,18 @@ class CRUD
         # code...
         $sql = "INSERT INTO detail_receipt (id_receipt, id_size, id_color, id_product, id_import_coupon, amount, price)
         VALUES ( ?, ?, ?, ?, ?, ?, ?);";
+        // echo json_encode($product);
         $stmt = $conn -> prepare($sql);
         $result = $stmt->execute([
         $product['id_receipt'],
         $product['id_size'],
         $product['id_color'],
         $product['id_product'],
+        $product['id_import_coupon'],
         $product['amount'],
         $product['price']
     ]);
+    // echo $sql;
         $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
         $stmt = null;
         return $result;

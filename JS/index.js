@@ -939,10 +939,9 @@ class Product {
     }
 }
 
-
 function ttGioHang(thanhtoansp) {
-var product_to_pay = new Array();
-    
+    var product_to_pay = new Array();
+    var total_price = 0;
     console.log("ttGioHang", thanhtoansp);
     document.getElementById("body_product_table").innerHTML = "";
     console.log(product_in_cart);
@@ -958,6 +957,11 @@ var product_to_pay = new Array();
             product_is_select.amount,
             product_is_select.price
         );
+        var price = product_in_cart.find(
+            (product) =>
+                product.id_product === thanhtoansp.product_is_selected[i]
+        ).price;
+        total_price += price;
         product_to_pay.push(product);
         console.log(product);
         document.getElementById("body_product_table").innerHTML +=
@@ -976,16 +980,12 @@ var product_to_pay = new Array();
             `</td>
                                 <td>Đen</td>
                                 <td>` +
-            calculated(
-                product_in_cart.find(
-                    (product) =>
-                        product.id_product ===
-                        thanhtoansp.product_is_selected[i]
-                ).price
-            ) +
+            calculated(price) +
             ` VNĐ</td>
                             </tr>`;
     }
+    document.getElementById("tong_tien_thanh_toan").innerHTML =
+        "Tổng: " + calculated(total_price) + " VNĐ";
     // let div = document.createElement("div");
     // let table = document.createElement("table");
     // thanhtoansp.forEach((e) => {
@@ -1139,6 +1139,22 @@ var product_to_pay = new Array();
                 function (response) {
                     console.log(response);
                     if (response.success) {
+                        alert(response.message);
+                        create_list_receipt();
+                        showacc(
+                            document.getElementById("div-thanhtoan"),
+                            0,
+                            1200
+                        );
+                        setTimeout(() => {
+                            document.getElementById("thanh-toan").style.display =
+                            "none";
+                        }, 500);
+                           
+
+
+
+                    } else {
                         alert(response.message);
                     }
                 }
