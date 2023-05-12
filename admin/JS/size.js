@@ -19,8 +19,8 @@ async function FillSize(){
                 cell0.innerHTML = size[i].id;
                 cell1.innerHTML = size[i].id.substring(2);
                 cell2.innerHTML = `<p class="detail" onclick=onDetail(this)>chi tiết</p>`
-                cell3.innerHTML = `<button onclick='onDel(this)'>Xóa</button>  
-                <button id="edit">Sửa</button>`;
+                cell3.innerHTML = `<button onclick=onDel(this)>Xóa</button>  
+                <button onclick=onEdit(`+size[i].id+`) id="edit">Sửa</button>`;
             }
         }
         else{
@@ -35,7 +35,8 @@ async function FillSize(){
                 cell0.innerHTML = size[i].id;
                 cell1.innerHTML = size[i].id.substring(2);
                 cell2.innerHTML = `<p class="detail" onclick=onDetail(this)>chi tiết</p>`
-                cell3.innerHTML = "<button onclick='onDel(this)'>Xóa</button>";
+                cell3.innerHTML = `<button onclick='onDel(this)'>Xóa</button>
+                <button onclick=onEdit(`+size[i].id+`) id="edit">Sửa</button>`;
             }
         }
 }
@@ -245,47 +246,8 @@ async function themKichThuocQuan(){
     }
    
 }
-// Sửa kích thước
-    // Lựa chọn áo hoặc quần
-function TableEdit() {
-    
-    let table = document.getElementById("myTable2");
-    for(let i = table.rows.length - 1; i  > 0; i--)
-    table.deleteRow(i);
-    for(let i = 0; i < arrKT.length; i++){
-        let obj = arrKT[i];
-        let row = table.insertRow();
-        let cell0 = row.insertCell(0);
-        let cell1 = row.insertCell(1);
-        let cell2 = row.insertCell(2);
-        let cell3 = row.insertCell(3);
-
-        cell0.innerHTML = obj.id;
-        cell1.innerHTML = obj.name;
-        cell2.innerHTML = `<p class="detail" onclick=onDetail(this)>chi tiết</p>`
-        cell3.innerHTML = "<button onclick='onEdit(this)'>sửa</button>";
-    }
-}
-function huy(){
-    let table = document.getElementById("myTable2");
-    for(let i = table.rows.length - 1; i  > 0; i--)
-    table.deleteRow(i);
-    for(let i = 0; i < arrKT.length; i++){
-        let obj = arrKT[i];
-        let row = table.insertRow();
-        let cell0 = row.insertCell(0);
-        let cell1 = row.insertCell(1);
-        let cell2 = row.insertCell(2);
-
-        cell0.innerHTML = obj.id;
-        cell1.innerHTML = obj.name;
-        cell2.innerHTML = `<p class="detail" onclick=onDetail(this)>chi tiết</p>`
-    }
-}
-function onEdit(el){
-    let thisRow = el.parentElement.parentElement;
-    let id = thisRow.cells[0].innerText;
-    if(id.toLowerCase().indexOf("q")!=-1)
+function onEdit(id){
+    if(id.toLowerCase().indexOf("qu")!=-1)
     {
             document.getElementById("newScr").innerHTML = 
         `
@@ -342,7 +304,7 @@ function onEdit(el){
         }
     }
     }
-    else if(id.toLowerCase().indexOf("a")!=-1){
+    else if(id.toLowerCase().indexOf("ao")!=-1){
     document.getElementById("newScr").innerHTML = 
         `
         <div id="dialog1">

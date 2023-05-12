@@ -135,7 +135,8 @@ async function updateListSize(type) {
         if (element.id.charAt(0) == firstLetter) {
             let sizeString = document.getElementById("p-size")
             sizeString.innerText = element.id
-            sizeString.value = choosing ? type + element.id : element.id
+            // sizeString.value = choosing ? type + element.id : element.id
+            sizeString.value = element.id
             break
         }
     }
@@ -147,7 +148,8 @@ async function updateListSize(type) {
             dropdown.appendChild(li)
             li.onclick = function() {
                 selected.innerText = li.innerHTML
-                selected.value = choosing ? type + li.innerHTML : li.innerHTML
+                // selected.value = choosing ? type + li.innerHTML : li.innerHTML
+                selected.value = li.innerHTML
             }
         }
     })
@@ -313,7 +315,7 @@ function addCheckBox() {
         checkbox_th.classList.add("checkbox-th")
         checkbox_th.appendChild(checkbox)
         checkbox.onchange = function() {
-            let idandsize = detaill[index - 1].id + detaill[index - 1].size
+            let idandsize = detaill[index - 1].idProd + detaill[index - 1].idSize + detaill[index - 1].idColor
             if (checkbox.checked) {
                 arrRemove.push(idandsize)
             } else {
@@ -682,22 +684,32 @@ function removeStuff(idandidSize) {
     fillStuff()
 }
 
-function initId() {
-    if (data.input_product.length == 0) {
-        return 'NHAP0001'
-    }
-    let id = data.input_product[data.input_product.length - 1].id
-    let maxID = parseInt(id.replace('NHAP', ''))
+// function initId() {
+//     if (data.input_product.length == 0) {
+//         return 'NHAP0001'
+//     }
+//     let id = data.input_product[data.input_product.length - 1].id
+//     let maxID = parseInt(id.replace('NHAP', ''))
 
-    return 'NHAP' + String(maxID + 1).padStart(4, '0')
+//     return 'NHAP' + String(maxID + 1).padStart(4, '0')
+// }
+function InputProduct(idLogin, note) {
+    this.idStaff = idLogin
+    this.note = note
 }
-
 async function inputProd(detail) {
     let note = document.getElementById("note").value
     let user = await getCurrentUser()
     let inp = new InputProduct(idLogin, note)
-    let data = to_form_data({InputProduct:inp,})
-    alert(await post('./Server/input_product/input_product.php', data))
+    let Stuff = detail
+    let data = new FormData()
+    data.append("InputProduct", inp.idStaff)
+    data.append("InputProduct", inp.note)
+    let dataDetail = to_form_data(detail)
+    for (var pair of dataDetail.entries()) {
+        data.append(pair[0], pair[1]);
+    }
+    alert(await post(data,'./Server/input_product/input_product.php'))
     // addProdInStock(inp.id, detail)
     // data.input_product.push(inp.toJSON)
     // localStorage.setItem("data", JSON.stringify(data))
@@ -744,7 +756,7 @@ async function eventImport() {
                         let st = new Stuff(id, name, amount, size, price, color)
                         let haveInit = false
                         detaill.forEach(function(element, index) {
-                            if (element.idProd == st.idProd && element.idSize == st.idSize) {
+                            if (element.idProd == st.idProd && element.idSize == st.idSize && element.idColor == st.idColor) {
                                 detaill[index].amount = Number(detaill[index].amount) + Number(st.amount)
                                 detaill[index].total_price = Number(detaill[index].amount) * Number(detaill[index].price)
                                 haveInit = true

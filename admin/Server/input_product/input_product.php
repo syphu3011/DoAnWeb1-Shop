@@ -2,7 +2,7 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             require_once('../../../init.php');
-            require_once('../../same_function.php');
+            require_once('../same_function.php');
             $id_user = $_POST["id_user"];
             $password_user = $_POST["password"];
             if (check_privilege($id_user, $password_user, $conn, 'them','input_product')) {
