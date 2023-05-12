@@ -22,7 +22,8 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
-
+-- CREATE database shop;
+-- use shop;
 --
 -- Cấu trúc bảng cho bảng `account`
 --
