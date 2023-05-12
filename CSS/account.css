@@ -10,7 +10,15 @@
     /* display: flex; */
     justify-content: center;
 }
-
+#btn-login {
+    width: 100%;
+}
+#btn_signup{
+    cursor: pointer;
+}
+#btn_signup:hover{
+    filter: invert(100%);
+}
 #in4,
 #signin,
 #update-in4,
@@ -31,11 +39,14 @@
     height: 180px;
 }
 
-#signup {}
+#signup {
+}
 
-#in4 {}
+#in4 {
+}
 
-#update-in4 {}
+#update-in4 {
+}
 
 #exit-log {
     position: absolute;
