@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost
--- Thời gian đã tạo: Th5 12, 2023 lúc 08:23 AM
+-- Thời gian đã tạo: Th5 12, 2023 lúc 11:43 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 8.2.0
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Cơ sở dữ liệu: `shop`
 --
-CREATE database shop;
-use shop;
 
 -- --------------------------------------------------------
 
@@ -83,7 +81,8 @@ INSERT INTO `cart` (`id_customer`, `id_product`, `id_color`, `id_size`, `amount`
 ('KH002', 'AO00000002', '#ffffff', 'AOXL', 2, 400000),
 ('KH002', 'QU00000001', '#000000', 'QUXL', 2, 560000),
 ('KH003', 'AO00000001', '#000000', 'AOS', 3, 320000),
-('KH003', 'QU00000002', '#ffffff', 'QUS', 3, 240000);
+('KH003', 'QU00000002', '#ffffff', 'QUS', 3, 240000),
+('KH004', 'AO00000002', '#ffffff', 'AOXL', 1, 500000);
 
 -- --------------------------------------------------------
 
@@ -127,7 +126,9 @@ CREATE TABLE `color` (
 --
 
 INSERT INTO `color` (`id`, `name`) VALUES
+('#FFA500', 'cam'),
 ('#ffffff', 'Trắng'),
+('#0000FF', 'Xanh dương'),
 ('#000000', 'Đen');
 
 -- --------------------------------------------------------
@@ -183,10 +184,26 @@ INSERT INTO `detail_import_coupon` (`id_import_coupon`, `id_product`, `id_color`
 ('NHAP001', 'AO00000001', '#000000', 'AOXL', 20, 280000),
 ('NHAP001', 'AO00000002', '#ffffff', 'AOS', 20, 350000),
 ('NHAP001', 'AO00000002', '#ffffff', 'AOXL', 20, 350000),
+('NHAP001', 'AO00000009', '#000000', 'AOS', 90, 500000),
+('NHAP001', 'AO00000009', '#ffffff', 'AOS', 90, 500000),
+('NHAP001', 'AO00000010', '#ffffff', 'AOS', 90, 500000),
+('NHAP001', 'AO00000011', '#000000', 'AOS', 200, 190000),
+('NHAP001', 'AO00000012', '#ffffff', 'AOS', 200, 150000),
+('NHAP001', 'AO00000012', '#000000', 'AOXL', 200, 150000),
+('NHAP001', 'AO00000013', '#000000', 'AOXL', 200, 150000),
+('NHAP001', 'AO00000013', '#ffffff', 'AOXL', 200, 150000),
+('NHAP002', 'AO00000001', '#ffffff', 'AOS', 90, 500000),
+('NHAP002', 'AO00000014', '#000000', 'AOS', 200, 150000),
+('NHAP002', 'AO00000014', '#ffffff', 'AOS', 200, 150000),
+('NHAP002', 'AO00000014', '#000000', 'AOXL', 200, 150000),
+('NHAP002', 'AO00000014', '#ffffff', 'AOXL', 200, 150000),
 ('NHAP002', 'QU00000001', '#000000', 'QUS', 20, 500000),
 ('NHAP002', 'QU00000001', '#000000', 'QUXL', 20, 500000),
 ('NHAP002', 'QU00000002', '#ffffff', 'QUS', 20, 200000),
-('NHAP002', 'QU00000002', '#ffffff', 'QUXL', 20, 200000);
+('NHAP002', 'QU00000002', '#ffffff', 'QUXL', 20, 200000),
+('NHAP002', 'QU00000003', '#FFA500', 'QUS', 20, 100000),
+('NHAP002', 'QU00000003', '#0000FF', 'QUXL', 20, 100000),
+('NHAP002', 'QU00000003', '#ffffff', 'QUXL', 20, 100000);
 
 -- --------------------------------------------------------
 
@@ -206,7 +223,7 @@ CREATE TABLE `detail_promotion` (
 INSERT INTO `detail_promotion` (`id_promotion`, `id_product`) VALUES
 ('KM001', 'AO00000001'),
 ('KM001', 'AO00000002'),
-('KM004', 'ao00000001');
+('KM004', 'QU00000001');
 
 -- --------------------------------------------------------
 
@@ -234,7 +251,11 @@ INSERT INTO `detail_receipt` (`id_receipt`, `id_size`, `id_color`, `id_product`,
 ('HD001', 'AOXL', '#ffffff', 'AO00000002', 'NHAP001', 2, 400000),
 ('HD001', 'QUXL', '#ffffff', 'QU00000002', 'NHAP002', 2, 240000),
 ('HD002', 'AOS', '#ffffff', 'AO00000002', 'NHAP001', 2, 320000),
-('HD002', 'AOXL', '#ffffff', 'AO00000002', 'NHAP001', 2, 400000);
+('HD002', 'AOXL', '#ffffff', 'AO00000002', 'NHAP001', 2, 400000),
+('HD005', 'AOS', '#000000', 'AO00000001', 'NHAP001', 1, 320000),
+('HD006', 'QUS', '#000000', 'QU00000001', 'NHAP002', 1, 248000),
+('HD007', 'QUXL', '#ffffff', 'QU00000002', 'NHAP002', 11, 2640000),
+('HD008', 'AOS', '#000000', 'AO00000011', 'NHAP001', 2, 380000);
 
 -- --------------------------------------------------------
 
@@ -307,8 +328,31 @@ INSERT INTO `image_product` (`id_product`, `link_image`, `name_image`) VALUES
 ('AO00000004', '1world.png', NULL),
 ('AO00000004', '2Xác nhận khóa tài khoản.png', NULL),
 ('AO00000008', '0dsc00963_1aa604e0498848c4aa43dfc5beb66844_master.png', NULL),
+('AO00000009', '0ao_so_mi_nam_cong_so_caro_ngan_tay_meriman_ma_thmos365-02_18298b730733497181a54a6f69efa6e6_master.jpeg', NULL),
+('AO00000009', '1ao_so_mi_nam_cong_so_caro_ngan_tay_meriman_ma_thmos365-03_672f01bc9c2a443f9b84b0a6bf1e9228_master.jpeg', NULL),
+('AO00000009', '2ao_so_mi_nam_cong_so_caro_ngan_tay_meriman_ma_thmos365-04_ca728001f4144d28b462d681a5444a7f_master.jpeg', NULL),
+('AO00000009', '3ao-so-mi-caro-nam-merriman-tay-ngan-thmos365-4_cf82d1aab8cb43aa910df74870dae086_master.jpeg', NULL),
+('AO00000010', '0ao_so_mi_nam_cong_so_caro_ngan_tay_meriman_ma_thmos365-02_18298b730733497181a54a6f69efa6e6_master.jpeg', NULL),
+('AO00000010', '1ao_so_mi_nam_cong_so_caro_ngan_tay_meriman_ma_thmos365-03_672f01bc9c2a443f9b84b0a6bf1e9228_master.jpeg', NULL),
+('AO00000010', '2ao_so_mi_nam_cong_so_caro_ngan_tay_meriman_ma_thmos365-04_ca728001f4144d28b462d681a5444a7f_master.jpeg', NULL),
+('AO00000010', '3ao-so-mi-caro-nam-merriman-tay-ngan-thmos365-4_cf82d1aab8cb43aa910df74870dae086_master.jpeg', NULL),
+('AO00000011', '08cf26aea90be56e00faf68.jpeg', NULL),
+('AO00000011', '19d870594ffc0399e60d172.jpeg', NULL),
+('AO00000011', '242e8aeff55ab93f5caba.jpeg', NULL),
+('AO00000011', '3f81c530aa95e6f00364f69.jpeg', NULL),
+('AO00000012', '0z4339185685648_28107e19f4ba63ee5cab64a421d1b029.jpg', NULL),
+('AO00000012', '1z4339185685671_e1b6d1d5e759459d26157b9b6ee1ae3e.jpg', NULL),
+('AO00000012', '2z4339185707551_3ce3f24dbaa78c039b929a3315874305.jpg', NULL),
+('AO00000012', '3z4339185707573_6d41375ddabfcffb9e00626b16c30683.jpg', NULL),
+('AO00000013', '0z4339188387831_fcc7dab69ba4a1d636c5349cd499ce84.jpg', NULL),
+('AO00000013', '1z4339188414428_662da7b32d58718c2c25f0ab6e89b1c2.jpg', NULL),
+('AO00000013', '2z4339188420058_5e23b94822921a5fdf1601c9feb352dc.jpg', NULL),
+('AO00000014', '0z4339232899351_85830efa6e8dbbe32d25d64a88dadfce.jpg', NULL),
+('AO00000014', '1z4339232908505_d501b8a047115c392cd7d305dde82532.jpg', NULL),
 ('QU00000001', 'Link hỏi Phú', NULL),
-('QU00000002', 'Link hỏi Phú', NULL);
+('QU00000002', 'Link hỏi Phú', NULL),
+('QU00000003', '0z4339186300095_9d95a8edec7408717c96b55ba1463664.jpg', NULL),
+('QU00000003', '1z4339186300307_fe979a77041fcc0d11a23827e2f092a9.jpg', NULL);
 
 -- --------------------------------------------------------
 
@@ -533,8 +577,15 @@ INSERT INTO `product` (`id`, `name`, `madein`, `description`, `idstatus`) VALUES
 ('AO00000006', 'áo thun bông 2345', 'ct003', 'okok', 'TT01'),
 ('AO00000007', 'áo thun bông 23456', 'ct004', 'okok', 'TT01'),
 ('AO00000008', 'áo polo short black gray check', 'ct010', 'quá đẹp', 'TT01'),
+('AO00000009', 'ao so mi xanh ', 'ct001', 'ao so mi', 'TT01'),
+('AO00000010', 'áo sơ mi caro trắng sọc xanh', 'ct001', 'áo sơ mi nam', 'TT01'),
+('AO00000011', 'áo thun đen nam', 'ct005', 'áo cotton', 'TT01'),
+('AO00000012', 'áo thun mùa hè', 'ct005', 'áo thun nam cho mùa hè năng động', 'TT01'),
+('AO00000013', 'ao thun hien dai', 'ct005', 'ao hien dai', 'TT01'),
+('AO00000014', 'áo thun trơn', 'ct005', 'áo thun trơn', 'TT01'),
 ('QU00000001', 'Quần tây', 'ct001', 'Quần tây dài', 'TT01'),
-('QU00000002', 'Quần thun', 'ct002', 'Quần thun ngắn', 'TT01');
+('QU00000002', 'Quần thun', 'ct002', 'Quần thun ngắn', 'TT01'),
+('QU00000003', 'quần thun mùa hè', 'ct005', 'quàn thun nam mùa hè\r\n', 'TT01');
 
 -- --------------------------------------------------------
 
@@ -560,10 +611,25 @@ INSERT INTO `product_in_stock` (`id_import_coupon`, `id_product`, `id_size`, `id
 ('NHAP001', 'AO00000001', 'AOXL', '#000000', 20, 280000),
 ('NHAP001', 'AO00000002', 'AOS', '#ffffff', 20, 350000),
 ('NHAP001', 'AO00000002', 'AOXL', '#ffffff', 18, 350000),
+('NHAP001', 'AO00000009', 'AOS', '#000000', 90, 500000),
+('NHAP001', 'AO00000009', 'AOS', '#ffffff', 90, 500000),
+('NHAP001', 'AO00000011', 'AOS', '#000000', 200, 190000),
+('NHAP001', 'AO00000011', 'AOS', '#ffffff', 200, 190000),
+('NHAP001', 'AO00000012', 'AOS', '#000000', 200, 150000),
+('NHAP001', 'AO00000012', 'QUXL', '#000000', 200, 150000),
+('NHAP001', 'AO00000013', 'AOS', '#000000', 20, 150000),
+('NHAP001', 'AO00000013', 'QUS', '#000000', 20, 150000),
+('NHAP002', 'AO00000014', 'AOS', '#000000', 20, 150000),
+('NHAP002', 'AO00000014', 'AOS', '#ffffff', 20, 150000),
+('NHAP002', 'AO00000014', 'AOXL', '#000000', 20, 150000),
+('NHAP002', 'AO00000014', 'AOXL', '#ffffff', 20, 150000),
 ('NHAP002', 'QU00000001', 'QUS', '#000000', 20, 500000),
 ('NHAP002', 'QU00000001', 'QUXL', '#000000', 20, 500000),
 ('NHAP002', 'QU00000002', 'QUS', '#ffffff', 17, 200000),
-('NHAP002', 'QU00000002', 'QUXL', '#ffffff', 18, 200000);
+('NHAP002', 'QU00000002', 'QUXL', '#ffffff', 18, 200000),
+('NHAP002', 'QU00000003', 'QUS', '#FFA500', 20, 100000),
+('NHAP002', 'QU00000003', 'QUXL', '#0000FF', 20, 100000),
+('NHAP002', 'QU00000003', 'QUXL', '#ffffff', 20, 100000);
 
 -- --------------------------------------------------------
 
@@ -585,8 +651,25 @@ CREATE TABLE `product_list` (
 INSERT INTO `product_list` (`id_product`, `id_size`, `id_color`, `price`) VALUES
 ('AO00000001', 'AOS', '#000000', 320000),
 ('AO00000002', 'AOXL', '#ffffff', 500000),
+('AO00000009', 'AOS', '#ffffff', 590000),
+('AO00000010', 'AOS', '#ffffff', 400000),
+('AO00000011', 'AOS', '#000000', 190000),
+('AO00000011', 'AOS', '#ffffff', 190000),
+('AO00000011', 'AOXL', '#000000', 190000),
+('AO00000012', 'AOS', '#000000', 150000),
+('AO00000012', 'AOS', '#ffffff', 150000),
+('AO00000012', 'AOXL', '#ffffff', 150000),
+('AO00000013', 'AOS', '#ffffff', 150000),
+('AO00000013', 'AOXL', '#ffffff', 150000),
+('AO00000014', 'AOS', '#000000', 150000),
+('AO00000014', 'AOS', '#ffffff', 150000),
+('AO00000014', 'AOXL', '#000000', 150000),
+('AO00000014', 'AOXL', '#ffffff', 150000),
 ('QU00000001', 'QUS', '#000000', 560000),
-('QU00000002', 'QUXL', '#ffffff', 240000);
+('QU00000002', 'QUXL', '#ffffff', 240000),
+('QU00000003', 'QUS', '#FFA500', 100000),
+('QU00000003', 'QUXL', '#0000FF', 100000),
+('QU00000003', 'QUXL', '#ffffff', 100000);
 
 -- --------------------------------------------------------
 
@@ -614,8 +697,15 @@ INSERT INTO `product_list_classify` (`id_product`, `id_classify`) VALUES
 ('AO00000007', 'AOSOMI'),
 ('AO00000007', 'AOTHUN'),
 ('AO00000008', 'AOTHUN'),
+('AO00000009', 'AOSOMI'),
+('AO00000010', 'AOSOMI'),
+('AO00000011', 'AOTHUN'),
+('AO00000012', 'AOTHUN'),
+('AO00000013', 'AOTHUN'),
+('AO00000014', 'AOTHUN'),
 ('QU00000001', 'QUTAY'),
-('QU00000002', 'QUTHUN');
+('QU00000002', 'QUTHUN'),
+('QU00000003', 'QUTHUN');
 
 -- --------------------------------------------------------
 
@@ -669,7 +759,13 @@ CREATE TABLE `receipt` (
 INSERT INTO `receipt` (`id`, `date_init`, `date_confirm`, `address`, `note`, `id_staff`, `id_customer`, `id_status`) VALUES
 ('HD000', '2023-02-12 00:00:00', '2023-02-12 00:00:00', '84/177 Phan Văn Trị, P.2, Q.5, TP.HCM', NULL, 'NV001', 'KH001', 'TT07'),
 ('HD001', '2023-02-12 00:00:00', '2023-05-11 14:03:02', '84/173 Phan Văn Trị, P.2, Q.5, TP.HCM', NULL, 'NV002', 'KH002', 'TT07'),
-('HD002', '2023-02-12 00:00:00', '2023-02-12 00:00:00', '84/170 Phan Văn Trị, P.2, Q.5, TP.HCM', NULL, 'NV003', 'KH004', 'TT08');
+('HD002', '2023-02-12 00:00:00', '2023-02-12 00:00:00', '84/170 Phan Văn Trị, P.2, Q.5, TP.HCM', NULL, 'NV003', 'KH004', 'TT08'),
+('HD003', '2023-05-12 10:11:36', '2023-05-12 10:11:36', 'hjgf', NULL, NULL, 'KH004', 'TT09'),
+('HD004', '2023-05-12 10:14:27', '2023-05-12 10:14:27', 'đá', NULL, NULL, 'KH004', 'TT09'),
+('HD005', '2023-05-12 10:17:45', '2023-05-12 10:17:45', 'đá', NULL, NULL, 'KH004', 'TT09'),
+('HD006', '2023-05-12 10:18:39', '2023-05-12 10:18:39', 'đá', NULL, NULL, 'KH004', 'TT09'),
+('HD007', '2023-05-12 10:20:45', NULL, 'test mua', NULL, NULL, 'KH004', 'TT09'),
+('HD008', '2023-05-12 10:45:38', NULL, 'thth', NULL, NULL, 'KH004', 'TT09');
 
 -- --------------------------------------------------------
 
@@ -912,7 +1008,6 @@ ALTER TABLE `detail_promotion`
 --
 ALTER TABLE `detail_receipt`
   ADD PRIMARY KEY (`id_receipt`,`id_import_coupon`,`id_product`,`id_size`,`id_color`),
-  ADD KEY `id_import_coupon` (`id_import_coupon`),
   ADD KEY `id_product` (`id_product`),
   ADD KEY `id_size` (`id_size`),
   ADD KEY `id_color` (`id_color`);

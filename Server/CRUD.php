@@ -591,7 +591,7 @@ class CRUD
         $key_value = "%" . $key . "%";
         $params = "LIMIT " . (int)$begin . ", " . (int)$total_product_on_page;
         // $params[]=$amount;
-        $sql = "SELECT 
+        $sql = "SELECT DISTINCT
                    product_list_classify.id_classify, 
                    product_list_classify.id_product,
                    product.name,
@@ -653,11 +653,13 @@ class CRUD
                    LEFT JOIN classify ON classify.id = product_list_classify.id_classify
                WHERE 
                     product_list.price BETWEEN '$min_price' AND '$max_price'
+                    
                     AND product_list.id_size IS NOT NULL
                     AND product_list.id_color IS NOT NULL
                     AND classify.name LIKE '$type_value'
                     $sale_value
                     AND product.name LIKE '$key_value'
+                    GROUP BY product_list.id_product
                 $params
                     ";
         $stmt = $conn->prepare($sql);
@@ -907,6 +909,7 @@ class CRUD
                     AND classify.name LIKE '$type_value'
                     $sale_value
                     AND product.name LIKE '$key_value'
+                    GROUP BY product_list.id_product
                     ";
         $stmt = $conn->prepare($sql);
         // $stmt->execute([$min_price, $max_price, $type_value, $key_value]);
