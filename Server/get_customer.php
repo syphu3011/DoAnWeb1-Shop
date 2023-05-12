@@ -36,13 +36,14 @@
                 'data' => $data,
                 'message' => "Đã tạo phiên đăng nhập mới"
             );
-            echo json_encode($response);
+            // echo json_encode($response);
 
             $exp = time() + (86400 * 30);
             $token = bin2hex(random_bytes(16));
-            setcookie('login_cookie', base64_encode("$username:$password:$privilege:$exp:$token"), time() + (86400 * 30), '/');
-            ReqHandling::concatSession($conn, "account", "session", $token, "username", $username);
-
+            // setcookie('login_cookie', base64_encode("$username:$password:$privilege:$exp:$token"), time() + (86400 * 30), '/');
+            // ReqHandling::concatSession($conn, "account", "session", $token, "username", $username);
+            $cookie_string = "$username_form:$password_form:customer";
+            echo json_encode(array("message" => "Đăng nhập thành công. Đã tạo phiên đăng nhập mới.", "cookie" => $cookie_string, "success" => true, 'data' => $data,), JSON_UNESCAPED_UNICODE);
         } else {
             header("HTTP/1.1 400 Bad Request");
             echo json_encode(array('error' => 'Username and password are required.'));

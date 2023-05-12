@@ -113,7 +113,8 @@ document
                             let response = JSON.parse(xhr.responseText);
                             console.log(response);
                             if (response.success) {
-                                if (response.data.account.privilege.indexOf("customer") != -1) {
+                                if (response.message == "Đăng nhập thành công. Đã tạo phiên đăng nhập mới.") {
+                                    document.cookie = response.cookie
                                     currentUser = response.data.customer;
                                     showacc(signin, 0, 1200);
                                     setTimeout(() => {

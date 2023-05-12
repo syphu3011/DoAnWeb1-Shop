@@ -125,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
   } else {
     // setCookieLogin($conn, $username, $password, $arrFromDb[0]["privilege"]);
     // echo json_encode(array("cookie" => $_COOKIE, "session" => $_SESSION), JSON_UNESCAPED_UNICODE);
-    $cookie_string = "$username:$password";
+    $cookie_string = "$username:$password:admin";
     echo json_encode(array("message" => "Đăng nhập thành công. Đã tạo phiên đăng nhập mới.", "cookie" => $cookie_string), JSON_UNESCAPED_UNICODE);
     exit();
   }

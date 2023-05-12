@@ -398,6 +398,7 @@ btnback.onclick = function () {
 };
 
 btnlogout.onclick = function () {
+    document.cookie = "."
     currentUser = null;
     username = "";
     document.getElementById("passwd").value = "";

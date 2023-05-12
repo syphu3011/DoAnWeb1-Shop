@@ -81,14 +81,14 @@ $("#log-but").click(function () {
     $.post("../admin/Server/account/login.php", data, (response) => {
       console.log(response);
       $("#sign-in-noti-content").html(`${response.message}`)
-      if (response.message == "Tên tài khoản không tồn tại.") {
+      if (response.message == "Đăng nhập thành công. Đã tạo phiên đăng nhập mới.") {
+        document.cookie = response.cookie
+        location.href = './'
+      }
+      else if (response.message == "Tên tài khoản không tồn tại.") {
         $("#username").focus();
       } else if (response.message == "Sai mật khẩu.") {
         $("#password").focus();
-      }
-      else if (response.message == "Đăng nhập thành công. Đã tạo phiên đăng nhập mới.") {
-        document.cookie = response.cookie
-        location.href = './'
       }
       $("#notification-wrapper").fadeIn(1000);
       $("#notification-wrapper").css("display", "flex");
