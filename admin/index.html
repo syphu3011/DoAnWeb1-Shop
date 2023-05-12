@@ -85,7 +85,7 @@
         </div>
         <div id="back-left-bar">
             <ul id="leftbar-list" style="overflow-y: auto;">
-                <!-- <li id="homepage">
+                <li id="homepage">
                     <img src="./Image/Home Info.png" class="img-li" alt=""> Trang chủ
                 </li>
                 <li id="consumer">
@@ -117,29 +117,15 @@
                 </li>
                 <li id="stats">
                     <img src="./Image/Chart_fill.png" alt="" class="img-li"> Thống kê
-                </li> -->
-                <!-- <li id="variable">
+                </li>
+                <li id="variable">
                     <img src="./Image/cog.png" alt="" class="img-li"> Thông số
-                </li> -->
+                </li>
 
             </ul>
         </div>
         <div id="content">
             <div id="background-history-admin" class="background-table" style="display: none">
-                <!-- <div id="dialog10d">
-                    <div class="select" >
-                        <button class="close" id="close10d">X</button>
-                        <label>Bạn có muốn thay đổi giá bán của mặt hàng này?</label>
-                        <br>
-                        <p id="price-old">Giá cũ:</p>
-                        <p id="price-new">Giá mới:</p>
-                        <div>
-                            <button >Có</button>
-                            <button >Không</button>
-                            <button >Hủy</button>
-                        </div>
-                    </div>
-                </div> -->
                 <p class="p-title">Chào mừng bạn trở lại!</p>
                 <table class="table-admin" id="table-admin" style="width: 80%;">
                     <tr class="row-table-admin">
@@ -373,8 +359,8 @@
                             </table>
                         </div>
                         <div class="button_add1" style="margin-top: 20px;">
-                            <button id="accept-price">Xác nhận sửa</button>
-                            <button id="cancel-price">Hủy sửa</button>
+                            <button id="accept-price" onclick=AcceptPrice()>Xác nhận sửa</button>
+                            <button style="margin-left: 10px;" id="cancel-price">Hủy sửa</button>
                         </div>
                     </div>
                     <!-- Sửa sản phầm -->
@@ -1424,7 +1410,7 @@
     <script src="./JS/KhuyenMai1.js"></script>
     <script src="./JS/product.js"></script>
     <script src="./JS/statistics.js"></script>
-    <!-- <script src="./JS/thongso.js"></script> -->
+    <script src="./JS/thongso.js"></script>
     <script src="./JS/Test.js"></script>
     <script src="./JS/classify.js"></script>
     <script src="./JS/auth.js"></script>

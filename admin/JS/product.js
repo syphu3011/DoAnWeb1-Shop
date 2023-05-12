@@ -1261,10 +1261,10 @@ function CloseDeType() {
 }
 
 // Giá sản phẩm
-document.getElementById("edit-price").onclick = function() {
+document.getElementById("edit-price").onclick = async function() {
     document.getElementById("table-edit-price").style.visibility = "visible";
     OpenDialog();
-    GetListPrice()
+    await GetListPrice()
     FillPrice();
 };
 document.getElementById("close78").onclick = function() {
@@ -1281,6 +1281,7 @@ function CloseDialog78() {
 }
 document.getElementById("close79").onclick = function() {
     document.getElementById("edit-price-new").style.visibility = "hidden";
+    arr.splice(0,arr.length)
     CloseDialog78();
 };
 
@@ -1320,6 +1321,7 @@ function EditPrice(v){
     OpenDialog78();
     document.getElementById("tile-edit-price").innerHTML = `Thay Đổi giá sản phẩm `+listProd[v].id_product;
     document.getElementById("price-old").value= listProd[v].price;
+    document.getElementById("price-new").value=" ";
     document.getElementById("price-new").focus();
     document.getElementById("accept-price-new").onclick = function(){
         if(document.getElementById("price-new")==" "){
@@ -1327,7 +1329,8 @@ function EditPrice(v){
         }
         else{
             arr.push(v)
-            listProd[v].price=document.getElementById("price-new").value
+            listProd[v].price=parseInt(document.getElementById("price-new").value)
+            document.getElementById("edit-price-new").style.visibility = "hidden";
             CloseDialog78();
             FillPrice()
         }
@@ -1336,7 +1339,6 @@ function EditPrice(v){
 }
 
 function GetNameProduct(id){
-    console.log(obj);
     for(let i=0;i<obj.product.length;i++){
         if(obj.product[i].id==id){
             return obj.product[i].name
@@ -1348,25 +1350,30 @@ async function AcceptPrice(){
     if(arr.length==0){
         alert("Không có gì thay đổi")
     }
-    for(let i = 0; i<arr.length;i++){
-        let current_user = getCurrentUser()
-        let data_post_server = { id_product: listProd[arr[i]].id_product,
-            id_size: listProd[arr[i]].id_size,
-            id_color: listProd[arr[i]].id_color,
-            price: listProd[arr[i]].price,
-            id_user: current_user.id_user, 
-            password: current_user.password }
-        let form_data = to_form_data(data_post_server)
-        await put(form_data, './Server/product/product_list_change_price.php')
+    else{
+        for(let i = 0; i<arr.length;i++){
+            let current_user = getCurrentUser()
+            let data_post_server = { id_product: listProd[arr[i]].id_product,
+                id_size: listProd[arr[i]].id_size,
+                id_color: listProd[arr[i]].id_color,
+                price: listProd[arr[i]].price,
+                id_user: current_user.id_user, 
+                password: current_user.password }
+            let form_data = to_form_data(data_post_server)
+            await post(form_data, './Server/product/product_list_change_price.php')
+        }
+        alert("Thay đổi thành công")
+        arr.splice(0,arr.length)
+        document.getElementById("table-edit-price").style.visibility = "hidden";
+        CloseDialog()
     }
-    arr.splice(0,arr.length)
-    document.getElementById("edit-price-new").style.visibility = "hidden";
-    CloseDialog78();
+    
 }
 
 document.getElementById("cancel-price").onclick = function() {
-document.getElementById("edit-price-new").style.visibility = "hidden";
+document.getElementById("table-edit-price").style.visibility = "hidden";
+CloseDialog();
 arr.splice(0,arr.length)
-CloseDialog78();
+
 }
 
