@@ -3,7 +3,7 @@
 let receipt
 let detail_receipt
 let customer
-let product
+let productOr
 let promotion
 let length1
 let length2
@@ -66,9 +66,9 @@ function get_DataPromo() {
 async function get_DataProd() {
     let current_user = getCurrentUser()
         data_server = to_form_data(current_user);
-        product = await get(data_server,'./Server/product/products.php')
-        console.log(product)
-        if (product == errors) {
+        productOr = await get(data_server,'./Server/product/products.php')
+        console.log(productOr)
+        if (productOr == errors) {
             block_access('Bạn không có quyền truy cập vào sản phẩm!')
             return
         }
@@ -126,11 +126,11 @@ function calculated(price) {
     return price
 }
 function GetAmount(id,color,size) {
-    for (var i = 0; i < product.prodInStock.length; i++) {
-        if (product.prodInStock[i].idProd == id&& 
-            product.prodInStock[i].idColor==color&&
-            product.prodInStock[i].idSize==size) {
-            return product.prodInStock[i].amount
+    for (var i = 0; i < productOr.prodInStock.length; i++) {
+        if (productOr.prodInStock[i].idProd == id&& 
+            productOr.prodInStock[i].idColor==color&&
+            productOr.prodInStock[i].idSize==size) {
+            return productOr.prodInStock[i].amount
         }
     }
 }
@@ -155,9 +155,9 @@ function GetNameCus(id) {
 
 
 function GetNamePro(id) {
-    for (var i = 0; i < product.product.length; i++) {
-        if (product.product[i].id == id) {
-            return product.product[i].name
+    for (var i = 0; i < productOr.product.length; i++) {
+        if (productOr.product[i].id == id) {
+            return productOr.product[i].name
         }
     }
 }
