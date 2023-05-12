@@ -810,7 +810,7 @@ function createCart(data_response) {
             document.getElementsByClassName("table-giohang")[0].innerHTML +=
                 `<tr>
                     <td>
-                        <img src="` +
+                        <img src="admin/Image/` +
                 data_response[i].link_image +
                 `" alt="">
                     </td>

@@ -155,7 +155,7 @@ function create_filter(params) {
         // }
         //
         // Thanh chọn loại giảm giá
-        if (response.success){
+        if (response.success) {
             document.getElementById(
                 "sale-select"
             ).innerHTML = `<option>Tất cả</option>`;
@@ -379,7 +379,7 @@ function create_Homepage(data_res) {
                     `
         <img class="main_list_product_product_image"
           style=""
-          src="` +
+          src="admin/image/` +
                     element[k].link_image +
                     `"alt=""
         />
@@ -614,7 +614,6 @@ function detail_product() {
                 }
             );
         };
-        
     }
 }
 let cart = new Cart();
@@ -653,7 +652,7 @@ function click_Product(response) {
               <div class="popup_left">
                 <img id="img_show"style="
                   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-                " src="` +
+                " src="admin/image/` +
             //source ảnh
             response.data.image_product[0].link_image +
             `"/>
@@ -739,7 +738,7 @@ function click_Product(response) {
             document.getElementById("review_image").innerHTML +=
                 `
             <li class="list_image_review">
-              <img src="` +
+              <img src="admin/image/` +
                 //source
                 element.link_image +
                 `"/>

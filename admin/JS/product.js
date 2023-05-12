@@ -300,17 +300,17 @@ function findSumAmount(id) {
     });
     return amount;
 }
-
+document.getElementById("add-type-pro-a").onclick = function () {
+    console.log(1);
+    BoxSelect();
+};
 function fillEdit(prod) {
     let image_delete = [];
     document.getElementById("edit-id").value = prod.id;
     document.getElementById("edit-name").value = prod.name;
     document.getElementById("edit-made-in").value = prod.made_in;
     document.getElementById("edit-des").value = prod.description;
-    document.getElementById("add-type-pro-a").onclick = function () {
-        console.log(1)
-        BoxSelect();
-    };
+
     document.getElementById("confirm").onclick = function () {
         createPopUpYesNo(
             "Bạn có muốn sửa lại thông tin không ?",

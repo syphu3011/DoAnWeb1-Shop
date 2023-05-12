@@ -97,7 +97,7 @@ function create(data) {
         ` +
                 str_stamp +
                 `
-            <img class="main_list_product_product_image" style="" src="` +
+            <img class="main_list_product_product_image" style="" src="admin/Image/` +
                 data_product[i].link_image +
                 `" alt="">
         <div class="main_list_product_product_infor"> 

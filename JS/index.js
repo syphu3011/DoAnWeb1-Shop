@@ -802,7 +802,7 @@ function create_main_onclick_classify(data) {
         ` +
                 str_stamp +
                 `
-            <img class="main_list_product_product_image" style="" src="` +
+            <img class="main_list_product_product_image" style="" src="admin/Image/` +
                 data_product[i].link_image +
                 `" alt="">
         <div class="main_list_product_product_infor"> 
@@ -1147,13 +1147,10 @@ function ttGioHang(thanhtoansp) {
                             1200
                         );
                         setTimeout(() => {
-                            document.getElementById("thanh-toan").style.display =
-                            "none";
+                            document.getElementById(
+                                "thanh-toan"
+                            ).style.display = "none";
                         }, 500);
-                           
-
-
-
                     } else {
                         alert(response.message);
                     }

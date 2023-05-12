@@ -157,7 +157,7 @@ function CTDH(id_hd, status, date_init) {
                     document.getElementById("ctdh-dssp").innerHTML +=
                         `<div class="ctdh-sp">
                 <div>
-                    <img src="Image/SANPHAM/` +
+                    <img src="admin/Image/` +
                         sp[i].link_image +
                         `" alt="">
                 </div>

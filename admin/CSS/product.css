@@ -878,9 +878,9 @@ option{
     flex-direction: column;
     z-index: 20;
     padding: 10px 10px;
-    top: 150px;
+    /* top: 150px;
     left: 450px;
-    right: 450px;
+    right: 450px; */
     position: fixed;
     background-color: white;
     visibility: hidden;
