@@ -45,8 +45,10 @@ img_ham.onclick = function () {
 };
 let back_account = document.getElementById("back-border-account");
 async function setNameStaff() {
-  let name_staff = await getCurrentUser()
-  let data = await get(data)
+  let current = await getCurrentUser()
+
+  let data = to_form_data(current)
+  let data_response = awai
   name_staff = name_staff.name
   document.getElementById("name-staff").innerHTML = name_staff
 }
