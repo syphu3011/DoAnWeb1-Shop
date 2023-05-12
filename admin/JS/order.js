@@ -19,12 +19,12 @@ function RefreshFillOrder(){
     Promise.all([get_DataOrder(), get_DataCus(), get_DataDetailO(),
         get_DataProd(), get_DataPromo()])
        .then(function(results) {
-      
+    
         //  console.log(results[0]); // receipt
         //  console.log(results[1]); // customer
         //  console.log(results[2]); // detail_receipt
         //  console.log(results[3]); // product
-        //  console.log(results[4]); // get_DataPromo
+         console.log(results[4]); // get_DataPromo
          FillOrder();
        })
        .catch(function(error) {
@@ -56,7 +56,6 @@ function get_DataPromo() {
         dataType: 'json',
         success: function(data) {
             promotion = data;
-            
         },
         error: function(xhr, status, error) {
           // Xử lý lỗi ở đây
@@ -151,7 +150,7 @@ function GetNameCus(id) {
             idColor:color,amount:sl ,
             id_user: CurrentUser.id_user, password: CurrentUser.password }
         let form_data = to_form_data(data_post_server)
-        (await put(form_data, './Server/product/updateProdInStock.php'))
+        await put(form_data, './Server/product/updateProdInStock.php')
 }
 
 

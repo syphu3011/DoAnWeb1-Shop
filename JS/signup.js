@@ -28,16 +28,16 @@ $(document).ready(function () {
         //   );
         // }
 
-        // if(Checkavai()==true){
-        // Gửi thông tin đăng ký lên server
+        if(Checkavai()==true){
         // if (Checkavai(checksdt, checkuser) == true) {
+            let temppass= sha256(password_regis.value)
             $.ajax({
                 url: "./admin/Server/customer/customer.php?action=create",
                 method: "POST",
                 dataType: "json",
                 data: {
                     username: $("#inp-username").val(),
-                    password: password_regis.value,
+                    password: temppass,
                     privilege: "customer",
                     session: "",
                     status: "active",
@@ -54,7 +54,7 @@ $(document).ready(function () {
                       notifition();
                 },
             });
-        // }
+        }
     });
 });
 
@@ -214,50 +214,50 @@ function notifition() {
 // <<<<<<< Updated upstream
 // =======
 // <<<<<<< HEAD
-// function Checkavai(){
-//     let flag=true
-//     if (checkValid(
-//                     firstName.value,
-//                     lastName.value,
-//                     username.value,
-//                     password_regis.value,
-//                     same_passwd.value,
-//                     number_phone.value,
-//                     birthday.value)) {
-//                 if (checkSamePassword(password_regis.value, same_passwd.value)) {
-//                     if (checkDate(birthday.value)) {
-//                         let customer = new Customer(
-//                             firstName.value.trim() + " " + lastName.value.trim(),
-//                             number_phone.value.trim(),
-//                             username.value.trim(),
-//                             password_regis.value,
-//                             sex,
-//                             birthday.value)
-//                         // if (checkSDT(number_phone.value)==false
-//                         // || checkUSR(username.value)==false) {
-//                         //     showacc(signup, 0, 1200)
-//                         //     setTimeout(() => {
-//                         //         signup.style.display = ""
-//                         //         account.style.display = ""
-//                         //     }, 450);
-//                         // } else {
-//                         //     alert("Tài khoản đã tồn tại")
-//                         //     flag=false;
-//                         // }
-//                     } else {
-//                         alert("Ngày sinh không hợp lệ")
-//                         flag=false;
-//                     }
-//                 } else {
-//                     alert("Bạn đã nhập 2 mật khẩu không giống nhau!")
-//                     flag=false;
-//                 }
-//             } else {
-//                 alert("Không được bỏ trống bất cứ thông tin nào!")
-//                 flag=false;
-//             }
-//             return flag
-//           }
+function Checkavai(){
+    let flag=true
+    if (checkValid(
+                    firstName.value,
+                    lastName.value,
+                    username.value,
+                    password_regis.value,
+                    same_passwd.value,
+                    number_phone.value,
+                    birthday.value)) {
+                if (checkSamePassword(password_regis.value, same_passwd.value)) {
+                    if (checkDate(birthday.value)) {
+                        let customer = new Customer(
+                            firstName.value.trim() + " " + lastName.value.trim(),
+                            number_phone.value.trim(),
+                            username.value.trim(),
+                            password_regis.value,
+                            sex,
+                            birthday.value)
+                        // if (checkSDT(number_phone.value)==false
+                        // || checkUSR(username.value)==false) {
+                        //     showacc(signup, 0, 1200)
+                        //     setTimeout(() => {
+                        //         signup.style.display = ""
+                        //         account.style.display = ""
+                        //     }, 450);
+                        // } else {
+                        //     alert("Tài khoản đã tồn tại")
+                        //     flag=false;
+                        // }
+                    } else {
+                        alert("Ngày sinh không hợp lệ")
+                        flag=false;
+                    }
+                } else {
+                    alert("Bạn đã nhập 2 mật khẩu không giống nhau!")
+                    flag=false;
+                }
+            } else {
+                alert("Không được bỏ trống bất cứ thông tin nào!")
+                flag=false;
+            }
+            return flag
+          }
 function Checkavai(csdt, suser) {
     let flag = true;
     //   let checkSDT = checkSDT(number_phone.value);
