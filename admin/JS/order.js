@@ -20,11 +20,11 @@ function RefreshFillOrder(){
         get_DataProd(), get_DataPromo()])
        .then(function(results) {
       
-         console.log(results[0]); // receipt
-         console.log(results[1]); // customer
-         console.log(results[2]); // detail_receipt
-         console.log(results[3]); // product
-         console.log(results[4]); // get_DataPromo
+        //  console.log(results[0]); // receipt
+        //  console.log(results[1]); // customer
+        //  console.log(results[2]); // detail_receipt
+        //  console.log(results[3]); // product
+        //  console.log(results[4]); // get_DataPromo
          FillOrder();
        })
        .catch(function(error) {
@@ -147,9 +147,11 @@ function GetNameCus(id) {
 
  async function SetAmount(sl, idprod,size,color) {
         let CurrentUser = getCurrentUser()
-        let data_post_server = {idProd:idprod, idSize:size,idColor:color,amount:sl ,id_user: CurrentUser.id_user, password: CurrentUser.password }
+        let data_post_server = {idProd:idprod, idSize:size,
+            idColor:color,amount:sl ,
+            id_user: CurrentUser.id_user, password: CurrentUser.password }
         let form_data = to_form_data(data_post_server)
-        alert(await put(form_data, './Server/product/updateProdInStock.php'))
+        (await put(form_data, './Server/product/updateProdInStock.php'))
 }
 
 
@@ -200,10 +202,11 @@ function ConfirmOrder(x) {
                         let idprod = detail_receipt[i].id_product_detail_receipt
                         let color = detail_receipt[i].id_color_detail_receipt 
                         let size = detail_receipt[i].id_size_detail_receipt
-                        let sl= GetAmount(idprod,color,size)-detail_receipt[i].amount_detail_receipt
+                        let sl= detail_receipt[i].amount_detail_receipt
                         SetAmount(sl,idprod,size,color)
                     }
                 }
+                alert("Xác nhận đơn thành công")
                 RefreshFillOrder()
             },
             error: function (xhr, status, error) {
@@ -234,7 +237,7 @@ function CancelOrder(x) {
             status: "Đã hủy"
         }),
         success: function (response) {
-            console.log(response);
+            alert("Hủy đơn hàng thành công");
             RefreshFillOrder()
         },
         error: function (xhr, status, error) {
