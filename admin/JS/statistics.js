@@ -331,14 +331,14 @@ function statistics() {
     //         }
     //     })
     // }
-    async function statisticProdUI(from, to, type24 = null) {
+    async function statisticProdUI(from, to, type24 = null, revenue_status = "normal", expense_status = "normal", profit_status = "normal", revenue_content = "Thu", expense_content = "Chi", profit_content = "Lợi nhuận") {
         // statisticProd(from, to, type24)
         let data = await refreshDataStat(from, to, type24, orderby, direction)
         document.getElementById("head-stat").innerHTML = `<tr class="first-row"><th>Mã sản phẩm</th>
         <th>Tên sản phẩm</th>
-        <th class="cursorlabel" name="normal" id="revenue_th">Thu</th>
-        <th class="cursorlabel" name="normal" id="expense_th">Chi</th>
-        <th class="cursorlabel" name="normal" id="total_th">Lợi nhuận</th></tr>`
+        <th class="cursorlabel" id="revenue_th">`+revenue_content+`</th>
+        <th class="cursorlabel" id="expense_th">`+expense_content+`</th>
+        <th class="cursorlabel" id="total_th">`+profit_content+`</th></tr>`
         let body = ``
         data.statistic.forEach(element => {
             // if (prodsStat[elementt.id] != null) {
@@ -348,61 +348,86 @@ function statistics() {
             sum2 += parseFloat(element.expense)
             // }
         })
-        document.getElementById("revenue_th").onclick = async function() {
-            if (document.getElementById("revenue_th").name == "normal" || document.getElementById("revenue_th").name == "desc") {
-                document.getElementById("revenue_th").name = "asc"
-                document.getElementById("revenue_th").innerHTML = "Thu ^"
+        let rev = document.getElementById("revenue_th")
+        let exp = document.getElementById("expense_th")
+        let profit = document.getElementById("total_th")
+        rev.name = revenue_status
+        exp.name = expense_status
+        profit.name = profit_status
+        rev.onclick = async function() {
+            if (rev.name == "normal" || rev.name == "desc") {
+                rev.name = "asc"
+                rev.innerHTML = "Thu &uarr;"
             }
             else {
-                document.getElementById("revenue_th").name = "desc"
-                document.getElementById("revenue_th").innerHTML = "Thu v"
+                rev.name = "desc"
+                rev.innerHTML = "Thu &darr;"
             }
-            document.getElementById("expense_th").name = "normal"
-            document.getElementById("total_th").name = "normal"
-            document.getElementById("expense_th").innerHTML = "Chi"
-            document.getElementById("total_th").innerHTML = "Lợi nhuận"
-            await changeWhenClick(from, to, type24,"revenue",document.getElementById("revenue_th").name)
+            exp.name = "normal"
+            profit.name = "normal"
+            exp.innerHTML = "Chi"
+            profit.innerHTML = "Lợi nhuận"
+            await changeWhenClick(from, to, type24,"revenue",rev.name,
+            rev.name,
+            exp.name,
+            profit.name,
+            rev.innerHTML,
+            exp.innerHTML,
+            profit.innerHTML)
         }
-        document.getElementById("expense_th").onclick = async function() {
-            if (document.getElementById("expense_th").name == "normal" || document.getElementById("expense_th").name == "desc") {
-                document.getElementById("expense_th").name = "asc"
-                document.getElementById("expense_th").innerHTML = "Chi ^"
+        exp.onclick = async function() {
+            if (exp.name == "normal" || exp.name == "desc") {
+                exp.name = "asc"
+                exp.innerHTML = "Chi &uarr;"
             }
             else {
-                document.getElementById("expense_th").name = "desc"
-                document.getElementById("expense_th").innerHTML = "Chi v"
+                exp.name = "desc"
+                exp.innerHTML = "Chi  &darr;"
             }
-            document.getElementById("revenue_th").name = "normal"
-            document.getElementById("total_th").name = "normal"
-            document.getElementById("revenue_th").innerHTML = "Thu"
-            document.getElementById("total_th").innerHTML = "Lợi nhuận"
-            await changeWhenClick(from, to, type24,"expense",document.getElementById("expense_th").name)
+            rev.name = "normal"
+            profit.name = "normal"
+            rev.innerHTML = "Thu"
+            profit.innerHTML = "Lợi nhuận"
+            await changeWhenClick(from, to, type24,"expense",exp.name,
+            rev.name,
+            exp.name,
+            profit.name,
+            rev.innerHTML,
+            exp.innerHTML,
+            profit.innerHTML
+            )
         }
-        document.getElementById("total_th").onclick = async function() {
-            if (document.getElementById("total_th").name == "normal" || document.getElementById("total_th").name == "desc") {
-                document.getElementById("total_th").name = "asc"
-                document.getElementById("total_th").innerHTML = "Lợi nhuận ^"
+        profit.onclick = async function() {
+            if (profit.name == "normal" || profit.name == "desc") {
+                profit.name = "asc"
+                profit.innerHTML = "Lợi nhuận 	&uarr;"
             }
             else {
-                document.getElementById("total_th").name = "desc"
-                document.getElementById("total_th").innerHTML = "Lợi nhuận v"
+                profit.name = "desc"
+                profit.innerHTML = "Lợi nhuận 	&darr;"
             }
-            document.getElementById("revenue_th").name = "normal"
-            document.getElementById("expense_th").name = "normal"
-            document.getElementById("revenue_th").innerHTML = "Thu"
-            document.getElementById("expense_th").innerHTML = "Lợi nhuận"
-            await changeWhenClick(from, to, type24,"profit",document.getElementById("total_th").name)
+            rev.name = "normal"
+            exp.name = "normal"
+            rev.innerHTML = "Thu"
+            exp.innerHTML = "Chi"
+            await changeWhenClick(from, to, type24,"profit",profit.name,
+            rev.name,
+            exp.name,
+            profit.name,
+            rev.innerHTML,
+            exp.innerHTML,
+            profit.innerHTML)
         }
         setUpSum()
         document.getElementById("body-stat").innerHTML = body
         setUpSum()
     }
-    async function changeWhenClick(from, to, type24, orderby_ref, direct) {
+    async function changeWhenClick(from, to, type24, orderby_ref, direct,revenue_status = "normal", expense_status = "normal", profit_status = "normal", revenue_content = "Thu", expense_content = "Chi", profit_content = "Lợi nhuận") {
         sum1 = 0
         sum2 = 0
         orderby = orderby_ref
         direction = direct
-        await statisticProdUI(from, to, type24)
+        await statisticProdUI(from, to, type24,revenue_status, expense_status, profit_status, revenue_content, expense_content, profit_content)
     }
     function LocaleDateFix(dateStr) {
         try {

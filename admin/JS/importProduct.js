@@ -600,7 +600,7 @@ function Stuff(id, name, amount, size, price, color) {
 
 }
 
-function InputProdct(idStaff, note) {
+function InputProduct(idStaff, note) {
     this.idStaff = idStaff
     this.note = note
 }
@@ -699,23 +699,19 @@ function removeStuff(idandidSize) {
 
 //     return 'NHAP' + String(maxID + 1).padStart(4, '0')
 // }
-function InputProduct(idLogin, note) {
-    this.idStaff = idLogin
-    this.note = note
-}
+
 async function inputProd(detail) {
     let note = document.getElementById("note").value
     let user = await getCurrentUser()
-    let inp = new InputProduct(idLogin, note)
+    let input = new InputProduct(idLogin, note)
     let Stuff = detail
-    let data = new FormData()
-    data.append("InputProduct[]", inp.idStaff)
-    data.append("InputProduct[]", inp.note)
-    let dataDetail = to_form_data(detail)
-    for (var pair of dataDetail.entries()) {
-        data.append(pair[0], pair[1]);
-    }
-    alert(await post(data,'./Server/input_product/input_product.php'))
+    let data = {InputProduct: input, Stuff: detail, id_user: user.id_user, password: user.password}
+    // let dataDetail = to_form_data(detail)
+    // for (var pair of dataDetail.entries()) {
+    //     data.append(pair[0], pair[1]);
+    // }
+    let data_json = JSON.stringify(data)
+    alert(await post(data_json,'./Server/input_product/input_product.php'))
     // addProdInStock(inp.id, detail)
     // data.input_product.push(inp.toJSON)
     // localStorage.setItem("data", JSON.stringify(data))

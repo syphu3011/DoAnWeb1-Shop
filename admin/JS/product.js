@@ -109,8 +109,8 @@ document.getElementById("close2").onclick = function () {
 document.getElementById("close3").onclick = function () {
     document.getElementById("detail_pro").style.visibility = "hidden";
     document.getElementById("dialog4").style.display = "none";
-    document.getElementById("amount-table").innerHTML = "";
-    document.getElementById("type-div").innerHTML = "";
+    // document.getElementById("amount-table").innerHTML = "";
+    // document.getElementById("type-div").innerHTML = "";
 };
 
 function switch_image(x) {
@@ -1209,22 +1209,22 @@ function fillDetail(id) {
     document.getElementById("detail-id").value = prod.id;
     document.getElementById("detail-name").value = prod.name;
     document.getElementById("detail-made-in").value = prod.made_in;
-    let table_amount = document.getElementById("amount-table");
+    // let table_amount = document.getElementById("amount-table");
     let thead = document.createElement("thead");
     let tr1 = document.createElement("tr");
     tr1.innerHTML = `<td>Size</td>` + `<td>Số lượng</td>`;
     thead.appendChild(tr1);
-    table_amount.appendChild(thead);
-    sizeAr.forEach((element, index) => {
-        let tbody = document.createElement("tbody");
-        let tr = document.createElement("tr");
-        tr.innerHTML =
-            `<td>` + element + `</td>` + `<td>` + amountAr[index] + `</td>`;
-        tbody.appendChild(tr);
-        table_amount.appendChild(tbody);
-    });
-    document.getElementById("type-div").innerHTML +=
-        "<p>" + prod.clasify[0] + "</p>";
+    // table_amount.appendChild(thead);
+    // sizeAr.forEach((element, index) => {
+    //     let tbody = document.createElement("tbody");
+    //     let tr = document.createElement("tr");
+    //     tr.innerHTML =
+    //         `<td>` + element + `</td>` + `<td>` + amountAr[index] + `</td>`;
+    //     tbody.appendChild(tr);
+    //     table_amount.appendChild(tbody);
+    // });
+    // document.getElementById("type-div").innerHTML +=
+    //     "<p>" + prod.clasify[0] + "</p>";
     document.getElementById("image-div1").innerHTML = "";
     document.getElementById("txt-detail-product").textContent =
         prod.description;
