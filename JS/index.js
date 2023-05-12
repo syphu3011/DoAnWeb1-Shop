@@ -1047,10 +1047,13 @@ class Product {
 }
 
 function ttGioHang(thanhtoansp) {
-    document.getElementById("btn_pay").onclick = function () {};
+    document.getElementById("btn_pay").onclick = function () {
+        
+    };
     console.log("ttGioHang", thanhtoansp);
     document.getElementById("body_product_table").innerHTML = "";
     console.log(product_in_cart);
+    var product_to_pay=new Array()
     for (let i = 0; i < thanhtoansp.product_is_selected.length; i++) {
         let product_is_select = product_in_cart.find(
             (product) =>
@@ -1063,6 +1066,7 @@ function ttGioHang(thanhtoansp) {
             product_is_select.amount,
             product_is_select.price
         );
+        product_to_pay.push(product)
         console.log(product);
         document.getElementById("body_product_table").innerHTML +=
             `<tr class="product-row">
