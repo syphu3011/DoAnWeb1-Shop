@@ -49,7 +49,13 @@ async function setNameStaff() {
 
   let data = to_form_data(current)
   let data_response = await get(data, './Server/homepage/homepage.php')
-  let name_staff = data_response[0].name
+  let name_staff = ""
+  if (data_response.length > 0) {
+    name_staff = data_response[0].name
+  }
+  else {
+    name_staff = "Không tên"
+  }
   document.getElementById("name-staff").innerHTML = name_staff
 }
 setNameStaff()
