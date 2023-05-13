@@ -80,13 +80,10 @@ document.getElementById("add_type").onclick = function () {
     AddOptionSelect()
 };
 
-// document.getElementById("accept").onclick = function () {
-//     document.getElementById("add_type_pro").style.display = "none";
-//     CloseDialog33();
 
-// };
 document.getElementById("close5").onclick = function () {
     document.getElementById("add_type_pro").style.display = "none";
+     document.getElementById("type-select").innerHTML=` `
     CloseDialog33();
 };
 
@@ -102,11 +99,18 @@ function AddOptionSelect(){
 } 
 
 async function AddtypeToServer(){
-    let nametype = document.getElementById("type_name").value;
+    let nametype = document.getElementById("type_name").value.trim();
     let type = document.getElementById("type-select").value.toUpperCase();
     let gender =document.querySelector('input[name="gender-cls"]:checked').value
     let id=removeAccents(nametype).replaceAll(' ','').toUpperCase()
-    let current_user = getCurrentUser();
+    if(id.indexOf("AO")==-1){
+        id= "AO"+id
+    }
+    if( nametype=""){
+        alert(" Tên loại không được bỏ trống")
+    }
+    else{
+        let current_user = getCurrentUser();
     let data_post_server = {
         id_user: current_user.id_user,
         password: current_user.password,
@@ -120,8 +124,12 @@ async function AddtypeToServer(){
         form_data,
         "./Server/classify/create_classify.php"
     ));
+    document.getElementById("type-select").innerHTML=` `
     document.getElementById("add_type_pro").style.display = "none";
     CloseDialog33();
+    FillClassify();
+    }
+    
 }
 
 function removeAccents(str) {
@@ -141,7 +149,7 @@ function removeAccents(str) {
       "YỲỶỸÝỴ"    
     ];
     for (var i=0; i<AccentsMap.length; i++) {
-      var re = new RegExp('[' + AccentsMap[i].substr(1) + ']', 'g');
+      var re = new RegExp('[' + AccentsMap[i].substring(1) + ']', 'g');
       var char = AccentsMap[i][0];
       str = str.replace(re, char);
     }
