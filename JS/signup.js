@@ -254,34 +254,34 @@ function Checkavai() {
             birthday.value
         )
     ) {
-        if (checkSamePassword(password_regis.value, same_passwd.value)) {
-            if (checkDate(birthday.value)) {
-                // let customer = new Customer(
-                //     firstName.value.trim() + " " + lastName.value.trim(),
-                //     number_phone.value.trim(),
-                //     username.value.trim(),
-                //     password_regis.value,
-                //     sex,
-                //     birthday.value)
-                // if (checkSDT(number_phone.value)==false
-                // || checkUSR(username.value)==false) {
-                //     showacc(signup, 0, 1200)
-                //     setTimeout(() => {
-                //         signup.style.display = ""
-                //         account.style.display = ""
-                //     }, 450);
-                // } else {
-                //     alert("Tài khoản đã tồn tại")
-                //     flag=false;
-                // }
-            } else {
-                alert("Ngày sinh không hợp lệ");
-                flag = false;
-            }
-        } else {
-            alert("Bạn đã nhập 2 mật khẩu không giống nhau!");
-            flag = false;
-        }
+        // if (checkSamePassword(password_regis.value, same_passwd.value)) {
+        //     if (checkDate(birthday.value)) {
+        //         // let customer = new Customer(
+        //         //     firstName.value.trim() + " " + lastName.value.trim(),
+        //         //     number_phone.value.trim(),
+        //         //     username.value.trim(),
+        //         //     password_regis.value,
+        //         //     sex,
+        //         //     birthday.value)
+        //         // if (checkSDT(number_phone.value)==false
+        //         // || checkUSR(username.value)==false) {
+        //         //     showacc(signup, 0, 1200)
+        //         //     setTimeout(() => {
+        //         //         signup.style.display = ""
+        //         //         account.style.display = ""
+        //         //     }, 450);
+        //         // } else {
+        //         //     alert("Tài khoản đã tồn tại")
+        //         //     flag=false;
+        //         // }
+        //     } else {
+        //         alert("Ngày sinh không hợp lệ");
+        //         flag = false;
+        //     }
+        // } else {
+        //     alert("Bạn đã nhập 2 mật khẩu không giống nhau!");
+        //     flag = false;
+        // }
     } else {
         alert("Không được bỏ trống bất cứ thông tin nào!");
         flag = false;
