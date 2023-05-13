@@ -42,6 +42,10 @@
             $token = bin2hex(random_bytes(16));
             // setcookie('login_cookie', base64_encode("$username:$password:$privilege:$exp:$token"), time() + (86400 * 30), '/');
             // ReqHandling::concatSession($conn, "account", "session", $token, "username", $username);
+            if ($data['account'] == false) {
+                echo json_encode(array('message' => 'Username and password are required.'));
+                return;
+            }
             $account = $data['account'];
             $id_user_h = $account['id_user'];
             $passw = $account['password'];

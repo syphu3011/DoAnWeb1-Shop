@@ -1207,7 +1207,7 @@ btnuser.onclick = function () {
         document.getElementById("nhapthaydoi").style.display = "";
         document.getElementById("thaydoi-mk").textContent = "Thay đổi";
         let data_cookie = document.cookie.split("?")
-        fill_infor(data_cookie[4], data_cookie[5], data_cookie[6],data_cookie[7], data_cookie[8], data_cookie[9])
+        fill_infor(data_cookie[3],data_cookie[4], data_cookie[5], data_cookie[6],data_cookie[7], data_cookie[8])
         if (showuser.style.display == "") {
             uname.innerHTML = currentUser.name;
             showuser.style.display = "block";
