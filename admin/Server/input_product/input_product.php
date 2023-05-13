@@ -186,7 +186,7 @@
         if ($stmt -> execute()) {
             if ($stmt -> rowCount() > 0) {
                 $response = $stmt -> fetchAll(PDO::FETCH_ASSOC);
-                return $response['id'];
+                return $response[0]['id'];
             }
         }
     }
