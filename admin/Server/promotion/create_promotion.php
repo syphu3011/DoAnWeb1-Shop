@@ -4,7 +4,8 @@
         require_once('../same_function.php');
         $data_from_client = json_decode(file_get_contents('php://input'), true);
         $username = $data_from_client["user"]["username"];
-        if (check_privilege($username,$conn,'them','promotion')) {
+        $password = $data_from_client["user"]["password"];
+        if (check_privilege($username, $password,$conn,'them','promotion')) {
             try {
                 require_once('../../../init.php');
                 $conn->beginTransaction();

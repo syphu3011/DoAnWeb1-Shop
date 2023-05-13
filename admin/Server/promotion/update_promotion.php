@@ -3,8 +3,9 @@
         require_once("../../../init.php");
         require_once('./same_function_product.php');
         require_once('../same_function.php');
-        $username = $_POST["user"]["username"];
-        if (check_privilege($username,$conn,$action,'promotion')) {
+        $username = $_POST["username"];
+        $password = $_POST["password"];
+        if (check_privilege($username, $password,$conn,$action,'promotion')) {
             try {
                 require_once('../../../init.php');
                 $conn->beginTransaction();

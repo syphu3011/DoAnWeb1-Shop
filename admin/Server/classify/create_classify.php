@@ -14,10 +14,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (check_id($conn, $id)) {
                 if (check_name($conn, $name)) {
                     $conn -> beginTransaction();
-                    $query = 'INSERT INTO classify (id, name, id_big_classify, gender) VALUES (:id, :name, :id_big_classify, :gender)';
+                    $query = 'INSERT INTO classify (id, `name`, id_big_classify, gender) VALUES (:id, :name_class, :id_big_classify, :gender)';
                     $stmt = $conn -> prepare($query);
                     $stmt -> bindParam(':id', $id);
-                    $stmt -> bindParam(':name', $name);
+                    $stmt -> bindParam(':name_class', $name);
                     $stmt -> bindParam(':id_big_classify', $big_classify);
                     $stmt -> bindParam(':gender', $gender);
                     if ($stmt -> execute()) {

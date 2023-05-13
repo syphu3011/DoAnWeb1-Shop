@@ -167,6 +167,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 
 				if (isset($_POST["id_staff"]))
 					$id_staff = $_POST["id_staff"];
+
 				
 				unset($_POST["id"]);
 				unset($_POST["id_receipt"]);
@@ -199,7 +200,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 
 				try {
 					if (isset($_POST["id_status"])) 
-						ReqHandling::updateDb($conn, "receipt", $id, "id_status", $tempArr);
+					ReqHandling::updateDb($conn, "receipt", $id, "id_status", $tempArr);
 					ReqHandling::updateDb($conn, "receipt", $id, "date_confirm", $today);
 					if (isset($_POST["id_staff"]))
 						ReqHandling::updateDb($conn, "receipt", $id, "id_staff", $id_staff);
