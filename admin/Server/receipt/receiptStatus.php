@@ -189,10 +189,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 				try {
 					ReqHandling::updateDb($conn, "receipt", $id, "id_status", $tempArr);
 					ReqHandling::updateDb($conn, "receipt", $id, "date_confirm", $today);
-<<<<<<< HEAD
-=======
 					ReqHandling::updateDb($conn, "receipt", $id, "id_staff", $id_staff);
->>>>>>> 115ad4d7adf440eaf2067cfc444a3df47c50cec0
 				} catch (Exception $e) {
 					Table::json_fire_exception($e);
 					exit();
