@@ -20,7 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Cơ sở dữ liệu: `shop`
 --
-
+CREATE database shop;
+use shop;
 -- --------------------------------------------------------
 
 --

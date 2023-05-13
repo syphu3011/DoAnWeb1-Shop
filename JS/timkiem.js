@@ -25,6 +25,7 @@ function callback_search(params) {
         min_value_silder,
         params
     );
+    // color_pagination(params)
     // document.getElementById("main_label_result").innerHTML = "Kết quả";
 }
 document.getElementById(`refine`).onclick = function () {

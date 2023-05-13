@@ -250,8 +250,10 @@ function create_filter(params) {
     //
     // Thanh chọn loại sản phẩm
 }
+let page_page = 0;
 function pagination(data) {
-    console.log(123134123542)
+    // console.log(data);
+    // console.log(123134123542)
     // document.getElementById('main').innerHTML+=
     let tag_a = ``;
     for (
@@ -270,6 +272,7 @@ function pagination(data) {
     let btn = document.getElementsByClassName("button_pagination");
     for (let i = 0; i < btn.length; i++) {
         btn[i].onclick = function () {
+            page_page = i;
             console.log(btn[i].id);
             if (localStorage.getItem("current_page") == "is_search") {
                 callback_search(btn[i].id);
@@ -287,6 +290,7 @@ function pagination(data) {
             }
         };
     }
+    color_pagination(page_page);
 }
 function create_Homepage(data_res) {
     // //Theo loại
@@ -579,7 +583,13 @@ function create_Homepage(data_res) {
     }
 }
 let screen = "";
-function color_pagination(index) {}
+function color_pagination(index) {
+    let btn = document.getElementsByClassName("button_pagination");
+    for (let i = 0; i < btn.length; i++) {
+        btn[i].style.borderColor = "black";
+    }
+    btn[index].style.borderColor = "red";
+}
 function show_more(page) {
     getDataFromServer(
         "./Server/list_product_by_large_classify.php",
@@ -593,6 +603,7 @@ function show_more(page) {
             console.log(respone);
             create(respone);
             detail_product();
+            // color_pagination(page)
             // pagination(respone);
         }
     );

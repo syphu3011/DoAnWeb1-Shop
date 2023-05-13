@@ -750,6 +750,7 @@ function choice_type_product(gender, page) {
                 function (respone) {
                     console.log(respone);
                     create_main_onclick_classify(respone);
+                    // color_pagination(page)
                 }
             );
         };
