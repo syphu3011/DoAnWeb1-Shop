@@ -190,7 +190,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 
 				try {
 					if (isset($_POST["id_status"])) 
-						ReqHandling::updateDb($conn, "receipt", $id, "id_status", $tempArr);
+					ReqHandling::updateDb($conn, "receipt", $id, "id_status", $tempArr);
 					ReqHandling::updateDb($conn, "receipt", $id, "date_confirm", $today);
 					ReqHandling::updateDb($conn, "receipt", $id, "id_staff", $id_staff);
 				} catch (Exception $e) {

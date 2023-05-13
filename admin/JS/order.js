@@ -190,8 +190,7 @@ function ConfirmOrder(x) {
         $.ajax({
             url: "./Server/receipt/receiptStatus.php?action=update",
             method: "POST",
-            
-            data:( {
+            data:JSON.stringify( {
                 id_receipt:x,
                 status: "Đã xác nhận",
                 id_staff: "NV001"
@@ -233,10 +232,11 @@ function CancelOrder(x) {
     $.ajax({
         url: "./Server/receipt/receiptStatus.php?action=update",
         method: "POST",
-        data:JSON.stringify( {
+        data: {
             id_receipt: x,
-            status: "Đã hủy"
-        }),
+            status: "Đã hủy",
+            id_staff: "NV001"
+        },
         success: function (response) {
             alert("Hủy đơn hàng thành công");
             RefreshFillOrder()

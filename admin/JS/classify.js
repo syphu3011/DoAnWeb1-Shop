@@ -102,16 +102,20 @@ async function AddtypeToServer(){
     let nametype = document.getElementById("type_name").value.trim();
     let type = document.getElementById("type-select").value.toUpperCase();
     let gender =document.querySelector('input[name="gender-cls"]:checked').value
-    let id=removeAccents(nametype).replaceAll(' ','').toUpperCase()
-    if(id.indexOf("AO")==-1){
-        id= "AO"+id
-    }
+    let id = nametype
+    console.log(nametype)
+    id = removeAccents(id).replaceAll(' ','').toUpperCase()
+    console.log(id)
+    
     if( nametype=""){
         alert(" Tên loại không được bỏ trống")
     }
     else{
+        if(id.indexOf("AO")==-1){
+            id= "AO"+id
+        }
         let current_user = getCurrentUser();
-    let data_post_server = {
+        let data_post_server = {
         id_user: current_user.id_user,
         password: current_user.password,
         name: nametype,
