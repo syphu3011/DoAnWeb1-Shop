@@ -281,6 +281,7 @@ function changeToPrivilege() {
 function changeToStaff() {
   hideCurrent();
   appearDiv(document.getElementById("bgr-nv"));
+  renderTable1();
 }
 
 function changeToSize() {
