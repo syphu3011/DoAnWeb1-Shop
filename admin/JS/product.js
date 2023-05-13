@@ -123,7 +123,7 @@ function switch_default(x) {
     x.src = "Image/add.png";
 }
 //Tìm kiếm
-let btn_filter = document.getElementById("filter");
+// let btn_filter = document.getElementById("filter");
 function createSelect(data1, id) {
     let select = document.createElement("select");
     select.id = id;
@@ -161,7 +161,7 @@ function eventCloseFilter(e) {
     if (
         !checkClickClose &&
         !filterBack.contains(e.target) &&
-        !btn_filter.contains(e.target) &&
+        
         !dialog.contains(e.target) &&
         !typebox.contains(e.target)
     ) {
@@ -265,7 +265,7 @@ function openFilter() {
     addEventToSelectFilter();
     window.addEventListener("click", eventCloseFilter);
 }
-btn_filter.onclick = openFilter;
+// btn_filter.onclick = openFilter;
 //thêm  sản phẩm
 let ar = {
     product: [
@@ -390,8 +390,10 @@ function fillEdit(prod) {
 }
 
 async function fillProd(product = null) {
-    await refreshData();
-    product = obj.product;
+    if (product == null) {
+        await refreshData();
+        product = obj.product;
+    }
     let table = document.getElementById("table-prod");
     table.innerHTML = "";
     let row_head = document.createElement("tr");
@@ -1244,112 +1246,114 @@ function fillDetail(id) {
 document.getElementById("lookup-btn").onclick = findProdAction;
 
 async function findProdAction() {
-    let idOrName = type9[parseInt(type9[type9.length - 1])]
-        .toLowerCase()
-        .trim();
-    let madein = made_in[parseInt(made_in[made_in.length - 1])]
-        .toLowerCase()
-        .trim();
-    let amountString = amount[parseInt(amount[amount.length - 1])]
-        .toLowerCase()
-        .trim()
-        .replace("trở lên", "")
-        .replaceAll(" ", "")
-        .replaceAll("k", "")
-        .split("-");
-    // let status = statuss[parseInt(statuss[statuss.length - 1])]
+    // let idOrName = type9[parseInt(type9[type9.length - 1])]
     //     .toLowerCase()
     //     .trim();
+    // let madein = made_in[parseInt(made_in[made_in.length - 1])]
+    //     .toLowerCase()
+    //     .trim();
+    // let amountString = amount[parseInt(amount[amount.length - 1])]
+    //     .toLowerCase()
+    //     .trim()
+    //     .replace("trở lên", "")
+    //     .replaceAll(" ", "")
+    //     .replaceAll("k", "")
+    //     .split("-");
+    // // let status = statuss[parseInt(statuss[statuss.length - 1])]
+    // //     .toLowerCase()
+    // //     .trim();
 
-    // status = status == "tất cả" ? "" : status;
-    // if (status == "đang bán") {
-    //     status = "1";
-    // } else if (status == "hết hàng") {
-    //     status = "0";
+    // // status = status == "tất cả" ? "" : status;
+    // // if (status == "đang bán") {
+    // //     status = "1";
+    // // } else if (status == "hết hàng") {
+    // //     status = "0";
+    // // }
+    // idOrName = idOrName == "tất cả" ? "" : idOrName;
+    // madein = madein == "tất cả" ? "" : madein;
+
+    // let nameAndId = document.getElementById("inp-lookup").value;
+    // let arProd = [];
+    // if (amountString.length < 2) {
+    //     try {
+    //         let min = parseInt(amountString[0]);
+    //         let max = parseInt(amountString[1]);
+    //         console.log(min != null);
+
+    //         if (min != null && !isNaN(min) && max != null && !isNaN(max)) {
+    //             arProd = findProd(
+    //                 idOrName,
+    //                 nameAndId,
+    //                 nameAndId,
+    //                 madein,
+    //                 min,
+    //                 max,
+    //                 tag_type_find
+    //             );
+    //         } else {
+    //             if (min != null && !isNaN(min)) {
+    //                 arProd = findProd(
+    //                     idOrName,
+    //                     nameAndId,
+    //                     nameAndId,
+    //                     madein,
+    //                     min,
+    //                     9999999999,
+    //                     tag_type_find
+    //                 );
+    //             }
+    //             else if (max != null && !isNaN(max)) {
+    //                 arProd = findProd(
+    //                     idOrName,
+    //                     nameAndId,
+    //                     nameAndId,
+    //                     madein,
+    //                     0,
+    //                     max,
+    //                     tag_type_find
+    //                 );
+    //             }
+    //             else {
+    //                 arProd = findProd(
+    //                     idOrName,
+    //                     nameAndId,
+    //                     nameAndId,
+    //                     madein,
+    //                     0,
+    //                     9999999999,
+    //                     tag_type_find
+    //                 );
+    //             }
+    //         }
+    //     } catch (e) {
+    //         arProd = findProd(
+    //             idOrName,
+    //             nameAndId,
+    //             nameAndId,
+    //             madein,
+    //             0,
+    //             9999999999,
+    //             tag_type_find
+    //         );
+    //     }
+    // } else {
+    //     arProd = findProd(
+    //         idOrName,
+    //         nameAndId,
+    //         nameAndId,
+    //         madein,
+    //         parseInt(amountString[0]),
+    //         parseInt(amountString[1]),
+    //         status,
+    //         tag_type_find
+    //     );
     // }
-    idOrName = idOrName == "tất cả" ? "" : idOrName;
-    madein = madein == "tất cả" ? "" : madein;
-
-    let nameAndId = document.getElementById("inp-lookup").value;
-    let arProd = [];
-    if (amountString.length < 2) {
-        try {
-            let min = parseInt(amountString[0]);
-            let max = parseInt(amountString[1]);
-            console.log(min != null);
-
-            if (min != null && !isNaN(min) && max != null && !isNaN(max)) {
-                arProd = findProd(
-                    idOrName,
-                    nameAndId,
-                    nameAndId,
-                    madein,
-                    min,
-                    max,
-                    tag_type_find
-                );
-            } else {
-                if (min != null && !isNaN(min)) {
-                    arProd = findProd(
-                        idOrName,
-                        nameAndId,
-                        nameAndId,
-                        madein,
-                        min,
-                        9999999999,
-                        tag_type_find
-                    );
-                }
-                else if (max != null && !isNaN(max)) {
-                    arProd = findProd(
-                        idOrName,
-                        nameAndId,
-                        nameAndId,
-                        madein,
-                        0,
-                        max,
-                        tag_type_find
-                    );
-                }
-                else {
-                    arProd = findProd(
-                        idOrName,
-                        nameAndId,
-                        nameAndId,
-                        madein,
-                        0,
-                        9999999999,
-                        tag_type_find
-                    );
-                }
-            }
-        } catch (e) {
-            arProd = findProd(
-                idOrName,
-                nameAndId,
-                nameAndId,
-                madein,
-                0,
-                9999999999,
-                tag_type_find
-            );
-        }
-    } else {
-        arProd = findProd(
-            idOrName,
-            nameAndId,
-            nameAndId,
-            madein,
-            parseInt(amountString[0]),
-            parseInt(amountString[1]),
-            status,
-            tag_type_find
-        );
-    }
+    let nameOrId = document.getElementById("inp-lookup").value.toLowerCase()
+    let arProd = obj.product.filter(e => e.id.toLowerCase().includes(nameOrId) || e.name.toLowerCase().includes(nameOrId))
     await fillProd(arProd);
 }
 
-function findProd(
+async function findProd(
     idOrName,
     id,
     name,
@@ -1375,6 +1379,18 @@ function findProd(
             }
         }
     });
+    // let currentUser = await getCurrentUser()
+    // if (idOrName == "") {
+    //     let datapost = {
+    //         id_user: currentUser.id_user,
+    //         password: currentUser.password,
+    //         id: id,
+    //         name: name,
+    //         made_in: made_in,
+    //         min_price: 
+    //     }
+    //     arProd = await get()
+    // }
     return arProd;
 }
 
