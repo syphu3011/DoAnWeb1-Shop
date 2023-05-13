@@ -197,11 +197,11 @@ function CheckIDS(id){
 // ham them du lieu ap
 async function themKichThuocAo(){
     //them id, name, type, detail o day
-    let tenKichThuoc = document.getElementById("tenKichThuoc").value;
+    let tenKichThuoc = document.getElementById("tenKichThuoc").value.trim();
     let id =`AO`+tenKichThuoc
-    let soDoBung = document.getElementById("soDoBung").value;
-    let soDoLung = document.getElementById("soDoLung").value;
-    let chieuDaiTay = document.getElementById("chieuDaiTay").value;
+    let soDoBung = document.getElementById("soDoBung").value.trim();
+    let soDoLung = document.getElementById("soDoLung").value.trim();
+    let chieuDaiTay = document.getElementById("chieuDaiTay").value.trim();
     if(tenKichThuoc==""||soDoBung==""||soDoLung==""||chieuDaiTay==""){
         alert("Cần nhập đủ thông tin")
     }
@@ -223,13 +223,13 @@ async function themKichThuocAo(){
 async function themKichThuocQuan(){
     //them id, name, type, detail o day
     let table = document.getElementById("myTable2");
-    let tenKichThuoc = document.getElementById("tenKichThuoc").value;
+    let tenKichThuoc = document.getElementById("tenKichThuoc").value.trim();
     let id = `QU` + tenKichThuoc
     
-    let soDoVongDui = document.getElementById("soDoVongDui").value;
-    let soDoVongChan = document.getElementById("soDoVongChan").value;
-    let chieuDaiChan = document.getElementById("chieuDaiChan").value;
-    let soDoMong = document.getElementById("soDoMong").value;
+    let soDoVongDui = document.getElementById("soDoVongDui").value.trim();
+    let soDoVongChan = document.getElementById("soDoVongChan").value.trim();
+    let chieuDaiChan = document.getElementById("chieuDaiChan").value.trim();
+    let soDoMong = document.getElementById("soDoMong").value.trim();
     if(tenKichThuoc==""||soDoVongChan==""||soDoVongDui==""||chieuDaiChan==""||soDoMong==""){
         alert("Cần nhập đủ thông tin")
     }
