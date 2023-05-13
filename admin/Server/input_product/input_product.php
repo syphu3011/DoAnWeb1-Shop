@@ -43,6 +43,40 @@
                 $stmt->bindParam(':id_staff', $id_staff);
                 $stmt->bindParam(':note', $note);
                 $stmt->execute();
+                // Xử lý thêm và cập nhật hàng
+
+                // Phân loại
+                $array_insert = array();
+                $array_update = array();
+                $query_check_exist = 
+                    "SELECT *
+                    FROM product_list
+                    WHERE id_product = :idProd 
+                    and id_size = :idSize 
+                    and id_color = :idColor";
+                $stmt = $conn->prepare($query_check_exist);
+                foreach($data_post['Stuff'] as $prod_list) {
+                    $stmt->bindParam(':idProd', $prod_list['idProd']);
+                    $stmt->bindParam(':idSize', $prod_list['idSize']);
+                    $stmt->bindParam(':idColor', $prod_list['idColor']);
+                    $stmt->execute();
+                    if ($stmt->rowCount() > 0) {
+                        array_push($array_update, $prod_list);
+                    }
+                    else {
+                        array_push($array_insert, $prod_list);
+                    }
+                }
+
+                    //Thêm vào danh sách sản phẩm chưa có
+                $stmt = $conn->prepare($query_insert_product_list);
+                foreach($array_insert as $prod_list_insert) {
+                    // $stmt->bindParam(':price', $prod_list_insert['price']);
+                    $stmt->bindParam(':idProd', $prod_list_insert['idProd']);
+                    $stmt->bindParam(':idSize', $prod_list_insert['idSize']);
+                    $stmt->bindParam(':idColor', $prod_list_insert['idColor']);
+                    $stmt->execute();
+                }
                 // Xử lý thêm chi tiết
                 $stmt = $conn->prepare($query_import_detail);
                 foreach($data_post['Stuff'] as $import_product) {
@@ -73,7 +107,7 @@
                     $id_prod = $import_product['idProd'];
                     $id_size = $import_product['idSize'];
                     $id_color = $import_product['idColor'];
-                    $amount['amount'];
+                    $amount = $import_product['amount'];
                     $price = $import_product['price'];
                     $stmt->bindParam(':idInput', $id_input);
                     $stmt->bindParam(':idProd', $id_prod);
@@ -81,40 +115,6 @@
                     $stmt->bindParam(':idColor', $id_color);
                     $stmt->bindParam(':amount', $amount);
                     $stmt->bindParam(':price', $price);
-                    $stmt->execute();
-                }
-                // Xử lý thêm và cập nhật hàng
-
-                    // Phân loại
-                $array_insert = array();
-                $array_update = array();
-                $query_check_exist = 
-                    "SELECT *
-                    FROM product_list
-                    WHERE id_product = :idProd 
-                    and id_size = :idSize 
-                    and id_color = :idColor";
-                $stmt = $conn->prepare($query_check_exist);
-                foreach($data_post['InputProduct'] as $prod_list) {
-                    $stmt->bindParam(':idProd', $prod_list['idProd']);
-                    $stmt->bindParam(':idSize', $prod_list['idSize']);
-                    $stmt->bindParam(':idColor', $prod_list['idColor']);
-                    $stmt->execute();
-                    if ($stmt->rowCount() > 0) {
-                        array_push($array_update, $prod_list);
-                    }
-                    else {
-                        array_push($array_insert, $prod_list);
-                    }
-                }
-
-                    //Thêm vào danh sách sản phẩm chưa có
-                $stmt = $conn->prepare($query_insert_product_list);
-                foreach($array_insert as $prod_list_insert) {
-                    // $stmt->bindParam(':price', $prod_list_insert['price']);
-                    $stmt->bindParam(':idProd', $prod_list_insert['idProd']);
-                    $stmt->bindParam(':idSize', $prod_list_insert['idSize']);
-                    $stmt->bindParam(':idColor', $prod_list_insert['idColor']);
                     $stmt->execute();
                 }
                 //     //Cập nhật danh sách sản phẩm
@@ -126,7 +126,7 @@
                 //     $stmt->bindParam(':idColor', $prod_list_update['idColor']);
                 //     $stmt->execute();
                 // }
-                echo 'Đã nhập hàng thành công! Mã nhập hàng là '.$data_post['InputProduct']['id'];
+                echo 'Đã nhập hàng thành công! Mã nhập hàng là '.$id_input;
                 $conn->commit();
             }
         } catch (Exception $e) {
@@ -154,8 +154,8 @@
     function insert_color($hexColor, $conn) {
         try {
             $query_insert_color = "
-            INSERT INTO `color`(`id`, `name`)
-            VALUES (:id, ' ')
+            INSERT INTO `color`(`id`)
+            VALUES (:id)
             ";
             $stmt_insert_color = $conn -> prepare($query_insert_color);
             $stmt_insert_color -> bindParam(":id", $hexColor);

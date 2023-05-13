@@ -98,7 +98,6 @@ async function updateListID() {
             } 
             selected.innerText = li.innerHTML
             selected.value = choosing ? type + li.innerHTML : li.innerHTML
-            let product = await getProduct()
             let selected_product = product.filter(e => 
                 e.id == selected.value
                 )[0]
@@ -199,29 +198,22 @@ function openImportPage() {
     back_import.style.visibility = "visible";
     back_import.style.opacity = "1"
     let input_id = document.getElementById("input-id")
-    input_id.onchange = async function() {
-        let two_first_letter = input_id.innerText.substring(0,2)
+    input_id.onchange = function() {
+        let two_first_letter = input_id.value.substring(0,2)
         if (two_first_letter.toUpperCase().includes("AO")) {
-            await updateListSize("AO")
+            updateListSize("AO")
         } else if (two_first_letter.toUpperCase().includes("QU")) {
-            await updateListSize("QU")
+            updateListSize("QU")
         } 
     }
-    input_id.onblur = async function() {
-        if (!is_click_on_select) {
+    input_id.onblur = async function(){
+        if (await checkId(input_id) == true) {
             let product = await getProduct()
-            product = Array.from(product)
-            let check_correct = false
-            for (e of product) {
-                if (e.id == input_id.innerText) {
-                    check_correct = true
-                    break
-                }
-            }
-            if (!check_correct) {
-                alert("Bạn phải nhập đúng ID!");
-                // input_id.focus()
-            }
+            let selected_product = product.filter(e => 
+                e.id == input_id.value.toUpperCase()
+                )[0]
+            let name_input = document.getElementById("inp-name-product") 
+            name_input.value = selected_product.name
         }
     }
     let inpColor = document.getElementById("inp-color")
@@ -229,6 +221,23 @@ function openImportPage() {
         if (!reg_color.test(inpColor.value.toLowerCase())) {
             alert("Màu sắc chưa đúng định dạng!")
         }
+    }
+}
+async function checkId(input_id) {
+    if (!is_click_on_select) {
+        let product = await getProduct()
+        product = Array.from(product)
+        let check_correct = false
+        for (e of product) {
+            if (e.id == input_id.value.toUpperCase()) {
+                check_correct = true
+                break
+            }
+        }
+        if (!check_correct) {
+            alert("Bạn phải nhập đúng ID!");
+        }
+        return check_correct
     }
 }
 let submit_import = document.getElementById("submit-import")
@@ -741,9 +750,9 @@ async function eventImport() {
     // let total_price = price * amount
     let color = document.getElementById("inp-color").value
 
-    if (checkPriceInOut()) {
+    // if (checkPriceInOut()) {
 
-    }
+    // }
     if (id == "") {
         alert("ID không được bỏ trống")
     } else {
@@ -754,6 +763,17 @@ async function eventImport() {
                 alert("Giá nhập không được bỏ trống")
             } else {
                 if (checkNumber(amount)) {
+                    if (await checkId(document.getElementById("input-id")) == false){
+                        return
+                    }
+                    if (color == "") {
+                        alert("Không được bỏ trống mã màu!")
+                        return
+                    }
+                    if (!reg_color.test(color)) {
+                        alert("Màu sắc chưa đúng định dạng!")
+                        return
+                    }
                     if (checkNumber(price)) {
                         let st = new Stuff(id, name, amount, size, price, color)
                         let haveInit = false
