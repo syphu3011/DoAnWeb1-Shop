@@ -625,7 +625,7 @@ function sukien(data_product) {
     }
 }
 btncart.onclick = function () {
-    if (currentUser != null) {
+    if (document.cookie != "" && document.cookie != ".") {
         create_cart_from_server();
         // getDataFromServer(
         //     "./Server/get_cart_byID.php",
