@@ -172,7 +172,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 				unset($_POST["id"]);
 				unset($_POST["id_receipt"]);
 				
-				if (!isset($_POST["status"])) {
+				if (!isset($_POST["status"]) && !isset($_POST["id_staff"])) {
 					echo json_encode(
 						array(
 							"message" => "Vui lòng thêm status cần sửa. (status)"
@@ -180,14 +180,17 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 					);
 					exit();
 				}
-				if (isset($_POST["id_status"]))  {
+				if (isset($_POST["status"]))  {
 					$tempArr = Table::tableQueryPropertyWithColSel($conn, "status_receipt", "name", $_POST["status"], "id");
-					$tempArr = $tempArr[0]["id"];
+					$id_status = $tempArr[0]["id"];
+					// echo json_encode(
+					// 	$tempArr, JSON_UNESCAPED_UNICODE
+					// );
 				}
-				if (isset($_REQUEST["id_status"]))  {
-					$tempArr = Table::tableQueryPropertyWithColSel($conn, "status_receipt", "name", $_REQUEST["status"], "id");
-					$tempArr = $tempArr[0]["id"];
-				}
+				// if (isset($_REQUEST["id_status"]))  {
+				// 	$tempArr = Table::tableQueryPropertyWithColSel($conn, "status_receipt", "name", $_REQUEST["status"], "id");
+				// 	$tempArr = $tempArr[0]["id"];
+				// }
 
 				date_default_timezone_set('Asia/Ho_Chi_Minh');
 				$today = gmdate('Y-m-d H:i:s', time());
@@ -199,8 +202,8 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 				// * h : format 12h
 
 				try {
-					if (isset($_POST["id_status"])) 
-					ReqHandling::updateDb($conn, "receipt", $id, "id_status", $tempArr);
+					if (isset($_POST["status"])) 
+						ReqHandling::updateDb($conn, "receipt", $id, "id_status", $id_status);
 					ReqHandling::updateDb($conn, "receipt", $id, "date_confirm", $today);
 					if (isset($_POST["id_staff"]))
 						ReqHandling::updateDb($conn, "receipt", $id, "id_staff", $id_staff);
