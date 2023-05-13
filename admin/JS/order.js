@@ -22,13 +22,13 @@ function RefreshFillOrder(){
         get_DataProd(),get_DataStaffOr()])
        .then(function(results) {
     
-        //  console.log(results[0]); // receipt
+         console.log(results[0]); // receipt
         //  console.log(results[1]); // customer
         //  console.log(results[2]); // detail_receipt
         //  console.log(results[3]); // product
-        console.log(results[4]);
+        // console.log(results[4]);
          FillOrder();
-         console.log(getCurrentUser())
+        //  console.log(getCurrentUser())
        })
        .catch(function(error) {
          
@@ -70,7 +70,6 @@ async function get_DataProd() {
     let current_user = getCurrentUser()
         data_server = to_form_data(current_user);
         productOr = await get(data_server,'./Server/product/products.php')
-        console.log(productOr)
         if (productOr == errors) {
             block_access('Bạn không có quyền truy cập vào sản phẩm!')
             return
@@ -432,25 +431,25 @@ function CloseDialog1() {
 document.getElementById("detail").onclick = function() {
     document.getElementById("order").style.display = 'none';
     document.getElementById("order_h").style.display = 'block';
-    // if(document.getElementById("date-confirm-first").value==""||
-    // document.getElementById("date-confirm-last").value==""){
+    if(document.getElementById("date-confirm-first").value==""||
+    document.getElementById("date-confirm-last").value==""){
         FillHistory()
-    // }
-    // else{
-    //     timtheokhoangLS()
-    // }
+    }
+    else{
+        timtheokhoangLS()
+    }
     
 };
 document.getElementById("page_order").onclick = function() {
     document.getElementById("order").style.display = 'block';
     document.getElementById("order_h").style.display = 'none';
-    // if(document.getElementById("date-init-first").value==""||
-    // document.getElementById("date-init-last").value==""){
+    if(document.getElementById("date-init-first").value==""||
+    document.getElementById("date-init-last").value==""){
         FillOrder()
-    // }
-    // else{
-    //     timtheokhoang()
-    // }
+    }
+    else{
+        timtheokhoang()
+    }
     
     
 };
@@ -890,9 +889,9 @@ function timtheokhoangLS() {
     }
     else{
         if (check2D(ngayBD, ngayKT)) {
-            for(var i=0; i<length2;i++) {
-                let date = detail_receipt[i].date_confirm_receipt.split(" ")[0]
-                if (check2D(ngayBD, date) &&
+            for(var i=0; i<length1;i++) {
+                let date = receipt[i].date_confirm.split(" ")[0]
+                if (check2D(ngayBD,date) &&
                     check2D(date, ngayKT) &&
                     receipt[i].id_status != "TT09"
                 ) {

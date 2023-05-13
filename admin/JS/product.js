@@ -1511,7 +1511,7 @@ function FillPrice() {
             GetNameProduct(listProd[i].id_product) +
             `</td>
             <td>` +
-            listProd[i].id_size.substring(2) +
+            listProd[i].id_size +
             `</td>
             <td><input type="color" value="` +
             color +

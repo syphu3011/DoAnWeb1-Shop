@@ -68,6 +68,22 @@ document.getElementById("product").onmouseleave = function () {
     document.getElementById("product").style.display = "";
     mouse_enter_gender_product = "";
 };
+function initCurrentUser() {
+    if (document.cookie == "" || document.cookie == ".") {
+        currentUser = ""
+        return
+    }
+    let data_cookie = document.cookie.split("?")
+    currentUser = {
+        id: data_cookie[3],
+        name: data_cookie[4],
+        numberphone: data_cookie[5],
+        birthday: data_cookie[6],
+        gender: data_cookie[7],
+        image: data_cookie[8],
+    }
+}
+initCurrentUser()
 function getCurrentDate() {
     function formatNumber(number) {
         return number < 10 ? "0" + number : number;
@@ -1181,6 +1197,7 @@ document.getElementById("thanh-toan").onclick = function (e) {
     }
 };
 btnuser.onclick = function () {
+    initCurrentUser()
     document.getElementById("passwd").value = "";
     if (document.cookie != "" && document.cookie != ".") {
         document.getElementById("mkm").value = "";
@@ -1189,7 +1206,7 @@ btnuser.onclick = function () {
         tdmk = false;
         document.getElementById("nhapthaydoi").style.display = "";
         document.getElementById("thaydoi-mk").textContent = "Thay đổi";
-        let data_cookie = response.cookie.split(":")
+        let data_cookie = document.cookie.split("?")
         fill_infor(data_cookie[4], data_cookie[5], data_cookie[6],data_cookie[7], data_cookie[8], data_cookie[9])
         if (showuser.style.display == "") {
             uname.innerHTML = currentUser.name;
