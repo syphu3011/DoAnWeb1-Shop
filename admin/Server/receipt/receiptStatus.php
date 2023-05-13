@@ -158,24 +158,34 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 			try {
 				$receiptArr = Table::describe($conn, "receipt");
 				$statusArr = Table::describe($conn, "status_receipt");
+
 				if (isset($_POST["id"])) 
-				$id = $_POST["id"];
+					$id = $_POST["id"];
+
 				if (isset($_POST["id_receipt"])) 
-				$id = $_POST["id_receipt"];
+					$id = $_POST["id_receipt"];
+
+				if (isset($_POST["id_staff"]))
+					$id_staff = $_POST["id_staff"];
+
 				
 				unset($_POST["id"]);
 				unset($_POST["id_receipt"]);
 				
-				// if (!isset($_POST["status"])) {
-				// 	echo json_encode(
-				// 		array(
-				// 			"message" => "Vui lòng thêm status cần sửa. (status)"
-				// 		), JSON_UNESCAPED_UNICODE
-				// 	);
-				// 	exit();
-				// }
+				if (!isset($_POST["status"])) {
+					echo json_encode(
+						array(
+							"message" => "Vui lòng thêm status cần sửa. (status)"
+						), JSON_UNESCAPED_UNICODE
+					);
+					exit();
+				}
 				if (isset($_POST["id_status"]))  {
 					$tempArr = Table::tableQueryPropertyWithColSel($conn, "status_receipt", "name", $_POST["status"], "id");
+					$tempArr = $tempArr[0]["id"];
+				}
+				if (isset($_REQUEST["id_status"]))  {
+					$tempArr = Table::tableQueryPropertyWithColSel($conn, "status_receipt", "name", $_REQUEST["status"], "id");
 					$tempArr = $tempArr[0]["id"];
 				}
 
@@ -192,7 +202,8 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 					if (isset($_POST["id_status"])) 
 					ReqHandling::updateDb($conn, "receipt", $id, "id_status", $tempArr);
 					ReqHandling::updateDb($conn, "receipt", $id, "date_confirm", $today);
-					ReqHandling::updateDb($conn, "receipt", $id, "id_staff", $id_staff);
+					if (isset($_POST["id_staff"]))
+						ReqHandling::updateDb($conn, "receipt", $id, "id_staff", $id_staff);
 				} catch (Exception $e) {
 					Table::json_fire_exception($e);
 					exit();

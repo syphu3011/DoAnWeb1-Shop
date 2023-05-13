@@ -22,10 +22,10 @@ class ReqHandling {
 			$conn->beginTransaction();
 			$query = "UPDATE " . $tableName . " SET " . $property . " = '" . $value . "'" 
 				. " WHERE id = " . "'" . $id . "'";
-			echo json_encode(
-				array("query" => $query), 
-				JSON_UNESCAPED_UNICODE
-			);
+			// echo json_encode(
+			// 	array("query" => $query), 
+			// 	JSON_UNESCAPED_UNICODE
+			// );
 			
 			$query_statement = $conn->prepare($query);
 			$query_statement->execute();
