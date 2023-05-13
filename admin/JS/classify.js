@@ -3,7 +3,7 @@ async function FillClassify(){
     let current_user = getCurrentUser()
     data_server = to_form_data(current_user);
     obj33 = await get(data_server,'./Server/product/products.php')
-    console.log(obj);
+    console.log(obj33);
     let tagtable = document.getElementById("myTable33")
     for (let i = tagtable.rows.length - 1; i > 0; i--)
         tagtable.deleteRow(i);
@@ -91,11 +91,11 @@ document.getElementById("close5").onclick = function () {
 
 function AddOptionSelect(){
     let select = document.getElementById("type-select")
-    let option = document.createElement("option")
-    for(let i; i<obj33.length;i++){
-        option.appendChild(document.createTextNode(obj33.largeClassify[i]))
-        option.value =obj33.largeClassify[i];
-        select.append(option)
+    for(let i=0; i<obj33.largeClassify.length;i++){
+        let option = document.createElement("option")
+        option.appendChild(document.createTextNode(obj33.largeClassify[i].id))
+        option.value =obj33.largeClassify[i].id;
+        select.appendChild(option)
     }
     
 } 
