@@ -1182,13 +1182,15 @@ document.getElementById("thanh-toan").onclick = function (e) {
 };
 btnuser.onclick = function () {
     document.getElementById("passwd").value = "";
-    if (currentUser != null) {
+    if (document.cookie != "" && document.cookie != ".") {
         document.getElementById("mkm").value = "";
         document.getElementById("xnmkm").value = "";
         document.getElementById("mkht").value = "";
         tdmk = false;
         document.getElementById("nhapthaydoi").style.display = "";
         document.getElementById("thaydoi-mk").textContent = "Thay đổi";
+        let data_cookie = response.cookie.split(":")
+        fill_infor(data_cookie[4], data_cookie[5], data_cookie[6],data_cookie[7], data_cookie[8], data_cookie[9])
         if (showuser.style.display == "") {
             uname.innerHTML = currentUser.name;
             showuser.style.display = "block";
