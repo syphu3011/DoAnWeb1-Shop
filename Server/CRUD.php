@@ -101,7 +101,10 @@ class CRUD
     {
         $sql = "SELECT id, account.id_user, name, username,`password`, birthday, numberphone, gender 
         FROM account, customer 
-        WHERE username = ? AND password = ?  AND privilege = 'customer' AND customer.id_user = customer.id_user
+        WHERE username = ? AND 
+        password = ?  AND 
+        privilege = 'customer' AND 
+        account.id_user = customer.id_user
         ";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$username, $password]);
