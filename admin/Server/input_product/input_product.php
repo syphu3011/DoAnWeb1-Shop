@@ -104,11 +104,11 @@
                 // Xử lý thêm hàng vào kho
                 $stmt = $conn->prepare($query_product_in_stock);
                 foreach($data_post['Stuff'] as $prod_in_stock) {
-                    $id_prod = $import_product['idProd'];
-                    $id_size = $import_product['idSize'];
-                    $id_color = $import_product['idColor'];
-                    $amount = $import_product['amount'];
-                    $price = $import_product['price'];
+                    $id_prod = $prod_in_stock['idProd'];
+                    $id_size = $prod_in_stock['idSize'];
+                    $id_color = $prod_in_stock['idColor'];
+                    $amount = $prod_in_stock['amount'];
+                    $price = $prod_in_stock['price'];
                     $stmt->bindParam(':idInput', $id_input);
                     $stmt->bindParam(':idProd', $id_prod);
                     $stmt->bindParam(':idSize', $id_size);

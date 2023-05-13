@@ -2466,3 +2466,6 @@ function fillReceipt(receipt) {
         }
     };
 }
+window.addEventListener('popstate', function(event) {
+    this.document.cookie = "."
+})

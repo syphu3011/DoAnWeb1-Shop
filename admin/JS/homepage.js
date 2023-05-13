@@ -23,11 +23,23 @@ current_staff = d;
 // }
 // GetDataUs("USR001");
 function checkLogin() {
-  let cookie = document.cookie
+  let split_cookie = document.cookie.split(";")
+  let cookie = ""
+  if (split_cookie.length >= 2) {
+    for (let m_cookie of split_cookie) {
+      if (m_cookie.includes("admin")) {
+        cookie = m_cookie
+        break
+      }
+    }
+  }
+  else {
+    cookie = document.cookie
+  }
   if (cookie == "" || cookie == ".") {
     location.href = "./sign_in.html"
   }
-  let whoyou = cookie.split(":")
+  let whoyou = cookie.split("?")
   if (whoyou.length >= 3) {
     whoyou = whoyou[2]
     if (whoyou == "customer") {
@@ -322,7 +334,7 @@ const fromm = location.href.indexOf(startPath)
 let relativePath = location.href.slice(fromm);
 const firstPath = location.href.slice(0, fromm)
 const fullPathPage = firstPath+startPathPage
-function runOnLoad() {
+async function runOnLoad() {
   switch (relativePath) {
     case startPathPage+"sanpham":
       changeToProduct()
