@@ -14,17 +14,17 @@ require('../../../init.php');
 
 function showPropertyOfFILES() {
 	foreach ($_FILES["fileToUpload"] as $key => $value) {
-		echo $key . " " . $value . "</br>";
+		// echo $key . " " . $value . "</br>";
 	}
 }
 
 function updateOnDb($conn, $tableName, $id, $property, $value) {
 		$query = "UPDATE " . $tableName . " SET " . $property . " = '" . $value . "'" 
 			. " WHERE id = " . "'" . $id . "'";
-		echo $query . "</br>";
+		// echo $query . "</br>";
 		$query_statement = $conn->prepare($query);
 		$query_statement->execute();
-		echo $id . "</br>";
+		// echo $id . "</br>";
 }
 
 function updateImage($conn){

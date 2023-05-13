@@ -123,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 		if ($_REQUEST["action"] === "create"){
 
 			if (isset($_REQUEST["id"])) {
-				echo "You don't need to provide ID for creating new record. Id auto-increasing is available. ";
+				echo json_encode(array("message" => "You don't need to provide ID for creating new record. Id auto-increasing is available. "), JSON_UNESCAPED_UNICODE);
 				exit();
 			}
 
@@ -164,7 +164,7 @@ if ($_SERVER["REQUEST_METHOD"] === "PUT") {
 	$data = json_decode(file_get_contents('php://input'), true);
 
 	if (!isset($data["id_user"])) {
-		echo "Please specify the id_user of ACCOUNT for deleting.";
+		echo json_encode(array("message" => "Please specify the id_user of ACCOUNT for deleting."), JSON_UNESCAPED_UNICODE);
 		exit();
 	}
 
