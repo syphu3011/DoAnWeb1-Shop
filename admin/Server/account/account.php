@@ -103,7 +103,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
 		ReqHandling::deleteRowWithProperty($conn, $tableName, "id_user", $_REQUEST["id_user"]);
 		exit();
 	} else {
-		echo "Please specify your id_user for erasion." . "</br>" ;
+		$message = "Please specify your id_user for erasion." ;
+		echo json_encode(
+			array("message" => $message), 
+			JSON_UNESCAPED_UNICODE
+		);
 	}
 }
 
