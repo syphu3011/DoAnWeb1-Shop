@@ -1,6 +1,7 @@
 
 
 let receipt
+let staffOr
 let detail_receipt
 let customer
 let productOr
@@ -8,6 +9,7 @@ let promotion
 let length1
 let length2
 let length3
+let length4
 
 document.getElementById("date-init-first").value="1971-01-01"
 document.getElementById("date-init-last").value=CurrentDate()
@@ -17,13 +19,14 @@ document.getElementById("date-confirm-last").value = CurrentDate()
 
 function RefreshFillOrder(){
     Promise.all([get_DataOrder(), get_DataCus(), get_DataDetailO(),
-        get_DataProd()])
+        get_DataProd(),get_DataStaffOr()])
        .then(function(results) {
     
         //  console.log(results[0]); // receipt
         //  console.log(results[1]); // customer
         //  console.log(results[2]); // detail_receipt
         //  console.log(results[3]); // product
+        console.log(results[4]);
          FillOrder();
          console.log(getCurrentUser())
        })
@@ -107,6 +110,28 @@ function get_DataDetailO() {
         }
       });
 }
+function get_DataStaffOr() {
+    return $.ajax({
+        url: './Server/staff/staff.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            staffOr = data;
+            length4 = staffOr.length
+        },
+        error: function(xhr, status, error) {
+          console.error(error);
+        }
+      });
+}
+
+function GetIdStaff(name){
+    for(let i=0; i<length4;i++){
+        if(staffOr[i].username==name){
+            return staffOr[i].id 
+        }
+    }
+}
 
 function calculated(price) {
     if (price !== null) {
@@ -187,14 +212,15 @@ function ConfirmOrder(x) {
     }
   
     if (temp == CountProd(x)) {
-      
+        let user=getCurrentUser()
+        let id = GetIdStaff(user.id_user)
         $.ajax({
             url: "./Server/receipt/receiptStatus.php?action=update",
             method: "POST",
             data:{
                 id_receipt:x,
                 status: "Đã xác nhận",
-                id_staff: "NV001"
+                id_staff: id
             },
             success: function (response) {
                 console.log(response);
@@ -231,13 +257,15 @@ function ConfirmOrder(x) {
 // Hủy đơn
 
 function CancelOrder(x) {
+    let user=getCurrentUser()
+    let id = GetIdStaff(user.id_user)
     $.ajax({
         url: "./Server/receipt/receiptStatus.php?action=update",
         method: "POST",
         data: {
             id_receipt: x,
             status: "Đã hủy",
-            id_staff: "NV001"
+            id_staff: id
         },
         success: function (response) {
             alert("Hủy đơn hàng thành công");
