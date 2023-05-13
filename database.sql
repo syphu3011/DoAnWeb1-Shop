@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: localhost
--- Thời gian đã tạo: Th5 13, 2023 lúc 05:32 AM
--- Phiên bản máy phục vụ: 10.4.27-MariaDB
--- Phiên bản PHP: 8.2.0
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th5 13, 2023 lúc 07:31 AM
+-- Phiên bản máy phục vụ: 10.4.28-MariaDB
+-- Phiên bản PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -106,6 +106,7 @@ INSERT INTO `classify` (`id`, `name`, `image`, `id_big_classify`, `gender`) VALU
 ('AO', 'Áo', 'Link hỏi Phú', NULL, NULL),
 ('AOSOMI', 'Sơ mi', 'Link hỏi Phú', 'AO', 'nam'),
 ('AOTHUN', 'Áo Thun', 'Link hỏi Phú', 'AO', 'nam'),
+('AOTHUNCOCO', '', NULL, 'AO', 'nam'),
 ('QU', 'Quần', 'Link hỏi Phú', NULL, NULL),
 ('QUTAY', 'Quần Tây', 'Link hỏi Phú', 'QU', 'nam'),
 ('QUTHUN', 'Quần Thun', 'Link hỏi Phú', 'QU', 'nam');
@@ -118,7 +119,7 @@ INSERT INTO `classify` (`id`, `name`, `image`, `id_big_classify`, `gender`) VALU
 
 CREATE TABLE `color` (
   `id` varchar(7) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL
+  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -126,7 +127,6 @@ CREATE TABLE `color` (
 --
 
 INSERT INTO `color` (`id`, `name`) VALUES
-('#ffa3a3', NULL),
 ('#FFA500', 'cam'),
 ('#ffffff', 'Trắng'),
 ('#0000FF', 'Xanh dương'),
@@ -185,6 +185,8 @@ INSERT INTO `detail_import_coupon` (`id_import_coupon`, `id_product`, `id_color`
 ('NHAP001', 'AO00000001', '#000000', 'AOXL', 20, 280000),
 ('NHAP001', 'AO00000002', '#ffffff', 'AOS', 20, 350000),
 ('NHAP001', 'AO00000002', '#ffffff', 'AOXL', 20, 350000),
+('NHAP001', 'AO00000003', '#000000', 'AOXL', 20, 350000),
+('NHAP001', 'AO00000003', '#ffffff', 'AOXL', 20, 350000),
 ('NHAP001', 'AO00000009', '#000000', 'AOS', 90, 500000),
 ('NHAP001', 'AO00000009', '#ffffff', 'AOS', 90, 500000),
 ('NHAP001', 'AO00000010', '#ffffff', 'AOS', 90, 500000),
@@ -199,6 +201,8 @@ INSERT INTO `detail_import_coupon` (`id_import_coupon`, `id_product`, `id_color`
 ('NHAP002', 'AO00000014', '#000000', 'AOXL', 200, 150000),
 ('NHAP002', 'AO00000014', '#ffffff', 'AOXL', 200, 150000),
 ('NHAP002', 'AO00000015', '#ffffff', 'AOXL', 20, 150000),
+('NHAP002', 'AO00000016', '#000000', 'AOXL', 20, 150000),
+('NHAP002', 'AO00000016', '#ffffff', 'AOXL', 20, 150000),
 ('NHAP002', 'QU00000001', '#000000', 'QUS', 20, 500000),
 ('NHAP002', 'QU00000001', '#000000', 'QUXL', 20, 500000),
 ('NHAP002', 'QU00000002', '#ffffff', 'QUS', 20, 200000),
@@ -206,10 +210,7 @@ INSERT INTO `detail_import_coupon` (`id_import_coupon`, `id_product`, `id_color`
 ('NHAP002', 'QU00000003', '#FFA500', 'QUS', 20, 100000),
 ('NHAP002', 'QU00000003', '#000000', 'QUXL', 20, 100000),
 ('NHAP002', 'QU00000003', '#0000FF', 'QUXL', 20, 100000),
-('NHAP002', 'QU00000003', '#ffffff', 'QUXL', 20, 100000),
-('NHAP003', 'AO00000005', '#ffa3a3', 'AOS', 100, 400000),
-('NHAP004', 'AO00000005', '#ffa3a3', 'AOS', 100, 400000),
-('NHAP005', 'AO00000005', '#ffa3a3', 'AOS', 100, 400000);
+('NHAP002', 'QU00000003', '#ffffff', 'QUXL', 20, 100000);
 
 -- --------------------------------------------------------
 
@@ -329,13 +330,12 @@ INSERT INTO `image_product` (`id_product`, `link_image`, `name_image`) VALUES
 ('AO00000001', '1BSX911D.png', NULL),
 ('AO00000002', '0BSX1180HD.jpg', NULL),
 ('AO00000002', '1HX044-1.png', NULL),
-('AO00000003', '0button.png', NULL),
 ('AO00000003', '0fb497ee5-c439-5c00-c16c-00199f3193ae.jpg', NULL),
 ('AO00000003', '18482e445-557c-6300-d2b2-00199f31a58d.jpg', NULL),
-('AO00000003', '1car.png', NULL),
 ('AO00000004', '0WmGBjpW6kqs.png', NULL),
 ('AO00000004', '1world.png', NULL),
 ('AO00000004', '2Xác nhận khóa tài khoản.png', NULL),
+('AO00000008', '0dsc00963_1aa604e0498848c4aa43dfc5beb66844_master.png', NULL),
 ('AO00000009', '0ao_so_mi_nam_cong_so_caro_ngan_tay_meriman_ma_thmos365-02_18298b730733497181a54a6f69efa6e6_master.jpeg', NULL),
 ('AO00000009', '1ao_so_mi_nam_cong_so_caro_ngan_tay_meriman_ma_thmos365-03_672f01bc9c2a443f9b84b0a6bf1e9228_master.jpeg', NULL),
 ('AO00000009', '2ao_so_mi_nam_cong_so_caro_ngan_tay_meriman_ma_thmos365-04_ca728001f4144d28b462d681a5444a7f_master.jpeg', NULL),
@@ -359,12 +359,13 @@ INSERT INTO `image_product` (`id_product`, `link_image`, `name_image`) VALUES
 ('AO00000014', '1z4339232908505_d501b8a047115c392cd7d305dde82532.jpg', NULL),
 ('AO00000015', '0BSX923D.jpg', NULL),
 ('AO00000015', '1BSX923T.jpg', NULL),
+('AO00000016', '05ce5ccc3-ea5b-5200-bdd4-00199f30b721.jpg', NULL),
+('AO00000016', '1b48fcd29-6294-4b00-3ce8-00199f306ba4.jpg', NULL),
 ('QU00000001', '010f21pfo007_-_tannin_2__2.jpg', NULL),
 ('QU00000001', '110f21pfo007_-_real_black_1_2_1.jpg', NULL),
 ('QU00000001', '210s22pfo011_-_black_4__1.jpg', NULL),
 ('QU00000001', '310s22pfo011-lbrown-_4__1_2.jpg', NULL),
 ('QU00000002', '00b9bbd04-a2b0-5d01-5fb5-0019c5c03731.jpg', NULL),
-('QU00000002', '0BSX911T.png', NULL),
 ('QU00000002', '108df275b-fd6e-6001-f054-0019c5c03745.jpg', NULL),
 ('QU00000003', '0z4339186300095_9d95a8edec7408717c96b55ba1463664.jpg', NULL),
 ('QU00000003', '1z4339186300307_fe979a77041fcc0d11a23827e2f092a9.jpg', NULL);
@@ -387,11 +388,8 @@ CREATE TABLE `import_coupon` (
 --
 
 INSERT INTO `import_coupon` (`id`, `date_init`, `id_staff`, `note`) VALUES
-('NHAP001', '2023-02-11 00:00:00', 'NV005', NULL),
-('NHAP002', '2023-02-11 00:00:00', 'NV005', NULL),
-('NHAP003', '2023-05-13 04:56:09', 'NV005', ''),
-('NHAP004', '2023-05-13 04:56:19', 'NV005', ''),
-('NHAP005', '2023-05-13 05:00:25', 'NV005', '');
+('NHAP001', '2023-02-11 00:00:00', 'NV001', NULL),
+('NHAP002', '2023-02-11 00:00:00', 'NV001', NULL);
 
 -- --------------------------------------------------------
 
@@ -413,7 +411,13 @@ INSERT INTO `input_country` (`id`, `name`) VALUES
 ('ct002', 'Trung Quốc'),
 ('ct003', 'Hàn Quốc'),
 ('ct004', 'Nhật Bản'),
-('ct005', 'Úc');
+('ct005', 'Tất cả,Việt Nam,Trung Quốc,Singapore,0'),
+('ct006', 'ct005'),
+('ct007', 'ct006'),
+('ct008', 'ct007'),
+('ct009', 'ct008'),
+('ct010', 'ct009'),
+('ct011', 'Tất cả,0');
 
 -- --------------------------------------------------------
 
@@ -586,13 +590,15 @@ INSERT INTO `product` (`id`, `name`, `madein`, `description`, `idstatus`) VALUES
 ('AO00000002', 'Áo sơ mi ', 'ct002', 'Áo sơ mi sọc', 'TT01'),
 ('AO00000003', 'áo thun bông', 'ct001', '', 'TT01'),
 ('AO00000004', 'vcl', 'ct002', 'vip vcl', 'TT02'),
+('AO00000008', 'áo polo short black gray check', 'ct010', 'quá đẹp', 'TT01'),
 ('AO00000009', 'ao so mi xanh ', 'ct001', 'ao so mi', 'TT01'),
 ('AO00000010', 'áo sơ mi caro trắng sọc xanh', 'ct001', 'áo sơ mi nam', 'TT01'),
 ('AO00000011', 'áo thun đen nam', 'ct002', 'áo cotton', 'TT01'),
 ('AO00000012', 'áo thun mùa hè', 'ct002', 'áo thun nam cho mùa hè năng động', 'TT01'),
 ('AO00000013', 'ao thun hien dai', 'ct002', 'ao hien dai', 'TT01'),
 ('AO00000014', 'áo thun trơn', 'ct001', 'áo thun trơn', 'TT01'),
-('AO00000015', 'áo thun y', 'ct005', 'áo thun đẹp', 'TT01'),
+('AO00000015', 'áo thun y', 'ct001', 'áo thun đẹp', 'TT01'),
+('AO00000016', 'áo thun họa tiết', 'ct011', 'thun hoa tiết', 'TT01'),
 ('QU00000001', 'Quần tây', 'ct001', 'Quần tây dài', 'TT01'),
 ('QU00000002', 'Quần thun', 'ct002', 'Quần thun ngắn', 'TT01'),
 ('QU00000003', 'quần thun mùa hè', 'ct001', 'quàn thun nam mùa hè\r\n', 'TT01');
@@ -621,9 +627,11 @@ INSERT INTO `product_in_stock` (`id_import_coupon`, `id_product`, `id_size`, `id
 ('NHAP001', 'AO00000001', 'AOXL', '#000000', 20, 280000),
 ('NHAP001', 'AO00000002', 'AOS', '#ffffff', 20, 350000),
 ('NHAP001', 'AO00000002', 'AOXL', '#ffffff', 18, 350000),
+('NHAP001', 'AO00000003', 'AOXL', '#000000', 18, 350000),
+('NHAP001', 'AO00000003', 'AOXL', '#ffffff', 18, 350000),
 ('NHAP001', 'AO00000009', 'AOS', '#000000', 90, 500000),
 ('NHAP001', 'AO00000009', 'AOS', '#ffffff', 90, 500000),
-('NHAP001', 'AO00000011', 'AOS', '#000000', 200, 190000),
+('NHAP001', 'AO00000011', 'AOS', '#000000', 198, 190000),
 ('NHAP001', 'AO00000011', 'AOS', '#ffffff', 200, 190000),
 ('NHAP001', 'AO00000012', 'AOS', '#000000', 200, 150000),
 ('NHAP001', 'AO00000012', 'QUXL', '#000000', 200, 150000),
@@ -635,16 +643,15 @@ INSERT INTO `product_in_stock` (`id_import_coupon`, `id_product`, `id_size`, `id
 ('NHAP002', 'AO00000014', 'AOXL', '#ffffff', 20, 150000),
 ('NHAP002', 'AO00000015', 'AOXL', '#000000', 20, 150000),
 ('NHAP002', 'AO00000015', 'AOXL', '#ffffff', 20, 150000),
-('NHAP002', 'QU00000001', 'QUS', '#000000', 20, 500000),
+('NHAP002', 'AO00000016', 'AOXL', '#000000', 20, 150000),
+('NHAP002', 'AO00000016', 'AOXL', '#ffffff', 20, 150000),
+('NHAP002', 'QU00000001', 'QUS', '#000000', 18, 500000),
 ('NHAP002', 'QU00000001', 'QUXL', '#000000', 20, 500000),
 ('NHAP002', 'QU00000002', 'QUS', '#ffffff', 17, 200000),
 ('NHAP002', 'QU00000002', 'QUXL', '#ffffff', 18, 200000),
 ('NHAP002', 'QU00000003', 'QUS', '#FFA500', 20, 100000),
 ('NHAP002', 'QU00000003', 'QUXL', '#0000FF', 20, 100000),
-('NHAP002', 'QU00000003', 'QUXL', '#ffffff', 20, 100000),
-('NHAP003', 'AO00000005', 'AOS', '#ffa3a3', 100, 400000),
-('NHAP004', 'AO00000005', 'AOS', '#ffa3a3', 100, 400000),
-('NHAP005', 'AO00000005', 'AOS', '#ffa3a3', 100, 400000);
+('NHAP002', 'QU00000003', 'QUXL', '#ffffff', 20, 100000);
 
 -- --------------------------------------------------------
 
@@ -666,7 +673,8 @@ CREATE TABLE `product_list` (
 INSERT INTO `product_list` (`id_product`, `id_size`, `id_color`, `price`) VALUES
 ('AO00000001', 'AOS', '#000000', 320000),
 ('AO00000002', 'AOXL', '#ffffff', 500000),
-('AO00000005', 'AOS', '#ffa3a3', NULL),
+('AO00000003', 'AOXL', '#000000', 500000),
+('AO00000003', 'AOXL', '#ffffff', 500000),
 ('AO00000009', 'AOS', '#ffffff', 590000),
 ('AO00000010', 'AOS', '#ffffff', 400000),
 ('AO00000011', 'AOS', '#000000', 190000),
@@ -683,6 +691,8 @@ INSERT INTO `product_list` (`id_product`, `id_size`, `id_color`, `price`) VALUES
 ('AO00000014', 'AOXL', '#ffffff', 150000),
 ('AO00000015', 'AOXL', '#000000', 170000),
 ('AO00000015', 'AOXL', '#ffffff', 170000),
+('AO00000016', 'AOXL', '#000000', 170000),
+('AO00000016', 'AOXL', '#ffffff', 170000),
 ('QU00000001', 'QUS', '#000000', 560000),
 ('QU00000002', 'QUXL', '#ffffff', 240000),
 ('QU00000003', 'QUS', '#FFA500', 100000),
@@ -709,6 +719,7 @@ INSERT INTO `product_list_classify` (`id_product`, `id_classify`) VALUES
 ('AO00000002', 'AOSOMI'),
 ('AO00000003', 'AOSOMI'),
 ('AO00000004', 'AOSOMI'),
+('AO00000008', 'AOTHUN'),
 ('AO00000009', 'AOSOMI'),
 ('AO00000010', 'AOSOMI'),
 ('AO00000011', 'AOTHUN'),
@@ -716,6 +727,7 @@ INSERT INTO `product_list_classify` (`id_product`, `id_classify`) VALUES
 ('AO00000013', 'AOTHUN'),
 ('AO00000014', 'AOTHUN'),
 ('AO00000015', 'AOTHUN'),
+('AO00000016', 'AOTHUN'),
 ('QU00000001', 'QUTAY'),
 ('QU00000002', 'QUTHUN'),
 ('QU00000003', 'QUTHUN');
@@ -743,10 +755,10 @@ CREATE TABLE `promotion` (
 --
 
 INSERT INTO `promotion` (`id`, `name`, `image`, `content`, `discount_price`, `discount_percent`, `begin_date`, `finish_date`, `id_status`) VALUES
-('KM001', '0.25', NULL, 'Giảm 25%', NULL, '0.25', '2023-02-11 00:00:00', '2023-04-30 00:00:00', 'TT10'),
-('KM002', '0.35', NULL, 'Giảm 35%', NULL, '0.35', '2023-02-12 00:00:00', '2023-05-01 00:00:00', 'TT10'),
+('KM001', '0.25', NULL, 'Giảm 25%', NULL, 0.25, '2023-02-11 00:00:00', '2023-04-30 00:00:00', 'TT10'),
+('KM002', '0.35', NULL, 'Giảm 35%', NULL, 0.35, '2023-02-12 00:00:00', '2023-05-01 00:00:00', 'TT10'),
 ('KM003', '-200k', NULL, 'Giảm 200k', 200000, NULL, '2023-02-13 00:00:00', '2023-05-02 00:00:00', 'TT10'),
-('KM004', 'khuyến mãi cực sốc', '', 'djkhfjhkwefkjh', 200000, '0.20', '2023-11-30 00:00:00', '2024-11-30 00:00:00', 'TT10');
+('KM004', 'khuyến mãi cực sốc', '', 'djkhfjhkwefkjh', 200000, 0.20, '2023-11-30 00:00:00', '2024-11-30 00:00:00', 'TT10');
 
 -- --------------------------------------------------------
 
@@ -775,10 +787,10 @@ INSERT INTO `receipt` (`id`, `date_init`, `date_confirm`, `address`, `note`, `id
 ('HD002', '2023-02-12 00:00:00', '2023-02-12 00:00:00', '84/170 Phan Văn Trị, P.2, Q.5, TP.HCM', NULL, 'NV003', 'KH004', 'TT08'),
 ('HD003', '2023-05-12 10:11:36', '2023-05-12 12:54:13', 'hjgf', NULL, NULL, 'KH004', 'TT08'),
 ('HD004', '2023-05-12 10:14:27', '2023-05-12 12:54:15', 'đá', NULL, NULL, 'KH004', 'TT08'),
-('HD005', '2023-05-12 10:17:45', '2023-05-12 10:17:45', 'đá', NULL, NULL, 'KH004', 'TT09'),
-('HD006', '2023-05-12 10:18:39', '2023-05-12 10:18:39', 'đá', NULL, NULL, 'KH004', 'TT09'),
-('HD007', '2023-05-12 10:20:45', NULL, 'test mua', NULL, NULL, 'KH004', 'TT09'),
-('HD008', '2023-05-12 10:45:38', NULL, 'thth', NULL, NULL, 'KH004', 'TT09');
+('HD005', '2023-05-12 10:17:45', '2023-05-13 05:28:02', 'đá', NULL, 'NV001', 'KH004', 'TT08'),
+('HD006', '2023-05-12 10:18:39', '2023-05-13 05:29:36', 'đá', NULL, 'NV001', 'KH004', 'TT07'),
+('HD007', '2023-05-12 10:20:45', '2023-05-13 03:44:49', 'test mua', NULL, NULL, 'KH004', 'TT09'),
+('HD008', '2023-05-12 10:45:38', '2023-05-13 03:10:51', 'thth', NULL, NULL, 'KH004', 'TT09');
 
 -- --------------------------------------------------------
 

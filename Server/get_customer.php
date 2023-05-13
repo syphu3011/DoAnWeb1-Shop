@@ -25,11 +25,11 @@
                 );
             $id_user = $data["account"]["id_user"];
             $is_user = $data["account"]["privilege"];
-            if ($is_user === "customer") {
-                $data["customer"] = $rs_account->read_data_customer($conn, $id_user);
-            } else {
-                $data["staff"] = $rs_account->read_data_staff($conn, $id_user);
-            }
+            // if ($is_user === "customer") {
+            //     $data["customer"] = $rs_account->read_data_customer($conn, $id_user);
+            // } else {
+            //     $data["staff"] = $rs_account->read_data_staff($conn, $id_user);
+            // }
             // $response;
             $response = array(
                 'success' => $status,
@@ -42,7 +42,17 @@
             $token = bin2hex(random_bytes(16));
             // setcookie('login_cookie', base64_encode("$username:$password:$privilege:$exp:$token"), time() + (86400 * 30), '/');
             // ReqHandling::concatSession($conn, "account", "session", $token, "username", $username);
-            $cookie_string = "$username_form:$password_form:customer";
+            $account = $data['account'];
+            $id_user_ = $account['id_user'];
+            $passw = $account['password'];
+            $id_cus = $account['id'];
+            $name = $account['name'];
+            $numberphone = $account['numberphone'];
+            $birthday = $account['birthday'];
+            $gender = $account['gender'];
+            $image = $account['image'];
+            $cookie_string = "$id_user_:$passw:customer:$id:$name:$numberphone:$birthday:$gender:$image";
+            header('Content-Type: application/json; charset=utf-8');
             echo json_encode(array("message" => "Đăng nhập thành công. Đã tạo phiên đăng nhập mới.", "cookie" => $cookie_string, "success" => true, 'data' => $data,), JSON_UNESCAPED_UNICODE);
         } else {
             header("HTTP/1.1 400 Bad Request");

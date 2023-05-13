@@ -4,6 +4,8 @@ let arRemove = [];
 let prodToEdit;
 let checkClickClose = false;
 let countt = 0;
+//fill sản phẩm
+let obj = null;
 function arrayToString(arr) {
     let result;
     for (let i = 0; i < arr.length; i++) {
@@ -120,33 +122,8 @@ function switch_image(x) {
 function switch_default(x) {
     x.src = "Image/add.png";
 }
-
 //Tìm kiếm
-let btn_filter = document.getElementById("filter");
-let type9 = ["Tất cả", "ID", "Tên", "0"];
-let data_made_in = {input_country: obj.input_country}
-data_made_in.input_country.append("0")
-let made_in = data_made_in.input_country
-let price = [
-    "Tất cả",
-    "0 - 200k",
-    "200k - 400k",
-    "400k-600k",
-    "600k trở lên",
-    "0",
-];
-let amount = [
-    "Tất cả",
-    "0 - 100",
-    "101 - 300",
-    "301-600",
-    "601-900",
-    "901 trở lên",
-    "0",
-];
-let statuss = ["Tất cả", "Đang bán", "Hết hàng", "0"];
-let allFilter = [type9, made_in, amount, statuss];
-
+// let btn_filter = document.getElementById("filter");
 function createSelect(data1, id) {
     let select = document.createElement("select");
     select.id = id;
@@ -184,7 +161,7 @@ function eventCloseFilter(e) {
     if (
         !checkClickClose &&
         !filterBack.contains(e.target) &&
-        !btn_filter.contains(e.target) &&
+        
         !dialog.contains(e.target) &&
         !typebox.contains(e.target)
     ) {
@@ -193,8 +170,36 @@ function eventCloseFilter(e) {
     }
     checkClickClose = false;
 }
-
+let type9 = ["Tất cả", "ID", "Tên", "0"];
+let made_in = ["Tất cả", "0"]
+let price = ["Tất cả", "0"]
+let amount = ["Tất cả", "0"]
+let allFilter = []
 function openFilter() {
+    let data_made_in = ["Tất cả"]
+    obj.input_country.forEach(e => {
+        data_made_in.push(e.name)
+    })
+    data_made_in.push("0")
+    made_in = data_made_in
+    price = [
+        "Tất cả",
+        "0 - 200k",
+        "200k - 400k",
+        "400k-600k",
+        "600k trở lên",
+        "0",
+    ];
+    amount = [
+        "Tất cả",
+        "0 - 100",
+        "101 - 300",
+        "301-600",
+        "601-900",
+        "901 trở lên",
+        "0",
+    ];
+    allFilter = [type9, made_in, amount];
     let background_prod = document.getElementById("background-prod");
     let element = document.createElement("div");
     element.innerHTML =
@@ -219,12 +224,11 @@ function openFilter() {
                     <p class="text_find">Số lượng:</p>
                     ` +
         createSelect(amount, "amount") +
-        `
-                </div>
-                <div class="find_all1">
-                    <p class="text_find">Trạng thái:</p>
-                    ` +
-        createSelect(statuss, "status") +
+        // `
+        //         </div>
+        //         <div class="find_all1">
+        //             <p class="text_find">Trạng thái:</p>
+        //             ` +
         `
                 </div>
             </div>
@@ -261,7 +265,7 @@ function openFilter() {
     addEventToSelectFilter();
     window.addEventListener("click", eventCloseFilter);
 }
-btn_filter.onclick = openFilter;
+// btn_filter.onclick = openFilter;
 //thêm  sản phẩm
 let ar = {
     product: [
@@ -278,20 +282,18 @@ let ar = {
     ],
 };
 
-function toLocalStorage(setjson) {
-    localStorage.setItem("data", setjson);
-}
+// function toLocalStorage(setjson) {
+//     localStorage.setItem("data", setjson);
+// }
 
-function writeToLocalStorage(arr) {
-    const setjson = JSON.stringify(arr);
-    toLocalStorage(setjson);
-}
+// function writeToLocalStorage(arr) {
+//     const setjson = JSON.stringify(arr);
+//     toLocalStorage(setjson);
+// }
 // localStorage.clear()
 // writeToLocalStorage(ar)
 //data prod
 
-//fill sản phẩm
-let obj = null;
 
 function findSumAmount(id) {
     let amount = 0;
@@ -388,8 +390,10 @@ function fillEdit(prod) {
 }
 
 async function fillProd(product = null) {
-    await refreshData();
-    product = obj.product;
+    if (product == null) {
+        await refreshData();
+        product = obj.product;
+    }
     let table = document.getElementById("table-prod");
     table.innerHTML = "";
     let row_head = document.createElement("tr");
@@ -1242,97 +1246,120 @@ function fillDetail(id) {
 document.getElementById("lookup-btn").onclick = findProdAction;
 
 async function findProdAction() {
-    let idOrName = type9[parseInt(type9[type9.length - 1])]
-        .toLowerCase()
-        .trim();
-    let madein = made_in[parseInt(made_in[made_in.length - 1])]
-        .toLowerCase()
-        .trim();
-    let amountString = amount[parseInt(amount[amount.length - 1])]
-        .toLowerCase()
-        .trim()
-        .replace("trở lên", "")
-        .replaceAll(" ", "")
-        .replaceAll("k", "")
-        .split("-");
-    let status = statuss[parseInt(statuss[statuss.length - 1])]
-        .toLowerCase()
-        .trim();
+    // let idOrName = type9[parseInt(type9[type9.length - 1])]
+    //     .toLowerCase()
+    //     .trim();
+    // let madein = made_in[parseInt(made_in[made_in.length - 1])]
+    //     .toLowerCase()
+    //     .trim();
+    // let amountString = amount[parseInt(amount[amount.length - 1])]
+    //     .toLowerCase()
+    //     .trim()
+    //     .replace("trở lên", "")
+    //     .replaceAll(" ", "")
+    //     .replaceAll("k", "")
+    //     .split("-");
+    // // let status = statuss[parseInt(statuss[statuss.length - 1])]
+    // //     .toLowerCase()
+    // //     .trim();
 
-    status = status == "tất cả" ? "" : status;
-    if (status == "đang bán") {
-        status = "1";
-    } else if (status == "hết hàng") {
-        status = "0";
-    }
-    idOrName = idOrName == "tất cả" ? "" : idOrName;
-    madein = madein == "tất cả" ? "" : madein;
+    // // status = status == "tất cả" ? "" : status;
+    // // if (status == "đang bán") {
+    // //     status = "1";
+    // // } else if (status == "hết hàng") {
+    // //     status = "0";
+    // // }
+    // idOrName = idOrName == "tất cả" ? "" : idOrName;
+    // madein = madein == "tất cả" ? "" : madein;
 
-    let nameAndId = document.getElementById("inp-lookup").value;
-    let arProd = [];
-    if (amountString.length < 2) {
-        try {
-            let min = parseInt(amountString[0]);
-            console.log(min != null);
+    // let nameAndId = document.getElementById("inp-lookup").value;
+    // let arProd = [];
+    // if (amountString.length < 2) {
+    //     try {
+    //         let min = parseInt(amountString[0]);
+    //         let max = parseInt(amountString[1]);
+    //         console.log(min != null);
 
-            if (min != null && !isNaN(min)) {
-                arProd = findProd(
-                    idOrName,
-                    nameAndId,
-                    nameAndId,
-                    madein,
-                    min,
-                    9999999999,
-                    status,
-                    tag_type_find
-                );
-            } else {
-                arProd = findProd(
-                    idOrName,
-                    nameAndId,
-                    nameAndId,
-                    madein,
-                    0,
-                    9999999999,
-                    status,
-                    tag_type_find
-                );
-            }
-        } catch (e) {
-            arProd = findProd(
-                idOrName,
-                nameAndId,
-                nameAndId,
-                madein,
-                0,
-                9999999999,
-                status,
-                tag_type_find
-            );
-        }
-    } else {
-        arProd = findProd(
-            idOrName,
-            nameAndId,
-            nameAndId,
-            madein,
-            parseInt(amountString[0]),
-            parseInt(amountString[1]),
-            status,
-            tag_type_find
-        );
-    }
+    //         if (min != null && !isNaN(min) && max != null && !isNaN(max)) {
+    //             arProd = findProd(
+    //                 idOrName,
+    //                 nameAndId,
+    //                 nameAndId,
+    //                 madein,
+    //                 min,
+    //                 max,
+    //                 tag_type_find
+    //             );
+    //         } else {
+    //             if (min != null && !isNaN(min)) {
+    //                 arProd = findProd(
+    //                     idOrName,
+    //                     nameAndId,
+    //                     nameAndId,
+    //                     madein,
+    //                     min,
+    //                     9999999999,
+    //                     tag_type_find
+    //                 );
+    //             }
+    //             else if (max != null && !isNaN(max)) {
+    //                 arProd = findProd(
+    //                     idOrName,
+    //                     nameAndId,
+    //                     nameAndId,
+    //                     madein,
+    //                     0,
+    //                     max,
+    //                     tag_type_find
+    //                 );
+    //             }
+    //             else {
+    //                 arProd = findProd(
+    //                     idOrName,
+    //                     nameAndId,
+    //                     nameAndId,
+    //                     madein,
+    //                     0,
+    //                     9999999999,
+    //                     tag_type_find
+    //                 );
+    //             }
+    //         }
+    //     } catch (e) {
+    //         arProd = findProd(
+    //             idOrName,
+    //             nameAndId,
+    //             nameAndId,
+    //             madein,
+    //             0,
+    //             9999999999,
+    //             tag_type_find
+    //         );
+    //     }
+    // } else {
+    //     arProd = findProd(
+    //         idOrName,
+    //         nameAndId,
+    //         nameAndId,
+    //         madein,
+    //         parseInt(amountString[0]),
+    //         parseInt(amountString[1]),
+    //         status,
+    //         tag_type_find
+    //     );
+    // }
+    let nameOrId = document.getElementById("inp-lookup").value.toLowerCase()
+    let arProd = obj.product.filter(e => e.id.toLowerCase().includes(nameOrId) || e.name.toLowerCase().includes(nameOrId))
     await fillProd(arProd);
 }
 
-function findProd(
+async function findProd(
     idOrName,
     id,
     name,
     made_in,
     amountMin,
     amountMax,
-    status,
     classify
 ) {
     let arProd = [];
@@ -1345,7 +1372,6 @@ function findProd(
         ) {
             if (
                 checkStringFind(element.made_in, made_in) &&
-                checkStringFind(element.status, status) &&
                 checkAmount(element, amountMin, amountMax) &&
                 checkClassify(element, classify)
             ) {
@@ -1353,6 +1379,18 @@ function findProd(
             }
         }
     });
+    // let currentUser = await getCurrentUser()
+    // if (idOrName == "") {
+    //     let datapost = {
+    //         id_user: currentUser.id_user,
+    //         password: currentUser.password,
+    //         id: id,
+    //         name: name,
+    //         made_in: made_in,
+    //         min_price: 
+    //     }
+    //     arProd = await get()
+    // }
     return arProd;
 }
 

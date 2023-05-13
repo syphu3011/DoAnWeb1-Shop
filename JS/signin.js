@@ -114,7 +114,7 @@ document
                             console.log(response);
                             if (response.success) {
                                 if (response.message == "Đăng nhập thành công. Đã tạo phiên đăng nhập mới.") {
-                                    document.cookie["login"] = response.cookie
+                                    document.cookie = response.cookie
                                     currentUser = response.data.customer;
                                     showacc(signin, 0, 1200);
                                     setTimeout(() => {
@@ -127,7 +127,8 @@ document
                                         setTimeout(() => {$("#noti").css("display", "");}, 700);
                                     }, 450);
                                     // alert("Đăng nhập thành công!");
-                                    fill_infor( currentUser.id, currentUser.name, currentUser.numberphone, currentUser.birthday, currentUser.gender, currentUser.image
+                                    let data_cookie = response.cookie.split(":")
+                                    fill_infor(data_cookie[4], data_cookie[5], data_cookie[6],data_cookie[7], data_cookie[8], data_cookie[9]
                                     );
                                 } else {
                                     console.log("Bạn đang đăng nhập với vai trò nhân viên");

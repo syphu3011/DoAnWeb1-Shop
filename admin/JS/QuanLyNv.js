@@ -174,7 +174,7 @@ async function renderTable1() {
 
         // } else {
             if (arrNhanVien[i].status == "") arrNhanVien[i].status = "1";
-            let obj = arrNhanVien[i];
+            let nv = arrNhanVien[i];
             let row = table.insertRow();
             let cell0 = row.insertCell(0);
             let cell1 = row.insertCell(1);
@@ -186,14 +186,14 @@ async function renderTable1() {
             let cell7 = row.insertCell(7);
             let cell9 = row.insertCell(8);
 
-            cell0.innerHTML = obj.id;
-            cell1.innerHTML = obj.name;
-            cell2.innerHTML = obj.username;
-            cell3.innerHTML = obj.birthday;
-            cell4.innerHTML = obj.phone;
-            cell5.innerHTML = obj.date_created
-            cell6.innerHTML = obj.privilege;
-            cell7.innerHTML = obj.status;
+            cell0.innerHTML = nv.id;
+            cell1.innerHTML = nv.name;
+            cell2.innerHTML = nv.username;
+            cell3.innerHTML = nv.birthday;
+            cell4.innerHTML = nv.phone;
+            cell5.innerHTML = nv.date_created
+            cell6.innerHTML = nv.privilege;
+            cell7.innerHTML = nv.status;
             cell9.innerHTML = "<button style='font-size: 10px; margin: 1px 2px 1px 2px; border-radius: 2px;' onclick='sathai(this)'>sa thải</button>";
         // }
     }
@@ -204,7 +204,7 @@ function render_CheckBoxTable() {
     for (let i = table.rows.length - 1; i > 0; i--)
         table.deleteRow(i);
     for (let i = 0; i < arrNhanVien.length; i++) {
-        let obj = arrNhanVien[i];
+        let nv = arrNhanVien[i];
         let row = table.insertRow();
         let cell0 = row.insertCell(0);
         let cell1 = row.insertCell(1);
@@ -216,14 +216,14 @@ function render_CheckBoxTable() {
         let cell7 = row.insertCell(7);
         let cell9 = row.insertCell(8);
 
-        cell0.innerHTML = obj.id;
-        cell1.innerHTML = obj.name;
-        cell2.innerHTML = obj.username;
-        cell3.innerHTML = obj.birth_day;
-        cell4.innerHTML = obj.number_phone;
-        cell5.innerHTML = obj.date_created;
-        cell6.innerHTML = obj.privilege;
-        cell7.innerHTML = obj.status;
+        cell0.innerHTML = nv.id;
+        cell1.innerHTML = nv.name;
+        cell2.innerHTML = nv.username;
+        cell3.innerHTML = nv.birth_day;
+        cell4.innerHTML = nv.number_phone;
+        cell5.innerHTML = nv.date_created;
+        cell6.innerHTML = nv.privilege;
+        cell7.innerHTML = nv.status;
         cell9.innerHTML = "<input type='checkbox'>";
 
     }
@@ -327,8 +327,8 @@ function SearchNv() {
         for (let i = table.rows.length - 1; i > 0; i--)
             table.deleteRow(i);
         for (let i = 0; i < newArrNV.length; i++) {
-            let obj = newArrNV[i];
-            if (obj.status == "") continue;
+            let nv = newArrNV[i];
+            if (nv.status == "") continue;
             else {
                 let row = table.insertRow();
                 let cell0 = row.insertCell(0);
@@ -341,14 +341,14 @@ function SearchNv() {
                 let cell7 = row.insertCell(7);
                 let cell9 = row.insertCell(8);
 
-                cell0.innerHTML = obj.id;
-                cell1.innerHTML = obj.name;
-                cell2.innerHTML = obj.username;
-                cell3.innerHTML = obj.birth_day;
-                cell4.innerHTML = obj.number_phone;
-                cell5.innerHTML = obj.date_created;
-                cell6.innerHTML = obj.privilege;
-                cell7.innerHTML = obj.status;
+                cell0.innerHTML = nv.id;
+                cell1.innerHTML = nv.name;
+                cell2.innerHTML = nv.username;
+                cell3.innerHTML = nv.birth_day;
+                cell4.innerHTML = nv.number_phone;
+                cell5.innerHTML = nv.date_created;
+                cell6.innerHTML = nv.privilege;
+                cell7.innerHTML = nv.status;
                 cell9.innerHTML = "<button style='font-size: 10px; margin: 1px 2px 1px 2px; border-radius: 2px;' onclick='sathai(this)'>sa thải</button>";
             }
         }
@@ -363,8 +363,8 @@ function SearchNv() {
         for (let i = table.rows.length - 1; i > 0; i--)
             table.deleteRow(i);
         for (let i = 0; i < newArrNV.length; i++) {
-            let obj = newArrNV[i];
-            if (obj.status == "0") continue;
+            let nv = newArrNV[i];
+            if (nv.status == "0") continue;
             else {
                 let row = table.insertRow();
                 let cell0 = row.insertCell(0);
@@ -377,14 +377,14 @@ function SearchNv() {
                 let cell7 = row.insertCell(7);
                 let cell9 = row.insertCell(8);
 
-                cell0.innerHTML = obj.id;
-                cell1.innerHTML = obj.name;
-                cell2.innerHTML = obj.username;
-                cell3.innerHTML = obj.birth_day;
-                cell4.innerHTML = obj.number_phone;
-                cell5.innerHTML = obj.date_created;
-                cell6.innerHTML = obj.privilege;
-                cell7.innerHTML = obj.status;
+                cell0.innerHTML = nv.id;
+                cell1.innerHTML = nv.name;
+                cell2.innerHTML = nv.username;
+                cell3.innerHTML = nv.birth_day;
+                cell4.innerHTML = nv.number_phone;
+                cell5.innerHTML = nv.date_created;
+                cell6.innerHTML = nv.privilege;
+                cell7.innerHTML = nv.status;
                 cell9.innerHTML = "<button style='font-size: 10px; margin: 1px 2px 1px 2px; border-radius: 2px;' onclick='sathai(this)'>sa thải</button>";
             }
         }
@@ -399,8 +399,8 @@ function SearchNv() {
         for (let i = table.rows.length - 1; i > 0; i--)
             table.deleteRow(i);
         for (let i = 0; i < newArrNV.length; i++) {
-            let obj = newArrNV[i];
-            if (obj.status == "0") continue;
+            let nv = newArrNV[i];
+            if (nv.status == "0") continue;
             else {
                 let row = table.insertRow();
                 let cell0 = row.insertCell(0);
@@ -413,14 +413,14 @@ function SearchNv() {
                 let cell7 = row.insertCell(7);
                 let cell9 = row.insertCell(8);
 
-                cell0.innerHTML = obj.id;
-                cell1.innerHTML = obj.name;
-                cell2.innerHTML = obj.username;
-                cell3.innerHTML = obj.birth_day;
-                cell4.innerHTML = obj.number_phone;
-                cell5.innerHTML = obj.date_created
-                cell6.innerHTML = obj.privilege;
-                cell7.innerHTML = obj.status;
+                cell0.innerHTML = nv.id;
+                cell1.innerHTML = nv.name;
+                cell2.innerHTML = nv.username;
+                cell3.innerHTML = nv.birth_day;
+                cell4.innerHTML = nv.number_phone;
+                cell5.innerHTML = nv.date_created
+                cell6.innerHTML = nv.privilege;
+                cell7.innerHTML = nv.status;
                 cell9.innerHTML = "<button style='font-size: 10px; margin: 1px 2px 1px 2px; border-radius: 2px;' onclick='sathai(this)'>sa thải</button>";
             }
         }
