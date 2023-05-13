@@ -1,6 +1,11 @@
 // let firstName = document.getElementById("inp-firstname")
 // let lastName = document.getElementById("inp-lastname")
 let username = document.getElementById("inp-username");
+function isValidPhoneNumber(phoneNumber) {
+    var pattern = /^0\d{9,10}$/;
+    return pattern.test(phoneNumber);
+}
+
 // let number_phone = document.getElementById("phone-mail-regis")
 // let password_regis = document.getElementById("passwd-regis")
 // let same_passwd = document.getElementById("same-passwd")

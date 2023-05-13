@@ -107,6 +107,19 @@ class CRUD
         $stmt = null;
         return $result;
     }
+    public function read_data_account_for_update($conn, $username)
+    {
+        $sql = "SELECT * FROM account WHERE username = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$username]);
+
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // $status = $stmt->rowCount() > 0;
+        $stmt = null;
+        // echo $result;
+        return $result;
+    }
 
     public function read_data_customer($conn, $iduser)
     {
@@ -368,6 +381,25 @@ class CRUD
         $stmt = null;
         // echo json_encode($result);
         return $result[0]["max_receipt"];
+    }
+    public function read_max_id_customer($conn)
+    {
+        $sql = "SELECT MAX(customer.id) FROM customer";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = null;
+        // echo ;
+        return $result[0]["MAX(customer.id)"];
+    }
+    public function read_max_id_account($conn)
+    {
+        $sql = "SELECT MAX(account.id_user) FROM account";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = null;
+        return $result[0]["MAX(account.id_user)"];
     }
     public function read_data_product($conn)
     {
@@ -1276,6 +1308,17 @@ class CRUD
         // echo "/n";
         return $result[0]["count"];
     }
+    public function check_number_phone_when_register($conn, $number_phone)
+    {
+        $sql = "SELECT * 
+        FROM customer WHERE numberphone = $number_phone";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = null;
+        // echo json_encode($result);
+        return $result;
+    }
     public function check_password($conn, $customer)
     {
         # code...
@@ -1372,6 +1415,75 @@ class CRUD
         $stmt = null;
         return $result;
     }
+   public function insert_data_to_customer($conn, $id, $name, $birthday, $numberphone, $image, $address, $gender, $id_user) {
+    // echo các giá trị 
+    echo json_encode($id);
+    echo json_encode($name);
+    echo json_encode($birthday);
+    echo json_encode($numberphone);
+    echo json_encode($image);
+    echo json_encode($address);
+    echo json_encode($gender);
+    echo json_encode($id_user);
+
+
+    // chuẩn bị câu lệnh SQL để chèn dữ liệu vào bảng customer
+    $sql = "INSERT INTO customer (id, name, birthday, numberphone, image, address, gender, id_user)
+            VALUES (:id, :name, :birthday, :numberphone, :image, :address, :gender, :id_user)";
+    $stmt = $conn->prepare($sql);
+
+    // thực thi câu lệnh SQL với các giá trị được truyền vào
+    $stmt->execute([
+        'id' => $id,
+        'name' => $name,
+        'birthday' => $birthday,
+        'numberphone' => $numberphone,
+        'image' => $image,
+        'address' => $address,
+        'gender' => $gender,
+        'id_user' => $id_user
+    ]);
+    // kiểm tra xem câu lệnh thực thi chưa thành công hay chưa
+
+    $reult = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+    $stmt = null;
+    return $reult;
+}
+public function insert_data_to_account_and_customer($conn, $account_data, $customer_data) {
+    // chuẩn bị câu lệnh SQL để chèn dữ liệu vào bảng account và customer
+    $sql = "INSERT INTO account (id_user, username, password, date_created, privilege, session, status)
+            VALUES (:id_user, :username, :password, :date_created, :privilege, :session, :status);
+            INSERT INTO customer (id, name, birthday, numberphone, image, address, gender, id_user)
+            VALUES (:id, :name, :birthday, :numberphone, :image, :address, :gender, :id_user)";
+    $stmt = $conn->prepare($sql);
+    // thực thi câu lệnh SQL với các giá trị được truyền vào
+    $stmt->execute(array_merge($account_data, $customer_data));
+    $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+    $stmt = null;
+    return $result;
+}
+public function insert_data_to_account($conn, $id_user, $username, $password, $date_created, $privilege, $session, $status) {
+    
+    // chuẩn bị câu lệnh SQL để chèn dữ liệu vào bảng account
+    $sql = "INSERT INTO account (id_user, username, password, date_created, privilege, session, status)
+            VALUES (:id_user, :username, :password, :date_created, :privilege, :session, :status)";
+    $stmt = $conn->prepare($sql);
+    
+    // thực thi câu lệnh SQL với các giá trị được truyền vào
+    $stmt->execute([
+        'id_user' => $id_user,
+        'username' => $username,
+        'password' => $password,
+        'date_created' => $date_created,
+        'privilege' => $privilege,
+        'session' => $session,
+        'status' => $status
+    ]);
+    $reult = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+    $stmt = null;
+    return $reult;
+
+}
     public function check_account($conn, $sdt, $username)
     {
         # code...
