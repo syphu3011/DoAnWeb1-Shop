@@ -3,9 +3,9 @@ let length11
 // let length21 = obj10.product.length
 let obj10 = {"promote": [], "detail_promotion": []}
 async function refreshPromotion() {
-    obj10 = await get('./Server/promotion/promotions.php')
+    obj10 = await get(to_form_data(await getCurrentUser()),'./Server/promotion/promotions.php')
     if (obj10 == errors) {
-        block_access()
+        block_access("Bạn không có quyền truy cập vào khuyến mãi!")
         return
     }
     length11 = obj10.promote.length
