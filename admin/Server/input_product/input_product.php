@@ -48,7 +48,7 @@
                 foreach($data_post['Stuff'] as $import_product) {
                     // Thêm màu
                     if (!check_color($import_product['idColor'], $conn)) {
-                        if (!insert_color($import_product['idColor'], $con)) {
+                        if (!insert_color($import_product['idColor'], $conn)) {
                             $conn -> rollBack();
                             die('Lỗi khi thêm màu!');
                         }
@@ -56,7 +56,7 @@
                     $id_prod = $import_product['idProd'];
                     $id_size = $import_product['idSize'];
                     $id_color = $import_product['idColor'];
-                    $amount['amount'];
+                    $amount = $import_product['amount'];
                     $price = $import_product['price'];
                     $stmt->bindParam(':idInput', $id_input);
                     $stmt->bindParam(':idProd', $id_prod);
@@ -154,8 +154,8 @@
     function insert_color($hexColor, $conn) {
         try {
             $query_insert_color = "
-            INSERT INTO `color`(`id`)
-            VALUES (:id)
+            INSERT INTO `color`(`id`, `name`)
+            VALUES (:id, ' ')
             ";
             $stmt_insert_color = $conn -> prepare($query_insert_color);
             $stmt_insert_color -> bindParam(":id", $hexColor);
@@ -175,7 +175,6 @@
             if ($stmt -> rowCount() > 0) {
                 $response = $stmt -> fetchAll(PDO::FETCH_ASSOC);
                 $id_int = (int)explode('NHAP',$response[0]['id'])[1];
-                $id_int += 1;
                 $id = 'NHAP'. str_pad(''.($id_int+1),3,'0',STR_PAD_LEFT);
                 return $id;
             }
