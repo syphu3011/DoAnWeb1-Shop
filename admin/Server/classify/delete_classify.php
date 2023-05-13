@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt -> bindParam(':id', $id);
             if ($stmt -> execute()) {
                 echo 'Xóa loại thành công!';
+                $conn -> commit();
             }
         }
     }

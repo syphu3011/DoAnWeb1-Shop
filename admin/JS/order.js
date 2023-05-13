@@ -232,7 +232,7 @@ function CancelOrder(x) {
     $.ajax({
         url: "./Server/receipt/receiptStatus.php?action=update",
         method: "POST",
-        data:( {
+        data:JSON.stringify( {
             id_receipt: x,
             status: "Đã hủy"
         }),
