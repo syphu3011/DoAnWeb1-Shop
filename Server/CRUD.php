@@ -99,7 +99,10 @@ class CRUD
     //Tai khoan
     public function read_data_account($conn, $username, $password, &$status)
     {
-        $sql = "SELECT id, id_user, username,`password`, birthday, numberphone, gender * FROM account, customer WHERE username = ? AND password= ? AND privilege = 'customer' AND customer.id_user = customer.id_user";
+        $sql = "SELECT id, account.id_user, name, username,`password`, birthday, numberphone, gender 
+        FROM account, customer 
+        WHERE username = ? AND password = ?  AND privilege = 'customer' AND customer.id_user = customer.id_user
+        ";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$username, $password]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);

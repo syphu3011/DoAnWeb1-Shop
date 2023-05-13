@@ -127,8 +127,8 @@ document
                                         setTimeout(() => {$("#noti").css("display", "");}, 700);
                                     }, 450);
                                     // alert("Đăng nhập thành công!");
-                                    let data_cookie = response.cookie.split(":")
-                                    fill_infor(data_cookie[4], data_cookie[5], data_cookie[6],data_cookie[7], data_cookie[8], data_cookie[9]
+                                    let data_cookie = response.cookie.split("?")
+                                    fill_infor(data_cookie[3], data_cookie[4], data_cookie[5],data_cookie[6], data_cookie[7], data_cookie[8]
                                     );
                                 } else {
                                     console.log("Bạn đang đăng nhập với vai trò nhân viên");

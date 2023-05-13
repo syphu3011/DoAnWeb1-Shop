@@ -43,7 +43,7 @@
             // setcookie('login_cookie', base64_encode("$username:$password:$privilege:$exp:$token"), time() + (86400 * 30), '/');
             // ReqHandling::concatSession($conn, "account", "session", $token, "username", $username);
             $account = $data['account'];
-            $id_user_ = $account['id_user'];
+            $id_user_h = $account['id_user'];
             $passw = $account['password'];
             $id_cus = $account['id'];
             $name = $account['name'];
@@ -51,7 +51,7 @@
             $birthday = $account['birthday'];
             $gender = $account['gender'];
             $image = $account['image'];
-            $cookie_string = "$id_user_:$passw:customer:$id:$name:$numberphone:$birthday:$gender:$image";
+            $cookie_string = "$id_user_h?$passw?customer?$id_cus?$name?$numberphone?$birthday?$gender?$image";
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode(array("message" => "Đăng nhập thành công. Đã tạo phiên đăng nhập mới.", "cookie" => $cookie_string, "success" => true, 'data' => $data,), JSON_UNESCAPED_UNICODE);
         } else {
