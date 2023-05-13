@@ -40,24 +40,7 @@ async function FillSize(){
             }
         }
 }
-// document.getElementById("delete1").onclick = function () {
-//     let table = document.getElementById("myTable2")
-//     for(let i = table.rows.length - 1; i  > 0; i--)
-//     table.deleteRow(i);
-//     for(let i = 0; i < arrKT.length; i++){
-//         let obj = arrKT[i];
-//         let row = table.insertRow();
-//         let cell0 = row.insertCell(0);
-//         let cell1 = row.insertCell(1);
-//         let cell2 = row.insertCell(2);
-//         let cell3 = row.insertCell(3);
 
-//         cell0.innerHTML = obj.id;
-//         cell1.innerHTML = obj.name;
-//         cell2.innerHTML = `<p class="detail" onclick=onDetail(this)>chi tiết</p>`
-//         cell3.innerHTML = "<button onclick='onDel(this)'>Xóa</button>";
-//     }
-// };
 
 document.getElementById("add1").onclick = function () {
     document.getElementById("newScr").innerHTML =`
