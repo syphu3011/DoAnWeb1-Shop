@@ -124,7 +124,9 @@ function switch_default(x) {
 //Tìm kiếm
 let btn_filter = document.getElementById("filter");
 let type9 = ["Tất cả", "ID", "Tên", "0"];
-let made_in = ["Tất cả", "Việt Nam", "Trung Quốc", "Singapore", "0"];
+let data_made_in = {input_country: obj.input_country}
+data_made_in.input_country.append("0")
+let made_in = data_made_in.input_country
 let price = [
     "Tất cả",
     "0 - 200k",
