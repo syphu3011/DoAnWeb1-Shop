@@ -76,6 +76,7 @@ function ConfirmDele(){
 document.getElementById("add_type").onclick = function () {
     document.getElementById("add_type_pro").style.display = "flex";
     OpenDialog33();
+    AddOptionSelect()
 };
 
 document.getElementById("accept").onclick = function () {
@@ -87,3 +88,14 @@ document.getElementById("close5").onclick = function () {
     document.getElementById("add_type_pro").style.display = "none";
     CloseDialog33();
 };
+
+function AddOptionSelect(){
+    let select = document.getElementById("type-select")
+    let option = document.createElement("option")
+    for(let i; i<obj33.length;i++){
+        option.appendChild(document.createTextNode(obj33.largeClassify[i]))
+        option.value =obj33.largeClassify[i];
+        select.append(option)
+    }
+    
+} 
