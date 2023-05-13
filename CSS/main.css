@@ -336,6 +336,10 @@ input[type="number"] {
 .main_list_product_product_image {
     object-fit: cover;
     width: 100%;
+    /* min-height:250px;
+    max-height: 300px; */
+    height: 300px;
+
 }
 .main_list_product_product_infor {
     padding: 10px 0;

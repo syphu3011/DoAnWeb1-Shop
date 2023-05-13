@@ -17,10 +17,17 @@
 //     );
 // }
 // echo $response;
-    $idproduct=$_POST['id_product'];
+
+    // $idproduct=$_POST['id_product'];
     require_once("../init.php");
     require_once("CRUD.php");
+    // try {
+    //     # code...
+    // } catch (\Throwable $e) {
+    //     # code...
+    // }
     $data_send = json_decode(file_get_contents('php://input'), true);
+    // $idproduct = "AO00000001";
     $idproduct = $data_send["id_product"];
     $result = new CRUD();
     $status = false;
