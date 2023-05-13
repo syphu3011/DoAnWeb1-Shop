@@ -1477,6 +1477,9 @@ function FillPrice() {
             color +
             `" disabled></td>
             <td>` +
+            listProd[i].amount+
+            `</td>
+            <td>` +
             calculated(listProd[i].price_input) +
             ` VNĐ</td>
             <td>` +
