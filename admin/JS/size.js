@@ -229,6 +229,22 @@ async function themKichThuocQuan(){
     }
    
 }
+async function onDel(el){
+    let thisRow = el.parentElement.parentElement;
+    let id = thisRow.cells[0].innerText;
+    let current_user = getCurrentUser();
+    let data_post_server = {
+        id: id,
+        id_user: current_user.id_user,
+        password: current_user.password
+    };
+    let form_data = to_form_data(data_post_server);
+    alert( await delete_data(
+        form_data,
+        "./Server/size/delete_size.php"
+    ))
+    FillSize()
+}
 async function onEdit(el){
     let size = await GetDataSize()
     let thisRow = el.parentElement.parentElement;
@@ -243,7 +259,7 @@ async function onEdit(el){
           <label class="title" for="">Sửa kích thước quần</label>
           <div class="ID2">
             <label for="">ID</label>
-            <input type="text" class="idsize" readonly>
+            <input type="text" id="idsize" readonly>
           </div> 
           <div class="name_s">
             <label for="">Tên kích thước</label>
@@ -280,7 +296,6 @@ async function onEdit(el){
         `
     for(let i = 0; i < size.length; i++){
         if(size[i].id == id){
-        selectedIndex = i;
         document.getElementById("idsize").value=id;
         document.getElementById("tenKichThuoc").value = size[i].id.substring(2);
         document.getElementById("soDoVongDui").value = size[i].thigh;
@@ -331,7 +346,6 @@ async function onEdit(el){
         `
     for(let i = 0; i < size.length; i++){
         if(size[i].id == id){
-        selectedIndex = i;
         document.getElementById("idsize").value=id;
         document.getElementById("tenKichThuoc").value = size[i].id.substring(2);
         document.getElementById("soDoLung").value = size[i].back 
