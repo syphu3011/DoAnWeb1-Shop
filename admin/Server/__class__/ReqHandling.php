@@ -22,7 +22,11 @@ class ReqHandling {
 			$conn->beginTransaction();
 			$query = "UPDATE " . $tableName . " SET " . $property . " = '" . $value . "'" 
 				. " WHERE id = " . "'" . $id . "'";
-			// echo $query . "</br>";
+			echo json_encode(
+				array("query" => $query), 
+				JSON_UNESCAPED_UNICODE
+			);
+			
 			$query_statement = $conn->prepare($query);
 			$query_statement->execute();
 			$conn->commit();
@@ -94,7 +98,10 @@ class ReqHandling {
 			// ), JSON_UNESCAPED_UNICODE);
 			$conn->commit();
 		} catch (Exception $e) {
-			echo "Please specify correct id." . "</br>";
+			echo json_encode(
+				array("message" => "Please specify correct id."), 
+				JSON_UNESCAPED_UNICODE
+			);
 			$conn->rollback();
 			exit();
 		}

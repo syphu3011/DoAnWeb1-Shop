@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $stmt -> bindParam(':gender', $gender);
                     if ($stmt -> execute()) {
                         echo 'Thêm loại thành công!';
+                        $conn -> commit();
                     }
                 }
                 else {

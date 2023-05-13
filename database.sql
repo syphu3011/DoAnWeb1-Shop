@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost
--- Thời gian đã tạo: Th5 13, 2023 lúc 04:54 AM
+-- Thời gian đã tạo: Th5 13, 2023 lúc 05:32 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 8.2.0
 
@@ -126,6 +126,7 @@ CREATE TABLE `color` (
 --
 
 INSERT INTO `color` (`id`, `name`) VALUES
+('#ffa3a3', NULL),
 ('#FFA500', 'cam'),
 ('#ffffff', 'Trắng'),
 ('#0000FF', 'Xanh dương'),
@@ -205,7 +206,10 @@ INSERT INTO `detail_import_coupon` (`id_import_coupon`, `id_product`, `id_color`
 ('NHAP002', 'QU00000003', '#FFA500', 'QUS', 20, 100000),
 ('NHAP002', 'QU00000003', '#000000', 'QUXL', 20, 100000),
 ('NHAP002', 'QU00000003', '#0000FF', 'QUXL', 20, 100000),
-('NHAP002', 'QU00000003', '#ffffff', 'QUXL', 20, 100000);
+('NHAP002', 'QU00000003', '#ffffff', 'QUXL', 20, 100000),
+('NHAP003', 'AO00000005', '#ffa3a3', 'AOS', 100, 400000),
+('NHAP004', 'AO00000005', '#ffa3a3', 'AOS', 100, 400000),
+('NHAP005', 'AO00000005', '#ffa3a3', 'AOS', 100, 400000);
 
 -- --------------------------------------------------------
 
@@ -332,7 +336,6 @@ INSERT INTO `image_product` (`id_product`, `link_image`, `name_image`) VALUES
 ('AO00000004', '0WmGBjpW6kqs.png', NULL),
 ('AO00000004', '1world.png', NULL),
 ('AO00000004', '2Xác nhận khóa tài khoản.png', NULL),
-('AO00000008', '0dsc00963_1aa604e0498848c4aa43dfc5beb66844_master.png', NULL),
 ('AO00000009', '0ao_so_mi_nam_cong_so_caro_ngan_tay_meriman_ma_thmos365-02_18298b730733497181a54a6f69efa6e6_master.jpeg', NULL),
 ('AO00000009', '1ao_so_mi_nam_cong_so_caro_ngan_tay_meriman_ma_thmos365-03_672f01bc9c2a443f9b84b0a6bf1e9228_master.jpeg', NULL),
 ('AO00000009', '2ao_so_mi_nam_cong_so_caro_ngan_tay_meriman_ma_thmos365-04_ca728001f4144d28b462d681a5444a7f_master.jpeg', NULL),
@@ -384,8 +387,11 @@ CREATE TABLE `import_coupon` (
 --
 
 INSERT INTO `import_coupon` (`id`, `date_init`, `id_staff`, `note`) VALUES
-('NHAP001', '2023-02-11 00:00:00', 'NV001', NULL),
-('NHAP002', '2023-02-11 00:00:00', 'NV001', NULL);
+('NHAP001', '2023-02-11 00:00:00', 'NV005', NULL),
+('NHAP002', '2023-02-11 00:00:00', 'NV005', NULL),
+('NHAP003', '2023-05-13 04:56:09', 'NV005', ''),
+('NHAP004', '2023-05-13 04:56:19', 'NV005', ''),
+('NHAP005', '2023-05-13 05:00:25', 'NV005', '');
 
 -- --------------------------------------------------------
 
@@ -407,12 +413,7 @@ INSERT INTO `input_country` (`id`, `name`) VALUES
 ('ct002', 'Trung Quốc'),
 ('ct003', 'Hàn Quốc'),
 ('ct004', 'Nhật Bản'),
-('ct005', 'Tất cả,Việt Nam,Trung Quốc,Singapore,0'),
-('ct006', 'ct005'),
-('ct007', 'ct006'),
-('ct008', 'ct007'),
-('ct009', 'ct008'),
-('ct010', 'ct009');
+('ct005', 'Úc');
 
 -- --------------------------------------------------------
 
@@ -585,7 +586,6 @@ INSERT INTO `product` (`id`, `name`, `madein`, `description`, `idstatus`) VALUES
 ('AO00000002', 'Áo sơ mi ', 'ct002', 'Áo sơ mi sọc', 'TT01'),
 ('AO00000003', 'áo thun bông', 'ct001', '', 'TT01'),
 ('AO00000004', 'vcl', 'ct002', 'vip vcl', 'TT02'),
-('AO00000008', 'áo polo short black gray check', 'ct010', 'quá đẹp', 'TT01'),
 ('AO00000009', 'ao so mi xanh ', 'ct001', 'ao so mi', 'TT01'),
 ('AO00000010', 'áo sơ mi caro trắng sọc xanh', 'ct001', 'áo sơ mi nam', 'TT01'),
 ('AO00000011', 'áo thun đen nam', 'ct002', 'áo cotton', 'TT01'),
@@ -641,7 +641,10 @@ INSERT INTO `product_in_stock` (`id_import_coupon`, `id_product`, `id_size`, `id
 ('NHAP002', 'QU00000002', 'QUXL', '#ffffff', 18, 200000),
 ('NHAP002', 'QU00000003', 'QUS', '#FFA500', 20, 100000),
 ('NHAP002', 'QU00000003', 'QUXL', '#0000FF', 20, 100000),
-('NHAP002', 'QU00000003', 'QUXL', '#ffffff', 20, 100000);
+('NHAP002', 'QU00000003', 'QUXL', '#ffffff', 20, 100000),
+('NHAP003', 'AO00000005', 'AOS', '#ffa3a3', 100, 400000),
+('NHAP004', 'AO00000005', 'AOS', '#ffa3a3', 100, 400000),
+('NHAP005', 'AO00000005', 'AOS', '#ffa3a3', 100, 400000);
 
 -- --------------------------------------------------------
 
@@ -663,6 +666,7 @@ CREATE TABLE `product_list` (
 INSERT INTO `product_list` (`id_product`, `id_size`, `id_color`, `price`) VALUES
 ('AO00000001', 'AOS', '#000000', 320000),
 ('AO00000002', 'AOXL', '#ffffff', 500000),
+('AO00000005', 'AOS', '#ffa3a3', NULL),
 ('AO00000009', 'AOS', '#ffffff', 590000),
 ('AO00000010', 'AOS', '#ffffff', 400000),
 ('AO00000011', 'AOS', '#000000', 190000),
@@ -705,7 +709,6 @@ INSERT INTO `product_list_classify` (`id_product`, `id_classify`) VALUES
 ('AO00000002', 'AOSOMI'),
 ('AO00000003', 'AOSOMI'),
 ('AO00000004', 'AOSOMI'),
-('AO00000008', 'AOTHUN'),
 ('AO00000009', 'AOSOMI'),
 ('AO00000010', 'AOSOMI'),
 ('AO00000011', 'AOTHUN'),
