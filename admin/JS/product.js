@@ -4,6 +4,8 @@ let arRemove = [];
 let prodToEdit;
 let checkClickClose = false;
 let countt = 0;
+//fill sản phẩm
+let obj = null;
 function arrayToString(arr) {
     let result;
     for (let i = 0; i < arr.length; i++) {
@@ -120,33 +122,8 @@ function switch_image(x) {
 function switch_default(x) {
     x.src = "Image/add.png";
 }
-
 //Tìm kiếm
 let btn_filter = document.getElementById("filter");
-let type9 = ["Tất cả", "ID", "Tên", "0"];
-let data_made_in = {input_country: obj.input_country}
-data_made_in.input_country.append("0")
-let made_in = data_made_in.input_country
-let price = [
-    "Tất cả",
-    "0 - 200k",
-    "200k - 400k",
-    "400k-600k",
-    "600k trở lên",
-    "0",
-];
-let amount = [
-    "Tất cả",
-    "0 - 100",
-    "101 - 300",
-    "301-600",
-    "601-900",
-    "901 trở lên",
-    "0",
-];
-let statuss = ["Tất cả", "Đang bán", "Hết hàng", "0"];
-let allFilter = [type9, made_in, amount, statuss];
-
 function createSelect(data1, id) {
     let select = document.createElement("select");
     select.id = id;
@@ -193,8 +170,36 @@ function eventCloseFilter(e) {
     }
     checkClickClose = false;
 }
-
+let type9 = ["Tất cả", "ID", "Tên", "0"];
+let made_in = ["Tất cả", "0"]
+let price = ["Tất cả", "0"]
+let amount = ["Tất cả", "0"]
+let allFilter = []
 function openFilter() {
+    let data_made_in = ["Tất cả"]
+    obj.input_country.forEach(e => {
+        data_made_in.push(e.name)
+    })
+    data_made_in.push("0")
+    made_in = data_made_in
+    price = [
+        "Tất cả",
+        "0 - 200k",
+        "200k - 400k",
+        "400k-600k",
+        "600k trở lên",
+        "0",
+    ];
+    amount = [
+        "Tất cả",
+        "0 - 100",
+        "101 - 300",
+        "301-600",
+        "601-900",
+        "901 trở lên",
+        "0",
+    ];
+    allFilter = [type9, made_in, amount];
     let background_prod = document.getElementById("background-prod");
     let element = document.createElement("div");
     element.innerHTML =
@@ -219,12 +224,11 @@ function openFilter() {
                     <p class="text_find">Số lượng:</p>
                     ` +
         createSelect(amount, "amount") +
-        `
-                </div>
-                <div class="find_all1">
-                    <p class="text_find">Trạng thái:</p>
-                    ` +
-        createSelect(statuss, "status") +
+        // `
+        //         </div>
+        //         <div class="find_all1">
+        //             <p class="text_find">Trạng thái:</p>
+        //             ` +
         `
                 </div>
             </div>
@@ -278,20 +282,18 @@ let ar = {
     ],
 };
 
-function toLocalStorage(setjson) {
-    localStorage.setItem("data", setjson);
-}
+// function toLocalStorage(setjson) {
+//     localStorage.setItem("data", setjson);
+// }
 
-function writeToLocalStorage(arr) {
-    const setjson = JSON.stringify(arr);
-    toLocalStorage(setjson);
-}
+// function writeToLocalStorage(arr) {
+//     const setjson = JSON.stringify(arr);
+//     toLocalStorage(setjson);
+// }
 // localStorage.clear()
 // writeToLocalStorage(ar)
 //data prod
 
-//fill sản phẩm
-let obj = null;
 
 function findSumAmount(id) {
     let amount = 0;
@@ -1255,16 +1257,16 @@ async function findProdAction() {
         .replaceAll(" ", "")
         .replaceAll("k", "")
         .split("-");
-    let status = statuss[parseInt(statuss[statuss.length - 1])]
-        .toLowerCase()
-        .trim();
+    // let status = statuss[parseInt(statuss[statuss.length - 1])]
+    //     .toLowerCase()
+    //     .trim();
 
-    status = status == "tất cả" ? "" : status;
-    if (status == "đang bán") {
-        status = "1";
-    } else if (status == "hết hàng") {
-        status = "0";
-    }
+    // status = status == "tất cả" ? "" : status;
+    // if (status == "đang bán") {
+    //     status = "1";
+    // } else if (status == "hết hàng") {
+    //     status = "0";
+    // }
     idOrName = idOrName == "tất cả" ? "" : idOrName;
     madein = madein == "tất cả" ? "" : madein;
 
@@ -1273,30 +1275,53 @@ async function findProdAction() {
     if (amountString.length < 2) {
         try {
             let min = parseInt(amountString[0]);
+            let max = parseInt(amountString[1]);
             console.log(min != null);
 
-            if (min != null && !isNaN(min)) {
+            if (min != null && !isNaN(min) && max != null && !isNaN(max)) {
                 arProd = findProd(
                     idOrName,
                     nameAndId,
                     nameAndId,
                     madein,
                     min,
-                    9999999999,
-                    status,
+                    max,
                     tag_type_find
                 );
             } else {
-                arProd = findProd(
-                    idOrName,
-                    nameAndId,
-                    nameAndId,
-                    madein,
-                    0,
-                    9999999999,
-                    status,
-                    tag_type_find
-                );
+                if (min != null && !isNaN(min)) {
+                    arProd = findProd(
+                        idOrName,
+                        nameAndId,
+                        nameAndId,
+                        madein,
+                        min,
+                        9999999999,
+                        tag_type_find
+                    );
+                }
+                else if (max != null && !isNaN(max)) {
+                    arProd = findProd(
+                        idOrName,
+                        nameAndId,
+                        nameAndId,
+                        madein,
+                        0,
+                        max,
+                        tag_type_find
+                    );
+                }
+                else {
+                    arProd = findProd(
+                        idOrName,
+                        nameAndId,
+                        nameAndId,
+                        madein,
+                        0,
+                        9999999999,
+                        tag_type_find
+                    );
+                }
             }
         } catch (e) {
             arProd = findProd(
@@ -1306,7 +1331,6 @@ async function findProdAction() {
                 madein,
                 0,
                 9999999999,
-                status,
                 tag_type_find
             );
         }
@@ -1332,7 +1356,6 @@ function findProd(
     made_in,
     amountMin,
     amountMax,
-    status,
     classify
 ) {
     let arProd = [];
@@ -1345,7 +1368,6 @@ function findProd(
         ) {
             if (
                 checkStringFind(element.made_in, made_in) &&
-                checkStringFind(element.status, status) &&
                 checkAmount(element, amountMin, amountMax) &&
                 checkClassify(element, classify)
             ) {
