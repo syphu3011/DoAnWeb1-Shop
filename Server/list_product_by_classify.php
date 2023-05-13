@@ -27,6 +27,7 @@
         $response = [
             "success" => true,
             "data" => $dataResult,
+            "total_product" => count($crud->pagination_classify($conn, $data_received["gender"],$data_received["id_classify"]))
         ];
     } else {
         $response = [

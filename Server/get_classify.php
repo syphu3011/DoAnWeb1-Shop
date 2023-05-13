@@ -6,7 +6,8 @@ $crud = new CRUD();
 if (count($crud -> read_data_classify($conn))>0){
     $response = array(
         "success" => true,
-        "data" => $crud -> read_data_classify($conn)
+        "data" => $crud -> read_data_classify($conn),
+        
     );
 }else{
     $response = array(

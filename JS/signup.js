@@ -16,28 +16,49 @@ function isValidPhoneNumber(phoneNumber) {
 $(document).ready(function () {
     $("#form-signup").submit(function (e) {
         e.preventDefault();
-        getDataFromServer(
-            "./Server/register_customer.php",
-            {
-                user_name: document.getElementById("inp-username").value,
-                name:
-                    document.getElementById("inp-firstname").value +
-                    " " +
-                    document.getElementById("inp-lastname").value,
-                number_phone: document.getElementById("phone-mail-regis").value,
-                privilege: "customer",
-                birthday: birthday.value,
-                gender: sex,
-                password: sha256(document.getElementById("passwd-regis").value),
-                reinput_password: sha256(
-                    document.getElementById("same-passwd").value
-                ),
-            },
-            function (response) {
-                console.log(response);
-                alert(response.message);
-            }
-        );
+        if (
+            !document.getElementById("inp-username").value ||
+            !document.getElementById("inp-firstname").value ||
+            !document.getElementById("phone-mail-regis").value ||
+            !document.getElementById("inp-lastname").value ||
+            !document.getElementById("passwd-regis").value ||
+            !document.getElementById("same-passwd").value ||
+            !birthday.value||
+            !sex
+        ) {
+            alert("Vui lòng nhập đầy đủ thông tin");
+            return
+        }
+            getDataFromServer(
+                "./Server/register_customer.php",
+                {
+                    user_name: document.getElementById("inp-username").value,
+                    name:
+                        document.getElementById("inp-firstname").value +
+                        " " +
+                        document.getElementById("inp-lastname").value,
+                    number_phone:
+                        document.getElementById("phone-mail-regis").value,
+                    privilege: "customer",
+                    birthday: birthday.value,
+                    gender: sex,
+                    password: sha256(
+                        document.getElementById("passwd-regis").value
+                    ),
+                    reinput_password: sha256(
+                        document.getElementById("same-passwd").value
+                    ),
+                },
+                function (response) {
+                    console.log(response);
+                    if (response.success){
+                        notifition();
+                    }else{
+                    alert(response.message);
+
+                    }
+                }
+            );
         // let checksdt = false;
         // let checkuser = false;
         // let sdt = document.getElementById("phone-mail-regis").value;

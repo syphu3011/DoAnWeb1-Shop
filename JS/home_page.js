@@ -278,13 +278,16 @@ function pagination(data) {
                 callback_search(btn[i].id);
             } else {
                 if (localStorage.getItem("current_page") == "is_show_more") {
-                    show_more(i);
+                    show_more(i + 1);
                 } else {
                     if (localStorage.getItem("current_page") == "is_classify") {
                         choice_type_product(
                             localStorage.getItem("gender_product"),
-                            i
+                            i + 1,
+                            8
                         );
+                        console.log(123)
+                        
                     }
                 }
             }
@@ -591,6 +594,7 @@ function color_pagination(index) {
     btn[index].style.borderColor = "red";
 }
 function show_more(page) {
+    console.log(page);
     getDataFromServer(
         "./Server/list_product_by_large_classify.php",
         {

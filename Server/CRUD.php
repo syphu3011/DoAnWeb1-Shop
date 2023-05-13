@@ -261,6 +261,7 @@ class CRUD
                     AND product_list.id_color IS NOT NULL
                     AND classify.gender = '$gender'
                     AND classify.id = '$id_classify'
+                GROUP BY product_list_classify.id_product
                         LIMIT $begin, $total
                     "; 
                     // echo $sql;
@@ -275,6 +276,28 @@ class CRUD
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt = null;
         return $result;
+    }
+    public function pagination_classify($conn, $gender, $id_classify)
+    {
+        $sql = "SELECT * FROM 
+                                                classify
+                                LEFT JOIN product_list_classify ON product_list_classify.id_classify=classify.id
+                                LEFT JOIN product_list ON product_list.id_product = product_list_classify.id_product
+				LEFT JOIN product ON product.id = product_list_classify.id_product
+                LEFT JOIN detail_promotion ON detail_promotion.id_product = product_list.id_product
+                LEFT JOIN promotion ON promotion.id = detail_promotion.id_promotion
+                WHERE 
+                    product.idstatus = 'TT01'
+                    AND product_list.id_size IS NOT NULL
+                    AND product_list.id_color IS NOT NULL
+                    AND classify.gender = '$gender'
+                    AND classify.id = '$id_classify'
+                GROUP BY product_list_classify.id_product";
+                $stmt = $conn -> prepare($sql);
+                $stmt -> execute();
+                $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+                $stmt = null;
+return $result;
     }
     public function read_productByIdLarge_classify($conn, $id_large_classify, $begin, $total_product_on_page)
     {
@@ -361,9 +384,7 @@ class CRUD
                 LEFT JOIN promotion ON promotion.id = detail_promotion.id_promotion
                 WHERE 
                     classify.id_big_classify = ?
-                    AND (
-                        (promotion.finish_date >= CURRENT_DATE() AND promotion.id_status='TT10')
-                        OR promotion.id IS NULL)
+                  
                     AND product.idstatus = 'TT01'
                     AND product_list.id_size IS NOT NULL
                 GROUP BY product_list_classify.id_product";

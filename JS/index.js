@@ -70,10 +70,10 @@ document.getElementById("product").onmouseleave = function () {
 };
 function initCurrentUser() {
     if (document.cookie == "" || document.cookie == ".") {
-        currentUser = ""
-        return
+        currentUser = "";
+        return;
     }
-    let data_cookie = document.cookie.split("?")
+    let data_cookie = document.cookie.split("?");
     currentUser = {
         id: data_cookie[3],
         name: data_cookie[4],
@@ -81,9 +81,9 @@ function initCurrentUser() {
         birthday: data_cookie[6],
         gender: data_cookie[7],
         image: data_cookie[8],
-    }
+    };
 }
-initCurrentUser()
+initCurrentUser();
 function getCurrentDate() {
     function formatNumber(number) {
         return number < 10 ? "0" + number : number;
@@ -414,7 +414,7 @@ btnback.onclick = function () {
 };
 
 btnlogout.onclick = function () {
-    document.cookie = "."
+    document.cookie = ".";
     currentUser = null;
     username = "";
     document.getElementById("passwd").value = "";
@@ -628,7 +628,7 @@ function createListType(gender) {
                                     </li>`;
             // }
         }
-        choice_type_product(gender, 1);
+        choice_type_product(gender, 1, 8);
     });
     // document.getElementById("")
 
@@ -746,8 +746,9 @@ function createListType(gender) {
     //     }
     // };
 }
-function choice_type_product(gender, page) {
-    console.log(1);
+function choice_type_product(gender, page, total) {
+    // console.log(12333)
+    // console.log(1);
     localStorage.setItem("gender_product", gender);
     let classify = document.getElementsByClassName("list-item-container");
     for (let i = 0; i < classify.length; i++) {
@@ -767,6 +768,9 @@ function choice_type_product(gender, page) {
                     console.log(respone);
                     create_main_onclick_classify(respone);
                     // color_pagination(page)
+                    if (respone.total_product > total_product_on_page) {
+                        pagination(respone);
+                    }
                 }
             );
         };
@@ -844,7 +848,7 @@ function create_main_onclick_classify(data) {
                 padding-left: 40px;
             ">sản phẩm</label>
             <ul style="display: grid;
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(5, 1fr);
                 grid-template-rows: 1fr 1fr;
                 grid-gap: 20px;
                 list-style: none;
@@ -1197,7 +1201,7 @@ document.getElementById("thanh-toan").onclick = function (e) {
     }
 };
 btnuser.onclick = function () {
-    initCurrentUser()
+    initCurrentUser();
     document.getElementById("passwd").value = "";
     if (document.cookie != "" && document.cookie != ".") {
         document.getElementById("mkm").value = "";
@@ -1206,8 +1210,15 @@ btnuser.onclick = function () {
         tdmk = false;
         document.getElementById("nhapthaydoi").style.display = "";
         document.getElementById("thaydoi-mk").textContent = "Thay đổi";
-        let data_cookie = document.cookie.split("?")
-        fill_infor(data_cookie[3],data_cookie[4], data_cookie[5], data_cookie[6],data_cookie[7], data_cookie[8])
+        let data_cookie = document.cookie.split("?");
+        fill_infor(
+            data_cookie[3],
+            data_cookie[4],
+            data_cookie[5],
+            data_cookie[6],
+            data_cookie[7],
+            data_cookie[8]
+        );
         if (showuser.style.display == "") {
             uname.innerHTML = currentUser.name;
             showuser.style.display = "block";
