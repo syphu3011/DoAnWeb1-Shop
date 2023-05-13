@@ -16,6 +16,28 @@ function isValidPhoneNumber(phoneNumber) {
 $(document).ready(function () {
     $("#form-signup").submit(function (e) {
         e.preventDefault();
+        getDataFromServer(
+            "./Server/register_customer.php",
+            {
+                user_name: document.getElementById("inp-username").value,
+                name:
+                    document.getElementById("inp-firstname").value +
+                    " " +
+                    document.getElementById("inp-lastname").value,
+                number_phone: document.getElementById("phone-mail-regis").value,
+                privilege: "customer",
+                birthday: birthday.value,
+                gender: sex,
+                password: sha256(document.getElementById("passwd-regis").value),
+                reinput_password: sha256(
+                    document.getElementById("same-passwd").value
+                ),
+            },
+            function (response) {
+                console.log(response);
+                alert(response.message);
+            }
+        );
         // let checksdt = false;
         // let checkuser = false;
         // let sdt = document.getElementById("phone-mail-regis").value;
@@ -33,33 +55,33 @@ $(document).ready(function () {
         //   );
         // }
 
-        if(Checkavai()==true){
-        // if (Checkavai(checksdt, checkuser) == true) {
-            let temppass= sha256(password_regis.value)
-            $.ajax({
-                url: "./admin/Server/customer/customer.php?action=create",
-                method: "POST",
-                dataType: "json",
-                data: {
-                    username: $("#inp-username").val(),
-                    password: temppass,
-                    privilege: "customer",
-                    session: "",
-                    status: "active",
-                    name: firstName.value + " " + lastName.value,
-                    birthday: birthday.value,
-                    numberphone: number_phone.value,
-                    gender: sex,
-                },
-                success: function (response) {
-                    console.log(response);
-                },
-                error: function (xhr, status, error) {
-                    console.log(error);
-                      notifition();
-                },
-            });
-        }
+        // if (Checkavai() == true) {
+        //     // if (Checkavai(checksdt, checkuser) == true) {
+        //     let temppass = sha256(password_regis.value);
+        //     $.ajax({
+        //         url: "./admin/Server/customer/customer.php?action=create",
+        //         method: "POST",
+        //         dataType: "json",
+        //         data: {
+        //             username: $("#inp-username").val(),
+        //             password: temppass,
+        //             privilege: "customer",
+        //             session: "",
+        //             status: "active",
+        //             name: firstName.value + " " + lastName.value,
+        //             birthday: birthday.value,
+        //             numberphone: number_phone.value,
+        //             gender: sex,
+        //         },
+        //         success: function (response) {
+        //             console.log(response);
+        //         },
+        //         error: function (xhr, status, error) {
+        //             console.log(error);
+        //             notifition();
+        //         },
+        //     });
+        // }
     });
 });
 
@@ -219,50 +241,53 @@ function notifition() {
 // <<<<<<< Updated upstream
 // =======
 // <<<<<<< HEAD
-function Checkavai(){
-    let flag=true
-    if (checkValid(
-                    firstName.value,
-                    lastName.value,
-                    username.value,
-                    password_regis.value,
-                    same_passwd.value,
-                    number_phone.value,
-                    birthday.value)) {
-                if (checkSamePassword(password_regis.value, same_passwd.value)) {
-                    if (checkDate(birthday.value)) {
-                        // let customer = new Customer(
-                        //     firstName.value.trim() + " " + lastName.value.trim(),
-                        //     number_phone.value.trim(),
-                        //     username.value.trim(),
-                        //     password_regis.value,
-                        //     sex,
-                        //     birthday.value)
-                        // if (checkSDT(number_phone.value)==false
-                        // || checkUSR(username.value)==false) {
-                        //     showacc(signup, 0, 1200)
-                        //     setTimeout(() => {
-                        //         signup.style.display = ""
-                        //         account.style.display = ""
-                        //     }, 450);
-                        // } else {
-                        //     alert("Tài khoản đã tồn tại")
-                        //     flag=false;
-                        // }
-                    } else {
-                        alert("Ngày sinh không hợp lệ")
-                        flag=false;
-                    }
-                } else {
-                    alert("Bạn đã nhập 2 mật khẩu không giống nhau!")
-                    flag=false;
-                }
+function Checkavai() {
+    let flag = true;
+    if (
+        checkValid(
+            firstName.value,
+            lastName.value,
+            username.value,
+            password_regis.value,
+            same_passwd.value,
+            number_phone.value,
+            birthday.value
+        )
+    ) {
+        if (checkSamePassword(password_regis.value, same_passwd.value)) {
+            if (checkDate(birthday.value)) {
+                // let customer = new Customer(
+                //     firstName.value.trim() + " " + lastName.value.trim(),
+                //     number_phone.value.trim(),
+                //     username.value.trim(),
+                //     password_regis.value,
+                //     sex,
+                //     birthday.value)
+                // if (checkSDT(number_phone.value)==false
+                // || checkUSR(username.value)==false) {
+                //     showacc(signup, 0, 1200)
+                //     setTimeout(() => {
+                //         signup.style.display = ""
+                //         account.style.display = ""
+                //     }, 450);
+                // } else {
+                //     alert("Tài khoản đã tồn tại")
+                //     flag=false;
+                // }
             } else {
-                alert("Không được bỏ trống bất cứ thông tin nào!")
-                flag=false;
+                alert("Ngày sinh không hợp lệ");
+                flag = false;
             }
-            return flag
-          }
+        } else {
+            alert("Bạn đã nhập 2 mật khẩu không giống nhau!");
+            flag = false;
+        }
+    } else {
+        alert("Không được bỏ trống bất cứ thông tin nào!");
+        flag = false;
+    }
+    return flag;
+}
 function Checkavai(csdt, suser) {
     let flag = true;
     //   let checkSDT = checkSDT(number_phone.value);
