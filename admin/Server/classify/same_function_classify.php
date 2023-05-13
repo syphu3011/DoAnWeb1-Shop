@@ -12,7 +12,7 @@ function check_name($conn, $name, $id = '') {
     return true;
 }
 function check_id($conn, $id) {
-    $stmt = $conn->prepare("SELECT * FROM classify id = :id");
+    $stmt = $conn->prepare("SELECT * FROM classify WHERE id = :id");
     $stmt->bindParam(':id', $id);
     $stmt -> execute();
     $row_fetch = $stmt -> rowCount();
