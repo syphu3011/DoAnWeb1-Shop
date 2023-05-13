@@ -75,15 +75,16 @@ function ConfirmDele(){
 // Thêm loại
 document.getElementById("add_type").onclick = function () {
     document.getElementById("add_type_pro").style.display = "flex";
+    document.getElementById("type_name").value=" ";
     OpenDialog33();
     AddOptionSelect()
 };
 
-document.getElementById("accept").onclick = function () {
-    document.getElementById("add_type_pro").style.display = "none";
-    CloseDialog33();
+// document.getElementById("accept").onclick = function () {
+//     document.getElementById("add_type_pro").style.display = "none";
+//     CloseDialog33();
 
-};
+// };
 document.getElementById("close5").onclick = function () {
     document.getElementById("add_type_pro").style.display = "none";
     CloseDialog33();
@@ -93,9 +94,56 @@ function AddOptionSelect(){
     let select = document.getElementById("type-select")
     for(let i=0; i<obj33.largeClassify.length;i++){
         let option = document.createElement("option")
-        option.appendChild(document.createTextNode(obj33.largeClassify[i].id))
+        option.appendChild(document.createTextNode(obj33.largeClassify[i].name))
         option.value =obj33.largeClassify[i].id;
         select.appendChild(option)
     }
     
 } 
+
+async function AddtypeToServer(){
+    let nametype = document.getElementById("type_name").value;
+    let type = document.getElementById("type-select").value.toUpperCase();
+    let gender =document.querySelector('input[name="gender-cls"]:checked').value
+    let id=removeAccents(nametype).replaceAll(' ','').toUpperCase()
+    let current_user = getCurrentUser();
+    let data_post_server = {
+        id_user: current_user.id_user,
+        password: current_user.password,
+        name: nametype,
+        id_big_classify: type,
+        gender:gender,
+        id: id
+    };
+    let form_data = to_form_data(data_post_server);
+    alert(await post(
+        form_data,
+        "./Server/classify/create_classify.php"
+    ));
+    document.getElementById("add_type_pro").style.display = "none";
+    CloseDialog33();
+}
+
+function removeAccents(str) {
+    var AccentsMap = [
+      "aàảãáạăằẳẵắặâầẩẫấậ",
+      "AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ",
+      "dđ", "DĐ",
+      "eèẻẽéẹêềểễếệ",
+      "EÈẺẼÉẸÊỀỂỄẾỆ",
+      "iìỉĩíị",
+      "IÌỈĨÍỊ",
+      "oòỏõóọôồổỗốộơờởỡớợ",
+      "OÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢ",
+      "uùủũúụưừửữứự",
+      "UÙỦŨÚỤƯỪỬỮỨỰ",
+      "yỳỷỹýỵ",
+      "YỲỶỸÝỴ"    
+    ];
+    for (var i=0; i<AccentsMap.length; i++) {
+      var re = new RegExp('[' + AccentsMap[i].substr(1) + ']', 'g');
+      var char = AccentsMap[i][0];
+      str = str.replace(re, char);
+    }
+    return str;
+  }

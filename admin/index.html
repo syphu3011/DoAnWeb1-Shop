@@ -527,13 +527,18 @@
                         <div class="option_type">
                             <label for="type-select">Thuộc loại</label>
                             <select name="'" id="type-select">
-                                <!-- <option value="Ao">Áo</option>
-                                <option value="Quan">Quần</option>
-                                <option value="PK">Phụ kiện</option> -->
                             </select>
                         </div>
-                        <div class="button_add1">
-                            <button id="accept" onclick=AddType()>Xác nhận thêm</button>
+                        <div class="name_type">
+                            <label style="width: 30%" for="">Giới tính:</label>
+                            <input style="width: 10%" type="radio" id="nam" name="gender-cls" value="nam" checked>
+                            <label style="width: 10%" for="nam">nam</label>
+                            <input style="width: 10%" type="radio" id="nu" name="gender-cls" value="nữ">
+                            <label style="width: 10%" for="nu">nữ</label>
+                        </div>
+                            
+                        <div style="margin-top: 20px" class="button_add1">
+                            <button id="accept" onclick=AddtypeToServer()>Xác nhận thêm</button>
                         </div>
                     </div>
                 </div>

@@ -192,7 +192,8 @@ function ConfirmOrder(x) {
             method: "POST",
             data:( {
                 id_receipt: x,
-                status: "Đã xác nhận"
+                status: "Đã xác nhận",
+                id_staff: "NV001"
             }),
             success: function (response) {
                 console.log(response);
@@ -645,8 +646,8 @@ function FindDateInit(tring) {
 
 function FindDateComfirm(tring) {
     var array = []
-    for (let i = 0; i < length1; i++) {
-        if (receipt[i].date_confirm.indexOf(tring) != -1) {
+    for (let i = 0; i < length2; i++) {
+        if (detail_receipt[i].date_confirm_receipt.indexOf(tring) != -1) {
             array.push(i)
         }
     }
@@ -858,8 +859,8 @@ function timtheokhoangLS() {
     }
     else{
         if (check2D(ngayBD, ngayKT)) {
-            for(var i=0; i<length1;i++) {
-                let date = receipt[i].date_confirm.split(" ")[0]
+            for(var i=0; i<length2;i++) {
+                let date = detail_receipt[i].date_confirm_receipt.split(" ")[0]
                 if (check2D(ngayBD, date) &&
                     check2D(date, ngayKT) &&
                     receipt[i].id_status != "TT09"

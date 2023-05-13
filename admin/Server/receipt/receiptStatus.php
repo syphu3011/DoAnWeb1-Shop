@@ -162,9 +162,12 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 				$id = $_POST["id"];
 				if (isset($_POST["id_receipt"])) 
 				$id = $_POST["id_receipt"];
+				if (isset($_POST["id_staff"]))
+    			$id_staff = $_POST["id_staff"];
 				
 				unset($_POST["id"]);
 				unset($_POST["id_receipt"]);
+				unset($_POST["id_staff"]);
 				
 				if (!isset($_POST["status"])) {
 					echo json_encode(
@@ -189,6 +192,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 				try {
 					ReqHandling::updateDb($conn, "receipt", $id, "id_status", $tempArr);
 					ReqHandling::updateDb($conn, "receipt", $id, "date_confirm", $today);
+					ReqHandling::updateDb($conn, "receipt", $id, "idstaff", $id_staff);
 				} catch (Exception $e) {
 					Table::json_fire_exception($e);
 					exit();
