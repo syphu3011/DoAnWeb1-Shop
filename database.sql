@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 13, 2023 lúc 03:23 AM
--- Phiên bản máy phục vụ: 10.4.28-MariaDB
--- Phiên bản PHP: 8.2.4
+-- Máy chủ: localhost
+-- Thời gian đã tạo: Th5 13, 2023 lúc 04:54 AM
+-- Phiên bản máy phục vụ: 10.4.27-MariaDB
+-- Phiên bản PHP: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,8 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Cơ sở dữ liệu: `shop`
 --
-CREATE database shop;
-use shop;
+
 -- --------------------------------------------------------
 
 --
@@ -119,7 +118,7 @@ INSERT INTO `classify` (`id`, `name`, `image`, `id_big_classify`, `gender`) VALU
 
 CREATE TABLE `color` (
   `id` varchar(7) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
+  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -741,10 +740,10 @@ CREATE TABLE `promotion` (
 --
 
 INSERT INTO `promotion` (`id`, `name`, `image`, `content`, `discount_price`, `discount_percent`, `begin_date`, `finish_date`, `id_status`) VALUES
-('KM001', '0.25', NULL, 'Giảm 25%', NULL, 0.25, '2023-02-11 00:00:00', '2023-04-30 00:00:00', 'TT10'),
-('KM002', '0.35', NULL, 'Giảm 35%', NULL, 0.35, '2023-02-12 00:00:00', '2023-05-01 00:00:00', 'TT10'),
+('KM001', '0.25', NULL, 'Giảm 25%', NULL, '0.25', '2023-02-11 00:00:00', '2023-04-30 00:00:00', 'TT10'),
+('KM002', '0.35', NULL, 'Giảm 35%', NULL, '0.35', '2023-02-12 00:00:00', '2023-05-01 00:00:00', 'TT10'),
 ('KM003', '-200k', NULL, 'Giảm 200k', 200000, NULL, '2023-02-13 00:00:00', '2023-05-02 00:00:00', 'TT10'),
-('KM004', 'khuyến mãi cực sốc', '', 'djkhfjhkwefkjh', 200000, 0.20, '2023-11-30 00:00:00', '2024-11-30 00:00:00', 'TT10');
+('KM004', 'khuyến mãi cực sốc', '', 'djkhfjhkwefkjh', 200000, '0.20', '2023-11-30 00:00:00', '2024-11-30 00:00:00', 'TT10');
 
 -- --------------------------------------------------------
 
