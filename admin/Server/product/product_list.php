@@ -10,11 +10,12 @@
                 product_list.id_product, 
                 product_list.id_size, 
                 product_list.id_color, 
+                ifnull(amount, 0)  amount,
                 ifnull(price_input,0) price_input,
                 ifnull(product_list.price,0) price 
                 FROM product_list
                 LEFT JOIN 
-                (SELECT id_product, id_size, id_color, max(price_input) price_input
+                (SELECT id_product, id_size, id_color, max(ifnull(price_input,0)) price_input, sum(ifnull(amount, 0)) amount
                 FROM product_in_stock
                 GROUP BY id_product, id_size, id_color
                 ) product_in_stock
