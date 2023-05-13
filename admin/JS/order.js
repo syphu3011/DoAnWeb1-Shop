@@ -190,8 +190,9 @@ function ConfirmOrder(x) {
         $.ajax({
             url: "./Server/receipt/receiptStatus.php?action=update",
             method: "POST",
+            
             data:( {
-                id_receipt: x,
+                id_receipt:x,
                 status: "Đã xác nhận",
                 id_staff: "NV001"
             }),
