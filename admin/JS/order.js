@@ -17,15 +17,15 @@ document.getElementById("date-confirm-last").value = CurrentDate()
 
 function RefreshFillOrder(){
     Promise.all([get_DataOrder(), get_DataCus(), get_DataDetailO(),
-        get_DataProd(), get_DataPromo()])
+        get_DataProd()])
        .then(function(results) {
     
         //  console.log(results[0]); // receipt
         //  console.log(results[1]); // customer
         //  console.log(results[2]); // detail_receipt
         //  console.log(results[3]); // product
-         console.log(results[4]); // get_DataPromo
          FillOrder();
+         console.log(getCurrentUser())
        })
        .catch(function(error) {
          
@@ -187,14 +187,15 @@ function ConfirmOrder(x) {
     }
   
     if (temp == CountProd(x)) {
+      
         $.ajax({
             url: "./Server/receipt/receiptStatus.php?action=update",
             method: "POST",
-            data:JSON.stringify( {
+            data:{
                 id_receipt:x,
                 status: "Đã xác nhận",
                 id_staff: "NV001"
-            }),
+            },
             success: function (response) {
                 console.log(response);
                 for (let i = 0; i < length2; i++) {
@@ -212,6 +213,7 @@ function ConfirmOrder(x) {
             error: function (xhr, status, error) {
                 console.log(error);
             },
+
         });
     } else {
         alert("Số lượng trong kho không đủ")
@@ -232,11 +234,11 @@ function CancelOrder(x) {
     $.ajax({
         url: "./Server/receipt/receiptStatus.php?action=update",
         method: "POST",
-        data:JSON.stringify( {
+        data: {
             id_receipt: x,
             status: "Đã hủy",
             id_staff: "NV001"
-        }),
+        },
         success: function (response) {
             alert("Hủy đơn hàng thành công");
             RefreshFillOrder()
