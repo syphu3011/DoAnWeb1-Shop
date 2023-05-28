@@ -59,9 +59,9 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 			// * connection
 			$conn, 
 			// * childtable
-			"receipt", 
+			$childTableName, 
 			// * parenttable
-			"customer", 
+			$parentTableName, 
 			// * foreign key on child
 			"id_customer",
 			// * foreign key on parent
